@@ -1,0 +1,72 @@
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜林"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜林</title><meta name=author content="白菜林"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1693639736"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜林></head><body><header>===============<br>== <a href=https://blog.baicai.me/>白菜林</a> ==<br>===============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</a></h1><b><time>2023.08.31 12:12</time></b>
+<a href=/tags/proxycommand>ProxyCommand</a>
+<a href=/tags/ssh>ssh</a>
+<a href=/tags/linux>linux</a><div>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。
+SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。
+ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。
+环境说明
+远程服务器的IP地址为 0.0.0.1，代号为X； 另一个远程服务器的IP为 0.0.0.2，代号为Y； 目前本机的IP地址为 0.0.0.3，代号为A，本地可以利用SSH客户端通过密钥或密码连接X和Y； 这里全部使用密钥的方式进行访问，本机 A 与 Y 之间无法进行访问。
+本地的 ～/.ssh/config 的配置文件信息如下，通过X连接到Y；
+Host X HostName 0.0.0.1 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_1 Host Y HostName 0.0.0.2 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_2 Host test HostName 0.
+<a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/urltest-urltest/>检查网络延时测试 URL 汇总，可用于软件测试延时</a></h1><b><time>2023.08.28 23:04</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a><div>服务提供者 链接 大陆体验 境外体验 http/https IP Version 备注 Google http://www.gstatic.com/generate_204 5 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google-analytics.com/generate_204 6 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google.com/generate_204 0 10 204/204 4+6 Google网络联通性测试地址 Google http://connectivitycheck.gstatic.com/generate_204 4 10 204/204 4+6 Google网络联通性测试地址 Apple http://captive.apple.com 3 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 Apple http://www.apple.com/library/test/success.html 7 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 MicroSoft http://www.msftconnecttest.com/connecttest.txt 5 10 200/error 4 微软的网络联通性测试地址 Cloudflare http://cp.cloudflare.com/generate_204 4 10 204/204 4+6 Cloudflare的联通性测试地址 Firefox http://detectportal.
+<a href=https://blog.baicai.me/article/2023/urltest-urltest/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Hugo + GitHub Action + Github Pages，搭建博客自动发布</a></h1><b><time>2023.08.13 11:31</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/hugo>hugo</a>
+<a href=/tags/github-action>github action</a>
+<a href=/tags/bash>bash</a>
+<a href=/tags/blog>blog</a><div>我的方案由以下两个核心部分：
+博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。 GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。 使用 Hugo 搭建博客 Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。
+安装 Hugo 我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。
+brew install hugo 完成后，使用以下命令进行验证(查看版本号)：
+hugo version 创建 Hugo 网站 hugo new site blog-demo 配置主题 创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。
+cd blog-demo git clone git@github.com:colorchestra/smol.git themes/smol cd themes/smol rm -rf .
+<a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
+<a href=/tags/debian>debian</a><div>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。
+准备工作 一定要备份重要数据！
+以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作
+Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。
+检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye
+cat /etc/apt/sources.list | grep stable 更新 apt 源，替换 bullseye 为 bookworm：
+sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list.d/*.list 对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：
+sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：
+<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/linux>linux</a><div>基本命令 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作系统信息 arch 显示机器的处理器架构 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /proc/meminfo 校验内存使用 cat /proc/swaps 显示哪些swap被使用 cat /proc/version 显示内核的版本 cat /proc/net/dev 显示网络适配器及统计 cat /proc/mounts 显示已加载的文件系统 lspci -tv 罗列 PCI 设备 lsusb -tv 显示 USB 设备 date 显示系统日期 cal 2007 显示2007年的日历表 date 041217002007.
+<a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/mac_cmd/>Mac 常用命令</a></h1><b><time>2023.03.31 22:54</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/mac>mac</a><div>查看指定端口的进程 sudo lsof -i :5353
+COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME mDNSRespo 185 _mdnsresponder 6u IPv4 0x1111111111111 0t0 UDP *:mdns mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns
+根据进程名称 ps -ef | grep mDNSRespo
+65 185 1 0 8:08上午 ?? 0:26.69 /usr/sbin/mDNSResponder 0 223 1 0 8:08上午 ?? 0:02.16 /usr/sbin/mDNSResponderHelper 501 66848 66623 0 11:00下午 ttys000 0:00.00 grep mDNSRespo
+根据PID杀进程： sudo kill -9 185</div></article><article><h1><a href=https://blog.baicai.me/article/2023/setting-telegram-webhook/>设置Telegram机器人的webhook</a></h1><b><time>2023.02.10 23:04</time></b>
+<a href=/tags/telegram>telegram</a>
+<a href=/tags/webhook>webhook</a>
+<a href=/tags/bot>bot</a><div>设置Webhook
+https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to} 例如：
+https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me 获取Webhook
+https://api.telegram.org/bot{my_bot_token}/getWebhookInfo</div></article><article><h1><a href=https://blog.baicai.me/article/2023/home_dirs_update/>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</a></h1><b><time>2023.01.02 12:41</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/xdg-user-dirs-gtk-update>xdg-user-dirs-gtk-update</a><div>操作环境:
+Distributor ID: Debian Description: Debian GNU/Linux 11 (bullseye) Release: 11 Codename: bullseye 安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.
+#临时转换系统语言为英文，重启后会自动恢复原值的 export LANG=en_US #执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭 xdg-user-dirs-gtk-update #转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的 export LANG=zh_CN 下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</div></article><article><h1><a href=https://blog.baicai.me/article/2022/cloud_host/>云服务器推荐购买地址</a></h1><b><time>2022.12.16 22:59</time></b>
+<a href=/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8>服务器</a>
+<a href=/tags/cloud>cloud</a>
+<a href=/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8>服务器</a>
+<a href=/tags/%E4%BA%91%E4%B8%BB%E6%9C%BA>云主机</a><div>腾讯云 【腾讯云】轻量新用户上云福利 https://url.cn/keDOzL0q
+阿里云 阿里云小站 https://www.aliyun.com/minisite/goods?userCode=pnl14gaf
+七牛云 七牛云10G免费空间 https://s.qiniu.com/2yMr2q</div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</a></h1><b><time>2022.11.01 22:18</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/certbot>certbot</a>
+<a href=/tags/nginx>nginx</a><div>在Debian 11 Nginx配置Let&rsquo;s Encrypt SSL证书
+安装 Certbot 及 certbot nginx 插件 sudo apt update && sudo apt -y install certbot python3-certbot-nginx 为 nginx 网站生成证书并配置 certbot --nginx 如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。
+也可以为特定域名获取证书配置
+certbot --nginx -d baicai.me 使用Certbot自动更新SSL证书 Let&rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。 除非你更改配置，否则无需再次手动运行Certbot。 您可以通过运行以下命令来测试证书的自动续订。
+certbot renew --dry-run</div></article><div>1 of 6
+<a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=https://blog.baicai.me/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

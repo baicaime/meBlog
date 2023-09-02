@@ -1,0 +1,107 @@
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜林"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜林</title><meta name=author content="白菜林"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1693639736"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜林></head><body><header>===============<br>== <a href=https://blog.baicai.me/>白菜林</a> ==<br>===============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/jsdelivr_github/>免费CDN：jsDelivr+Github 使用方法</a></h1><b><time>2021.07.02 23:50</time></b>
+<a href=/tags/jsdelivr>jsDelivr</a>
+<a href=/tags/github>Github</a>
+<a href=/tags/cdn>CDN</a><div>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。
+用 jsDelivr 免费CDN托管静态资源 国内的免费 CDN 不少，但需要备案 国外的免费 CDN 也不少，但在国内速度慢 但 jsDelivr 是一个特殊的存在，虽然是一家国外 CDN 但是有国内节点
+jsDelivr官网： https://www.jsdelivr.com
+放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。
+使用步骤 1、新建Github仓库
+2、克隆Github仓库到本地
+执行以下命令：
+git clone 一键复制的仓库地址 3、上传资源
+复制需要上传的资源到本地git仓库（注：jsDelivr不支持加载超过20M的资源），在本地git仓库目录下，执行以下命令：
+git status #查看状态 git add . #添加所有文件到暂存区 git commit -m '第一次提交' #把文件提交到仓库 git push #推送至远程仓库 4、发布仓库
+点击release发布
+自定义发布版本号 5、通过jsDelivr引用资源
+使用方法：https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径 例如：
+https://cdn.jsdelivr.net/gh/baicaime/meBlog/index.html https://cdn.jsdelivr.net/gh/baicaime/meBlog/favicon-16x16.png https://cdn.jsdelivr.net/gh/clin003/cdn/v@3.1.3/css.css 注意：版本号不是必需的，是为了区分新旧资源，如果不使用版本号，将会直接引用最新资源，除此之外还可以使用某个范围内的版本，查看所有资源等，具体使用方法如下：
+// 加载任何Github发布、提交或分支 https://cdn.jsdelivr.net/gh/user/repo@version/file // 加载 jQuery v3.2.1 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js // 使用版本范围而不是特定版本 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js // 完全省略该版本以获取最新版本 https://cdn.
+<a href=https://blog.baicai.me/article/2021/jsdelivr_github/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/qbittorrent/>Ubuntu安装 qbittorrent-nox并启动</a></h1><b><time>2021.07.02 21:01</time></b>
+<a href=/tags/qbittorrent>qBittorrent</a>
+<a href=/tags/ubuntu>Ubuntu</a>
+<a href=/tags/bt>bt</a><div>Qbittorrent-Nox 要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。
+注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用
+安装qbittorrent 安装add-apt-repository命令 sudo apt-get update && sudo apt-get install software-properties-common -y 添加qbittorrent-nox的PPA软件源 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable 安装qbittorrent-nox（webui版） sudo apt-get update && sudo apt-get install qbittorrent-nox 设置开机启动 通过rc.local完成 如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效
+Ubuntu-18.04设置开机启动脚本 起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&mldr;
+编辑rc.local脚本
+nano /etc/rc.local 在exit 0前面（前一行）添加以下内容并保存
+qbittorrent-nox -d 通过创建自定义服务实现 创建系统服务
+sudo apt-get install nano -y && nano /etc/systemd/system/qbittorrent-nox.service 粘贴以下内容，并保存。
+[Unit] Description=qBittorrent-nox After=network.target [Service] User=root Type=simple RemainAfterExit=yes ExecStart=/usr/bin/qbittorrent-nox -d [Install] WantedBy=multi-user.target 启动qbittorrent-nox并创建服务配置
+systemctl start qbittorrent-nox 设置开机自动启动qbittorrent-nox
+<a href=https://blog.baicai.me/article/2021/qbittorrent/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>跨域方案Nginx配置</a></h1><b><time>2021.07.01 18:58</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/%E8%B7%A8%E5%9F%9F>跨域</a>
+<a href=/tags/cors>CORS</a><div>什么是浏览器同源策略？ 同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
+同源是指"协议+域名+端口"三者相同，即便两个不同的域名指向同一个ip地址，也非同源。
+如何实现跨域？ 跨域是个比较古老的命题了，历史上跨域的实现手段有很多，我们现在主要介绍Nginx的跨域方案，其余的方案我们就不深入讨论了。
+方便的跨域方案Nginx nginx是一款极其强大的web服务器，其优点就是轻量级、启动快、高并发。
+现在的新项目中nginx几乎是首选，我们用node或者go开发的服务通常都需要经过nginx的反向代理。
+反向代理的原理很简单，即所有客户端的请求都必须先经过nginx的处理，nginx作为代理服务器再讲请求转发给node或者go服务，这样就规避了同源策略。
+#进程, 可更具cpu数量调整 worker_processes 1; events { #连接数 worker_connections 1024; } http { include mime.types; default_type application/octet-stream; sendfile on; #连接超时时间，服务器会在这个时间过后关闭连接。 keepalive_timeout 10; # gizp压缩 gzip on; # 直接请求nginx也是会报跨域错误的这里设置允许跨域 # 如果代理地址已经允许跨域则不需要这些, 否则报错(虽然这样nginx跨域就没意义了) add_header Access-Control-Allow-Origin *; add_header Access-Control-Allow-Headers X-Requested-With; add_header Access-Control-Allow-Methods GET,POST,OPTIONS; # srever模块配置是http模块中的一个子模块，用来定义一个虚拟访问主机 server { listen 80; server_name localhost; # 根路径指到index.html location / { root html; index index.html index.htm; } # localhost/api 的请求会被转发到192.168.0.103:8080 location /api { rewrite ^/b/(.
+<a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/mac_find/>MAC命令快速模糊查找文件</a></h1><b><time>2021.06.27 10:04</time></b>
+<a href=/tags/mac%E5%91%BD%E4%BB%A4%E8%A1%8C>mac命令行</a>
+<a href=/tags/mac>mac</a>
+<a href=/tags/find>find</a><div>find命令 描述：通过 find命令查找 语法：find ~ -iname “文件名*”
+/** * 比如我要查找一个以‘vue-’开头的.zip文件, * 但是你忘了它的全名也忘了在那个文件夹， * 查找范围是‘～’节点以内 * 就可以用这种方式进行模糊搜索 */ find ~ -iname "vue-*.zip" /** * 然后它就把所有包含符合条件的文件和路径都打印出来了 */ find不但能查找文件，还能查找文件夹
+/** * 比如我要查找所有包含‘vue’的文件或文件夹 */ find ~ -iname "*vue*" /** * 结果它找到了所有包含‘vue’的文件或文件夹 */ find方式很简单但是需要一点专业知识，需要知道一些正则的基本常识，需要指定路径范围，搜索的名字需要加引号等等
+mdfind命令 描述：通过 mdfind命令查找 语法：mdfind -name 文件名
+/** * 比如我要查找所有包含‘vue’的文件或文件夹 */ mdfind -name vue /** * 看，我直接输入我要找的关键字‘vue’ * 就把所有文件和文件夹都输出出来了，是不是很方便 */ mdfind 简单粗暴，没缺点，但有个前提是你mac电脑要支持Spotlight功能，不过也不用担心，一般mac默认是支持的
+在 shell 中执行命令 你是找到这个文件或文件夹了，但是你想直接打开它，那么怎么打开呢，看下面
+若要运行当前用户个人文件夹中的命令，请在前面加上文件夹说明符。例如，若要运行 MyCommandLineProg，请使用以下命令：
+% ~/MyCommandLineProg 若要打开一个 App，请使用打开命令：
+<a href=https://blog.baicai.me/article/2021/mac_find/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/rustproxy/>Rust 镜像源</a></h1><b><time>2021.06.25 22:53</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/rust>Rust</a><div>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。
+crates.io 和 rustup 的国内镜像源 字节跳动提供的：https://rsproxy.cn/
+中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html
+清华大学的：https://mirrors.tuna.tsinghua.edu.cn/help/rustup/
+上海交通大学的：https://git.sjtu.edu.cn/sjtug/crates.io-index
+更换国内源 更换为国内源，否则安装太慢了。 新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：
+[source.crates-io] registry = "https://github.com/rust-lang/crates.io-index" # 替换成你偏好的镜像源 replace-with = 'sjtu' # 清华大学 [source.tuna] registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git" # 中国科学技术大学 [source.ustc] registry = "git://mirrors.ustc.edu.cn/crates.io-index" # 上海交通大学 [source.sjtu] registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index" # rustcc社区 [source.rustcc] registry = "git://crates.rustcc.cn/crates.io-index" # 字节跳动 [source.rsproxy] registry = "https://rsproxy.cn/crates.io-index"</div></article><article><h1><a href=https://blog.baicai.me/article/2021/sharkle/>给我来点酷炫玩意-Sharkle</a></h1><b><time>2021.06.23 12:23</time></b>
+<a href=/tags/web%E5%89%8D%E7%AB%AF>web前端</a>
+<a href=/tags/%E5%88%9B%E6%84%8F>创意</a>
+<a href=/tags/%E7%BD%91%E9%A1%B5%E7%89%B9%E6%95%88>网页特效</a><div>网页前端是一门技术活！出色的网站除了后台够快够可靠，也非常需要前端吸引眼球。在这个网站里，点击SHOW ME SOMETHING AWESOME就能随机跳转到一个新页面，往往是一些用了平时不太多见的网页设计元素制作出来的页面演示，有时候也会有独到设计的网页游戏，或许还有些别的内容。这个网站收录的内容都挺不错，有些网站的质量完全可以拿出来单独写一篇文章。
+传送门 https://sharkle.com/
+方法 进入网站直接点击SHOW ME SOMETHING AWESOME即可欣赏！</div></article><article><h1><a href=https://blog.baicai.me/article/2021/cargo-wix/>Cargo Wix 创建Windows安装程序的cargo子命令</a></h1><b><time>2021.06.22 22:48</time></b>
+<a href=/tags/wix>wix</a>
+<a href=/tags/rust>Rust</a><div>cargo-wix：创建Windows安装程序的cargo子命令 它使用二进制项目的发行版中的构建Windows安装程序（msi）。 如果可以使用提供的应用程序提供代码签名证书，则它还支持对Windows安装程序进行签名。
+快速开始 启动命令提示符（cmd.exe），然后执行以下命令：
+C:\>cargo install cargo-wix C:\>cd Path\To\Project C:\Path\To\Project\>cargo wix init C:\Path\To\Project\>cargo wix 该项目的Windows安装程序（msi）将位于C:\Path\To\Project\target\wix文件夹中。
+官方文档 https://crates.io/crates/cargo-wix</div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_deskreen/>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上</a></h1><b><time>2021.06.21 19:50</time></b>
+<a href=/tags/linux>linux</a>
+<a href=/tags/deskreen>deskreen</a><div>如果你有多显示器设置，你会意识到拥有多个屏幕的好处。而且，有了 Deskreen，你可以把任何设备变成你的副屏。
+Deskreen：将任何设备变成你的 Linux 系统的副屏 Deskreen 是一个自由开源的应用，可以让你使用任何带有 Web 浏览器的设备来作为电脑的副屏。
+如果你愿意，它还支持多个设备连接。
+Deskreen 很容易使用，当你的所有设备都连接到同一个 Wi-Fi 网络时，它可以正常工作。
+让我们来看看它的功能和工作原理。 Deskreen 的功能
+Deskreen 的功能包括以下要点：
+分享整个屏幕的能力 选择一个特定的应用窗口进行串流 翻转模式，将你的屏幕作为提词器使用 支持多种设备 高级视频质量设置 提供端对端加密 最小的系统要求 黑暗模式 没有一个冗长的功能列表，但对大多数用户来说应该是足够的。
+如何使用 Deskreen 应用？ Deskreen 使用分为三个简单的步骤，让我为你强调一下，以便你开始使用：
+首先，当你启动该应用时，它会显示一个二维码和一个 IP 地址，以帮助你用 Web 浏览器连接其他设备，以串流你的屏幕。
+你可以按你喜欢的方式，在你的辅助设备上的 Web 浏览器的帮助下建立连接。
+当你扫描二维码或在浏览器的地址栏中输入 IP 地址，你会在 Deskreen 应用上得到一个提示，允许或拒绝连接。除非是你不认识它，否则就允许吧。
+接下来，你将被要求选择你想要串流的内容（你的整个屏幕或特定的应用窗口）：
+你可以选择串流整个屏幕或选择你想串流的窗口。然而，并不是每个应用窗口都能被检测到。
+你只需要选择源并确认，就可以了。你应该注意到它在你的副屏（手机/桌面）上开始串流。
+Deskreen 还为你提供了管理连接设备的能力。因此，如果你需要断开任何会话或所有会话的连接，你可以从设置中进行操作。
+在 Linux 中安装 Deskreen 你会找到一个用于 Linux 机器的 DEB 包和 AppImage 文件。如果你不知道，可以通过我们的 安装 DEB 包 和 使用 AppImage 文件 指南来安装它。
+<a href=https://blog.baicai.me/article/2021/linux_deskreen/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/the-zen-zone/>为你营造专注冥想的时间-The Zen Zone</a></h1><b><time>2021.06.21 16:57</time></b>
+<a href=/tags/%E4%B8%93%E6%B3%A8>专注</a>
+<a href=/tags/%E5%86%A5%E6%83%B3>冥想</a>
+<a href=/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F>小游戏</a><div>网站为你营造了专注冥想的时间，通过三个简单的小游戏，你可以进入一个精神集中的状态，从而让大脑思维平静下来！
+传送门 https://thezen.zone/
+方法 进入网站直接开始冥想吧！</div></article><article><h1><a href=https://blog.baicai.me/article/2021/skylinewebcams/>全球高清实况摄像头-Skylinewebcams</a></h1><b><time>2021.06.14 20:57</time></b>
+<a href=/tags/%E5%85%A8%E7%90%83>全球</a>
+<a href=/tags/%E6%91%84%E5%83%8F%E5%A4%B4>摄像头</a>
+<a href=/tags/%E9%A3%8E%E6%99%AF>风景</a><div>网站收录了全球范围内的公开实况摄像头，你可以看到世界各地的文化遗产、城市风光、人气景点！
+传送门 https://www.skylinewebcams.com/
+方法 网站支持中文，进入后直接观看！</div></article><div><a href=/page/3/>Previous Page</a>
+4 of 6
+<a href=/page/5/>Next Page</a></div></main><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=https://blog.baicai.me/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

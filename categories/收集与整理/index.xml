@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>收集与整理 on 白菜林</title><link>https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/</link><description>Recent content in 收集与整理 on 白菜林</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 28 Aug 2023 23:04:59 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>服务提供者 链接 大陆体验 境外体验 http/https IP Version 备注 Google http://www.gstatic.com/generate_204 5 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google-analytics.com/generate_204 6 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google.com/generate_204 0 10 204/204 4+6 Google网络联通性测试地址 Google http://connectivitycheck.gstatic.com/generate_204 4 10 204/204 4+6 Google网络联通性测试地址 Apple http://captive.apple.com 3 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 Apple http://www.apple.com/library/test/success.html 7 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 MicroSoft http://www.msftconnecttest.com/connecttest.txt 5 10 200/error 4 微软的网络联通性测试地址 Cloudflare http://cp.cloudflare.com/generate_204 4 10 204/204 4+6 Cloudflare的联通性测试地址 Firefox http://detectportal.</description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书
+安装 Certbot 及 certbot nginx 插件 sudo apt update &amp;amp;&amp;amp; sudo apt -y install certbot python3-certbot-nginx 为 nginx 网站生成证书并配置 certbot --nginx 如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。
+也可以为特定域名获取证书配置
+certbot --nginx -d baicai.me 使用Certbot自动更新SSL证书 Let&amp;rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。 除非你更改配置，否则无需再次手动运行Certbot。 您可以通过运行以下命令来测试证书的自动续订。
+certbot renew --dry-run</description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>在Mac系统中制作U盘启动盘 Create a Bootable USB Flash Drive
+在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下
+下载 Debian DVD 镜像文件 通过 HTTP/FTP 下载 Debian CD/DVD 映像 https://www.debian.org/CD/http-ftp/
+amd64 DVD版 https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+格式化USB盘 打开系统自带的磁盘管理工具，插上U盘，格式化U盘，选择格式如下： 格式：Mac OS 扩展（日志式） 方案：GUID 分区图
+取消Usb磁盘挂载 # 终端执行以下命令 # 列出磁盘，找到你usb硬盘的盘符 diskutil list # 输出如下：可以看到usb硬盘为/dev/disk2 /dev/disk2 (external, physical): #: TYPE NAME SIZE IDENTIFIER 0: FDisk_partition_scheme *32.0 GB disk2 1: 0xEF 6.4 MB disk2s2 # 取消usb硬盘的挂载 diskutil unmountDisk /dev/disk2 导入镜像 # 执行如下命令 # if是镜像文件路径 # of是导入的目的磁盘 # bs是读写快的大小，太小会增大io，降低效率，一般1m～2m即可。 sudo dd if=~/Downloads/debian-11.</description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>解决 Debian 安装过程慢的可行方案： 如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。 安装时选择 expert，不要选择 安全更新。 安装过程修改软件源。 Debian DVD-1 镜像下载地址 通过 HTTP/FTP 下载 Debian CD/DVD 映像 https://www.debian.org/CD/http-ftp/
+amd64 DVD版 https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+Debian 安装过程中 修改软件源中的安全源地址 在Debian安装步骤进入到选择安装的桌面环境和软件时, 键入 Ctrl+Alt+F2 可以看到从图形界面转到了tty命令终端, 键入 Enter 这里修改软件源配置文件
+nano /target/etc/apt/sources.list 修改debian-security源地址 http://mirrors.ustc.edu.cn 目测最快
+#deb http://security.debian.org/debian-security bullseye-security main deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main 修改后 Ctrl+X 退出保存
+然后退出终端重新进入界面继续安装，键入 Ctrl+Alt+F5
+Debian 安装完成后更新硬件驱动 在设置——》关于——〉更新——》软件源，去掉cdrome的源，勾选合适的源 然后通过 dmesg 查看启动日志。 查找哪些固件加载异常，根据情况安装驱动（比如我的缺失显卡驱动和无线网卡驱动）。
+# 更新源 sudo apt-get update dmesg # demsg查看到 缺失显卡驱动 sudo apt-get install firmware-amd-graphics # demsg查看到 缺失 rtl8168e-3.</description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>运行环境
+Operating System: Debian GNU/Linux 11 (bullseye) Kernel: Linux 5.10.0-18-amd64 Architecture: x86-64 通过Debian官方软件仓库安装 # 更新软件源 并 安装 docker及相关应用 sudo apt update &amp;amp;&amp;amp; sudo apt install -y docker docker.io docker-compose # 查看docker运行状态 sudo systemctl status docker # 查看docker信息 sudo docker info # 验证是否安装成功 sudo docker run hello-world 镜像加速器 访问 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 获取自己的阿里云镜像加速器地址
+修改 /etc/docker/daemon.json
+sudo mkdir -p /etc/docker sudo tee /etc/docker/daemon.json &amp;lt;&amp;lt;-&amp;#39;EOF&amp;#39; { &amp;#34;max-concurrent-downloads&amp;#34;: 3, &amp;#34;max-concurrent-uploads&amp;#34;: 3, &amp;#34;max-download-attempts&amp;#34;: 3, &amp;#34;registry-mirrors&amp;#34;: [&amp;#34;https://修改为自己的.mirror.aliyuncs.com&amp;#34;,&amp;#34;https://hub-mirror.c.163.com&amp;#34;,&amp;#34;https://registry.aliyuncs.com&amp;#34;] } EOF sudo systemctl daemon-reload sudo systemctl restart docker 清理docker对象 prune 命令用来删除不再使用的 docker 对象。</description></item><item><title>如何关闭 Ubuntu 中的开放端口？</title><link>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</link><pubDate>Sun, 19 Jun 2022 22:53:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</guid><description>如何关闭 Ubuntu 中的开放端口？
+问题描述 列出所有打开的端口，以关闭一些应用程序的端口。
+最佳办法 如果要关闭端口，则必须终止进程或停止相关服务。 可以使用 netstat -nalp 和 lsof -i:port 工具来识别打开端口后面的进程/二进制文件。
+netstat 可用于查看端口统计信息。 要显示所有开放端口的列表：
+sudo netstat -lnp 列出所有侦听端口号以及每个负责的进程。终止或终止进程以关闭端口。 ( kill , pkill …)
+关闭一个打开的端口：
+sudo fuser -k port_no/tcp 例子：
+sudo fuser -k 8080/tcp 次佳办法 要在 ubuntu 中关闭开放端口，可以使用以下命令
+sudo kill $(sudo lsof -t -i:3000) 代替 3000 你可以指定你的端口号
+lsof 命令将提供有关进程打开的文件的信息
+-t ：此标志指定 lsof 应仅生成带有进程标识符且没有标头的简洁输出 – 例如，以便可以将输出通过管道传输到 kill(1)。此选项选择 -w 选项。
+-i ：此标志选择任何 Internet 地址与 i 中指定的地址匹配的文件列表。如果未指定地址，此选项将选择所有 Internet 和 x.25 (HP-UX) 网络文件的列表。</description></item><item><title>ubuntu上安装微信(wechat)</title><link>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</link><pubDate>Sun, 30 Jan 2022 15:19:12 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</guid><description>介绍 由于微信官网 https://weixin.qq.com/ 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。
+安装方法 打开优麒麟应用商店官网，然后下载应用，就看到微信了 https://www.ubuntukylin.com/applications/106-cn.html 下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。 这是linux原生的，功能少点，但比wine的要轻巧不少。
+安装方法2 下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——&amp;gt; “复制链接” 终端下载Deb安装：
+wget -O ~/weixin.deb &amp;#34;http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb&amp;#34; sudo dpkg -i ~/weixin.deb</description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>简单步骤 安装docker，可参考 安装docker及简单的使用 或 百度解决；
+拉取postgreSQL的docker镜像文件：
+docker pull postgres 创建 docker volume，名字为“dv_pgdata&amp;quot;（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）： docker volume create dv_pgdata 启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面： docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=xxxxxx -p 5432:5432 -d postgres 这时候查看已存在的docker volume: docker volume ls 查看volume信息： cn2d6@navxin-desktop:~$ docker inspect dv_pgdata 在宿主机，也可以直接查看volume里的内容： cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data cn2d6@navxin-desktop:~$ ll 查看postgresql： cn2d6@navxin-desktop:~$docker exec -it 618 bash root@618f1a4128ee:/# psql -U postgres -d postgres -p 5432 -h 127.0.0.1 更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。 docker pull dpage/pgadmin4 docker run --name pgadmin -p 5080:80 \ -e &amp;#39;PGADMIN_DEFAULT_EMAIL=hi@nav.</description></item><item><title>安装docker及简单的使用</title><link>https://blog.baicai.me/article/2021/docker_start/</link><pubDate>Tue, 05 Oct 2021 17:21:06 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_start/</guid><description>docker的介绍，里面包括了3个基本概念 1.1 docker主要由镜像和容器构成 镜像（Image）:docker镜像好比一个模板，相当于一个文件系统
+容器（Container）:容器需要通过镜像来创建。镜像和容器就像是面向对象中的类和实例一样。容器可以被创建/启动/停止/删除等
+仓库（Repository）:仓库就是存放镜像的地方，分为私有仓库和公有仓库。类似git
+1.2 docker的运行原理 docker是一个Client-Server结构的系统，docker的守护进程运行在主机上，通过socket从客户端访问。dockerServer接收到docker-Client的指令，就会执行这个命令。
+一. Mac 系统 docker 的安装 1.1 homebrew的cask应支持Docker for Mac,所以可以直接安装 brew cask install docker
+1.2 也可以直接到官网下载，https://download.docker.com/mac/stable/Docker.dmg
+1.3 docker的参考文档：https://docs.docker.com
+1.4 dockerhub查找镜像源地址：https://hub.docker.com
+二. docker的使用 1.1 查看版本 docker --version docker-compose --version docker-machine --version 1.2 查看docker系统信息（包括镜像和容器的数量等） docker info 1.3 帮助命令 docker help 1.4 查看 cpu的状况 docker stats 三. docker的基本命令 镜像相关命令：
+1.1 查看镜像可用版本（nginx为例） docker search nginx 1.2 下载一个镜像 docker pull nginx:latest #（：后面跟镜像版本） 1.3 运行一个nginx服务器 docker run -d -p 81:80 --name webserver nginx 可选项：</description></item><item><title>免费CDN：jsDelivr+Github 使用方法</title><link>https://blog.baicai.me/article/2021/jsdelivr_github/</link><pubDate>Fri, 02 Jul 2021 23:50:06 +0800</pubDate><guid>https://blog.baicai.me/article/2021/jsdelivr_github/</guid><description>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。
+用 jsDelivr 免费CDN托管静态资源 国内的免费 CDN 不少，但需要备案 国外的免费 CDN 也不少，但在国内速度慢 但 jsDelivr 是一个特殊的存在，虽然是一家国外 CDN 但是有国内节点
+jsDelivr官网： https://www.jsdelivr.com
+放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。
+使用步骤 1、新建Github仓库
+2、克隆Github仓库到本地
+执行以下命令：
+git clone 一键复制的仓库地址 3、上传资源
+复制需要上传的资源到本地git仓库（注：jsDelivr不支持加载超过20M的资源），在本地git仓库目录下，执行以下命令：
+git status #查看状态 git add . #添加所有文件到暂存区 git commit -m &amp;#39;第一次提交&amp;#39; #把文件提交到仓库 git push #推送至远程仓库 4、发布仓库
+点击release发布
+自定义发布版本号 5、通过jsDelivr引用资源
+使用方法：https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径 例如：
+https://cdn.jsdelivr.net/gh/baicaime/meBlog/index.html https://cdn.jsdelivr.net/gh/baicaime/meBlog/favicon-16x16.png https://cdn.jsdelivr.net/gh/clin003/cdn/v@3.1.3/css.css 注意：版本号不是必需的，是为了区分新旧资源，如果不使用版本号，将会直接引用最新资源，除此之外还可以使用某个范围内的版本，查看所有资源等，具体使用方法如下：
+// 加载任何Github发布、提交或分支 https://cdn.jsdelivr.net/gh/user/repo@version/file // 加载 jQuery v3.2.1 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js // 使用版本范围而不是特定版本 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js // 完全省略该版本以获取最新版本 https://cdn.</description></item><item><title>跨域方案Nginx配置</title><link>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</link><pubDate>Thu, 01 Jul 2021 18:58:23 +0800</pubDate><guid>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</guid><description>什么是浏览器同源策略？ 同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
+同源是指&amp;quot;协议+域名+端口&amp;quot;三者相同，即便两个不同的域名指向同一个ip地址，也非同源。
+如何实现跨域？ 跨域是个比较古老的命题了，历史上跨域的实现手段有很多，我们现在主要介绍Nginx的跨域方案，其余的方案我们就不深入讨论了。
+方便的跨域方案Nginx nginx是一款极其强大的web服务器，其优点就是轻量级、启动快、高并发。
+现在的新项目中nginx几乎是首选，我们用node或者go开发的服务通常都需要经过nginx的反向代理。
+反向代理的原理很简单，即所有客户端的请求都必须先经过nginx的处理，nginx作为代理服务器再讲请求转发给node或者go服务，这样就规避了同源策略。
+#进程, 可更具cpu数量调整 worker_processes 1; events { #连接数 worker_connections 1024; } http { include mime.types; default_type application/octet-stream; sendfile on; #连接超时时间，服务器会在这个时间过后关闭连接。 keepalive_timeout 10; # gizp压缩 gzip on; # 直接请求nginx也是会报跨域错误的这里设置允许跨域 # 如果代理地址已经允许跨域则不需要这些, 否则报错(虽然这样nginx跨域就没意义了) add_header Access-Control-Allow-Origin *; add_header Access-Control-Allow-Headers X-Requested-With; add_header Access-Control-Allow-Methods GET,POST,OPTIONS; # srever模块配置是http模块中的一个子模块，用来定义一个虚拟访问主机 server { listen 80; server_name localhost; # 根路径指到index.html location / { root html; index index.html index.htm; } # localhost/api 的请求会被转发到192.168.0.103:8080 location /api { rewrite ^/b/(.</description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。
+crates.io 和 rustup 的国内镜像源 字节跳动提供的：https://rsproxy.cn/
+中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html
+清华大学的：https://mirrors.tuna.tsinghua.edu.cn/help/rustup/
+上海交通大学的：https://git.sjtu.edu.cn/sjtug/crates.io-index
+更换国内源 更换为国内源，否则安装太慢了。 新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：
+[source.crates-io] registry = &amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34; # 替换成你偏好的镜像源 replace-with = &amp;#39;sjtu&amp;#39; # 清华大学 [source.tuna] registry = &amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34; # 中国科学技术大学 [source.ustc] registry = &amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34; # 上海交通大学 [source.sjtu] registry = &amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34; # rustcc社区 [source.rustcc] registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34; # 字节跳动 [source.rsproxy] registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;</description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。
+👉 本文来自 toml-lang 的中文翻译版本，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。
+TOML v1.0.0 全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&amp;rsquo;s Obvious, Minimal Language）
+作者：Tom Preston-Werner、Pradyun Gedam 等人。
+宗旨 TOML 旨在成为一个语义明显且易于阅读的最小化配置文件格式。
+TOML 被设计成可以无歧义地映射为哈希表。
+TOML 应该能很容易地被解析成各种语言中的数据结构。
+目录 规格 注释 键值对 键名 字符串 整数 浮点数 布尔值 坐标日期时刻 各地日期时刻 各地日期 各地时刻 数组 表 内联表 表数组 文件扩展名 MIME 类型 ABNF 语法 规格 TOML 是大小写敏感的。 TOML 文件必须是合法的 UTF-8 编码的 Unicode 文档。 空白是指制表符（0x09）或空格（0x20）。 换行是指 LF（0x0A）或 CRLF（0x0D0A）。 注释 井字符将该行余下的部分标记为注释，除非它在字符串中。</description></item><item><title>Rust 学习指南</title><link>https://blog.baicai.me/article/2021/learn_rust/</link><pubDate>Sat, 05 Jun 2021 02:16:24 +0800</pubDate><guid>https://blog.baicai.me/article/2021/learn_rust/</guid><description>了解 一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。 这时，建议看 Rust 官网 https://rust-lang.org
+Rust 官方文档 Rust 语言的学习或参考文档大都列在 Rust 学习指引页 和 Rust 官方文档主页 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：
+《Rust 程序设计语言》（The Rust Programming Language），对应 GitHub 仓库 《通过例子学 Rust》（Rust by Example），对应 GitHub 仓库 Rust 版本指南（The Edition Guide），对应 GitHub 仓库 Cargo 帮助文档，对应 GitHub 仓库源文件 rustdoc 帮助文档，对应 GitHub 仓库源文件 rustc 帮助文档，对应 GitHub 仓库源文件 Rust 编译错误索引，对应 GitHub 仓库源代码 《Rust 语言参考》（The Rust Reference），对应 GitHub 仓库 The Rustonomicon，对应 GitHub 仓库 还有其他更多官方或其他非官方相关的文档：
+使用 Rust 编写命令行应用，对应 GitHub 仓库地址 Rust 和 WebAssembly 教程（WebAssembly Book），对应 GitHub 仓库 嵌入式 Rust 教程，对应 GitHub 仓库 A Rust Cookbook，对应 GitHub 仓库 The Unstable Book，对应 GitHub 仓库源代码 rustc 指引——Rust 编译器的工作原理及如何参与贡献（rustc-guide），对应 GitHub 仓库 rustup 命令说明，本翻译项目会将 rustup 的相关说明翻译成中文 Rust RFC——Rust 发展相关制定的文稿，对应 GitHub 仓库 mdBook 使用手册，对应 GitHub 仓库 Rust API 指导原则，对应 GitHub 仓库 async-book，对应 GitHub 仓库 上述文档的源文件有些是放在 rust 和 cargo 的仓库的子目录中：Rust 文档 和 cargo 文档。</description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>Go Module代理仓库服务 七牛云提供的：https://goproxy.cn
+goproxy.io：https://goproxy.io 或 https://proxy.golang.com.cn
+百度云BOS提供的：https://goproxy.bj.bcebos.com/
+阿里云提供的：https://mirrors.aliyun.com/goproxy/
+下载 Go 镜像（Golang Downloads Mirrors） 官网：https://go.dev/
+下载 Go 镜像：https://golang.google.cn/
+下载 Go 镜像：https://gomirrors.org/
+下载 Go 镜像：https://studygolang.com/dl</description></item><item><title>Swift语法全面解析</title><link>https://blog.baicai.me/article/2021/swift-basic-syntax/</link><pubDate>Thu, 13 May 2021 21:31:19 +0800</pubDate><guid>https://blog.baicai.me/article/2021/swift-basic-syntax/</guid><description>Swift介绍 Swift 是一门开发 iOS, macOS, watchOS 和 tvOS 应用的新语言。 swift 是一种安全，快速和互动的编程语言。 swift 支持代码预览（playgrounds），这个特性可以允许程序员在不编译和运行应用程序的前提下运行 Swift 代码并实时查看结果。
+Swift 通过采用现代编程模式来避免大量常见编程错误：
+变量始终在使用前初始化。 检查数组索引超出范围的错误。 检查整数是否溢出。 可选值确保明确处理 nil 值。 内存被自动管理。 错误处理允许从意外故障控制恢复。 基础部分 常量和变量 声明常量和变量， 常量和变量必须在使用前声明，使用 let 来声明常量，使用 var 来声明变量。 示例：
+let maximumNumberOfLoginAttempts = 10 var currentLoginAttempt = 0 // 类型注解 var welcomeMessage: String 注释 单行注释双正斜杠（//）， 多行注释（/* 多行的 */）。Swift 的多行注释可以嵌套在其它的多行注释之中。 示例：
+// 这是一个注释 /* 这也是一个注释， 但是是多行的 */ /* 这是第一个多行注释的开头 /* 这是第二个被嵌套的多行注释 */ 这是第一个多行注释的结尾 */ 分号 Swift 并不强制要求你在每条语句的结尾处使用分号（;）。 同一行内写多条独立的语句必须用分号分隔。</description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：
+下载并安装必备软件 验证构建服务器上是否有新的测试软件包 获取并设置依赖软件包所需的 yum 仓库 下载并安装新的测试软件包（基于步骤 2） 获取并设置必需的 SSL 证书 设置测试环境，获取所需的 Git 仓库，更改配置，重新启动守护进程等 做其他需要做的事情 用脚本自动化 这些步骤非常常规，以至于有必要对其进行自动化并将脚本保存到中央位置（例如文件服务器），在需要时可以在此处下载脚本。为此，我编写了 100-120 行的 Bash shell 脚本，它为我完成了所有配置（包括错误检查）。这个脚本通过以下方式简化了我的工作流程：
+配置新的 Linux 系统（支持测试的架构） 登录系统并从中央位置下载自动化 shell 脚本 运行它来配置系统 开始测试 学习 Go 语言 我想学习 Go 语言 有一段时间了，将我心爱的 Shell 脚本转换为 Go 程序似乎是一个很好的项目，可以帮助我入门。它的语法看起来很简单，在尝试了一些测试程序后，我开始着手提高自己的知识并熟悉 Go 标准库。
+我花了一个星期的时间在笔记本电脑上编写 Go 程序。我经常在我的 x86 服务器上测试程序，清除错误并使程序健壮起来，一切都很顺利。
+直到完全转换到 Go 程序前，我继续依赖自己的 shell 脚本。然后，我将二进制文件推送到中央文件服务器上，以便每次配置新服务器时，我要做的就是获取二进制文件，将可执行标志打开，然后运行二进制文件。我对早期的结果很满意：
+$ wget http://file.example.com/&amp;lt;myuser&amp;gt;/bins/prepnode $ chmod +x ./prepnode $ ./prepnode 然后，出现了一个问题</description></item></channel></rss>
