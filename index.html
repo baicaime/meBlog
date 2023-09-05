@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜林"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜林</title><meta name=author content="白菜林"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1693842078"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜林></head><body><header>===============<br>== <a href=https://blog.baicai.me/>白菜林</a> ==<br>===============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜林"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜林</title><meta name=author content="白菜林"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1693879061"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜林></head><body><header>===============<br>== <a href=https://blog.baicai.me/>白菜林</a> ==<br>===============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -13,7 +13,10 @@ FROM golang:alpine as builder ENV CGO_ENABLED=1 WORKDIR /app COPY . . RUN apk ad
 hugo + github action + git pages + cloudflare
 目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。
 静态内容存放： github pages
-域名解析使用： cloudflare</div></article><article><h1><a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</a></h1><b><time>2023.08.31 12:12</time></b>
+域名解析使用： cloudflare
+附注：
+github pages 自定义域名 解析设置（支持A记录）
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site</div></article><article><h1><a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</a></h1><b><time>2023.08.31 12:12</time></b>
 <a href=/tags/proxycommand>ProxyCommand</a>
 <a href=/tags/ssh>ssh</a>
 <a href=/tags/linux>linux</a><div>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。

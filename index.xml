@@ -6,7 +6,10 @@ FROM golang:alpine as builder ENV CGO_ENABLED=1 WORKDIR /app COPY . . RUN apk ad
 hugo + github action + git pages + cloudflare
 目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。
 静态内容存放： github pages
-域名解析使用： cloudflare</description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。
+域名解析使用： cloudflare
+附注：
+github pages 自定义域名 解析设置（支持A记录）
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site</description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。
 SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。
 ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。
 环境说明

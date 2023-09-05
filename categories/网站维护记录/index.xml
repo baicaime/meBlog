@@ -2,4 +2,7 @@
 hugo + github action + git pages + cloudflare
 目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。
 静态内容存放： github pages
-域名解析使用： cloudflare</description></item></channel></rss>
+域名解析使用： cloudflare
+附注：
+github pages 自定义域名 解析设置（支持A记录）
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site</description></item></channel></rss>
