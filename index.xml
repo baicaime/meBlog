@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白菜林</title><link>https://blog.baicai.me/</link><description>Recent content on 白菜林</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Sep 2023 23:23:09 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/index.xml" rel="self" type="application/rss+xml"/><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白菜</title><link>https://blog.baicai.me/</link><description>Recent content on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Sep 2023 23:23:09 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/index.xml" rel="self" type="application/rss+xml"/><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
 &lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
 &lt;p>参考 Dockerfile 如下：&lt;/p>
 &lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
@@ -7044,13 +7044,13 @@ Main PID: 1110 (crond)
 &lt;p>学习日记，点滴记录。&lt;/p>
 &lt;p>也会收集和分享互联网上比较经典且具有价值的文章。&lt;/p>
 &lt;h3 id="站长是谁">站长是谁：&lt;/h3>
-&lt;p>昵称：白菜林&lt;/p>
+&lt;p>昵称：白菜&lt;/p>
 &lt;p>对于技术很爱折腾、很有热情的小哥。&lt;/p>
 &lt;h3 id="我的主页">我的主页&lt;/h3>
 &lt;p>&lt;a href="https://blog.baicai.me">https://blog.baicai.me&lt;/a>&lt;/p>
 &lt;h3 id="未来发展">未来发展：&lt;/h3>
 &lt;p>未来很长，且慢慢耕耘。&lt;/p>
-&lt;h3 id="白菜林的博客小站历程">白菜林的博客小站历程：&lt;/h3>
+&lt;h3 id="白菜的博客小站历程">白菜的博客小站历程：&lt;/h3>
 &lt;pre>&lt;code>2023年9月2日 通过github action自动构建发不到静态仓库(github page)。
 &lt;/code>&lt;/pre>
 &lt;h3 id="特别感谢">特别感谢&lt;/h3>
