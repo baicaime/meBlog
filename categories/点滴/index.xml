@@ -1,5 +1,183 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>点滴 on 白菜林</title><link>https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/</link><description>Recent content in 点滴 on 白菜林</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Sep 2023 23:23:09 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。
-这时就需要安装 build-base 配置编译环境。
-参考 Dockerfile 如下：
-FROM golang:alpine as builder ENV CGO_ENABLED=1 WORKDIR /app COPY . . RUN apk add --no-cache --update git build-base RUN go mod tidy \ &amp;amp;&amp;amp; go build -o api_client_linux ./cmd/api_client/ FROM alpine:latest as runner ENV TZ=Asia/Shanghai RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++ WORKDIR /app COPY --from=builder /app/api_client_linux . VOLUME /app/conf EXPOSE 8080 ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;/app/conf/config.yaml&amp;#34;] 运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：
-包名 用途 ca-certificates: CA证书，使用TLS tzdata: 时区配置 libc6-compat: C 标准库 libgcc: GCC 相关库，CGO编译程序依赖 libstdc++: C++ 标准库</description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>服务提供者 链接 大陆体验 境外体验 http/https IP Version 备注 Google http://www.gstatic.com/generate_204 5 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google-analytics.com/generate_204 6 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google.com/generate_204 0 10 204/204 4+6 Google网络联通性测试地址 Google http://connectivitycheck.gstatic.com/generate_204 4 10 204/204 4+6 Google网络联通性测试地址 Apple http://captive.apple.com 3 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 Apple http://www.apple.com/library/test/success.html 7 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 MicroSoft http://www.msftconnecttest.com/connecttest.txt 5 10 200/error 4 微软的网络联通性测试地址 Cloudflare http://cp.cloudflare.com/generate_204 4 10 204/204 4+6 Cloudflare的联通性测试地址 Firefox http://detectportal.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>点滴 on 白菜林</title><link>https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/</link><description>Recent content in 点滴 on 白菜林</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Sep 2023 23:23:09 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+&lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
+&lt;p>参考 Dockerfile 如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
+ENV CGO_ENABLED=1
+WORKDIR /app
+COPY . .
+RUN apk add --no-cache --update git build-base
+RUN go mod tidy \
+&amp;amp;&amp;amp; go build -o api_client_linux ./cmd/api_client/
+FROM alpine:latest as runner
+ENV TZ=Asia/Shanghai
+RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++
+WORKDIR /app
+COPY --from=builder /app/api_client_linux .
+VOLUME /app/conf
+EXPOSE 8080
+ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;/app/conf/config.yaml&amp;#34;]
+&lt;/code>&lt;/pre>&lt;p>运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">包名&lt;/th>
+&lt;th style="text-align:left">用途&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">ca-certificates:&lt;/td>
+&lt;td style="text-align:left">CA证书，使用TLS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">tzdata:&lt;/td>
+&lt;td style="text-align:left">时区配置&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libc6-compat:&lt;/td>
+&lt;td style="text-align:left">C 标准库&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libgcc:&lt;/td>
+&lt;td style="text-align:left">GCC 相关库，CGO编译程序依赖&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libstdc++:&lt;/td>
+&lt;td style="text-align:left">C++ 标准库&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">服务提供者&lt;/th>
+&lt;th style="text-align:left">链接&lt;/th>
+&lt;th style="text-align:center">大陆体验&lt;/th>
+&lt;th style="text-align:center">境外体验&lt;/th>
+&lt;th style="text-align:center">http/https&lt;/th>
+&lt;th style="text-align:center">IP Version&lt;/th>
+&lt;th style="text-align:left">备注&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">Google&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.gstatic.com/generate_204">http://www.gstatic.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Google&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.google-analytics.com/generate_204">http://www.google-analytics.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">6&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Google&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.google.com/generate_204">http://www.google.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">0&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Google&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://connectivitycheck.gstatic.com/generate_204">http://connectivitycheck.gstatic.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Apple&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://captive.apple.com">http://captive.apple.com&lt;/a>&lt;/td>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">200/200&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Apple&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.apple.com/library/test/success.html">http://www.apple.com/library/test/success.html&lt;/a>&lt;/td>
+&lt;td style="text-align:center">7&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">200/200&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">MicroSoft&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.msftconnecttest.com/connecttest.txt">http://www.msftconnecttest.com/connecttest.txt&lt;/a>&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">200/error&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:left">微软的网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Cloudflare&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://cp.cloudflare.com/generate_204">http://cp.cloudflare.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">Cloudflare的联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Firefox&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://detectportal.firefox.com/success.txt">http://detectportal.firefox.com/success.txt&lt;/a>&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">200/200&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">火狐的网络联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">V2ex&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://www.v2ex.com/generate_204">http://www.v2ex.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">0&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">204/301&lt;/td>
+&lt;td style="text-align:center">4+6&lt;/td>
+&lt;td style="text-align:left">v2ex 的联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">小米&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://connect.rom.miui.com/generate_204">http://connect.rom.miui.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:left">小米的联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">华为&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://connectivitycheck.platform.hicloud.com/generate_204">http://connectivitycheck.platform.hicloud.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:left">华为的联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">Vivo&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://wifi.vivo.com.cn/generate_204">http://wifi.vivo.com.cn/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">204/204&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:left">vivo 的联通性测试地址&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>以上大陆指中国大陆，境外指非中国大陆。&lt;/p>
+&lt;p>体验目前仅进行粗略测试延迟，大概率实际不符，仅作参考。&lt;/p>
+&lt;p>http/https一列表示使用指定协议进行请求，返回的状态码。部分场合对状态码要求较严格。&lt;/p></description></item></channel></rss>
