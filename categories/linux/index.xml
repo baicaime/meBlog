@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 13 Jun 2023 21:27:52 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 18 Sep 2023 10:20:17 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>甲骨文Vps 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P FORWARD ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P OUTPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -F
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="oracle自带的镜像默认设置了iptable规则关闭它">Oracle自带的镜像默认设置了Iptable规则，关闭它&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get purge netfilter-persistent &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试端口是否已经开放&lt;/p>
+&lt;h2 id="附注">附注：&lt;/h2>
+&lt;h3 id="强制删除规则">强制删除规则&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo rm -rf /etc/iptables &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除oracle-cloud-agent防止甲骨文监控">删除oracle-cloud-agent，防止甲骨文监控&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>snap remove oracle-cloud-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="检查防火墙服务状态">检查防火墙服务状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status iptables.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl status netfilter-persistent.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="远程检测端口开放状态">远程检测端口开放状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nmap ip或域名
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
 &lt;h2 id="准备工作">准备工作&lt;/h2>
 &lt;p>一定要备份重要数据！&lt;/p>
 &lt;p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作&lt;/p>

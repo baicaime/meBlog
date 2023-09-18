@@ -1,8 +1,14 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1694448055"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1695004590"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/docker_mtg/>Docker 搭建MTProto协议上网</a></h1><b><time>2023.09.07 18:00</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/oracle_vps_iptables/>甲骨文Vps 开放端口设置</a></h1><b><time>2023.09.18 10:20</time></b>
+<a href=/tags/linux>linux</a>
+<a href=/tags/vps>vps</a>
+<a href=/tags/oracle>oracle</a>
+<a href=/tags/iptables>iptables</a><div>在甲骨文的网页后台先开放端口
+iptables 开放所有端口 sudo iptables -P INPUT ACCEPT sudo iptables -P FORWARD ACCEPT sudo iptables -P OUTPUT ACCEPT sudo iptables -F Oracle自带的镜像默认设置了Iptable规则，关闭它 sudo apt-get purge netfilter-persistent && sudo reboot 测试端口是否已经开放
+附注： 强制删除规则 sudo rm -rf /etc/iptables && sudo reboot 删除oracle-cloud-agent，防止甲骨文监控 snap remove oracle-cloud-agent 检查防火墙服务状态 sudo systemctl status iptables.service sudo systemctl status netfilter-persistent.service 远程检测端口开放状态 nmap ip或域名</div></article><article><h1><a href=https://blog.baicai.me/article/2023/docker_mtg/>Docker 搭建MTProto协议上网</a></h1><b><time>2023.09.07 18:00</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/mtg>mtg</a>
 <a href=/tags/docker>docker</a>
@@ -63,13 +69,7 @@ sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的
 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME mDNSRespo 185 _mdnsresponder 6u IPv4 0x1111111111111 0t0 UDP *:mdns mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns
 根据进程名称 ps -ef | grep mDNSRespo
 65 185 1 0 8:08上午 ?? 0:26.69 /usr/sbin/mDNSResponder 0 223 1 0 8:08上午 ?? 0:02.16 /usr/sbin/mDNSResponderHelper 501 66848 66623 0 11:00下午 ttys000 0:00.00 grep mDNSRespo
-根据PID杀进程： sudo kill -9 185</div></article><article><h1><a href=https://blog.baicai.me/article/2023/setting-telegram-webhook/>设置Telegram机器人的webhook</a></h1><b><time>2023.02.10 23:04</time></b>
-<a href=/tags/telegram>telegram</a>
-<a href=/tags/webhook>webhook</a>
-<a href=/tags/bot>bot</a><div>设置Webhook
-https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to} 例如：
-https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me 获取Webhook
-https://api.telegram.org/bot{my_bot_token}/getWebhookInfo</div></article><div>1 of 6
+根据PID杀进程： sudo kill -9 185</div></article><div>1 of 6
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
