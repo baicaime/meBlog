@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>语言包 on 白菜</title><link>https://blog.baicai.me/tags/%E8%AF%AD%E8%A8%80%E5%8C%85/</link><description>Recent content in 语言包 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 21 Sep 2023 00:01:03 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E8%AF%AD%E8%A8%80%E5%8C%85/index.xml" rel="self" type="application/rss+xml"/><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
+&lt;p>进入官网翻译界面 &lt;a href="https://translations.telegram.org">https://translations.telegram.org&lt;/a>&lt;/p>
+&lt;p>点击 &amp;ldquo;Start Translating&amp;rdquo;&lt;/p>
+&lt;p>选择 对应语言 比如 简体中文 进入网址&lt;/p>
+&lt;p>&lt;a href="https://translations.telegram.org/zh-hans/">https://translations.telegram.org/zh-hans/&lt;/a>&lt;/p>
+&lt;p>底部有 &amp;ldquo;Sharing Link&amp;rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。&lt;/p>
+&lt;p>自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。&lt;/p>
+&lt;h3 id="telegram-中文语言包">Telegram 中文语言包&lt;/h3>
+&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item></channel></rss>
