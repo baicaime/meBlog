@@ -1,4 +1,66 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>telegram on 白菜</title><link>https://blog.baicai.me/tags/telegram/</link><description>Recent content in telegram on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 19 Sep 2023 22:28:07 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/telegram/index.xml" rel="self" type="application/rss+xml"/><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>telegram on 白菜</title><link>https://blog.baicai.me/tags/telegram/</link><description>Recent content in telegram on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Wed, 20 Sep 2023 12:06:18 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/telegram/index.xml" rel="self" type="application/rss+xml"/><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
+&lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
+&lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
+&lt;h3 id="创建一个worker">创建一个Worker&lt;/h3>
+&lt;p>在首页选择Workers，若从未创建过则初始化，选择免费套餐，然后创建一个Worker。&lt;/p>
+&lt;h3 id="编辑worker内容">编辑Worker内容&lt;/h3>
+&lt;p>进入worker，点击快速编辑，将代码改为下方内容，其中hostname改为你自己的，然后点击保存部署，并可改名为例如cdn的worker。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 这就是需要代理的网址
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">hostname&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://example.domain&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;http://192.168.0.1&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;https://your.domain&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;https://your.domain/api/path&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">URL&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">url&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">fetch&lt;/span>(&lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Request&lt;/span>(&lt;span style="color:#a6e22e">hostname&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span>.&lt;span style="color:#a6e22e">pathname&lt;/span>,&lt;span style="color:#a6e22e">request&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">addEventListener&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;fetch&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">event&lt;/span> =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">respondWith&lt;/span>(&lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">request&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>})
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为域名添加dns">为域名添加DNS&lt;/h3>
+&lt;p>添加路由，配置&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-cn.you.domain/*" data-lang="cn.you.domain/*">&lt;/code>&lt;/pre>&lt;p>指向步骤1创建的 Worker，到此等待DNS生效即可。&lt;/p>
+&lt;h2 id="通过-vercel-搭建反向代理服务">通过 Vercel 搭建反向代理服务&lt;/h2>
+&lt;p>在github中新建个项目
+创建一个文件，命名为 vercel.json 文件内容：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;routes&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/.*&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>进入 vercel 后台 部署这个项目 配置好自定义域名，即可使用。&lt;/p>
+&lt;p>通用代理 json 内容 参考：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;routes&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/redirect&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;status&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">308&lt;/span>, &lt;span style="color:#f92672">&amp;#34;headers&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;Location&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain/&amp;#34;&lt;/span> } },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/custom-page&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;headers&amp;#34;&lt;/span>: {&lt;span style="color:#f92672">&amp;#34;cache-control&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;s-maxage=1000&amp;#34;&lt;/span>}, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/index.html&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/api&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/my-api.js&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;methods&amp;#34;&lt;/span>: [&lt;span style="color:#e6db74">&amp;#34;POST&amp;#34;&lt;/span>], &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users-api.js&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users/(?&amp;lt;id&amp;gt;[^/]*)&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users-api.js?id=$id&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/legacy&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;status&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">404&lt;/span>},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/.*&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain/&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="通过nginx-对网站进行反向代理">通过Nginx 对网站进行反向代理&lt;/h2>
+&lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/nginx/conf.d/tgapi.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>server {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> listen 80;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server_name tgapi.domain;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 444;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">~*&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">^/&lt;/span>bot {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> resolver &lt;span style="color:#ae81ff">8.8.8.8&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_buffering &lt;span style="color:#66d9ef">off&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_pass https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>example.domain&lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>request_uri;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
