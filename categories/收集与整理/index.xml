@@ -20,6 +20,18 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl status netfilter-persistent.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="远程检测端口开放状态">远程检测端口开放状态&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nmap ip或域名
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注2开放指定端口">附注2(开放指定端口):&lt;/h2>
+&lt;h3 id="iptables-开放指定端口">iptables 开放指定端口&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables -I INPUT -p tcp --dport &lt;span style="color:#ae81ff">80&lt;/span> -j ACCEPT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中间的 80 为所需要开放的端口，tcp 为传输协议&lt;/p>
+&lt;h4 id="保存规则">保存规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables-save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述命令我们就完成了开放指定的端口，但是如果此时服务器重启，上述规则就没有了，所以我们需要对规则进行一下持久化操作&lt;/p>
+&lt;h3 id="安装-iptables-persistent">安装 iptables-persistent&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt-get install iptables-persistent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker 搭建MTProto协议上网</title><link>https://blog.baicai.me/article/2023/docker_mtg/</link><pubDate>Thu, 07 Sep 2023 18:00:43 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_mtg/</guid><description>&lt;p>系统环境：
 Debian系（其他系只需要更换apt为对应系统的软件包管理工具名称即可）&lt;/p>
 &lt;h2 id="安装docker">安装Docker&lt;/h2>
