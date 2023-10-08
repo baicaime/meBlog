@@ -196,7 +196,14 @@
 &lt;p>例如：&lt;/p>
 &lt;p>本地节点与对等节点（peer）可直连：该字段不需要指定，因为不需要连接检查。&lt;/p>
 &lt;p>对等节点（peer）位于 NAT 后面：该字段不需要指定，因为维持连接是客户端（连接的发起方）的责任。&lt;/p>
-&lt;p>本地节点位于 NAT 后面，对等节点（peer）公网可达：需要指定该字段 PersistentKeepalive = 25，表示每隔 25 秒发送一次 ping 来检查连接。&lt;/p></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
+&lt;p>本地节点位于 NAT 后面，对等节点（peer）公网可达：需要指定该字段 PersistentKeepalive = 25，表示每隔 25 秒发送一次 ping 来检查连接。&lt;/p>
+&lt;h3 id="共享一个-peersconf-文件">共享一个 peers.conf 文件&lt;/h3>
+&lt;p>如果某个 peer 的公钥与本地接口的私钥能够配对，那么 WireGuard 会忽略该 &lt;code>peer&lt;/code>。利用这个特性，我们可以在所有节点上共用同一个 &lt;code>peer&lt;/code> 列表，每个节点只需要单独定义一个 &lt;code>[Interface]&lt;/code> 就行了，即使列表中有本节点，也会被忽略。具体方式如下：&lt;/p>
+&lt;p>每个对等节点（peer）都有一个单独的 &lt;code>/etc/wireguard/wg0.conf&lt;/code> 文件，只包含 &lt;code>[Interface]&lt;/code> 部分的配置。&lt;/p>
+&lt;p>每个对等节点（peer）共用同一个 &lt;code>/etc/wireguard/peers.conf&lt;/code> 文件，其中包含了所有的 peer。&lt;/p>
+&lt;p>Wg0.conf 文件中需要配置一个 PostUp 钩子，内容为&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">wg addconf /etc/wireguard/peers.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
 &lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
 &lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
 &lt;p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群&lt;/p>
