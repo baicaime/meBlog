@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/using_wireguard/"><link rel=canonical href=https://blog.baicai.me/article/2023/using_wireguard/><style type=text/css>body{font-family:monospace}</style><title>通过 WireGuard 搭建 VPN 访问家里内网</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696775782"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/using_wireguard/"><link rel=canonical href=https://blog.baicai.me/article/2023/using_wireguard/><style type=text/css>body{font-family:monospace}</style><title>通过 WireGuard 搭建 VPN 访问家里内网</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696783740"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -14,8 +14,13 @@
 </span></span><span style=display:flex><span><span style=color:#75715e>#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>#PostUp = iptables -I INPUT -p udp --dport 51820 -j ACCEPT</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>#PostDown = iptables -D INPUT -p udp --dport 51820 -j ACCEPT</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ipv4 局域网够用配置</span>
 </span></span><span style=display:flex><span><span style=color:#a6e22e>PostUp</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>iptables -A FORWARD -i wg0 -j ACCEPT</span>
 </span></span><span style=display:flex><span><span style=color:#a6e22e>PostDown</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>iptables -D FORWARD -i wg0 -j ACCEPT</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ipv4防火墙放行转发和NAT(访问公共网络)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
+</span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>[Peer]</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># Mac at home</span>
@@ -37,6 +42,11 @@
 </span></span><span style=display:flex><span><span style=color:#a6e22e>Endpoint</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>(server ip address):51820</span>
 </span></span><span style=display:flex><span><span style=color:#a6e22e>PersistentKeepalive</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>10</span>
 </span></span></code></pre></div><p>在这里，我们将公网服务器作为唯一的 Peer，通过设置 PersistentKeepalive 来进行连接的保活。这里 AllowedIPs 的作用是确保来自于我们 WireGuard 子网网段来的流量能被本机的 WireGuard 虚拟网卡进行处理。</p><h2 id=iphone-配置>iphone 配置</h2><p>安装 WireGuard <a href="https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&amp;mt=8"> Download from App Store</a></p><p>这个配置可以参考应用商店的截屏。</p><h2 id=设置开机启动>设置开机启动</h2><p>如果你的系统使用systemd,如ubuntu，设置wireguard开机启动命令如下</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>systemctl enable wg-quick@wg0
+</span></span></code></pre></div><h2 id=启用服务器peer端转发>启用服务器Peer端转发</h2><p>打开 <code>/etc/sysctl.conf</code> 修改</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-conf data-lang=conf><span style=display:flex><span>net.ipv4.ip_forward<span style=color:#f92672>=</span>1
+</span></span><span style=display:flex><span>net.ipv6.conf.all.forwarding<span style=color:#f92672>=</span>1
+</span></span></code></pre></div><p>或</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv4.ip_forward=1&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv6.conf.all.forwarding=1&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>sysctl -p
 </span></span></code></pre></div><h2 id=附注>附注</h2><h3 id=保留地址段>保留地址段</h3><p><a href=https://zh.wikipedia.org/wiki/%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80>保留IP地址</a></p><h3 id=小插曲>小插曲</h3><p>当遇到错误提示：</p><pre tabindex=0><code>/usr/bin/wg-quick: line 31: resolvconf: command not found [WireGuard | Debian]
 </code></pre><p>可以创建软链接解决</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 </span></span></code></pre></div><p>当遇到错误提示：</p><pre tabindex=0><code>[SELF-SOLVED] Unit dbus-org.freedesktop.resolve1.service not found
