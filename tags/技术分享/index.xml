@@ -16,6 +16,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PrivateKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(your server private key here)&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ListenPort&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Mac at home&lt;/span>
@@ -29,6 +31,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 WireGuard 中，你需要手动给各个设备分配 IP，并确保每个设备都有唯一的 IP。Interface 包含了当前设备的设置，对于“服务端”来说，ListenPort 是必须的。下面的每一个 Peer 段代表了能连接到本设备的一个其他设备。&lt;/p>
 &lt;p>配置文件保存后，我们可以使用 &lt;code>wg-quick up wg0&lt;/code> 来启用配置文件。wg-quick 会自动配置路由表，无需我们手动设置。&lt;/p>
 &lt;p>记得放行 51820 UDP 端口。&lt;/p>
+&lt;p>&lt;a href="https://blog.baicai.me/article/2023/oracle_vps_iptables/">iptables 配置参考&lt;/a>&lt;/p>
 &lt;h2 id="家中mac端的配置">家中Mac端的配置&lt;/h2>
 &lt;p>创建 &lt;code>/etc/wireguard/wg0.conf&lt;/code> 并填配置&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Interface]&lt;/span>
