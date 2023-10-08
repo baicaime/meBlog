@@ -52,7 +52,10 @@
 &lt;h2 id="iphone-配置">iphone 配置&lt;/h2>
 &lt;p>安装 WireGuard &lt;a href="https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&amp;amp;mt=8"> Download from App Store&lt;/a>&lt;/p>
 &lt;p>这个配置可以参考应用商店的截屏。&lt;/p>
-&lt;h2 id="附注">附注&lt;/h2>
+&lt;h2 id="设置开机启动">设置开机启动&lt;/h2>
+&lt;p>如果你的系统使用systemd,如ubuntu，设置wireguard开机启动命令如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable wg-quick@wg0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注">附注&lt;/h2>
 &lt;h3 id="保留地址段">保留地址段&lt;/h3>
 &lt;p>&lt;a href="https://zh.wikipedia.org/wiki/%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80">保留IP地址&lt;/a>&lt;/p>
 &lt;h3 id="小插曲">小插曲&lt;/h3>
