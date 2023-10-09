@@ -1,17 +1,17 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696819218"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.118.2"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696820374"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
 <a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></h1><b><time>2023.10.09 10:15</time></b>
 <a href=/tags/debian>debian</a>
 <a href=/tags/linux>linux</a>
-<a href=/tags/libreoffice>LibreOffice</a><div>对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）
-终端中输入命令：
+<a href=/tags/libreoffice>LibreOffice</a><div>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。
+下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。
+彻底卸载 LibreOffice 终端中输入命令：
 #不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get purge libreoffice? 或
 #不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo aptitude purge libreoffice? 或
 #不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get remove --purge libreoffice* 然后清理残留：
-sudo apt-get clean sudo apt-get autoremove 附注（不完全卸载）：
-卸载libreoffice表格
+sudo apt-get clean sudo apt-get autoremove 附注（不完全卸载）： 卸载libreoffice表格
 sudo apt remove libreoffice-calc 卸载libreoffice绘图
 sudo apt remove libreoffice-draw 卸载libreoffice幻灯片
 sudo apt remove libreoffice-impress 卸载libreoffice word文档工具
