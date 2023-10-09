@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debian on 白菜</title><link>https://blog.baicai.me/tags/debian/</link><description>Recent content in Debian on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 13 Jun 2023 21:27:52 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/debian/index.xml" rel="self" type="application/rss+xml"/><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debian on 白菜</title><link>https://blog.baicai.me/tags/debian/</link><description>Recent content in Debian on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 09 Oct 2023 10:15:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/debian/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）&lt;/p>
+&lt;p>终端中输入命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo aptitude purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get remove --purge libreoffice*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后清理残留：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>附注（不完全卸载）：&lt;/p>
+&lt;p>卸载libreoffice表格&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-calc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice绘图&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-draw
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice幻灯片&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-impress
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice word文档工具&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-writer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理残留&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
 &lt;h2 id="准备工作">准备工作&lt;/h2>
 &lt;p>一定要备份重要数据！&lt;/p>
 &lt;p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作&lt;/p>
