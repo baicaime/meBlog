@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/docker_mtg/"><link rel=canonical href=https://blog.baicai.me/article/2023/docker_mtg/><style type=text/css>body{font-family:monospace}</style><title>Docker 搭建MTProto协议上网</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696954308"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/docker_mtg/"><link rel=canonical href=https://blog.baicai.me/article/2023/docker_mtg/><style type=text/css>body{font-family:monospace}</style><title>Docker 搭建MTProto协议上网</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1696955591"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -28,6 +28,7 @@ Debian系（其他系只需要更换apt为对应系统的软件包管理工具�
 </span></span><span style=display:flex><span>      - <span style=color:#ae81ff>./config.toml:/config.toml</span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
 </span></span><span style=display:flex><span>      <span style=color:#f92672>TZ</span>: <span style=color:#ae81ff>Asia/Shanghai</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>MTG_IMAGENAME</span>: <span style=color:#e6db74>&#34;baicailin/mtg&#34;</span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
 </span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;443:443&#34;</span>
 </span></span></code></pre></div><h3 id=生成mtproto协议服务配置>生成MTProto协议服务配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo docker exec mtg_v2 /mtg access /config.toml
@@ -49,11 +50,12 @@ Debian系（其他系只需要更换apt为对应系统的软件包管理工具�
 </span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>run eedf71035a8ed48a623d8e83e66aec4d0562696e672e636f6d adtag</span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
 </span></span><span style=display:flex><span>      <span style=color:#f92672>TZ</span>: <span style=color:#ae81ff>Asia/Shanghai</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>MTG_IMAGENAME</span>: <span style=color:#e6db74>&#34;baicailin/mtg:1&#34;</span>
 </span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_DEBUG: true</span>
 </span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_BIND: &#34;0.0.0.0:3128&#34;</span>
 </span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_IPV4: &#34;公网ip:端口&#34;</span>
 </span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_IPV6: &#34;公网ip:端口&#34;</span>
-</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_STATS_BIND: 127.0.0.1:3129</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_STATS_BIND: &#34;127.0.0.1:3129&#34;</span>
 </span></span><span style=display:flex><span>    <span style=color:#75715e># network_mode: host  </span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
 </span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;1443:3128&#34;</span>
