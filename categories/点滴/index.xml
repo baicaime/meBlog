@@ -1,4 +1,58 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>点滴 on 白菜</title><link>https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/</link><description>Recent content in 点滴 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Sep 2023 23:23:09 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>点滴 on 白菜</title><link>https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/</link><description>Recent content in 点滴 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 17 Nov 2023 22:52:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%82%B9%E6%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</title><link>https://blog.baicai.me/article/2023/docker_privileged/</link><pubDate>Fri, 17 Nov 2023 22:52:38 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_privileged/</guid><description>&lt;p>Docker的–privileged=true选项&lt;/p>
+&lt;h3 id="runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities&lt;/h3>
+&lt;p>参考官方文档：&lt;a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Docker run reference&lt;/a>&lt;/p>
+&lt;p>By default, Docker containers are &amp;ldquo;unprivileged&amp;rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &amp;ldquo;privileged&amp;rdquo; container is given access to all devices (see the documentation on cgroups devices).&lt;/p>
+&lt;p>The &amp;ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &amp;ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host. Additional information about running with &amp;ndash;privileged is available on the &lt;a href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker Blog&lt;/a>.&lt;/p>
+&lt;h2 id="docker-容器的安全性">Docker 容器的安全性&lt;/h2>
+&lt;h3 id="linux-namespace-和-capabilities">Linux Namespace 和 Capabilities&lt;/h3>
+&lt;p>Docker使用Linux namespace和capabilities来实现容器隔离和限制权限。&lt;/p>
+&lt;pre>&lt;code>Linux Namespace：Docker利用namespace技术，使得每个容器都有其自己的进程、网络、挂载、用户ID等独立的空间。这保证了容器与容器之间以及容器与主机之间的隔离性。
+Capabilities：Linux capabilities允许将传统的root权限分割成多个不同的能力，例如CAP_NET_ADMIN能力允许操作网络配置，CAP_CHOWN能力允许改变文件所有权。Docker默认情况下会赋予容器一些必要的capabilities，但不包括全部的能力，从而降低了被攻击的风险。
+&lt;/code>&lt;/pre>
+&lt;p>Docker 通过 &amp;ndash;cap-add 和 &amp;ndash;cap-drop 两个参数，可以灵活地添加或删除容器的 capabilities。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker run --cap-add&lt;span style="color:#f92672">=&lt;/span>SYS_PTRACE --rm -it alpine
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上面 &lt;code>--cap-add=SYS_PTRACE&lt;/code> 的意思就是：给容器添加 SYS_PTRACE 权限，允许容器内的进程可以 ptrace 和 debug 其他进程。&lt;/p>
+&lt;h3 id="docker限制和权限">Docker限制和权限&lt;/h3>
+&lt;p>在默认情况下，Docker对容器的权限进行了严格的限制，只提供了有限的capabilities。此外，许多系统级别的操作（例如挂载文件系统、修改内核参数等）都是被禁止的。这种安全模型使得Docker可以在不牺牲安全性的前提下，实现轻量级的虚拟化。&lt;/p>
+&lt;p>然而，在某些情况下，我们可能需要赋予容器更多的权限。例如，如果我们需要在容器中运行一些需要特权的服务（如网络设备管理、硬件设备接口等），那么默认的权限可能就不够用了。这时候，&lt;code>--privileged=true&lt;/code> 选项就派上了用场。&lt;/p>
+&lt;h4 id="docker的privilegedtrue选项">Docker的–privileged=true选项&lt;/h4>
+&lt;p>当使用&amp;ndash;privileged=true选项运行容器时，Docker会赋予容器几乎与主机相同的权限。
+具体来说，这个选项做了以下两件事情：&lt;/p>
+&lt;pre tabindex="0">&lt;code> 给容器添加了所有的capabilities
+允许容器访问主机的所有设备
+&lt;/code>&lt;/pre>&lt;h4 id="--privilegedtrue的风险">&amp;ndash;privileged=true的风险&lt;/h4>
+&lt;p>尽管 &lt;code>--privileged=true&lt;/code> 选项为容器提供了强大的功能，但它也带来了一些严重的安全隐患。由于privileged容器具有几乎与主机相同的权限，所以如果容器被恶意代码控制，那么攻击者就可以轻易地突破容器的边界，对主机进行任意操作。&lt;/p>
+&lt;p>因此，我们需要谨慎地使用 &lt;code>--privileged=true&lt;/code> 选项，只在真正需要的情况下才启用它。在可能的情况下，我们应该尽量使用其他更细粒度的权限控制手段，例如通过&lt;code>--cap-add&lt;/code>或&lt;code>--device&lt;/code>参数来分别添加必要的capabilities或设备访问权限。&lt;/p>
+&lt;h4 id="细粒度的权限控制手段">细粒度的权限控制手段&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 添加单个capability&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>docker run --rm --cap-add NET_ADMIN -it alpine sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 添加设备访问权限&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>docker run --device&lt;span style="color:#f92672">=&lt;/span>/dev/sda:/dev/xvdc -it alpine
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="docker-compose-参考">docker-compose 参考&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">baicai_image&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">debian&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;baicai_image&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">unless-stopped&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">command&lt;/span>: &lt;span style="color:#ae81ff">run -c /app/config.json&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">./config.json:/app/config.json&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">TZ&lt;/span>: &lt;span style="color:#ae81ff">Asia/Shanghai&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;80:80&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">privileged&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cap_add&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">NET_ADMIN&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">SYS_MODULE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">SYS_PTRACE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">SYS_ADMIN&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">NET_RAW&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cap_drop&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">ALL&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
 &lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
 &lt;p>参考 Dockerfile 如下：&lt;/p>
 &lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
