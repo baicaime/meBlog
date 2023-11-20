@@ -25,12 +25,40 @@
 &lt;p>删除资源时，kubectl将打印它删除的每个资源的名称。&lt;/p>
 &lt;h4 id="注意-1">注意&lt;/h4>
 &lt;p>&lt;code>kubectl delete all --all&lt;/code> 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。&lt;/p>
-&lt;h3 id="关闭-kubelet">关闭 Kubelet&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl stop kubelet
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="关闭-docker">关闭 Docker：&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl stop docker
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="关闭所有节点">关闭所有节点：&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>shutdown -h now
+&lt;h2 id="kubectl-命令演示">kubectl 命令演示&lt;/h2>
+&lt;h3 id="kubectl-展示搜索出的pod列表含pod所在的namespace">kubectl 展示搜索出的pod列表（含pod所在的namespace）&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get pod -A grep &amp;lt;podname&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@tcs-10-21-0-157 ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A |grep yhl&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl-large yhl-large-ingress-nginx-controller-dc666995f-djk8k 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 46d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl-large yhl-large-ingress-nginx-controller-dc666995f-fncrq 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 2m46s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl-large yhl-large-ingress-nginx-controller-dc666995f-wxz2f 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 4m30s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-44z2d 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-nlst8 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-sjqx7 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="kubectl-删除pod命令">kubectl 删除pod命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete pod &amp;lt;podname&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。
+故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。&lt;/p>
+&lt;h3 id="查看deployment信息">查看deployment信息&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get deployment -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@tcs-10-21-0-157 ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get deployment -n ingress-nginx-yhl&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME READY UP-TO-DATE AVAILABLE AGE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yhl-ingress-nginx-controller 3/3 &lt;span style="color:#ae81ff">3&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除deployment配置">删除deployment配置&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete deployment &amp;lt;deployment名&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@tcs-10-21-0-157 ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl delete deployment yhl-ingress-nginx-controller -n ingress-nginx-yhl&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>deployment.apps &lt;span style="color:#e6db74">&amp;#34;yhl-ingress-nginx-controller&amp;#34;&lt;/span> deleted
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="然后进行删除pod命令即可我删除deployment后再次查询pod发现上面的pod已经开始自行删除了这步可酌情处理">然后进行删除pod命令即可，我删除deployment后，再次查询pod发现，上面的pod已经开始自行删除了（这步可酌情处理）&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete pod &amp;lt;podname&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 附一个我这边删除deployment后pod自行删除的情况&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@tcs-10-21-0-157 ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A|grep yuhonglei&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-44z2d 1/1 Terminating &lt;span style="color:#ae81ff">0&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-nlst8 1/1 Terminating &lt;span style="color:#ae81ff">0&lt;/span> 45d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ingress-nginx-yhl yhl-ingress-nginx-controller-fd565dddc-sjqx7 1/1 Terminating &lt;span style="color:#ae81ff">0&lt;/span> 45d
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
 &lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
 &lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
