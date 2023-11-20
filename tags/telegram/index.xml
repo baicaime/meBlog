@@ -56,19 +56,19 @@
 &lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/nginx/conf.d/tgapi.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>server {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> listen 80;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server_name tgapi.domain;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 444;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">~*&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">^/&lt;/span>bot {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> resolver &lt;span style="color:#ae81ff">8.8.8.8&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_buffering &lt;span style="color:#66d9ef">off&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_pass https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>example.domain&lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>request_uri;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://example.domain$request_uri;
+}
+}
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -78,19 +78,19 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano tgapi.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>server {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> listen 80;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server_name tgapi.domain;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 444;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">~*&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">^/&lt;/span>bot {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> resolver &lt;span style="color:#ae81ff">8.8.8.8&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_buffering &lt;span style="color:#66d9ef">off&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_pass https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>api.telegram.org&lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>request_uri;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="加载配置">加载配置&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://api.telegram.org$request_uri;
+}
+}
+&lt;/code>&lt;/pre>&lt;h3 id="加载配置">加载配置&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl reload nginx
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#或&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo nginx -s reload

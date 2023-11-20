@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>k3s on 白菜</title><link>https://blog.baicai.me/tags/k3s/</link><description>Recent content in k3s on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 28 Sep 2023 20:29:29 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/k3s/index.xml" rel="self" type="application/rss+xml"/><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>k3s on 白菜</title><link>https://blog.baicai.me/tags/k3s/</link><description>Recent content in k3s on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 20 Nov 2023 16:02:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/k3s/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
+&lt;h3 id="按名称删除pod">按名称删除pod&lt;/h3>
+&lt;p>按名称删除kubia-gpu pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po kubia-gpu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。&lt;/p>
+&lt;h4 id="提示">提示&lt;/h4>
+&lt;p>还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。&lt;/p>
+&lt;h3 id="使用标签选择器删除pod">使用标签选择器删除pod&lt;/h3>
+&lt;p>停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 &lt;code>creation_method=manual&lt;/code> ，因此可以通过使用一个标签选择器来删除它们：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po -l creation_method&lt;span style="color:#f92672">=&lt;/span>manual
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="通过删除整个命名空间来删除pod">通过删除整个命名空间来删除pod&lt;/h3>
+&lt;p>以下命令删除custom-namespace：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete ns custom-namespace
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的所有pod但保留命名空间">删除命名空间中的所有pod，但保留命名空间&lt;/h3>
+&lt;p>查看 pods&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get pods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过使用&amp;ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的几乎所有资源">删除命名空间中的（几乎）所有资源&lt;/h3>
+&lt;p>通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete all --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>命令中的第一个all指定正在删除所有资源类型，而&amp;ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。&lt;/p>
+&lt;h4 id="注意">注意&lt;/h4>
+&lt;p>使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。&lt;/p>
+&lt;p>删除资源时，kubectl将打印它删除的每个资源的名称。&lt;/p>
+&lt;h4 id="注意-1">注意&lt;/h4>
+&lt;p>&lt;code>kubectl delete all --all&lt;/code> 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。&lt;/p></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
 &lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
 &lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
 &lt;p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群&lt;/p>

@@ -991,32 +991,26 @@ root html;
 &lt;h3 id="更换国内源">更换国内源&lt;/h3>
 &lt;p>更换为国内源，否则安装太慢了。
 新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.crates-io&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 替换成你偏好的镜像源
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>replace-with &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>sjtu&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 清华大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.tuna&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 中国科学技术大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.ustc&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 上海交通大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.sjtu&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># rustcc社区
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.rustcc&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 字节跳动
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.rsproxy&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">[source.crates-io]
+registry = &amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;
+# 替换成你偏好的镜像源
+replace-with = &amp;#39;sjtu&amp;#39;
+# 清华大学
+[source.tuna]
+registry = &amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34;
+# 中国科学技术大学
+[source.ustc]
+registry = &amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34;
+# 上海交通大学
+[source.sjtu]
+registry = &amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34;
+# rustcc社区
+[source.rustcc]
+registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
+# 字节跳动
+[source.rsproxy]
+registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
+&lt;/code>&lt;/pre></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
 &lt;p>👉 本文来自 &lt;a href="https://github.com/toml-lang/toml.io">toml-lang 的中文翻译版本&lt;/a>，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。&lt;/p>
 &lt;h1 id="toml-v100">TOML v1.0.0&lt;/h1>
 &lt;p>全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&amp;rsquo;s Obvious, Minimal Language）&lt;br>

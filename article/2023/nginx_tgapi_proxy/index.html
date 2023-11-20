@@ -1,4 +1,5 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/nginx_tgapi_proxy/"><link rel=canonical href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/><style type=text/css>body{font-family:monospace}</style><title>Telegram Bot Api 反向代理搭建</title><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1700322030"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/nginx_tgapi_proxy/"><link rel=canonical href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/><style type=text/css>body{font-family:monospace}</style><title>Telegram Bot Api 反向代理搭建</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1700468436"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -10,19 +11,19 @@
 </span></span><span style=display:flex><span>tg_proxy<span style=color:#f92672>=</span>
 </span></span></code></pre></div><p>两种实现方案，根据个人喜好选择使用或发挥</p><h2 id=nginx反代telegram-api>Nginx反代Telegram Api</h2><h3 id=安装nginx>安装nginx</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt update <span style=color:#f92672>&amp;&amp;</span> sudo apt install -y nginx
 </span></span></code></pre></div><h3 id=创建配置文件>创建配置文件</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>nano tgapi.conf
-</span></span></code></pre></div><p>输入一下内容并保存</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-conf data-lang=conf><span style=display:flex><span>server {
-</span></span><span style=display:flex><span>    listen 80;
-</span></span><span style=display:flex><span>    server_name tgapi.domain;
-</span></span><span style=display:flex><span>    location <span style=color:#960050;background-color:#1e0010>/</span> {
-</span></span><span style=display:flex><span>       return 444;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    location <span style=color:#960050;background-color:#1e0010>~*</span> <span style=color:#960050;background-color:#1e0010>^/</span>bot {
-</span></span><span style=display:flex><span>        resolver <span style=color:#ae81ff>8.8.8.8</span>;
-</span></span><span style=display:flex><span>        proxy_buffering <span style=color:#66d9ef>off</span>;
-</span></span><span style=display:flex><span>        proxy_pass      https<span style=color:#960050;background-color:#1e0010>://</span>api.telegram.org<span style=color:#960050;background-color:#1e0010>$</span>request_uri;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=加载配置>加载配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo systemctl reload nginx
+</span></span></code></pre></div><p>输入一下内容并保存</p><pre tabindex=0><code class=language-conf data-lang=conf>server {
+    listen 80;
+    server_name tgapi.domain;
+    location / {
+       return 444;
+    }
+    location ~* ^/bot {
+        resolver 8.8.8.8;
+        proxy_buffering off;
+        proxy_pass      https://api.telegram.org$request_uri;
+    }
+}
+</code></pre><h3 id=加载配置>加载配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo systemctl reload nginx
 </span></span><span style=display:flex><span><span style=color:#75715e>#或</span>
 </span></span><span style=display:flex><span>sudo nginx -s reload
 </span></span></code></pre></div><h3 id=测试访问>测试访问</h3><p>输入以下命令行,BOT_TOKEN换成自己机器人token。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl https://tgapi.domain/bot&lt;BOT_TOKEN&gt;/getMe
@@ -184,6 +185,6 @@
 </span></span><span style=display:flex><span><span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#39;fetch&#39;</span>, (<span style=color:#a6e22e>event</span>) =&gt; {
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>respondWith</span>(<span style=color:#a6e22e>handleRequest</span>(<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>request</span>));
 </span></span><span style=display:flex><span>});
-</span></span></code></pre></div><p><code>保存并部署</code></p><p>回到管理后台首页，点击左侧的<code>网站</code>，在右侧点击<code>你已托管在Cloudflare的域名</code></p><p>选择该域名下的 <code>Workers 路由</code></p><p>选择<code>添加路由</code></p><p><code>路由</code> 填写你想要用的二级域名，比如：<code>tgapi.domain/*</code> 注意后面必须是<code>/*</code>结尾，<code>Worker</code>选择刚才创建的服务，<code>保存</code>就可以了。</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></li><li><a href=/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></li><li><a href=/article/2023/using_wireguard/>通过 WireGuard 搭建 VPN 访问家里内网</a></li><li><a href=/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></li><li><a href=/article/2023/translations/>Telegram 界面自定义翻译</a></li></ul></div></div></aside><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+</span></span></code></pre></div><p><code>保存并部署</code></p><p>回到管理后台首页，点击左侧的<code>网站</code>，在右侧点击<code>你已托管在Cloudflare的域名</code></p><p>选择该域名下的 <code>Workers 路由</code></p><p>选择<code>添加路由</code></p><p><code>路由</code> 填写你想要用的二级域名，比如：<code>tgapi.domain/*</code> 注意后面必须是<code>/*</code>结尾，<code>Worker</code>选择刚才创建的服务，<code>保存</code>就可以了。</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></li><li><a href=/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></li><li><a href=/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></li><li><a href=/article/2023/using_wireguard/>通过 WireGuard 搭建 VPN 访问家里内网</a></li><li><a href=/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></li></ul></div></div></aside><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

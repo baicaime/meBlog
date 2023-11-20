@@ -66,9 +66,9 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable wg-quick@wg0
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="启用服务器peer端转发">启用服务器Peer端转发&lt;/h2>
 &lt;p>打开 &lt;code>/etc/sysctl.conf&lt;/code> 修改&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>net.ipv4.ip_forward&lt;span style="color:#f92672">=&lt;/span>1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>net.ipv6.conf.all.forwarding&lt;span style="color:#f92672">=&lt;/span>1
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+&lt;/code>&lt;/pre>&lt;p>或&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv4.ip_forward=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv6.conf.all.forwarding=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sysctl -p

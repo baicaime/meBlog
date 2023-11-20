@@ -1046,22 +1046,20 @@ Timer Unit：定时器
 &lt;pre tabindex="0">&lt;code> After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
 Wants=network-online.target
 &lt;/code>&lt;/pre>&lt;p>全部文件内容如下(部分内容参考nginx.service)：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># /lib/systemd/system/myadmin.service
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>Unit&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Description&lt;span style="color:#f92672">=&lt;/span>Start myAdmin web server
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Documentation&lt;span style="color:#f92672">=&lt;/span>https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>www.lyhuilin.com&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> After&lt;span style="color:#f92672">=&lt;/span>network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Wants&lt;span style="color:#f92672">=&lt;/span>network-online.target
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>Service&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Environment&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;WELCOME=Baicai myAdmin Base Environment.&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ExecStartPre&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>bin&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>echo &lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>{WELCOME}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ExecStart&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>baicai&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>systemdStart&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>my_admin&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>my_admin -c &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>baicai&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>systemdStart&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>my_admin&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>conf&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>config.yaml
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ExecStop&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>bin&lt;span style="color:#960050;background-color:#1e0010">/&lt;/span>kill -s TERM &lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>{MAINPID}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>Install&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WantedBy&lt;span style="color:#f92672">=&lt;/span>multi-user.target
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf"> # /lib/systemd/system/myadmin.service
+[Unit]
+Description=Start myAdmin web server
+Documentation=https://www.lyhuilin.com/
+After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
+Wants=network-online.target
+[Service]
+Environment=&amp;#34;WELCOME=Baicai myAdmin Base Environment.&amp;#34;
+ExecStartPre=/bin/echo ${WELCOME}
+ExecStart=/baicai/systemdStart/my_admin/my_admin -c /baicai/systemdStart/my_admin/conf/config.yaml
+ExecStop=/bin/kill -s TERM ${MAINPID}
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
 &lt;pre>&lt;code>sudo apt-get purge firefox
 &lt;/code>&lt;/pre>
 &lt;p>或

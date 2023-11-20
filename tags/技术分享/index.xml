@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术分享 on 白菜</title><link>https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</link><description>Recent content in 技术分享 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 17 Nov 2023 22:52:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</title><link>https://blog.baicai.me/article/2023/docker_privileged/</link><pubDate>Fri, 17 Nov 2023 22:52:38 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_privileged/</guid><description>&lt;h3 id="runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术分享 on 白菜</title><link>https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</link><description>Recent content in 技术分享 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 20 Nov 2023 16:02:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
+&lt;h3 id="按名称删除pod">按名称删除pod&lt;/h3>
+&lt;p>按名称删除kubia-gpu pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po kubia-gpu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。&lt;/p>
+&lt;h4 id="提示">提示&lt;/h4>
+&lt;p>还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。&lt;/p>
+&lt;h3 id="使用标签选择器删除pod">使用标签选择器删除pod&lt;/h3>
+&lt;p>停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 &lt;code>creation_method=manual&lt;/code> ，因此可以通过使用一个标签选择器来删除它们：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po -l creation_method&lt;span style="color:#f92672">=&lt;/span>manual
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="通过删除整个命名空间来删除pod">通过删除整个命名空间来删除pod&lt;/h3>
+&lt;p>以下命令删除custom-namespace：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete ns custom-namespace
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的所有pod但保留命名空间">删除命名空间中的所有pod，但保留命名空间&lt;/h3>
+&lt;p>查看 pods&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get pods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过使用&amp;ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的几乎所有资源">删除命名空间中的（几乎）所有资源&lt;/h3>
+&lt;p>通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete all --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>命令中的第一个all指定正在删除所有资源类型，而&amp;ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。&lt;/p>
+&lt;h4 id="注意">注意&lt;/h4>
+&lt;p>使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。&lt;/p>
+&lt;p>删除资源时，kubectl将打印它删除的每个资源的名称。&lt;/p>
+&lt;h4 id="注意-1">注意&lt;/h4>
+&lt;p>&lt;code>kubectl delete all --all&lt;/code> 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。&lt;/p></description></item><item><title>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</title><link>https://blog.baicai.me/article/2023/docker_privileged/</link><pubDate>Fri, 17 Nov 2023 22:52:38 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_privileged/</guid><description>&lt;h3 id="runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities&lt;/h3>
 &lt;p>参考官方文档：&lt;a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Docker run reference&lt;/a>&lt;/p>
 &lt;p>By default, Docker containers are &amp;ldquo;unprivileged&amp;rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &amp;ldquo;privileged&amp;rdquo; container is given access to all devices (see the documentation on cgroups devices).&lt;/p>
 &lt;p>The &amp;ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &amp;ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host. Additional information about running with &amp;ndash;privileged is available on the &lt;a href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker Blog&lt;/a>.&lt;/p>
@@ -122,9 +148,9 @@ Capabilities：Linux capabilities允许将传统的root权限分割成多个不�
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable wg-quick@wg0
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="启用服务器peer端转发">启用服务器Peer端转发&lt;/h2>
 &lt;p>打开 &lt;code>/etc/sysctl.conf&lt;/code> 修改&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>net.ipv4.ip_forward&lt;span style="color:#f92672">=&lt;/span>1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>net.ipv6.conf.all.forwarding&lt;span style="color:#f92672">=&lt;/span>1
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+&lt;/code>&lt;/pre>&lt;p>或&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv4.ip_forward=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv6.conf.all.forwarding=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sysctl -p
@@ -464,19 +490,19 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/nginx/conf.d/tgapi.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>server {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> listen 80;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server_name tgapi.domain;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 444;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">~*&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">^/&lt;/span>bot {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> resolver &lt;span style="color:#ae81ff">8.8.8.8&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_buffering &lt;span style="color:#66d9ef">off&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_pass https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>example.domain&lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>request_uri;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://example.domain$request_uri;
+}
+}
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -486,19 +512,19 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano tgapi.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>server {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> listen 80;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server_name tgapi.domain;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">/&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 444;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> location &lt;span style="color:#960050;background-color:#1e0010">~*&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">^/&lt;/span>bot {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> resolver &lt;span style="color:#ae81ff">8.8.8.8&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_buffering &lt;span style="color:#66d9ef">off&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proxy_pass https&lt;span style="color:#960050;background-color:#1e0010">://&lt;/span>api.telegram.org&lt;span style="color:#960050;background-color:#1e0010">$&lt;/span>request_uri;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="加载配置">加载配置&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://api.telegram.org$request_uri;
+}
+}
+&lt;/code>&lt;/pre>&lt;h3 id="加载配置">加载配置&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl reload nginx
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#或&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo nginx -s reload
@@ -1151,32 +1177,26 @@ root html;
 &lt;h3 id="更换国内源">更换国内源&lt;/h3>
 &lt;p>更换为国内源，否则安装太慢了。
 新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-conf" data-lang="conf">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.crates-io&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 替换成你偏好的镜像源
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>replace-with &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>sjtu&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 清华大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.tuna&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 中国科学技术大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.ustc&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 上海交通大学
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.sjtu&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># rustcc社区
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.rustcc&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 字节跳动
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">[&lt;/span>source.rsproxy&lt;span style="color:#960050;background-color:#1e0010">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>registry &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">[source.crates-io]
+registry = &amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;
+# 替换成你偏好的镜像源
+replace-with = &amp;#39;sjtu&amp;#39;
+# 清华大学
+[source.tuna]
+registry = &amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34;
+# 中国科学技术大学
+[source.ustc]
+registry = &amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34;
+# 上海交通大学
+[source.sjtu]
+registry = &amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34;
+# rustcc社区
+[source.rustcc]
+registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
+# 字节跳动
+[source.rsproxy]
+registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
+&lt;/code>&lt;/pre></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
 &lt;p>七牛云提供的：https://goproxy.cn&lt;/p>
 &lt;p>goproxy.io：https://goproxy.io 或 &lt;a href="https://proxy.golang.com.cn">https://proxy.golang.com.cn&lt;/a>&lt;/p>
 &lt;p>百度云BOS提供的：https://goproxy.bj.bcebos.com/&lt;/p>
