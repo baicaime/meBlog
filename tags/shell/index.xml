@@ -209,7 +209,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb install /path/to/your/app.apk
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将 &lt;code>/path/to/your/app.apk&lt;/code> 替换为实际 APK 文件的路径。&lt;/p>
 &lt;h3 id="flyme9-应用列表">Flyme9 应用列表&lt;/h3>
-&lt;p>全球流量 com.flyme.roamingpay
+&lt;pre tabindex="0">&lt;code>全球流量 com.flyme.roamingpay
 旅行助手com.android.cts.priv.ctsshim
 应用沙盒com.meizu.pps 不建议删除
 计步器 com.meizu.net.pedometer
@@ -352,4 +352,5 @@ html查看程序 com.android.htmlviewer
 通话记录备份 com.android.calllogbackup
 虚拟sim卡用的com.qualcomm.uimremoteclient
 自带黑色主题com.android.systemui.theme.dark
-无线电服务com.dsi.ant.server&lt;/p></description></item></channel></rss>
+无线电服务com.dsi.ant.server
+&lt;/code>&lt;/pre></description></item></channel></rss>

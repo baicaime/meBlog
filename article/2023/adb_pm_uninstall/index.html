@@ -1,5 +1,5 @@
 <!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/adb_pm_uninstall/"><link rel=canonical href=https://blog.baicai.me/article/2023/adb_pm_uninstall/><style type=text/css>body{font-family:monospace}</style><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1701761403"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1701763664"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工！</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -177,7 +177,7 @@
 </span></span></code></pre></div><h3 id=附注>附注：</h3><p>安装 APK 文件：
 将要安装的 APK 文件复制到计算机上，并记住它的路径。
 在命令提示符/终端中，使用以下命令安装 APK 文件到设备：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb install /path/to/your/app.apk
-</span></span></code></pre></div><p>请将 <code>/path/to/your/app.apk</code> 替换为实际 APK 文件的路径。</p><h3 id=flyme9-应用列表>Flyme9 应用列表</h3><p>全球流量 com.flyme.roamingpay
+</span></span></code></pre></div><p>请将 <code>/path/to/your/app.apk</code> 替换为实际 APK 文件的路径。</p><h3 id=flyme9-应用列表>Flyme9 应用列表</h3><pre tabindex=0><code>全球流量 com.flyme.roamingpay
 旅行助手com.android.cts.priv.ctsshim
 应用沙盒com.meizu.pps 不建议删除
 计步器 com.meizu.net.pedometer
@@ -320,6 +320,7 @@ html查看程序 com.android.htmlviewer
 通话记录备份 com.android.calllogbackup
 虚拟sim卡用的com.qualcomm.uimremoteclient
 自带黑色主题com.android.systemui.theme.dark
-无线电服务com.dsi.ant.server</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2023/adb_pm_uninstall/>通过 ADB 卸载系统自带应用(无需Root),精简系统app</a></li><li><a href=/article/2023/dmit/>Dmit促销，36.9刀，CN2 GIA</a></li><li><a href=/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></li><li><a href=/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></li><li><a href=/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></li></ul></div></div></aside><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+无线电服务com.dsi.ant.server
+</code></pre></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2023/adb_pm_uninstall/>通过 ADB 卸载系统自带应用(无需Root),精简系统app</a></li><li><a href=/article/2023/dmit/>Dmit促销，36.9刀，CN2 GIA</a></li><li><a href=/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></li><li><a href=/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></li><li><a href=/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></li></ul></div></div></aside><footer><p>&copy; 2023 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

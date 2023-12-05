@@ -209,7 +209,7 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb install /path/to/your/app.apk
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将 &lt;code>/path/to/your/app.apk&lt;/code> 替换为实际 APK 文件的路径。&lt;/p>
 &lt;h3 id="flyme9-应用列表">Flyme9 应用列表&lt;/h3>
-&lt;p>全球流量 com.flyme.roamingpay
+&lt;pre tabindex="0">&lt;code>全球流量 com.flyme.roamingpay
 旅行助手com.android.cts.priv.ctsshim
 应用沙盒com.meizu.pps 不建议删除
 计步器 com.meizu.net.pedometer
@@ -352,7 +352,8 @@ html查看程序 com.android.htmlviewer
 通话记录备份 com.android.calllogbackup
 虚拟sim卡用的com.qualcomm.uimremoteclient
 自带黑色主题com.android.systemui.theme.dark
-无线电服务com.dsi.ant.server&lt;/p></description></item><item><title>Dmit促销，36.9刀，CN2 GIA</title><link>https://blog.baicai.me/article/2023/dmit/</link><pubDate>Mon, 27 Nov 2023 14:03:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/dmit/</guid><description>&lt;p>&lt;a href="https://www.dmit.io/aff.php?aff=7897">DMIT&lt;/a>促销，36.9刀，CN2 GIA&lt;/p>
+无线电服务com.dsi.ant.server
+&lt;/code>&lt;/pre></description></item><item><title>Dmit促销，36.9刀，CN2 GIA</title><link>https://blog.baicai.me/article/2023/dmit/</link><pubDate>Mon, 27 Nov 2023 14:03:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/dmit/</guid><description>&lt;p>&lt;a href="https://www.dmit.io/aff.php?aff=7897">DMIT&lt;/a>促销，36.9刀，CN2 GIA&lt;/p>
 &lt;p>DMIT 今天推出了名为 PVM.LAX.Pro.WEE 的机型。&lt;/p>
 &lt;p>配置为 1 vCPU,1 GB内存,10G SSD 存储,450 GB 月流量（双向）,500Mbps带宽。1 IPv4 &amp;amp; 1 IPv6 /64，机房位置为美国洛杉矶。&lt;/p>
 &lt;p>这是一个Pro机型，具有GIA线路（三网CN2回程），而价格则为$36.9/年，显著低于同类型机器。&lt;/p>
