@@ -1,4 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>adb on 白菜</title><link>https://blog.baicai.me/tags/adb/</link><description>Recent content in adb on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 05 Dec 2023 13:31:02 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/adb/index.xml" rel="self" type="application/rss+xml"/><item><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title><link>https://blog.baicai.me/article/2023/adb_pm_uninstall/</link><pubDate>Tue, 05 Dec 2023 13:31:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/adb_pm_uninstall/</guid><description>&lt;h3 id="准备-adb-使用条件">准备 ADB 使用条件&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>adb on 白菜</title><link>https://blog.baicai.me/tags/adb/</link><description>Recent content in adb on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Mar 2024 22:44:37 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/adb/index.xml" rel="self" type="application/rss+xml"/><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
+&lt;p>把当前目录下的&lt;code>test.tex&lt;/code>文件传到手机 &lt;code>/sdcard/test&lt;/code>目录中&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb push test.txt /sdcard/test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="手机文件传到电脑">手机文件传到电脑&lt;/h3>
+&lt;p>把 &lt;code>/sdcard/test/&lt;/code> 目录下的&lt;code>test.txt&lt;/code>文件传到本机当前目录&lt;code>test&lt;/code>目录中&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb pull /sdcard/test/test.txt ./test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="查看手机文件目录">查看手机文件目录&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#进入到根目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>adb shell
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#查看所有目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#进入到sdcard目录，安卓手机的文件管理一般都这这里&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd sdcard
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#然后查看要传输哪些文件到哪个文件夹&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title><link>https://blog.baicai.me/article/2023/adb_pm_uninstall/</link><pubDate>Tue, 05 Dec 2023 13:31:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/adb_pm_uninstall/</guid><description>&lt;h3 id="准备-adb-使用条件">准备 ADB 使用条件&lt;/h3>
 &lt;p>要使用 ADB（Android 调试桥），你需要按照以下步骤操作：&lt;/p>
 &lt;p>下载并安装 ADB 工具：&lt;/p>
 &lt;pre>&lt;code>在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。
@@ -202,6 +216,46 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#喜马拉雅&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.ximalaya.ting.android
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#趣视频&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#拼多多&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.xunmeng.pinduoduo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#百度搜索&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.baidu.searchbox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#微博&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sina.weibolite
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#flyme实验室&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flymelab
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#好看&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.baidu.haokan
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#淘宝&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.taobao.taobao
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#搜狗输入法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sohu.inputmethod.sogou.meizu
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#唯品会&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.achievo.vipshop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#部分系统应用&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#计步器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.net.pedometer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#支付中心&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.account.pay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#个人助理&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.assistant
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#智能识屏&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.picker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#工具箱&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.toolbox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#系统壁纸&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.systemwallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#动态主题服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.ibimuyu.lockscreen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#下载&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.providers.downloads.ui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#动态壁纸 &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.activeviewlivewallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#主题美化&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.customizecenter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#onemind&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.alphame
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#以下部分不建议删除应用&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.hometools
@@ -210,12 +264,19 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.yellowpage
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.safe
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.printspooler
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.account
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.gallery
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.cloud
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.share
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.location
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.email
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.mzsyncservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.wallpaperbackup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.mmfvideo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.flyme.telecom.usagedata.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#谨慎删除&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.account
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.service.find
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附注">附注：&lt;/h3>
 &lt;p>安装 APK 文件：
 将要安装的 APK 文件复制到计算机上，并记住它的路径。
