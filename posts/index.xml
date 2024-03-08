@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Mar 2024 22:44:37 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Sat, 09 Mar 2024 00:01:19 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>docker 映射某个范围内的端口列表</title><link>https://blog.baicai.me/article/2024/docker_ports/</link><pubDate>Sat, 09 Mar 2024 00:01:19 +0800</pubDate><guid>https://blog.baicai.me/article/2024/docker_ports/</guid><description>&lt;p>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口&lt;/p>
+&lt;h3 id="docker-composeyml">docker-compose.yml&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;3.6&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">web&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">nginx:1.18&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 将会映射8080到8090这个范围内的端口&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">8080-8090&lt;/span>:&lt;span style="color:#ae81ff">8080-8090&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">./www:/www&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="命令行">命令行&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker run -p 8080-8090:8080-8090 nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dockerfile">Dockerfile&lt;/h3>
+&lt;pre tabindex="0">&lt;code>Dockerfile
+EXPOSE 8080-8090
+&lt;/code>&lt;/pre></description></item><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
 &lt;p>把当前目录下的&lt;code>test.tex&lt;/code>文件传到手机 &lt;code>/sdcard/test&lt;/code>目录中&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb push test.txt /sdcard/test
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="手机文件传到电脑">手机文件传到电脑&lt;/h3>
