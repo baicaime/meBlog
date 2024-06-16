@@ -16,6 +16,11 @@ Debian 11&lt;/p>
 &lt;pre tabindex="0">&lt;code> \l
 &lt;/code>&lt;/pre>&lt;h4 id="更改刚创建的数据库所有权">更改刚创建的数据库所有权：&lt;/h4>
 &lt;pre tabindex="0">&lt;code> ALTER DATABASE dbname OWNER TO username;
+&lt;/code>&lt;/pre>&lt;h4 id="删除表字段">删除表字段&lt;/h4>
+&lt;p>要删除一个字段，使用下面这样的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description;
+&lt;/code>&lt;/pre>&lt;p>不管字段里有啥数据，都会消失，和这个字段相关的约束也会被删除。不过， 如果这个字段被另一个表的外键约束所引用，PostgreSQL 则不会隐含地删除该约束。你可以通过使用CASCADE指明删除任何依赖该字段的东西：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description CASCADE;
 &lt;/code>&lt;/pre>&lt;h3 id="通过psql连接数据库">通过psql连接数据库&lt;/h3>
 &lt;pre tabindex="0">&lt;code> psql -h 127.0.0.1 -p 5432 -U username -d dbname
 &lt;/code>&lt;/pre>&lt;h3 id="备份数据库">备份数据库&lt;/h3>
