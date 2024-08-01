@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WireGuard on 白菜</title><link>https://blog.baicai.me/tags/wireguard/</link><description>Recent content in WireGuard on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Sun, 08 Oct 2023 15:19:08 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/wireguard/index.xml" rel="self" type="application/rss+xml"/><item><title>通过 WireGuard 搭建 VPN 访问家里内网</title><link>https://blog.baicai.me/article/2023/using_wireguard/</link><pubDate>Sun, 08 Oct 2023 15:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2023/using_wireguard/</guid><description>&lt;p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。&lt;/p>
+&lt;h2 id="ip-段选择">IP 段选择&lt;/h2>
+&lt;p>WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。&lt;/p>
+&lt;p>在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。&lt;/p>
+&lt;h2 id="在服务器上配置-wireguard">在服务器上配置 WireGuard&lt;/h2>
+&lt;p>要使用 WireGuard，首先需要确保 Linux 内核支持。可使用 &lt;code>modinfo wireguard&lt;/code> 命令检查是否内置了 WireGuard。也可用过 &lt;code>uname -r&lt;/code> 检查内核版本是否为 5.6 以上。&lt;/p>
+&lt;h3 id="安装-wireguard">安装 wireguard&lt;/h3>
+&lt;p>Debian&lt;/p>
+&lt;pre tabindex="0">&lt;code>apt install wireguard
+&lt;/code>&lt;/pre>&lt;p>其他系统参考：&lt;a href="https://www.wireguard.com/install/">install&lt;/a>&lt;/p>
+&lt;h3 id="完成服务器端的配置">完成服务器端的配置&lt;/h3>
+&lt;p>在正确安装 wireguard 后，你可以通过如下命令快速创建一组公钥和私钥。&lt;/p>
+&lt;pre tabindex="0">&lt;code>$ wg genkey | tee peer_A.key | wg pubkey &amp;gt; peer_A.pub &amp;amp;&amp;amp; cat peer_A.key &amp;amp;&amp;amp; cat peer_A.pub
+&lt;/code>&lt;/pre>&lt;p>创建 &lt;code>/etc/wireguard/wg0.conf&lt;/code> 并填配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Interface]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PrivateKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(your server private key here)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ListenPort&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PreUp = echo WireGuard PreUp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostUp = iptables -I INPUT -p udp --dport 51820 -j ACCEPT&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostDown = iptables -D INPUT -p udp --dport 51820 -j ACCEPT&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ipv4 局域网够用配置&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">iptables -A FORWARD -i wg0 -j ACCEPT&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostDown&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">iptables -D FORWARD -i wg0 -j ACCEPT&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ipv4防火墙放行转发和NAT(访问公共网络)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ipv4防火墙放行转发和NAT(访问公共网络) 扩展防火墙规则(节点之间双向互联)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostUp = iptables -I FORWARD -i wg0 -j ACCEPT; iptables -I FORWARD -o wg0 -j ACCEPT; iptables -I INPUT -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D INPUT -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#PreDown = echo WireGuard PreDown&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Mac at home&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(Mac public key here)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.2/32, 192.168.1.0/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># iPhone&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(iPhone public key here)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 WireGuard 中，你需要手动给各个设备分配 IP，并确保每个设备都有唯一的 IP。Interface 包含了当前设备的设置，对于“服务端”来说，ListenPort 是必须的。下面的每一个 Peer 段代表了能连接到本设备的一个其他设备。&lt;/p>
+&lt;p>配置文件保存后，我们可以使用 &lt;code>wg-quick up wg0&lt;/code> 来启用配置文件。wg-quick 会自动配置路由表，无需我们手动设置。&lt;/p>
+&lt;p>记得放行 51820 UDP 端口。&lt;/p>
+&lt;p>&lt;a href="https://blog.baicai.me/article/2023/oracle_vps_iptables/">iptables 配置参考&lt;/a>&lt;/p>
+&lt;h2 id="家中mac端的配置">家中Mac端的配置&lt;/h2>
+&lt;p>创建 &lt;code>/etc/wireguard/wg0.conf&lt;/code> 并填配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Interface]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PrivateKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(private key of Mac)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.2/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">DNS&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">1.1.1.1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(public key of server)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.0/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">(server ip address):51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PersistentKeepalive&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">10&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在这里，我们将公网服务器作为唯一的 Peer，通过设置 PersistentKeepalive 来进行连接的保活。这里 AllowedIPs 的作用是确保来自于我们 WireGuard 子网网段来的流量能被本机的 WireGuard 虚拟网卡进行处理。&lt;/p>
+&lt;h2 id="iphone-配置">iphone 配置&lt;/h2>
+&lt;p>安装 WireGuard &lt;a href="https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&amp;amp;mt=8"> Download from App Store&lt;/a>&lt;/p>
+&lt;p>这个配置可以参考应用商店的截屏。&lt;/p>
+&lt;h2 id="设置开机启动">设置开机启动&lt;/h2>
+&lt;p>如果你的系统使用systemd,如ubuntu，设置wireguard开机启动命令如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable wg-quick@wg0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="启用服务器peer端转发">启用服务器Peer端转发&lt;/h2>
+&lt;p>打开 &lt;code>/etc/sysctl.conf&lt;/code> 修改&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+&lt;/code>&lt;/pre>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv4.ip_forward=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#e6db74">&amp;#39;net.ipv6.conf.all.forwarding=1&amp;#39;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sysctl -p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注">附注&lt;/h2>
+&lt;h3 id="保留地址段">保留地址段&lt;/h3>
+&lt;p>&lt;a href="https://zh.wikipedia.org/wiki/%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80">保留IP地址&lt;/a>&lt;/p>
+&lt;h3 id="小插曲">小插曲&lt;/h3>
+&lt;p>当遇到错误提示：&lt;/p>
+&lt;pre tabindex="0">&lt;code>/usr/bin/wg-quick: line 31: resolvconf: command not found [WireGuard | Debian]
+&lt;/code>&lt;/pre>&lt;p>可以创建软链接解决&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>当遇到错误提示：&lt;/p>
+&lt;pre tabindex="0">&lt;code>[SELF-SOLVED] Unit dbus-org.freedesktop.resolve1.service not found
+&lt;/code>&lt;/pre>&lt;p>可以通过启动 systemd-resolved 服务解决&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl start systemd-resolved.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl enable systemd-resolved.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="配置详解">配置详解&lt;/h3>
+&lt;p>WireGuard 使用 INI 语法作为其配置文件格式。配置文件可以放在任何路径下，但必须通过绝对路径引用。默认路径是 &lt;code>/etc/wireguard/wg0.conf&lt;/code>。&lt;/p>
+&lt;p>配置文件的命名形式必须为 &lt;code>${WireGuard 接口的名称}.conf&lt;/code>。通常情况下 WireGuard 接口名称以 &lt;code>wg&lt;/code> 为前缀，并从 &lt;code>0&lt;/code> 开始编号，但你也可以使用其他名称，只要符合正则表达式 &lt;code>^[a-zA-Z0-9_=+.-]{1,15}$&lt;/code> 就行。&lt;/p>
+&lt;p>你可以选择使用 &lt;code>wg&lt;/code> 命令来手动配置 VPN，但一般建议使用 &lt;code>wg-quick&lt;/code>，它提供了更强大和用户友好的配置体验，可以通过配置文件来管理配置。&lt;/p>
+&lt;h4 id="interface">[Interface]&lt;/h4>
+&lt;p>定义本地 VPN 配置。例如：&lt;/p>
+&lt;p>1.本地节点是客户端，只路由自身的流量，只暴露一个 IP。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Interface]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Name = phone.example-vpn.dev&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.5/32&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PrivateKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;lt;private key for phone.example-vpn.dev&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>本地节点是中继服务器，它可以将流量转发到其他对等节点（peer），并公开整个 VPN 子网的路由。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Interface]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Name = public-server1.example-vpn.tld&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ListenPort&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PrivateKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;lt;private key for public-server1.example-vpn.tld&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">DNS&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">1.1.1.1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="-name"># Name&lt;/h4>
+&lt;p>这是 INI 语法中的标准注释，用于展示该配置部分属于哪个节点。这部分配置会被 WireGuard 完全忽略，对 VPN 的行为没有任何影响。&lt;/p>
+&lt;h4 id="address">Address&lt;/h4>
+&lt;p>定义本地节点应该对哪个地址范围进行路由。如果是常规的客户端，则将其设置为节点本身的单个 IP（使用 CIDR 指定，例如 192.0.2.3/32）；如果是中继服务器，则将其设置为可路由的子网范围。
+例如：&lt;/p>
+&lt;p>常规客户端，只路由自身的流量：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中继服务器，可以将流量转发到其他对等节点（peer）：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>也可以指定多个子网或 IPv6 子网：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24,2001:DB8::/64&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="listenport">ListenPort&lt;/h4>
+&lt;p>当本地节点是中继服务器时，需要通过该参数指定端口来监听传入 VPN 连接，默认端口号是 51820。常规客户端不需要此选项。&lt;/p>
+&lt;h4 id="privatekey">PrivateKey&lt;/h4>
+&lt;p>本地节点的私钥，所有节点（包括中继服务器）都必须设置。不可与其他服务器共用。&lt;/p>
+&lt;p>私钥可通过命令 &lt;code>wg genkey &amp;gt; example.key&lt;/code> 来生成。&lt;/p>
+&lt;h4 id="dns">DNS&lt;/h4>
+&lt;p>通过 DHCP 向客户端宣告 DNS 服务器。客户端将会使用这里指定的 DNS 服务器来处理 VPN 子网中的 DNS 请求，但也可以在系统中覆盖此选项。例如：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#如果不配置则使用系统默认 DNS&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#可以指定单个 DNS：&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">DNS&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">1.1.1.1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#也可以指定多个 DNS：&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">DNS&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">1.1.1.1,8.8.8.8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="table">Table&lt;/h4>
+&lt;p>定义 VPN 子网使用的路由表，默认不需要设置。该参数有两个特殊的值需要注意：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Table&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">off : 禁止创建路由
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> Table = auto（默认值） : 将路由添加到系统默认的 table 中，并启用对默认路由的特殊处理。&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>例如：&lt;code>Table = 1234&lt;/code>&lt;/p>
+&lt;h4 id="mtu">MTU&lt;/h4>
+&lt;p>定义连接到对等节点（peer）的 MTU（Maximum Transmission Unit，最大传输单元），默认不需要设置，一般由系统自动确定。&lt;/p>
+&lt;h4 id="preup">PreUp&lt;/h4>
+&lt;p>启动 VPN 接口之前运行的命令。这个选项可以指定多次，按顺序执行。&lt;/p>
+&lt;p>例如：
+添加路由：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PreUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">ip rule add ipproto tcp dport 22 table 1234&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="postup">PostUp&lt;/h4>
+&lt;p>启动 VPN 接口之后运行的命令。这个选项可以指定多次，按顺序执行。&lt;/p>
+&lt;p>例如：&lt;/p>
+&lt;pre>&lt;code>从文件或某个命令的输出中读取配置值：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">wg set %i private-key /etc/wireguard/wg0.key &amp;lt;(some command here)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>添加一行日志到文件中：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">echo &amp;#34;$(date +%s) WireGuard Started&amp;#34; &amp;gt;&amp;gt; /var/log/wireguard.log&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>调用 WebHook：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">curl https://events.example.dev/wireguard/started&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>添加路由：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">ip rule add ipproto tcp dport 22 table 1234&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>添加 iptables 规则，启用数据包转发：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>强制 WireGuard 重新解析对端域名的 IP 地址：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">resolvectl domain %i &amp;#34;~.&amp;#34;; resolvectl dns %i 192.0.2.1; resolvectl dnssec %i yes&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="predown">PreDown&lt;/h4>
+&lt;p>停止 VPN 接口之前运行的命令。这个选项可以指定多次，按顺序执行。
+例如：&lt;/p>
+&lt;pre>&lt;code>添加一行日志到文件中：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">PreDown&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">echo &amp;#34;$(date +%s) WireGuard Going Down&amp;#34; &amp;gt;&amp;gt; /var/log/wireguard.log&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="postdown">PostDown&lt;/h4>
+&lt;p>停止 VPN 接口之后运行的命令。这个选项可以指定多次，按顺序执行。
+例如：&lt;/p>
+&lt;pre>&lt;code>添加一行日志到文件中：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostDown&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">echo &amp;#34;$(date +%s) WireGuard Down&amp;#34; &amp;gt;&amp;gt; /var/log/wireguard.log&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="peer">[Peer]&lt;/h4>
+&lt;p>定义能够为一个或多个地址路由流量的对等节点（peer）的 VPN 设置。对等节点（peer）可以是将流量转发到其他对等节点（peer）的中继服务器，也可以是通过公网或内网直连的客户端。&lt;/p>
+&lt;p>中继服务器必须将所有的客户端定义为对等节点（peer），除了中继服务器之外，其他客户端都不能将位于 NAT 后面的节点定义为对等节点（peer），因为路由不可达。对于那些只为自己路由流量的客户端，只需将中继服务器作为对等节点（peer），以及其他需要直接访问的节点。&lt;/p>
+&lt;p>配置示例：&lt;/p>
+&lt;p>对等节点（peer）是路由可达的客户端，只为自己路由流量&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Name = public-server2.example-vpn.dev&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">public-server2.example-vpn.dev:51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;lt;public key for public-server2.example-vpn.dev&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.2/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是位于 NAT 后面的客户端，只为自己路由流量&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Name = home-server.example-vpn.dev&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">home-server.example-vpn.dev:51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;lt;public key for home-server.example-vpn.dev&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是中继服务器，用来将流量转发到其他对等节点（peer）&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">[Peer]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Name = public-server1.example-vpn.tld&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">public-server1.example-vpn.tld:51820&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PublicKey&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;lt;public key for public-server1.example-vpn.tld&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 路由整个 VPN 子网的流量&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PersistentKeepalive&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">25&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="endpoint">Endpoint&lt;/h4>
+&lt;p>指定远端对等节点（peer）的公网地址。如果对等节点（peer）位于 NAT 后面或者没有稳定的公网访问地址，就忽略这个字段。通常只需要指定中继服务器的 Endpoint，当然有稳定公网 IP 的节点也可以指定。例如：&lt;/p>
+&lt;p>通过 IP 指定：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">123.124.125.126:51820&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过域名指定：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">Endpoint&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">public-server1.example-vpn.tld:51820&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="allowedips">AllowedIPs&lt;/h4>
+&lt;p>允许该对等节点（peer）发送过来的 VPN 流量中的源地址范围。同时这个字段也会作为本机路由表中 wg0 绑定的 IP 地址范围。如果对等节点（peer）是常规的客户端，则将其设置为节点本身的单个 IP；如果对等节点（peer）是中继服务器，则将其设置为可路由的子网范围。可以使用 , 来指定多个 IP 或子网范围。该字段也可以指定多次。&lt;/p>
+&lt;p>当决定如何对一个数据包进行路由时，系统首先会选择最具体的路由，如果不匹配再选择更宽泛的路由。例如，对于一个发往 192.0.2.3 的数据包，系统首先会寻找地址为 192.0.2.3/32 的对等节点（peer），如果没有再寻找地址为 192.0.2.1/24 的对等节点（peer），以此类推。&lt;/p>
+&lt;p>例如：&lt;/p>
+&lt;p>对等节点（peer）是常规客户端，只路由自身的流量：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是中继服务器，可以将流量转发到其他对等节点（peer）：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是中继服务器，可以转发所有的流量，包括外网流量和 VPN 流量：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">0.0.0.0/0,::/0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是中继服务器，可以路由其自身和其他对等节点（peer）的流量：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32,192.0.2.4/32&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对等节点（peer）是中继服务器，可以路由其自身的流量和它所在的内网的流量：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">AllowedIPs&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">192.0.2.3/32,192.168.1.1/24&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="publickey">PublicKey&lt;/h4>
+&lt;p>对等节点（peer）的公钥，所有节点（包括中继服务器）都必须设置。可与其他对等节点（peer）共用同一个公钥。&lt;/p>
+&lt;p>公钥可通过命令 &lt;code>wg pubkey &amp;lt; example.key &amp;gt; example.key.pub&lt;/code> 来生成，其中 example.key 是上面生成的私钥。&lt;/p>
+&lt;h4 id="persistentkeepalive">PersistentKeepalive&lt;/h4>
+&lt;p>如果连接是从一个位于 NAT 后面的对等节点（peer）到一个公网可达的对等节点（peer），那么 NAT 后面的对等节点（peer）必须定期发送一个出站 ping 包来检查连通性，如果 IP 有变化，就会自动更新Endpoint。&lt;/p>
+&lt;p>例如：&lt;/p>
+&lt;p>本地节点与对等节点（peer）可直连：该字段不需要指定，因为不需要连接检查。&lt;/p>
+&lt;p>对等节点（peer）位于 NAT 后面：该字段不需要指定，因为维持连接是客户端（连接的发起方）的责任。&lt;/p>
+&lt;p>本地节点位于 NAT 后面，对等节点（peer）公网可达：需要指定该字段 PersistentKeepalive = 25，表示每隔 25 秒发送一次 ping 来检查连接。&lt;/p>
+&lt;h3 id="共享一个-peersconf-文件">共享一个 peers.conf 文件&lt;/h3>
+&lt;p>如果某个 peer 的公钥与本地接口的私钥能够配对，那么 WireGuard 会忽略该 &lt;code>peer&lt;/code>。利用这个特性，我们可以在所有节点上共用同一个 &lt;code>peer&lt;/code> 列表，每个节点只需要单独定义一个 &lt;code>[Interface]&lt;/code> 就行了，即使列表中有本节点，也会被忽略。具体方式如下：&lt;/p>
+&lt;p>每个对等节点（peer）都有一个单独的 &lt;code>/etc/wireguard/wg0.conf&lt;/code> 文件，只包含 &lt;code>[Interface]&lt;/code> 部分的配置。&lt;/p>
+&lt;p>每个对等节点（peer）共用同一个 &lt;code>/etc/wireguard/peers.conf&lt;/code> 文件，其中包含了所有的 peer。&lt;/p>
+&lt;p>Wg0.conf 文件中需要配置一个 PostUp 钩子，内容为&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">wg addconf /etc/wireguard/peers.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Golang on 白菜</title><link>https://blog.baicai.me/tags/golang/</link><description>Recent content in Golang on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 30 Jan 2024 15:40:46 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>该机型可选择洛杉矶 DC6 DC9 的 CN2 GIA 机房及日本软银（JPOS_1）线路，配置为512内存,10 GB SSD,500GB月流量，售价为$49.99/年，是当前瓦工还会补货的最经济GIA线路机器。&lt;/p>
+&lt;p>DC6和DC9具有三网回程GIA；去程电信联通走GIA，移动直连，平峰延迟在150ms左右，高峰时期一般不超过200ms。日本软银是直连线路，地利原因延迟较低。而论全天稳定性还是GIA比较可靠。该机器下单时请选择需要的机房，此后切换机房会扣流量。&lt;/p>
+&lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=94">直达地址&lt;/a>&lt;/p>
+&lt;p>循环优惠码：BWHCCNCXVV （6.78%）&lt;/p></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+&lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
+&lt;p>参考 Dockerfile 如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
+ENV CGO_ENABLED=1
+WORKDIR /app
+COPY . .
+RUN apk add --no-cache --update git build-base
+RUN go mod tidy \
+&amp;amp;&amp;amp; go build -o api_client_linux ./cmd/api_client/
+FROM alpine:latest as runner
+ENV TZ=Asia/Shanghai
+RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++
+WORKDIR /app
+COPY --from=builder /app/api_client_linux .
+VOLUME /app/conf
+EXPOSE 8080
+ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;/app/conf/config.yaml&amp;#34;]
+&lt;/code>&lt;/pre>&lt;p>运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">包名&lt;/th>
+&lt;th style="text-align:left">用途&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">ca-certificates:&lt;/td>
+&lt;td style="text-align:left">CA证书，使用TLS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">tzdata:&lt;/td>
+&lt;td style="text-align:left">时区配置&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libc6-compat:&lt;/td>
+&lt;td style="text-align:left">C 标准库&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libgcc:&lt;/td>
+&lt;td style="text-align:left">GCC 相关库，CGO编译程序依赖&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">libstdc++:&lt;/td>
+&lt;td style="text-align:left">C++ 标准库&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
+&lt;p>七牛云提供的：https://goproxy.cn&lt;/p>
+&lt;p>goproxy.io：https://goproxy.io 或 &lt;a href="https://proxy.golang.com.cn">https://proxy.golang.com.cn&lt;/a>&lt;/p>
+&lt;p>百度云BOS提供的：https://goproxy.bj.bcebos.com/&lt;/p>
+&lt;p>阿里云提供的：https://mirrors.aliyun.com/goproxy/&lt;/p>
+&lt;h3 id="下载-go-镜像golang-downloads-mirrors">下载 Go 镜像（Golang Downloads Mirrors）&lt;/h3>
+&lt;p>官网：https://go.dev/&lt;/p>
+&lt;p>下载 Go 镜像：https://golang.google.cn/&lt;/p>
+&lt;p>下载 Go 镜像：https://gomirrors.org/&lt;/p>
+&lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
+&lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>下载并安装必备软件&lt;/li>
+&lt;li>验证构建服务器上是否有新的测试软件包&lt;/li>
+&lt;li>获取并设置依赖软件包所需的 yum 仓库&lt;/li>
+&lt;li>下载并安装新的测试软件包（基于步骤 2）&lt;/li>
+&lt;li>获取并设置必需的 SSL 证书&lt;/li>
+&lt;li>设置测试环境，获取所需的 Git 仓库，更改配置，重新启动守护进程等&lt;/li>
+&lt;li>做其他需要做的事情&lt;/li>
+&lt;/ul>
+&lt;h3 id="用脚本自动化">用脚本自动化&lt;/h3>
+&lt;p>这些步骤非常常规，以至于有必要对其进行自动化并将脚本保存到中央位置（例如文件服务器），在需要时可以在此处下载脚本。为此，我编写了 100-120 行的 Bash shell 脚本，它为我完成了所有配置（包括错误检查）。这个脚本通过以下方式简化了我的工作流程：&lt;/p>
+&lt;ul>
+&lt;li>配置新的 Linux 系统（支持测试的架构）&lt;/li>
+&lt;li>登录系统并从中央位置下载自动化 shell 脚本&lt;/li>
+&lt;li>运行它来配置系统&lt;/li>
+&lt;li>开始测试&lt;/li>
+&lt;/ul>
+&lt;h3 id="学习-go-语言">学习 Go 语言&lt;/h3>
+&lt;p>我想学习 Go 语言 有一段时间了，将我心爱的 Shell 脚本转换为 Go 程序似乎是一个很好的项目，可以帮助我入门。它的语法看起来很简单，在尝试了一些测试程序后，我开始着手提高自己的知识并熟悉 Go 标准库。&lt;/p>
+&lt;p>我花了一个星期的时间在笔记本电脑上编写 Go 程序。我经常在我的 x86 服务器上测试程序，清除错误并使程序健壮起来，一切都很顺利。&lt;/p>
+&lt;p>直到完全转换到 Go 程序前，我继续依赖自己的 shell 脚本。然后，我将二进制文件推送到中央文件服务器上，以便每次配置新服务器时，我要做的就是获取二进制文件，将可执行标志打开，然后运行二进制文件。我对早期的结果很满意：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ wget http://file.example.com/&amp;lt;myuser&amp;gt;/bins/prepnode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ chmod +x ./prepnode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./prepnode
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后，出现了一个问题&lt;/p>
+&lt;p>第二周，我从资源池中分配了一台新的服务器，像往常一样，我下载了二进制文件，设置了可执行标志，然后运行二进制文件。但这次它出错了，是一个奇怪的错误：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ./prepnode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bash: ./prepnode: cannot execute binary file: Exec format error
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>起初，我以为可能没有成功设置可执行标志。但是，它已按预期设置：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls -l prepnode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rwxr-xr-x. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">2640529&lt;/span> Dec &lt;span style="color:#ae81ff">16&lt;/span> 05:43 prepnode
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>发生了什么事？我没有对源代码进行任何更改，编译没有引发任何错误或警告，而且上次运行时效果很好，因此我仔细查看了错误消息 format error。&lt;/p>
+&lt;p>我检查了二进制文件的格式，一切看起来都没问题：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ file prepnode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode: ELF 64-bit LSB executable, x86-64, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, not stripped
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>我迅速运行了以下命令，识别所配置的测试服务器的架构以及二进制试图运行的平台。它是 Arm64 架构，但是我编译的二进制文件（在我的 x86 笔记本电脑上）生成的是 x86-64 格式的二进制文件：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ uname -m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>aarch64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="脚本编写人员的编译第一课">脚本编写人员的编译第一课&lt;/h3>
+&lt;p>在那之前，我从未考虑过这种情况（尽管我知道这一点）。我主要研究脚本语言（通常是 Python）以及 Shell 脚本。在任何架构的大多数 Linux 服务器上都可以使用 Bash Shell 和 Python 解释器。总之，之前一切都很顺利。&lt;/p>
+&lt;p>但是，现在我正在处理 Go 这种编译语言，它生成可执行的二进制文件。编译后的二进制文件由特定架构的指令码或汇编指令组成，这就是为什么我收到格式错误的原因。由于 Arm64 CPU（运行二进制文件的地方）无法解释二进制文件的 x86-64 指令，因此它抛出错误。以前，shell 和 Python 解释器为我处理了底层指令码或特定架构的指令。&lt;/p>
+&lt;h3 id="go-的交叉编译">Go 的交叉编译&lt;/h3>
+&lt;p>我检查了 Golang 的文档，发现要生成 Arm64 二进制文件，我要做的就是在运行 go build 命令编译 Go 程序之前设置两个环境变量。&lt;/p>
+&lt;p>GOOS 指的是操作系统，例如 Linux、Windows、BSD 等，而 GOARCH 指的是要在哪种架构上构建程序。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ env GOOS&lt;span style="color:#f92672">=&lt;/span>linux GOARCH&lt;span style="color:#f92672">=&lt;/span>arm64 go build -o prepnode_arm64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>构建程序后，我重新运行 file 命令，这一次它显示的是 ARM AArch64，而不是之前显示的 x86。因此，我在我的笔记本上能为不同的架构构建二进制文件。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ file prepnode_arm64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_arm64: ELF 64-bit LSB executable, ARM aarch64, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, not stripped
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>我将二进制文件从笔记本电脑复制到 ARM 服务器上。现在运行二进制文件（将可执行标志打开）不会产生任何错误：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ./prepnode_arm64 -h
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Usage of ./prepnode_arm64:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -c Clean existing installation
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -n Do not start test run &lt;span style="color:#f92672">(&lt;/span>default true&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -s Use stage environment, default is qa
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -v Enable verbose output
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="其他架构呢">其他架构呢？&lt;/h3>
+&lt;p>x86 和 Arm 是我测试软件所支持的 5 种架构中的两种，我担心 Go 可能不会支持其它架构，但事实并非如此。你可以查看 Go 支持的架构：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ go tool dist list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Go 支持多种平台和操作系统，包括：&lt;/p>
+&lt;pre>&lt;code>AIX
+Android
+Darwin
+Dragonfly
+FreeBSD
+Illumos
+ios
+Js/wasm
+JavaScript
+Linux
+NetBSD
+OpenBSD
+Plan 9
+Solaris
+Windows
+&lt;/code>&lt;/pre>
+&lt;p>要查找其支持的特定 Linux 架构，运行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ go tool dist list | grep linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如下面的输出所示，Go 支持我使用的所有体系结构。尽管 x86_64 不在列表中，但 AMD64 兼容 x86-64，所以你可以生成 AMD64 二进制文件，它可以在 x86 架构上正常运行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ go tool dist list | grep linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/386
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/amd64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/arm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/arm64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/mips
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/mips64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/mips64le
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/mipsle
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/ppc64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/ppc64le
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/riscv64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux/s390x
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="处理所有架构">处理所有架构&lt;/h3>
+&lt;p>为我测试的所有体系结构生成二进制文件，就像从我的 x86 笔记本电脑编写一个微小的 shell 脚本一样简单：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/usr/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>archs&lt;span style="color:#f92672">=(&lt;/span>amd64 arm64 ppc64le ppc64 s390x&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> arch in &lt;span style="color:#e6db74">${&lt;/span>archs[@]&lt;span style="color:#e6db74">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> env GOOS&lt;span style="color:#f92672">=&lt;/span>linux GOARCH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">${&lt;/span>arch&lt;span style="color:#e6db74">}&lt;/span> go build -o prepnode_&lt;span style="color:#e6db74">${&lt;/span>arch&lt;span style="color:#e6db74">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ file prepnode_*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_amd64: ELF 64-bit LSB executable, x86-64, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, Go BuildID&lt;span style="color:#f92672">=&lt;/span>y03MzCXoZERH-0EwAAYI/p909FDnk7xEUo2LdHIyo/V2ABa7X_rLkPNHaFqUQ6/5p_q8MZiR2WYkA5CzJiF, not stripped
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_arm64: ELF 64-bit LSB executable, ARM aarch64, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, Go BuildID&lt;span style="color:#f92672">=&lt;/span>q-H-CCtLv__jVOcdcOpA/CywRwDz9LN2Wk_fWeJHt/K4-3P5tU2mzlWJa0noGN/SEev9TJFyvHdKZnPaZgb, not stripped
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_ppc64: ELF 64-bit MSB executable, 64-bit PowerPC or cisco 7500, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, Go BuildID&lt;span style="color:#f92672">=&lt;/span>DMWfc1QwOGIq2hxEzL_u/UE-9CIvkIMeNC_ocW4ry/r-7NcMATXatoXJQz3yUO/xzfiDIBuUxbuiyaw5Goq, not stripped
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_ppc64le: ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, Go BuildID&lt;span style="color:#f92672">=&lt;/span>C6qCjxwO9s63FJKDrv3f/xCJa4E6LPVpEZqmbF6B4/Mu6T_OR-dx-vLavn1Gyq/AWR1pK1cLz9YzLSFt5eU, not stripped
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>prepnode_s390x: ELF 64-bit MSB executable, IBM S/390, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, statically linked, Go BuildID&lt;span style="color:#f92672">=&lt;/span>faC_HDe1_iVq2XhpPD3d/7TIv0rulE4RZybgJVmPz/o_SZW_0iS0EkJJZHANxx/zuZgo79Je7zAs3v6Lxuz, not stripped
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>现在，每当配置一台新机器时，我就运行以下 wget 命令下载特定体系结构的二进制文件，将可执行标志打开，然后运行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ wget http://file.domain.com/&amp;lt;myuser&amp;gt;/bins/prepnode_&amp;lt;arch&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ chmod +x ./prepnode_&amp;lt;arch&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./prepnode_&amp;lt;arch&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为什么">为什么？&lt;/h3>
+&lt;p>你可能想知道，为什么我没有坚持使用 shell 脚本或将程序移植到 Python 而不是编译语言上来避免这些麻烦。所以有舍有得，那样的话我不会了解 Go 的交叉编译功能，以及程序在 CPU 上执行时的底层工作原理。在计算机中，总要考虑取舍，但绝不要让它们阻碍你的学习。&lt;/p>
+&lt;h3 id="参考">参考&lt;/h3>
+&lt;p>Cross-compiling made easy with Golang &lt;a href="https://opensource.com/article/21/1/go-cross-compiling">[1]&lt;/a>&lt;/p>
+&lt;p>使用 Golang 的交叉编译 &lt;a href="https://linux.cn/article-13385-1.html">[2]&lt;/a>&lt;/p></description></item></channel></rss>

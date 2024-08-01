@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LibreOffice on 白菜</title><link>https://blog.baicai.me/tags/libreoffice/</link><description>Recent content in LibreOffice on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 09 Oct 2023 10:15:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/libreoffice/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
+&lt;p>下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。&lt;/p>
+&lt;h3 id="彻底卸载-libreoffice">彻底卸载 LibreOffice&lt;/h3>
+&lt;p>终端中输入命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo aptitude purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get remove --purge libreoffice*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后清理残留：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附注不完全卸载">附注（不完全卸载）：&lt;/h3>
+&lt;p>卸载libreoffice表格&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-calc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice绘图&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-draw
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice幻灯片&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-impress
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice word文档工具&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-writer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理残留&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="libreoffice简介来自官网">LibreOffice简介（来自官网）：&lt;/h3>
+&lt;p>LibreOffice 是一款功能强大的办公软件，默认使用开放文档格式 (OpenDocument Format , ODF), 并支持 *.docx, *.xlsx, *.pptx 等其他格式。&lt;/p>
+&lt;p>它包含了 Writer, Calc, Impress, Draw, Base 以及 Math 等组件，可用于处理文本文档、电子表格、演示文稿、绘图以及公式编辑。&lt;/p>
+&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item></channel></rss>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>postgres on 白菜</title><link>https://blog.baicai.me/tags/postgres/</link><description>Recent content in postgres on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 22 Jul 2022 14:26:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/postgres/index.xml" rel="self" type="application/rss+xml"/><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
+Debian 11&lt;/p>
+&lt;h3 id="切换到超级用户">切换到超级用户：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> sudo su postgres
+&lt;/code>&lt;/pre>&lt;h3 id="进入psql">进入psql：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql
+&lt;/code>&lt;/pre>&lt;h3 id="创建一个用户">创建一个用户：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> CREATE USER username WITH PASSWORD &amp;#39;password&amp;#39;;
+&lt;/code>&lt;/pre>&lt;h3 id="查看角色列表">查看角色列表：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> \du
+&lt;/code>&lt;/pre>&lt;h3 id="创建数据库并制定所有者和编码">创建数据库并制定所有者和编码：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> CREATE DATABASE dbname WITH OWNER username ENCODING UTF8;
+&lt;/code>&lt;/pre>&lt;h4 id="创建一个数据库">创建一个数据库：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> CREATE DATABASE dbname;
+&lt;/code>&lt;/pre>&lt;h4 id="查看数据库列表">查看数据库列表：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> \l
+&lt;/code>&lt;/pre>&lt;h4 id="更改刚创建的数据库所有权">更改刚创建的数据库所有权：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> ALTER DATABASE dbname OWNER TO username;
+&lt;/code>&lt;/pre>&lt;h4 id="删除表字段">删除表字段&lt;/h4>
+&lt;p>要删除一个字段，使用下面这样的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description;
+&lt;/code>&lt;/pre>&lt;p>不管字段里有啥数据，都会消失，和这个字段相关的约束也会被删除。不过， 如果这个字段被另一个表的外键约束所引用，PostgreSQL 则不会隐含地删除该约束。你可以通过使用CASCADE指明删除任何依赖该字段的东西：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description CASCADE;
+&lt;/code>&lt;/pre>&lt;h3 id="通过psql连接数据库">通过psql连接数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql -h 127.0.0.1 -p 5432 -U username -d dbname
+&lt;/code>&lt;/pre>&lt;h3 id="备份数据库">备份数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> pg_dump dbname &amp;gt; dbname.dump
+&lt;/code>&lt;/pre>&lt;h3 id="恢复数据库">恢复数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql -f dbname.dump -d dbname
+&lt;/code>&lt;/pre></description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>&lt;h3 id="简单步骤">简单步骤&lt;/h3>
+&lt;ol>
+&lt;li>
+&lt;p>安装docker，可参考 &lt;a href="https://blog.baicai.me/article/2021/docker_start/">安装docker及简单的使用&lt;/a> 或 百度解决；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拉取postgreSQL的docker镜像文件：&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker pull postgres
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>创建 docker volume，名字为“dv_pgdata&amp;quot;（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker volume create dv_pgdata
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD&lt;span style="color:#f92672">=&lt;/span>xxxxxx -p 5432:5432 -d postgres
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;li>这时候查看已存在的docker volume:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker volume ls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;li>查看volume信息：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cn2d6@navxin-desktop:~$ docker inspect dv_pgdata
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="7">
+&lt;li>在宿主机，也可以直接查看volume里的内容：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cn2d6@navxin-desktop:~$ ll
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
+&lt;li>查看postgresql：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cn2d6@navxin-desktop:~$docker exec -it &lt;span style="color:#ae81ff">618&lt;/span> bash
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>root@618f1a4128ee:/# psql -U postgres -d postgres -p &lt;span style="color:#ae81ff">5432&lt;/span> -h 127.0.0.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
+&lt;li>更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker pull dpage/pgadmin4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>docker run --name pgadmin -p 5080:80 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -e &lt;span style="color:#e6db74">&amp;#39;PGADMIN_DEFAULT_EMAIL=hi@nav.xin&amp;#39;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -e &lt;span style="color:#e6db74">&amp;#39;PGADMIN_DEFAULT_PASSWORD=xxxxxx&amp;#39;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -e &lt;span style="color:#e6db74">&amp;#39;PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=True&amp;#39;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -e &lt;span style="color:#e6db74">&amp;#39;PGADMIN_CONFIG_LOGIN_BANNER=&amp;#34;Authorised users only!&amp;#34;&amp;#39;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -e &lt;span style="color:#e6db74">&amp;#39;PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10&amp;#39;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -d dpage/pgadmin4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="用docker-compose部署postgresql和pgadmin4">用docker-compose部署postgresql和pgAdmin4&lt;/h3>
+&lt;h4 id="准备步骤">准备步骤&lt;/h4>
+&lt;p>安装docker-compose&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> apt install docker-compose
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>确定已经pull好postgres和pgAdmin4镜像,若未完成：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker pull postgres
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> docker pull dpage/pgadmin4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="配置内容">配置内容&lt;/h4>
+&lt;p>然后在任意目录下新建文件docker-compose.yml:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> touch ./docker-compose.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>内容如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># Use postgres/example user/password credentials &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># https://hub.docker.com/_/postgres?tab=description&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 在当前目录下运行：sudo docker-compose up -d&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 若需停止运行，在当前目录运行：sudo docker-compose down&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># docker路由地址查看： sudo docker inspect postgres_baicai&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># sudo docker kill $(sudo docker ps -aq)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># sudo docker rm $(sudo docker ps -aq)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;3.1&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">db&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">privileged&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">postgres_baicai&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">5432&lt;/span>:&lt;span style="color:#ae81ff">5432&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">POSTGRES_PASSWORD&lt;/span>: &lt;span style="color:#ae81ff">你的密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">PGDATA&lt;/span>: &lt;span style="color:#ae81ff">/var/lib/postgresql/data/pgdata&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">/navxin/kn1/baicai_docker/baicai_postgres/pg_data:/var/lib/postgresql/data&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># - pgdata:/var/lib/postgresql/data&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">pgadmin4&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">dpage/pgadmin4&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">pgadmin_baicai&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">5080&lt;/span>:&lt;span style="color:#ae81ff">80&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">PGADMIN_DEFAULT_EMAIL&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;hi@nav.xin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">PGADMIN_DEFAULT_PASSWORD&lt;/span>: &lt;span style="color:#ae81ff">你的密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># volumes:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># pgdata:&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="部署">部署&lt;/h4>
+&lt;p>在当前目录下运行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker-compose up -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>若需停止运行，在当前目录运行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker-compose down
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>连接步骤&lt;/p>
+&lt;p>打开浏览器，输入localhost:5080，登录pgAdmin4之后，点击添加新服务器，特别注意，在连接地址IP里应该填写docker路由地址，端口填写5432。
+docker路由地址查看方法&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> docker inspect postgres_baicai
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在输出内容中找到Gateway，对应的地址即为docker路由地址。&lt;/p>
+&lt;h3 id="更多参考">更多参考：&lt;/h3>
+&lt;p>&lt;a href="https://blog.baicai.me/article/2021/docker_start/">安装docker及简单的使用&lt;/a>
+&lt;a href="https://hub.docker.com/_/postgres?tab=description">postgres&lt;/a>
+&lt;a href="https://hub.docker.com/r/dpage/pgadmin4">dpage/pgadmin4&lt;/a>&lt;/p></description></item></channel></rss>

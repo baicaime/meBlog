@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ProxyCommand on 白菜</title><link>https://blog.baicai.me/tags/proxycommand/</link><description>Recent content in ProxyCommand on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 31 Aug 2023 12:12:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/proxycommand/index.xml" rel="self" type="application/rss+xml"/><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
+&lt;p>SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。&lt;/p>
+&lt;p>ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。&lt;/p>
+&lt;p>环境说明&lt;/p>
+&lt;pre tabindex="0">&lt;code> 远程服务器的IP地址为 0.0.0.1，代号为X；
+另一个远程服务器的IP为 0.0.0.2，代号为Y；
+目前本机的IP地址为 0.0.0.3，代号为A，本地可以利用SSH客户端通过密钥或密码连接X和Y；
+&lt;/code>&lt;/pre>&lt;p>这里全部使用密钥的方式进行访问，&lt;strong>本机 A 与 Y 之间无法进行访问&lt;/strong>。&lt;/p>
+&lt;p>本地的
+&lt;code>～/.ssh/config&lt;/code>
+的配置文件信息如下，通过X连接到Y；&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>Host X
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PreferredAuthentications publickey
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host Y
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PreferredAuthentications publickey
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host test
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ProxyCommand ssh X -W %h:%p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试本机通过 X 连接到 Y 服务器&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ssh test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>附注：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>-W host:port
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Requests that standard input and output on the client be forwarded to host on port over the secure channel. Implies -N, -T, ExitOnForwardFailure and
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ClearAllForwardings, though these can be overridden in the configuration file or using -o command line options.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-W：该参数在OpenSSH 5.4及之后的版本才支持，参考官方的Release信息；
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>在使用-W之前，通常都是使用nc选项，nc允许你转发TCP/UDP数据包到指定（备用）位置并且基本上与ssh -W相同；
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：
+&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item></channel></rss>

@@ -1,0 +1,17 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/"><link rel=canonical href=https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/><style type=text/css>body{font-family:monospace}</style><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</h1><b><time>2022.11.01 22:18</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/certbot>certbot</a>
+<a href=/tags/nginx>nginx</a><div><p>在Debian 11 Nginx配置Let&rsquo;s Encrypt SSL证书</p><h3 id=安装-certbot-及-certbot-nginx-插件>安装 Certbot 及 certbot nginx 插件</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt update <span style=color:#f92672>&amp;&amp;</span> sudo apt -y install certbot python3-certbot-nginx
+</span></span></code></pre></div><h3 id=为-nginx-网站生成证书并配置>为 nginx 网站生成证书并配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>certbot --nginx
+</span></span></code></pre></div><p>如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。</p><p>也可以为特定域名获取证书配置</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>certbot --nginx -d baicai.me
+</span></span></code></pre></div><h3 id=使用certbot自动更新ssl证书>使用Certbot自动更新SSL证书</h3><p>Let&rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。
+除非你更改配置，否则无需再次手动运行Certbot。
+您可以通过运行以下命令来测试证书的自动续订。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>certbot renew --dry-run
+</span></span></code></pre></div></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

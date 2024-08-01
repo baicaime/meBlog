@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>内存取证 on 白菜</title><link>https://blog.baicai.me/tags/%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81/</link><description>Recent content in 内存取证 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Wed, 26 May 2021 12:57:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81/index.xml" rel="self" type="application/rss+xml"/><item><title>使用开源工具进行 Linux 内存取证</title><link>https://blog.baicai.me/article/2021/linux-memory-forensics/</link><pubDate>Wed, 26 May 2021 12:57:28 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux-memory-forensics/</guid><description>&lt;blockquote>
+&lt;p>利用 Volatility 找出应用程序、网络连接、内核模块、文件等方面的情况。&lt;/p>
+&lt;/blockquote>
+&lt;p>计算机的操作系统和应用使用主内存（RAM）来执行不同的任务。这种易失性内存包含大量关于运行应用、网络连接、内核模块、打开的文件以及几乎所有其他的内容信息，但这些信息每次计算机重启的时候都会被清除。&lt;/p>
+&lt;p>内存取证是一种从内存中找到和抽取这些有价值的信息的方式。Volatility 是一种使用插件来处理这类信息的开源工具。但是，存在一个问题：在你处理这些信息前，必须将物理内存转储到一个文件中，而 Volatility 没有这种能力。&lt;/p>
+&lt;p>因此，这篇文章分为两部分：&lt;/p>
+&lt;ul>
+&lt;li>第一部分是处理获取物理内存并将其转储到一个文件中。&lt;/li>
+&lt;li>第二部分使用 Volatility 从这个内存转储中读取并处理这些信息。&lt;/li>
+&lt;/ul>
+&lt;p>我在本教程中使用了以下测试系统，不过它可以在任何 Linux 发行版上工作：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cat /etc/redhat-release
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Red Hat Enterprise Linux release 8.3 &lt;span style="color:#f92672">(&lt;/span>Ootpa&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ uname -r
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4.18.0-240.el8.x86_64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>注意事项： 部分 1 涉及到编译和加载一个内核模块。不要担心：它并不像听起来那么困难。
+一些指南：
+按照以下的步骤。
+不要在生产系统或你的主要计算机上尝试任何这些步骤。
+始终使用测试的虚拟机（VM）来尝试，直到你熟悉使用这些工具并理解它们的工作原理为止。
+&lt;/code>&lt;/pre>
+&lt;h2 id="安装需要的包">安装需要的包&lt;/h2>
+&lt;p>在开始之前安装必要的工具。如果你经常使用基于 Debian 的发行版，可以使用 apt-get 命令。这些包大多数提供了需要的内核信息和工具来编译代码：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ yum install kernel-headers kernel-devel gcc elfutils-libelf-devel make git libdwarf-tools python2-devel.x86_64-y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="部分-1使用-lime-获取内存并将其转储到一个文件中">部分 1：使用 LiME 获取内存并将其转储到一个文件中&lt;/h2>
+&lt;p>在开始分析内存之前，你需要一个内存转储供你使用。在实际的取证活动中，这可能来自一个被破坏或者被入侵的系统。这些信息通常会被收集和存储来分析入侵是如何发生的及其影响。由于你可能没有可用的内存转储，你可以获取你的测试 VM 的内存转储，并使用它来执行内存取证。&lt;/p>
+&lt;p>Linux 内存提取器（LiME）是一个在 Linux 系统上获取内存很常用的工具。使用以下命令获得 LiME：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ git clone https://github.com/504ensicsLabs/LiME.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd LiME/src/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>deflate.c disk.c hash.c lime.h main.c Makefile Makefile.sample tcp.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="构建-lime-内核模块">构建 LiME 内核模块&lt;/h3>
+&lt;p>在 src 文件夹下运行 make 命令。这会创建一个以 .ko 为扩展名的内核模块。理想情况下，在 make 结束时，lime.ko 文件会使用格式 lime-&lt;!-- raw HTML omitted -->.ko 被重命名。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ make
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make -C /lib/modules/4.18.0-240.el8.x86_64/build M&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/root/LiME/src&amp;#34;&lt;/span> modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: Entering directory &lt;span style="color:#e6db74">&amp;#39;/usr/src/kernels/4.18.0-240.el8.x86_64&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: Leaving directory &lt;span style="color:#e6db74">&amp;#39;/usr/src/kernels/4.18.0-240.el8.x86_64&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strip --strip-unneeded lime.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mv lime.ko lime-4.18.0-240.el8.x86_64.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls -l lime-4.18.0-240.el8.x86_64.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rw-r--r--. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">25696&lt;/span> Apr &lt;span style="color:#ae81ff">17&lt;/span> 14:45 lime-4.18.0-240.el8.x86_64.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ file lime-4.18.0-240.el8.x86_64.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lime-4.18.0-240.el8.x86_64.ko: ELF 64-bit LSB relocatable, x86-64, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, BuildID&lt;span style="color:#f92672">[&lt;/span>sha1&lt;span style="color:#f92672">]=&lt;/span>1d0b5cf932389000d960a7e6b57c428b8e46c9cf, not stripped
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="加载lime-内核模块">加载LiME 内核模块&lt;/h3>
+&lt;p>现在是时候加载内核模块来获取系统内存了。insmod 命令会帮助加载内核模块；模块一旦被加载，会在你的系统上读取主内存（RAM）并且将内存的内容转储到命令行所提供的 path 目录下的文件中。另一个重要的参数是 format；保持 lime 的格式，如下所示。在插入内核模块之后，使用 lsmod 命令验证它是否真的被加载。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ lsmod | grep lime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ insmod ./lime-4.18.0-240.el8.x86_64.ko &lt;span style="color:#e6db74">&amp;#34;path=../RHEL8.3_64bit.mem format=lime&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ lsmod | grep lime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lime &lt;span style="color:#ae81ff">16384&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>你应该看到给 path 命令的文件已经创建好了，而且文件大小与你系统的物理内存（RAM）大小相同（并不奇怪）。一旦你有了内存转储，你就可以使用 rmmod 命令删除该内核模块：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls -l ~/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-r--r--r--. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">4294544480&lt;/span> Apr &lt;span style="color:#ae81ff">17&lt;/span> 14:47 /root/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ du -sh ~/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4.0G /root/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ free -m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> total used free shared buff/cache available
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Mem: &lt;span style="color:#ae81ff">3736&lt;/span> &lt;span style="color:#ae81ff">220&lt;/span> &lt;span style="color:#ae81ff">366&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span> &lt;span style="color:#ae81ff">3149&lt;/span> &lt;span style="color:#ae81ff">3259&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Swap: &lt;span style="color:#ae81ff">4059&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span> &lt;span style="color:#ae81ff">4051&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ rmmod lime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ lsmod | grep lime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="内存转储中是什么">内存转储中是什么？&lt;/h3>
+&lt;p>这个内存转储文件只是原始数据，就像使用 file 命令可以看到的一样。你不可能通过手动去理解它；是的，在这里边有一些 ASCII 字符，但是你无法用编辑器打开这个文件并把它读出来。hexdump 的输出显示，最初的几个字节是 EmiL；这是因为你的请求格式在上面的命令行中是 lime：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ file ~/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/root/LiME/RHEL8.3_64bit.mem: data
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexdump -C ~/LiME/RHEL8.3_64bit.mem | head
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000000&lt;/span> &lt;span style="color:#ae81ff">45&lt;/span> 4d &lt;span style="color:#ae81ff">69&lt;/span> 4c &lt;span style="color:#ae81ff">01&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">10&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> |EMiL............|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000010&lt;/span> ff fb &lt;span style="color:#ae81ff">09&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> |................|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000020&lt;/span> b8 fe 4c cd &lt;span style="color:#ae81ff">21&lt;/span> &lt;span style="color:#ae81ff">44&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">32&lt;/span> &lt;span style="color:#ae81ff">20&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> 2a 2a 2a 2a 2a |..L.!D.2 ..*****|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000030&lt;/span> 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a |****************|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000040&lt;/span> 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a 2a &lt;span style="color:#ae81ff">20&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">20&lt;/span> |************* . |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000050&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> |................|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000080&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">70&lt;/span> &lt;span style="color:#ae81ff">78&lt;/span> &lt;span style="color:#ae81ff">65&lt;/span> 6c |............pxel|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">00000090&lt;/span> &lt;span style="color:#ae81ff">69&lt;/span> 6e &lt;span style="color:#ae81ff">75&lt;/span> &lt;span style="color:#ae81ff">78&lt;/span> 2e &lt;span style="color:#ae81ff">30&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> |inux.0..........|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>000000a0 &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> &lt;span style="color:#ae81ff">00&lt;/span> |................|
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="部分-2获得-volatility-并使用它来分析你的内存转储">部分 2：获得 Volatility 并使用它来分析你的内存转储&lt;/h2>
+&lt;p>现在你有了要分析的示例内存转储，使用下面的命令获取 Volatility 软件。Volatility 已经用 Python 3 重写了，但是本教程使用的是用 Python 2 写的原始的 Volatility 包。如果你想用 Volatility 3 进行实验，可以从合适的 Git 仓库下载它，并在以下命令中使用 Python 3 而不是 Python 2：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ git clone https://github.com/volatilityfoundation/volatility.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd volatility/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>AUTHORS.txt contrib LEGAL.txt Makefile PKG-INFO pyinstaller.spec resources tools vol.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>CHANGELOG.txt CREDITS.txt LICENSE.txt MANIFEST.in pyinstaller README.txt setup.py volatility
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Volatility 使用两个 Python 库来实现某些功能，所以使用以下命令来安装它们。否则，在你运行 Volatility 工具时，你可能看到一些导入错误；你可以忽略它们，除非你正在运行的插件需要这些库；这种情况下，工具将会报错：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ pip2 install pycrypto
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pip2 install distorm3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="列出-volatility-的-linux-配置文件">列出 Volatility 的 Linux 配置文件&lt;/h3>
+&lt;p>你将要运行的第一个 Volatility 命令列出了可用的 Linux 配置文件，运行 Volatility 命令的主要入口点是 vol.py 脚本。使用 Python 2 解释器调用它并提供 &amp;ndash;info 选项。为了缩小输出，查找以 Linux 开头的字符串。正如你所看到的，并没有很多 Linux 配置文件被列出：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py --info | grep ^Linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>LinuxAMD64PagedMemory - Linux-specific AMD 64-bit address space.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="构建你自己的-linux-配置文件">构建你自己的 Linux 配置文件&lt;/h3>
+&lt;p>Linux 发行版是多种多样的，并且是为不同架构而构建的。这就是为什么配置文件是必要的 —— Volatility 在提取信息前必须知道内存转储是从哪个系统和架构获得的。有一些 Volatility 命令可以找到这些信息；但是这个方法很费时。为了加快速度，可以使用以下命令构建一个自定义的 Linux 配置文件：&lt;/p>
+&lt;p>移动到 Volatility 仓库的 tools/linux目录下，运行 make 命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cd tools/linux/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pwd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/root/volatility/tools/linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kcore Makefile Makefile.enterprise module.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ make
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make -C //lib/modules/4.18.0-240.el8.x86_64/build CONFIG_DEBUG_INFO&lt;span style="color:#f92672">=&lt;/span>y M&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/root/volatility/tools/linux&amp;#34;&lt;/span> modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: Entering directory &lt;span style="color:#e6db74">&amp;#39;/usr/src/kernels/4.18.0-240.el8.x86_64&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: Leaving directory &lt;span style="color:#e6db74">&amp;#39;/usr/src/kernels/4.18.0-240.el8.x86_64&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>你应该看到一个新的 module.dwarf 文件。你也需要 /boot 目录下的 System.map 文件，因为它包含了所有与当前运行的内核相关的符号：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kcore Makefile Makefile.enterprise module.c module.dwarf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls -l module.dwarf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rw-r--r--. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">3987904&lt;/span> Apr &lt;span style="color:#ae81ff">17&lt;/span> 15:17 module.dwarf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls -l /boot/System.map-4.18.0-240.el8.x86_64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rw-------. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">4032815&lt;/span> Sep &lt;span style="color:#ae81ff">23&lt;/span> &lt;span style="color:#ae81ff">2020&lt;/span> /boot/System.map-4.18.0-240.el8.x86_64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>要创建一个自定义配置文件，移动回到 Volatility 目录并且运行下面的命令。第一个参数提供了一个自定义 .zip 文件，文件名是你自己命名的。我经常使用操作系统和内核版本来命名。下一个参数是前边创建的 module.dwarf 文件，最后一个参数是 /boot 目录下的 System.map 文件：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd volatility/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ zip volatility/plugins/overlays/linux/Redhat8.3_4.18.0-240.zip tools/linux/module.dwarf /boot/System.map-4.18.0-240.el8.x86_64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> adding: tools/linux/module.dwarf &lt;span style="color:#f92672">(&lt;/span>deflated 91%&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> adding: boot/System.map-4.18.0-240.el8.x86_64 &lt;span style="color:#f92672">(&lt;/span>deflated 79%&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>现在自定义配置文件就准备好了，所以在前边给出的位置检查一下 .zip 文件是否被创建好。如果你想知道 Volatility 是否检测到这个自定义配置文件，再一次运行 &amp;ndash;info 命令。现在，你应该可以在下边的列出的内容中看到新的配置文件：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls -l volatility/plugins/overlays/linux/Redhat8.3_4.18.0-240.zip
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rw-r--r--. &lt;span style="color:#ae81ff">1&lt;/span> root root &lt;span style="color:#ae81ff">1190360&lt;/span> Apr &lt;span style="color:#ae81ff">17&lt;/span> 15:20 volatility/plugins/overlays/linux/Redhat8.3_4.18.0-240.zip
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ python2 vol.py --info | grep Redhat
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>LinuxRedhat8_3_4_18_0-240x64 - A Profile &lt;span style="color:#66d9ef">for&lt;/span> Linux Redhat8.3_4.18.0-240 x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="开始使用-volatility">开始使用 Volatility&lt;/h3>
+&lt;p>现在你已经准备好去做一些真正的内存取证了。记住，Volatility 是由自定义的插件组成的，你可以针对内存转储来获得信息。命令的通用格式是：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>python2 vol.py -f &amp;lt;memory-dump-file-taken-by-Lime&amp;gt; &amp;lt;plugin-name&amp;gt; --profile&lt;span style="color:#f92672">=&lt;/span>&amp;lt;name-of-our-custom-profile&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>有了这些信息，运行 linux_banner 插件来看看你是否可从内存转储中识别正确的发行版信息：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_banner --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Linux version 4.18.0-240.el8.x86_64 &lt;span style="color:#f92672">([&lt;/span>mockbuild@vm09.test.com&lt;span style="color:#f92672">][&lt;/span>4&lt;span style="color:#f92672">])&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.1 &lt;span style="color:#ae81ff">20191121&lt;/span> &lt;span style="color:#f92672">(&lt;/span>Red Hat 8.3.1-5&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>GCC&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Wed Sep 23 05:13:10 EDT 2020&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="找到-linux-插件">找到 Linux 插件&lt;/h3>
+&lt;p>到现在都很顺利，所以现在你可能对如何找到所有 Linux 插件的名字比较好奇。有一个简单的技巧：运行 &amp;ndash;info 命令并抓取 linux_ 字符串。有各种各样的插件可用于不同的用途。这里列出一部分：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py --info | grep linux_
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_apihooks - Checks &lt;span style="color:#66d9ef">for&lt;/span> userland apihooks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_arp - Print the ARP table
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_aslr_shift - Automatically detect the Linux ASLR shift
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_banner - Prints the Linux banner information
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_vma_cache - Gather VMAs from the vm_area_struct cache
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_volshell - Shell in the memory image
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>linux_yarascan - A shell in the Linux memory image
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用 linux_psaux 插件检查内存转储时系统上正在运行哪些进程。注意列表中的最后一个命令：它是你在转储之前运行的 insmod 命令。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_psaux --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Pid Uid Gid Arguments
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /usr/lib/systemd/systemd --switched-root --system --deserialize &lt;span style="color:#ae81ff">18&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>kthreadd&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">3&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>rcu_gp&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">4&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>rcu_par_gp&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">861&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /usr/libexec/platform-python -Es /usr/sbin/tuned -l -P
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">869&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /usr/bin/rhsmcertd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">875&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /usr/libexec/sssd/sssd_be --domain implicit_files --uid &lt;span style="color:#ae81ff">0&lt;/span> --gid &lt;span style="color:#ae81ff">0&lt;/span> --logger&lt;span style="color:#f92672">=&lt;/span>files
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">878&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /usr/libexec/sssd/sssd_nss --uid &lt;span style="color:#ae81ff">0&lt;/span> --gid &lt;span style="color:#ae81ff">0&lt;/span> --logger&lt;span style="color:#f92672">=&lt;/span>files
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">11064&lt;/span> &lt;span style="color:#ae81ff">89&lt;/span> &lt;span style="color:#ae81ff">89&lt;/span> qmgr -l -t unix -u
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">227148&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>kworker/0:0&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">227298&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> -bash
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">227374&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>kworker/u2:1&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">227375&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>kworker/0:2&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">227884&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">[&lt;/span>kworker/0:3&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">228573&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> insmod ./lime-4.18.0-240.el8.x86_64.ko path&lt;span style="color:#f92672">=&lt;/span>../RHEL8.3_64bit.mem format&lt;span style="color:#f92672">=&lt;/span>lime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">228576&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>想要知道系统的网络状态吗？运行 linux_netstat 插件来找到在内存转储期间网络连接的状态：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_netstat --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>UNIX &lt;span style="color:#ae81ff">18113&lt;/span> systemd/1 /run/systemd/private
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>UNIX &lt;span style="color:#ae81ff">11411&lt;/span> systemd/1 /run/systemd/notify
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>UNIX &lt;span style="color:#ae81ff">11413&lt;/span> systemd/1 /run/systemd/cgroups-agent
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>UNIX &lt;span style="color:#ae81ff">11415&lt;/span> systemd/1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>UNIX &lt;span style="color:#ae81ff">11416&lt;/span> systemd/1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>接下来，使用 linux_mount 插件来看在内存转储期间哪些文件系统被挂载：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_mount --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs /sys/fs/cgroup tmpfs ro,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cgroup /sys/fs/cgroup/pids cgroup rw,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemd-1 /proc/sys/fs/binfmt_misc autofs rw,relatime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sunrpc /var/lib/nfs/rpc_pipefs rpc_pipefs rw,relatime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mapper/rhel_kvm--03--guest11-root / xfs rw,relatime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs /dev/shm tmpfs rw,nosuid,nodev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>selinuxfs /sys/fs/selinux selinuxfs rw,relatime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cgroup /sys/fs/cgroup/net_cls,net_prio cgroup rw,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cgroup /sys/fs/cgroup/cpu,cpuacct cgroup rw,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bpf /sys/fs/bpf bpf rw,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cgroup /sys/fs/cgroup/memory cgroup ro,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cgroup /sys/fs/cgroup/cpuset cgroup rw,relatime,nosuid,nodev,noexec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mqueue /dev/mqueue mqueue rw,relatime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>好奇哪些内核模块被加载了吗？Volatility 也为这个提供了一个插件 linux_lsmod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_lsmod --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc0535040 lime &lt;span style="color:#ae81ff">20480&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc0530540 binfmt_misc &lt;span style="color:#ae81ff">20480&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc05e8040 sunrpc &lt;span style="color:#ae81ff">479232&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc04f9540 nfit &lt;span style="color:#ae81ff">65536&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc0266280 dm_mirror &lt;span style="color:#ae81ff">28672&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc025e040 dm_region_hash &lt;span style="color:#ae81ff">20480&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc0258180 dm_log &lt;span style="color:#ae81ff">20480&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ffffffffc024bbc0 dm_mod &lt;span style="color:#ae81ff">151552&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>想知道哪些文件被哪些进程打开了吗？使用 linux_bash 插件可以列出这些信息：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_bash --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64 -v
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Pid Name Command Time Command
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-------- -------------------- ------------------------------ -------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 lsmod
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 rm -f .log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 ls -l /etc/zzz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 cat ~/.vimrc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 cat /proc/817/cwd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 ls -l /proc/817/cwd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227221&lt;/span> bash 2021-04-17 18:38:24 UTC+0000 ls /proc/817/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 gcc prt.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 ./a.out
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 vim prt.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 gcc prt.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 ./a.out
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">227298&lt;/span> bash 2021-04-17 18:40:30 UTC+0000 ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>想知道哪些文件被哪些进程打开了吗？使用 linux_lsof 插件可以列出这些信息：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_lsof --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Offset Name Pid FD Path
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>------------------ ------------------------------ -------- -------- ----
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /dev/null
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> /dev/null
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span> /dev/null
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span> /dev/urandom
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">4&lt;/span> socket:&lt;span style="color:#f92672">[&lt;/span>83565&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">5&lt;/span> /var/log/messages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">6&lt;/span> anon_inode:&lt;span style="color:#f92672">[&lt;/span>9063&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c83fb1e9f40 rsyslogd &lt;span style="color:#ae81ff">71194&lt;/span> &lt;span style="color:#ae81ff">7&lt;/span> /var/log/secure
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c8365761f40 insmod &lt;span style="color:#ae81ff">228573&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> /dev/pts/0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c8365761f40 insmod &lt;span style="color:#ae81ff">228573&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> /dev/pts/0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c8365761f40 insmod &lt;span style="color:#ae81ff">228573&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span> /dev/pts/0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xffff9c8365761f40 insmod &lt;span style="color:#ae81ff">228573&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span> /root/LiME/src/lime-4.18.0-240.el8.x86_64.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="访问-linux-插件脚本位置">访问 Linux 插件脚本位置&lt;/h3>
+&lt;p>通过读取内存转储和处理这些信息，你可以获得更多的信息。如果你会 Python，并且好奇这些信息是如何被处理的，可以到存储所有插件的目录，选择一个你感兴趣的，并看看 Volatility 是如何获得这些信息的：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls volatility/plugins/linux/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apihooks.py common.py kernel_opened_files.py malfind.py psaux.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apihooks.pyc common.pyc kernel_opened_files.pyc malfind.pyc psaux.pyc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arp.py cpuinfo.py keyboard_notifiers.py mount_cache.py psenv.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arp.pyc cpuinfo.pyc keyboard_notifiers.pyc mount_cache.pyc psenv.pyc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>aslr_shift.py dentry_cache.py ld_env.py mount.py pslist_cache.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>aslr_shift.pyc dentry_cache.pyc ld_env.pyc mount.pyc pslist_cache.pyc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&amp;lt; 删节 &amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>check_syscall_arm.py __init__.py lsmod.py proc_maps.py tty_check.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>check_syscall_arm.pyc __init__.pyc lsmod.pyc proc_maps.pyc tty_check.pyc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>check_syscall.py iomem.py lsof.py proc_maps_rb.py vma_cache.py
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>check_syscall.pyc iomem.pyc lsof.pyc proc_maps_rb.pyc vma_cache.pyc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>我喜欢 Volatility 的理由是他提供了许多安全插件。这些信息很难手动获取：&lt;/p>
+&lt;pre>&lt;code>linux_hidden_modules - Carves memory to find hidden kernel modules
+linux_malfind - Looks for suspicious process mappings
+linux_truecrypt_passphrase - Recovers cached Truecrypt passphrases
+&lt;/code>&lt;/pre>
+&lt;p>Volatility 也允许你在内存转储中打开一个 shell，所以你可以运行 shell 命令来代替上面所有命令，并获得相同的信息：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 vol.py -f ~/LiME/RHEL8.3_64bit.mem linux_volshell --profile&lt;span style="color:#f92672">=&lt;/span>LinuxRedhat8_3_4_18_0-240x64 -v
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Volatility Foundation Volatility Framework 2.6.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Current context: process systemd, pid&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span> DTB&lt;span style="color:#f92672">=&lt;/span>0x1042dc000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Welcome to volshell! Current memory image is:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>file:///root/LiME/RHEL8.3_64bit.mem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To get help, type &lt;span style="color:#e6db74">&amp;#39;hh()&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt;&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt;&amp;gt;&amp;gt; sc&lt;span style="color:#f92672">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Current context: process systemd, pid&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span> DTB&lt;span style="color:#f92672">=&lt;/span>0x1042dc000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt;&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="接下来的步骤">接下来的步骤&lt;/h2>
+&lt;p>内存转储是了解 Linux 内部情况的好方法。试一试 Volatility 的所有插件，并详细研究它们的输出。然后思考这些信息如何能够帮助你识别入侵或安全问题。深入了解这些插件的工作原理，甚至尝试改进它们。如果你没有找到你想做的事情的插件，那就写一个并提交给 Volatility，这样其他人也可以使用它。&lt;/p>
+&lt;h3 id="参考">参考&lt;/h3>
+&lt;p>使用开源工具进行 Linux 内存取证 &lt;a href="https://linux.cn/article-13425-1.html">[1]&lt;/a>&lt;/p>
+&lt;p>Perform Linux memory forensics with this open source tool &lt;a href="https://opensource.com/article/21/4/linux-memory-forensics">[2]&lt;/a>&lt;/p></description></item></channel></rss>

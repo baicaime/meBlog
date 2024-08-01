@@ -1,0 +1,63 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/docker_mtg/"><link rel=canonical href=https://blog.baicai.me/article/2023/docker_mtg/><style type=text/css>body{font-family:monospace}</style><title>Docker 搭建MTProto协议上网</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Docker 搭建MTProto协议上网</h1><b><time>2023.09.07 18:00</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/mtproto>mtproto</a><div><p>系统环境：
+Debian系（其他系只需要更换apt为对应系统的软件包管理工具名称即可）</p><h2 id=安装docker>安装Docker</h2><h3 id=安装docker相关工具>安装Docker相关工具</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt update <span style=color:#f92672>&amp;&amp;</span> sudo apt -y upgrade <span style=color:#f92672>&amp;&amp;</span> sudo apt install -y docker docker.io docker-compose
+</span></span></code></pre></div><h3 id=启动docker>启动docker</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo systemctl enable docker <span style=color:#f92672>&amp;&amp;</span> sudo systemctl start docker
+</span></span></code></pre></div><h3 id=验证是否安装成功>验证是否安装成功</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo docker run hello-world
+</span></span></code></pre></div><h2 id=mtg-v2版本-docker运行>mtg v2版本 docker运行</h2><h3 id=生成密钥>生成密钥</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo docker pull baicailin/mtg
+</span></span><span style=display:flex><span>sudo docker run --rm baicailin/mtg generate-secret --hex trade.aliexpress.com
+</span></span><span style=display:flex><span><span style=color:#75715e>#会看到一串ee开头的密钥，形如：</span>
+</span></span><span style=display:flex><span>eexxx44f3762c8a97d14f89df8c0174726164652e616c69657870726573732e636f6d
+</span></span></code></pre></div><h3 id=写入简单配置>写入简单配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo <span style=color:#e6db74>&#34;secret = \&#34;把上面一步生成的密钥填进来\&#34;&#34;</span> &gt;config.toml
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;bind-to = \&#34;0.0.0.0:443\&#34;&#34;</span> &gt;&gt;config.toml
+</span></span></code></pre></div><h3 id=运行docker镜像命令>运行docker镜像命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo docker run -d -v $PWD/config.toml:/config.toml -p 443:443 --name baicai_mtg --restart<span style=color:#f92672>=</span>unless-stopped baicailin/mtg
+</span></span></code></pre></div><h3 id=docker-compose-启动可代替上面这个命令启动方式>docker-compose 启动（可代替上面这个命令启动方式）</h3><p>一键启动 docker-compose.yaml 文件参考</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>mtg_v2</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>:  <span style=color:#ae81ff>baicailin/mtg</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#e6db74>&#34;mtg_v2&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>unless-stopped</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>run /config.toml</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>./config.toml:/config.toml</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>TZ</span>: <span style=color:#ae81ff>Asia/Shanghai</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;443:443&#34;</span>
+</span></span></code></pre></div><h3 id=生成mtproto协议服务配置>生成MTProto协议服务配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo docker exec mtg_v2 /mtg access /config.toml
+</span></span></code></pre></div><h2 id=mtg_v1-版本支持adtag-赞助选项运行>mtg_v1 版本(支持adtag 赞助选项)运行</h2><p>生成密钥</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker run --rm baicailin/mtg:1 generate-secret tls -c bing.com
+</span></span><span style=display:flex><span>eedf71035a8ed48a623d8e83e66aec4d0562696e672e636f6d
+</span></span></code></pre></div><h3 id=docker-compose-启动可代替上面这个命令启动方式-1>docker-compose 启动（可代替上面这个命令启动方式）</h3><p>一键启动 docker-compose.yaml 文件参考：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>mtg_v1</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>:  <span style=color:#ae81ff>baicailin/mtg:1</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#e6db74>&#34;mtg_v1&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>unless-stopped</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># deploy:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#     resources:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#         limits:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#           cpus: 0.50</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#           memory: 256M</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#         reservations:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#           memory: 128M</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>run eedf71035a8ed48a623d8e83e66aec4d0562696e672e636f6d adtag</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>TZ</span>: <span style=color:#ae81ff>Asia/Shanghai</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_DEBUG: &#34;true&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_BIND: &#34;0.0.0.0:3128&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_IPV4: &#34;公网ip:端口&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_IPV6: &#34;公网ip:端口&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># MTG_STATS_BIND: &#34;127.0.0.1:3129&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># network_mode: host  </span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;1443:3128&#34;</span>
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;1444:3129&#34;</span>
+</span></span></code></pre></div><p>运行参数中的 <code>adtag</code> 可以通过tg机器人 <code>@MTProxybot</code> 创建获得</p><h3 id=查看mtproto协议服务配置>查看MTProto协议服务配置</h3><p>在mtg v1 docker-compose.yml文件目录下运行</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker-compose logs
+</span></span></code></pre></div></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

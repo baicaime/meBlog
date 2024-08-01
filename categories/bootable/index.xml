@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bootable on 白菜</title><link>https://blog.baicai.me/categories/bootable/</link><description>Recent content in bootable on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 20 Oct 2022 13:18:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/bootable/index.xml" rel="self" type="application/rss+xml"/><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
+Create a Bootable USB Flash Drive&lt;/p>
+&lt;p>在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下&lt;/p>
+&lt;h3 id="下载-debian-dvd-镜像文件">下载 Debian DVD 镜像文件&lt;/h3>
+&lt;p>通过 HTTP/FTP 下载 Debian CD/DVD 映像 &lt;a href="https://www.debian.org/CD/http-ftp/">https://www.debian.org/CD/http-ftp/&lt;/a>&lt;/p>
+&lt;p>amd64 DVD版 &lt;a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/">https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/&lt;/a>&lt;/p>
+&lt;h3 id="格式化usb盘">格式化USB盘&lt;/h3>
+&lt;p>打开系统自带的磁盘管理工具，插上U盘，格式化U盘，选择格式如下：
+格式：Mac OS 扩展（日志式）
+方案：GUID 分区图&lt;/p>
+&lt;h3 id="取消usb磁盘挂载">取消Usb磁盘挂载&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 终端执行以下命令&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 列出磁盘，找到你usb硬盘的盘符&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>diskutil list
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 输出如下：可以看到usb硬盘为/dev/disk2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/disk2 &lt;span style="color:#f92672">(&lt;/span>external, physical&lt;span style="color:#f92672">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#: TYPE NAME SIZE IDENTIFIER&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: FDisk_partition_scheme *32.0 GB disk2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: 0xEF 6.4 MB disk2s2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 取消usb硬盘的挂载&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>diskutil unmountDisk /dev/disk2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="导入镜像">导入镜像&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 执行如下命令&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># if是镜像文件路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># of是导入的目的磁盘&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># bs是读写快的大小，太小会增大io，降低效率，一般1m～2m即可。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo dd &lt;span style="color:#66d9ef">if&lt;/span>&lt;span style="color:#f92672">=&lt;/span>~/Downloads/debian-11.5.0-amd64-DVD-1.iso of&lt;span style="color:#f92672">=&lt;/span>/dev/disk2 bs&lt;span style="color:#f92672">=&lt;/span>2m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 或 这里的U盘注意是rdisk2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo dd &lt;span style="color:#66d9ef">if&lt;/span>&lt;span style="color:#f92672">=&lt;/span>~/Downloads/debian-11.5.0-amd64-DVD-1.iso of&lt;span style="color:#f92672">=&lt;/span>/dev/rdisk2 bs&lt;span style="color:#f92672">=&lt;/span>2m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>if是输入文件。&lt;/li>
+&lt;li>of是输出文件&lt;/li>
+&lt;li>bs是传输文件速度&lt;/li>
+&lt;/ul>
+&lt;h3 id="等待导入完成">等待导入完成&lt;/h3>
+&lt;p>此导入需要等待一段时间，可能会比较久。耐心等待。
+直到出现records in，records out，即成功了。&lt;/p>
+&lt;h3 id="弹出u盘">弹出U盘&lt;/h3>
+&lt;p>在快要完成的时候，系统会出现“磁盘无法识别”的提示，先不要做任何操作，等待终端dd命令执行完成后，执行下面命令弹出U盘。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eject /dev/disk2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item></channel></rss>

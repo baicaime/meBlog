@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>adb on 白菜</title><link>https://blog.baicai.me/tags/adb/</link><description>Recent content in adb on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 04 Mar 2024 22:44:37 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/adb/index.xml" rel="self" type="application/rss+xml"/><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
+&lt;p>把当前目录下的&lt;code>test.tex&lt;/code>文件传到手机 &lt;code>/sdcard/test&lt;/code>目录中&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb push test.txt /sdcard/test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="手机文件传到电脑">手机文件传到电脑&lt;/h3>
+&lt;p>把 &lt;code>/sdcard/test/&lt;/code> 目录下的&lt;code>test.txt&lt;/code>文件传到本机当前目录&lt;code>test&lt;/code>目录中&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb pull /sdcard/test/test.txt ./test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="查看手机文件目录">查看手机文件目录&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#进入到根目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>adb shell
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#查看所有目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#进入到sdcard目录，安卓手机的文件管理一般都这这里&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd sdcard
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#然后查看要传输哪些文件到哪个文件夹&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title><link>https://blog.baicai.me/article/2023/adb_pm_uninstall/</link><pubDate>Tue, 05 Dec 2023 13:31:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/adb_pm_uninstall/</guid><description>&lt;h3 id="准备-adb-使用条件">准备 ADB 使用条件&lt;/h3>
+&lt;p>要使用 ADB（Android 调试桥），你需要按照以下步骤操作：&lt;/p>
+&lt;p>下载并安装 ADB 工具：&lt;/p>
+&lt;pre>&lt;code>在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。
+如果你使用 macOS 或 Linux，你可以通过终端使用系统包管理器或 Homebrew 安装 ADB。
+如果你使用 Windows，你可以下载 Android Studio，它包含了 ADB 工具。
+&lt;/code>&lt;/pre>
+&lt;p>连接 Android 设备：&lt;/p>
+&lt;pre>&lt;code>使用 USB 线将 Android 设备连接到计算机上。
+在 Android 设备上打开开发者选项。这通常需要在设备设置中多次点击“关于手机” -&amp;gt; “版本号”或者类似的选项。一旦开启，返回设置菜单并找到“开发者选项”。
+在“开发者选项”中，启用“USB 调试”。
+&lt;/code>&lt;/pre>
+&lt;p>打开命令提示符（Windows）/终端（macOS、Linux）：&lt;/p>
+&lt;pre>&lt;code>运行以下命令以确保 ADB 正确识别设备：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb devices
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这应该显示已连接设备的列表。&lt;/p>
+&lt;h3 id="使用-adb-列出已经安装的应用程序">使用 ADB 列出已经安装的应用程序&lt;/h3>
+&lt;p>打开命令提示符（Windows）/终端（macOS、Linux）：&lt;/p>
+&lt;pre>&lt;code>在命令提示符/终端中输入以下命令来列出已安装的应用程序：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb shell pm list packages
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果你想筛选出包含特定关键词的应用程序，可以使用以下命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb shell pm list packages | grep keyword
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>将 &amp;ldquo;keyword&amp;rdquo; 替换为你想要搜索的关键词。
+比如魅族的手机&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb shell pm list packages | grep com.meizu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="使用-adb-在-android-设备上卸载普通应用程序">使用 ADB 在 Android 设备上卸载普通应用程序&lt;/h3>
+&lt;p>打开命令提示符（Windows）/终端（macOS、Linux）：&lt;/p>
+&lt;pre>&lt;code>在命令提示符/终端中输入以下命令来卸载应用程序：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> adb uninstall package_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>将 package_name 替换为你想要卸载的应用程序的包名。你可以通过之前提到的 adb shell pm list packages 命令来获取应用程序的包名列表。
+&lt;/code>&lt;/pre>
+&lt;p>示例：&lt;/p>
+&lt;pre>&lt;code>假设你想卸载名为 &amp;quot;com.example.app&amp;quot; 的应用程序，命令将如下所示：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> adb uninstall com.example.app
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>确认卸载：&lt;/p>
+&lt;pre>&lt;code>执行命令后，ADB 会尝试卸载该应用程序。等待一段时间，命令提示符/终端会显示成功或失败的信息。
+&lt;/code>&lt;/pre>
+&lt;p>这个指令卸载系统自带应用可以能会遇到 &lt;code>Failure [DELETE_FAILED_INTERNAL_ERROR]&lt;/code> 错误提示&lt;/p>
+&lt;h3 id="使用-adb-在-android-设备上卸载系统自带应用程序">使用 ADB 在 Android 设备上卸载系统自带应用程序&lt;/h3>
+&lt;p>清除应用程序数据：&lt;/p>
+&lt;pre>&lt;code>在卸载应用之前，尝试先清除该应用的数据。使用以下命令：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> adb shell pm clear package_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>将 package_name 替换为应用程序的包名。
+&lt;/code>&lt;/pre>
+&lt;p>强制停止应用程序：&lt;/p>
+&lt;pre>&lt;code>如果应用程序正在运行，尝试通过 ADB 强制停止应用程序再进行卸载：
+&lt;/code>&lt;/pre>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb shell am force-stop package_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>将 package_name 替换为应用程序的包名。&lt;/p>
+&lt;p>确保设备有足够的存储空间来完成卸载操作。有时设备存储空间不足可能会导致卸载失败。&lt;/p>
+&lt;p>使用 ADB shell 运行命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb shell
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> package_name
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>将 package_name 替换为要卸载的系统应用的包名。&lt;/p>
+&lt;h4 id="列出魅族自带的部分应用程序">列出魅族自带的部分应用程序&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#列出包名前缀为 com.meizu 应用&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$adb shell pm list packages | grep com.meizu
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.documentsui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.hometools
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.launcher
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.desktopbackup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.account.pay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.powersave
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.mzsimcontacts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.filemanager
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.directservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.compaign
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.splitloccontroller
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.backup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.net.map
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.wallet
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.feedback
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.camera
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.providers.forcetouch
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.mstore
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.net.search
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.perfui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.sceneinfo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.telecom
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.notepaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.calculator
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.yellowpage
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.safe
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.reader
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.toolbox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.connectivitysettings
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.childrenlauncher
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.gamecenter.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.mznfcpay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.account
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.ebook
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.music
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.video
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.gallery
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.alphame
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.dataservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.systemwallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flymecommunication
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.mall
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.voiceassistant
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.cloud
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.mcare
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.setup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.share
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.easylauncher
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.battery
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.mzsyncservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.privacy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.datamigration
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.location
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.input
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.service.find
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.customizecenter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.gamecenter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.experiencedatasync
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.callsetting
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.netcontactservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.media.life
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package:com.meizu.flyme.weather
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="卸载魅族自带的部分应用程序">卸载魅族自带的部分应用程序&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$adb shell
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#语音助手&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.voiceassistant
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#天气预报&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.weather
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#备份与恢复&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.backup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#手机云备份&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.desktopbackup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#换机助手&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.datamigration
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#福利中心&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.compaign
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#钱包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.wallet
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.mznfcpay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#全球虚拟流量&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.flyme.roamingpay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#地图&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.net.map
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#快应用引擎&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.directservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#云号码&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.netcontactservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#生活服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.life
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#游戏中心&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.gamecenter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.gamecenter.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#音乐&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.music
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#视频&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.video
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#读书&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.ebook
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#新闻资讯&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.reader
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#便签&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.notepaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#应用商店&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.mstore
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.flyme.meizu.store
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#系统更新&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#魅族服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.mcare
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.mall
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#用户帮助&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.feedback
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#搜索&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.net.search
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#文件管理&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.filemanager
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#动态壁纸&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.vlife.mxlock.wallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#输入法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sohu.inputmethod.sogou
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#浏览器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.browser
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 家庭守护&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.sceneinfo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#京东&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.jingdong.app.mall
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#天猫&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.tmall.wireless
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#微博&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sina.weibo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#高德地图&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.autonavi.minimap
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#今日头条&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.ss.android.article.news
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#去哪儿&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.Qunar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#喜马拉雅&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.ximalaya.ting.android
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#趣视频&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#拼多多&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.xunmeng.pinduoduo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#百度搜索&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.baidu.searchbox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#微博&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sina.weibolite
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#flyme实验室&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flymelab
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#好看&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.baidu.haokan
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#淘宝&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.taobao.taobao
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#搜狗输入法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.sohu.inputmethod.sogou.meizu
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#唯品会&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.achievo.vipshop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#部分系统应用&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#计步器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.net.pedometer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#支付中心&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.account.pay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#个人助理&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.assistant
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#智能识屏&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.picker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#工具箱&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.toolbox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#系统壁纸&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.systemwallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#动态主题服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.ibimuyu.lockscreen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#下载&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.providers.downloads.ui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#动态壁纸 &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.activeviewlivewallpaper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#主题美化&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.customizecenter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#onemind&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.alphame
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#以下部分不建议删除应用&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.hometools
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.providers.downloads
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.calculator
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.yellowpage
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.safe
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.printspooler
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.media.gallery
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.cloud
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.share
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.location
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.email
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.mzsyncservice
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.android.wallpaperbackup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.mmfvideo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.flyme.telecom.usagedata.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#谨慎删除&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.account
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pm uninstall -k --user &lt;span style="color:#ae81ff">0&lt;/span> com.meizu.flyme.service.find
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附注">附注：&lt;/h3>
+&lt;p>安装 APK 文件：
+将要安装的 APK 文件复制到计算机上，并记住它的路径。
+在命令提示符/终端中，使用以下命令安装 APK 文件到设备：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb install /path/to/your/app.apk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将 &lt;code>/path/to/your/app.apk&lt;/code> 替换为实际 APK 文件的路径。&lt;/p>
+&lt;h3 id="flyme9-应用列表">Flyme9 应用列表&lt;/h3>
+&lt;pre tabindex="0">&lt;code>全球流量 com.flyme.roamingpay
+旅行助手com.android.cts.priv.ctsshim
+应用沙盒com.meizu.pps 不建议删除
+计步器 com.meizu.net.pedometer
+电话和短信存储 com.android.providers.telephony 不建议删除
+日历存储com.android.providers.calendar 不建议删除
+媒体存储设备 com.android.providers.media 不建议删除
+mbn测试 com.qualcomm.qit.modemtestmode 不建议删除
+系统桌面 com.meizu.flyme.launcher 不建议删除
+支付中心 com.meizu.account.pay
+时钟 com.andriod.alarmclock
+html查看程序 com.android.htmlviewer 不建议删除
+语音设置com.iflytek.speechsuite
+mms短信服务 com.android.mms.service 不建议删除
+下载管理器com.android.providers.downloads 不建议删除
+文件管理 com.meizu.filemanager 不建议删除
+通讯录counnunity.fairphone.mycontacts 不建议删除
+魅族浏览器 com.android.browser
+快应用引擎 com.meizu.flyme.directservice
+福利中心 com.meizu.compaign
+录音机 com.android.soundrecorder
+软件包权限帮助程序com.android.defcontainer 不建议删除
+备份和恢复com.meizu.backup
+下载com.android.providers.downloads.ui 不建议删除
+系统更新com.meizu.flyme.update
+无线网络助手com.meizu.wifiadmin 不建议删除
+证书安装程序com.android.certinstaller 不建议删除
+个人助理com.meizu.assistant
+钱包com.meizu.flyme.wallet
+用户帮助com.meizu.feedback
+相机com.meizu.media.camera 不建议删除
+设备信息com.qti.qualcomm.deviceinfo 不建议删除
+信息com.android.mms 不建议删除
+应用商店com.meizu.mstore 不建议删除
+mtp主机com.android.mtp 不建议删除
+usim卡应用com.android.stk
+搜索com.meizu.net.search
+性能监视器com.meizu.perfui
+智能识屏 com.meizu.picker
+家庭守护com.meizu.sceneinfo
+便笺com.meizu.notepaper
+计算器com.flyme.caculator
+日历com.android.calendar
+手机管家com.meizu.safe 不建议删除
+新闻资讯com.meizu.media.reader
+工具箱com.flyme.toolbox
+网络设置com.connectivitysettings 不建议删除
+设置存储com.android.providers.settings 不建议删除
+打印处理服务com.android.printspooler
+通话com.android.incallui 不建议删除
+输入设备com.android.inputdevices · 不建议删除
+系统公共组件com.meizu.flyme.sdkstage 不建议删除
+系统界面助手com.flyme.systemuiex 不建议删除
+默认打印服务com.android.bips
+魅族游戏框架com.meizu.gamecenter.service
+动态主题服务com.ibimuyu.lockscreen 不建议删除
+xdivert设置com.qti.xdivert
+musicfx com.android.musicfx
+通话控制com.android.server.telecom 不建议删除
+魅族支付com.meizu.mznfcpay
+密钥连com.android.keychain
+电话com.android.dialer 不建议删除
+系统界面工具com.flyme.systemuitools 不建议删除
+flyme账号com.meizu.account 不建议删除 删除后进不了自带的系统设置
+软件包安装程序com.android.packageinstaller 不建议删除
+音乐com.meizu.media.music
+视频com.meizu.media.video
+运营商默认应用com.android.carrierdefaultapp
+文本转语音组件com.svox.pico
+图库com.meizu.media.gallery
+onemind com.meizu.alphame
+工作资料设置com.android.managedprovisioning 不建议删除
+platformfx com.meizu.dateservice 不建议删除
+网络管理com.flyme.netadmin 不建议删除
+远程协助com.meizu.remotecooperation
+工程模式com.meizu.telephonyengineermode
+系统壁纸com.meizu.systemwallpaper
+sms推送com.android.smspush 不建议删除
+语音助手com.meizu.voiceassistant
+推送服务com.meizu.cloud 不建议删除
+魅族虚拟卡本地注册虚拟网络插件com.flyme.virtual.softsim 删除后无法使用全球流量功能
+蓝牙分享com.meizu.share 不建议删除
+魅族商城com.flyme.meizu.store
+超大字体简易模式com.meizu.flyme.easylauncher
+图像服务com.meizu.media.imageservice 不建议删除
+存储空间管理器com.android.stooragemanager 不建议删除
+人脸识别com.meizu.facerecognition
+com.google.andriod.onetimeinitialzer
+设置com.android.settings 不建议删除
+电量管理com.meizu.battery
+flyme云服务com.meizu.mzsyncservice
+动态壁纸 com.meizu.activeviewlivewallpaper
+换机助手com.meizu.datemigration
+位置服务com.qualcomm.location 不建议删除
+网络位置服务com.meizu.location 不建议删除
+动态主题服务com.vlife.mxlock.wallpaper
+桌面壁纸备份 com.android.wallpaperbackup
+系统输入法com.meizu.flyme.input 不建议删除
+查找手机服务com.meizu.flyme.service.find
+电话服务com.android.phone 不建议删除
+存储已屏蔽的号码com.android.providers.blockednumber 不建议删除
+用户字典com.android.providers.userdictionary
+急救信息com.android.emergency 不建议删除
+主题美化com.meizu.customizecenter
+flyme实验室com.meizu.flymelab
+一体化位置信息com.android.location.fused 不建议删除
+游戏中心com.meizu.flyme.gamecenter
+系统界面com.android.systemui 不建议删除
+崩溃数据上传 com.meizu.experiencedatasync
+电话设置com.meizu.callsetting 不建议删除
+关机闹钟com.qualcomm.qti.poweroffalarm 不建议删除
+号码云服务com.meizu.netcontactservice
+生活助手com.meizu.media.life
+联系人存储com.android.providers.contacts 不建议删除
+天气com.meizu.flyme.weather
+支付宝com.eg.android.AlipayGphone
+电话服务com.flyme.telecom.usagedate.service 不建议删除
+com.qualcomm.qti.perfdump 不建议删除
+com.android.webview 不建议删除
+com.android.backupconfirm
+书签com.android.bookmarkprovider
+com.android.flyme.bridge.softsim
+com.meizu.privacy
+com.meizu.flyme.hometools 不建议删除
+小区广播com.android.cellbroadcastreceiver 不建议删除
+无线网络助手 com.meizu.wifiadmin 不建议删除
+读书 com.meizu.media.ebook
+邮件 com.android.email
+趣视频 com.flyme.videoclips
+新闻资讯 com.meizu.media.reader
+换机助手 com.meizu.datamigration
+语音设置 com.iflytek.speechsuite
+魅族服务 com.meizu.mcare
+开机引导 com.meizu.setup
+极限模式 com.meizu.powersave 不建议删除
+Aicy建议 com.meizu.suggestion
+锁屏画报 com.meizu.net.nativelockscreen
+伪基站拦截 com.meizu.mzbasestationsafe
+打印服务处理 com.android.printspooler 不建议删除
+html查看程序 com.android.htmlviewer
+通话记录备份 com.android.calllogbackup
+虚拟sim卡用的com.qualcomm.uimremoteclient
+自带黑色主题com.android.systemui.theme.dark
+无线电服务com.dsi.ant.server
+&lt;/code>&lt;/pre></description></item></channel></rss>

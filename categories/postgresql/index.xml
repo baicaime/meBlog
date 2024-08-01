@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>PostgreSQL on 白菜</title><link>https://blog.baicai.me/categories/postgresql/</link><description>Recent content in PostgreSQL on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 22 Jul 2022 14:26:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/postgresql/index.xml" rel="self" type="application/rss+xml"/><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
+Debian 11&lt;/p>
+&lt;h3 id="切换到超级用户">切换到超级用户：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> sudo su postgres
+&lt;/code>&lt;/pre>&lt;h3 id="进入psql">进入psql：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql
+&lt;/code>&lt;/pre>&lt;h3 id="创建一个用户">创建一个用户：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> CREATE USER username WITH PASSWORD &amp;#39;password&amp;#39;;
+&lt;/code>&lt;/pre>&lt;h3 id="查看角色列表">查看角色列表：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> \du
+&lt;/code>&lt;/pre>&lt;h3 id="创建数据库并制定所有者和编码">创建数据库并制定所有者和编码：&lt;/h3>
+&lt;pre tabindex="0">&lt;code> CREATE DATABASE dbname WITH OWNER username ENCODING UTF8;
+&lt;/code>&lt;/pre>&lt;h4 id="创建一个数据库">创建一个数据库：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> CREATE DATABASE dbname;
+&lt;/code>&lt;/pre>&lt;h4 id="查看数据库列表">查看数据库列表：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> \l
+&lt;/code>&lt;/pre>&lt;h4 id="更改刚创建的数据库所有权">更改刚创建的数据库所有权：&lt;/h4>
+&lt;pre tabindex="0">&lt;code> ALTER DATABASE dbname OWNER TO username;
+&lt;/code>&lt;/pre>&lt;h4 id="删除表字段">删除表字段&lt;/h4>
+&lt;p>要删除一个字段，使用下面这样的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description;
+&lt;/code>&lt;/pre>&lt;p>不管字段里有啥数据，都会消失，和这个字段相关的约束也会被删除。不过， 如果这个字段被另一个表的外键约束所引用，PostgreSQL 则不会隐含地删除该约束。你可以通过使用CASCADE指明删除任何依赖该字段的东西：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALTER TABLE products DROP COLUMN description CASCADE;
+&lt;/code>&lt;/pre>&lt;h3 id="通过psql连接数据库">通过psql连接数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql -h 127.0.0.1 -p 5432 -U username -d dbname
+&lt;/code>&lt;/pre>&lt;h3 id="备份数据库">备份数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> pg_dump dbname &amp;gt; dbname.dump
+&lt;/code>&lt;/pre>&lt;h3 id="恢复数据库">恢复数据库&lt;/h3>
+&lt;pre tabindex="0">&lt;code> psql -f dbname.dump -d dbname
+&lt;/code>&lt;/pre></description></item></channel></rss>

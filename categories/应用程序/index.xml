@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>应用程序 on 白菜</title><link>https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/</link><description>Recent content in 应用程序 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 30 Jan 2024 15:40:46 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>该机型可选择洛杉矶 DC6 DC9 的 CN2 GIA 机房及日本软银（JPOS_1）线路，配置为512内存,10 GB SSD,500GB月流量，售价为$49.99/年，是当前瓦工还会补货的最经济GIA线路机器。&lt;/p>
+&lt;p>DC6和DC9具有三网回程GIA；去程电信联通走GIA，移动直连，平峰延迟在150ms左右，高峰时期一般不超过200ms。日本软银是直连线路，地利原因延迟较低。而论全天稳定性还是GIA比较可靠。该机器下单时请选择需要的机房，此后切换机房会扣流量。&lt;/p>
+&lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=94">直达地址&lt;/a>&lt;/p>
+&lt;p>循环优惠码：BWHCCNCXVV （6.78%）&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P FORWARD ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P OUTPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -F
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="oracle自带的镜像默认设置了iptable规则关闭它">Oracle自带的镜像默认设置了Iptable规则，关闭它&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get purge netfilter-persistent &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试端口是否已经开放&lt;/p>
+&lt;h2 id="附注">附注：&lt;/h2>
+&lt;h3 id="强制删除规则">强制删除规则&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo rm -rf /etc/iptables &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除oracle-cloud-agent防止甲骨文监控">删除oracle-cloud-agent，防止甲骨文监控&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>snap remove oracle-cloud-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="检查防火墙服务状态">检查防火墙服务状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status iptables.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl status netfilter-persistent.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="远程检测端口开放状态">远程检测端口开放状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nmap ip或域名
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注2开放指定端口">附注2(开放指定端口):&lt;/h2>
+&lt;h3 id="iptables-开放指定端口">iptables 开放指定端口&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables -I INPUT -p tcp --dport &lt;span style="color:#ae81ff">80&lt;/span> -j ACCEPT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中间的 80 为所需要开放的端口，tcp 为传输协议&lt;/p>
+&lt;h4 id="保存规则">保存规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables-save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述命令我们就完成了开放指定的端口，但是如果此时服务器重启，上述规则就没有了，所以我们需要对规则进行一下持久化操作&lt;/p>
+&lt;h3 id="安装-iptables-persistent">安装 iptables-persistent&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt-get install iptables-persistent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
+&lt;p>SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。&lt;/p>
+&lt;p>ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。&lt;/p>
+&lt;p>环境说明&lt;/p>
+&lt;pre tabindex="0">&lt;code> 远程服务器的IP地址为 0.0.0.1，代号为X；
+另一个远程服务器的IP为 0.0.0.2，代号为Y；
+目前本机的IP地址为 0.0.0.3，代号为A，本地可以利用SSH客户端通过密钥或密码连接X和Y；
+&lt;/code>&lt;/pre>&lt;p>这里全部使用密钥的方式进行访问，&lt;strong>本机 A 与 Y 之间无法进行访问&lt;/strong>。&lt;/p>
+&lt;p>本地的
+&lt;code>～/.ssh/config&lt;/code>
+的配置文件信息如下，通过X连接到Y；&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>Host X
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PreferredAuthentications publickey
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host Y
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PreferredAuthentications publickey
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host test
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HostName 0.0.0.2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> User root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Port &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> IdentityFile ~/.ssh/id_rsa_2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ProxyCommand ssh X -W %h:%p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试本机通过 X 连接到 Y 服务器&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ssh test
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>附注：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>-W host:port
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Requests that standard input and output on the client be forwarded to host on port over the secure channel. Implies -N, -T, ExitOnForwardFailure and
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ClearAllForwardings, though these can be overridden in the configuration file or using -o command line options.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-W：该参数在OpenSSH 5.4及之后的版本才支持，参考官方的Release信息；
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>在使用-W之前，通常都是使用nc选项，nc允许你转发TCP/UDP数据包到指定（备用）位置并且基本上与ssh -W相同；
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：
+&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
+&lt;ul>
+&lt;li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。&lt;/li>
+&lt;li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。&lt;/li>
+&lt;/ul>
+&lt;h2 id="使用-hugo-搭建博客">使用 Hugo 搭建博客&lt;/h2>
+&lt;p>Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。&lt;/p>
+&lt;h3 id="安装-hugo">安装 Hugo&lt;/h3>
+&lt;p>我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>brew install hugo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>完成后，使用以下命令进行验证(查看版本号)：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>hugo version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="创建-hugo-网站">创建 Hugo 网站&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>hugo new site blog-demo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="配置主题">配置主题&lt;/h3>
+&lt;p>创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd blog-demo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone git@github.com:colorchestra/smol.git themes/smol
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd themes/smol
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf .git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>初始化主题基础配置后，我们可以在 config.toml 文件中进行站点细节配置，具体配置项参考主题说明文档。&lt;/p>
+&lt;p>参考config.toml内容&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">theme&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;smol&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="发布新文章">发布新文章&lt;/h3>
+&lt;pre tabindex="0">&lt;code>hugo new posts/blog-test.md
+&lt;/code>&lt;/pre>&lt;h3 id="本地调试站点">本地调试站点&lt;/h3>
+&lt;p>进行本地实时调试预览。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>hugo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>运行服务后，我们可以通过浏览器 http://localhost:1313 地址访问我们的本地预览网页。&lt;/p>
+&lt;h2 id="github-pages-仓库">GITHUB PAGES 仓库&lt;/h2>
+&lt;p>GitHub Pages 仓库建立完成后，可以在设置中配置自己注册的自定义域名来指向 GitHub Pages 生成的网址。此外，需要将博客站点配置文件 config.toml 中的 baseURL 改为自己的自定义域名。&lt;/p>
+&lt;h3 id="github-pages-发布博客">GitHub Pages 发布博客&lt;/h3>
+&lt;p>我们现在已经可以通过自定义域名来访问我们的 GitHub Pages 页面了，目前因为项目仓库是空的，访问后会报 404 页面。&lt;/p>
+&lt;p>Hugo 生成的静态网站通过 GitHub Pages 服务进行托管，因此我们需要上传 Hugo 生成的静态网页文件至 GitHub Page 项目仓库。&lt;/p>
+&lt;h3 id="手动发布">手动发布&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>hugo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd public
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hugo 默认会将生成的静态网页文件存放在 public/ 目录下，我们可以通过将 public/ 目录初始化为 git 仓库并关联我们的 clin003/blog_html 远程仓库来推送我们的网页静态文件。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:baicaime/meBlog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;debug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push origin main
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>推送到 GitHub Pages 仓库，稍等几分钟即可通过我们的自定义域名来访问我们的博客站点了，和&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>hugo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>本地调试完全一致。&lt;/p>
+&lt;h3 id="自动发布">自动发布&lt;/h3>
+&lt;p>因为我们的博客基于 GitHub 与 GitHub Pages，可以通过官方提供的 GitHub Action 进行 CI 自动发布。
+GitHub Action 是一个持续集成和持续交付(CI/CD) 平台，可用于自动执行构建、测试和部署管道，可以通过简单的配置即可直接使用。&lt;/p>
+&lt;p>配置在仓库目录
+&lt;code>.github/workflows&lt;/code>
+下，以 .yml 为后缀。我的 GitHub Action 配置为
+&lt;code>deploy.yml&lt;/code>
+自动发布示例配置如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Deploy Hugo site to Pages&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">on&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">push&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">branches&lt;/span>: [ &lt;span style="color:#e6db74">&amp;#34;main&amp;#34;&lt;/span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">workflow_dispatch&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">permissions&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">contents&lt;/span>: &lt;span style="color:#ae81ff">read&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">pages&lt;/span>: &lt;span style="color:#ae81ff">write&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">id-token&lt;/span>: &lt;span style="color:#ae81ff">write&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">defaults&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">shell&lt;/span>: &lt;span style="color:#ae81ff">bash&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">env&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">NAME&lt;/span>: &lt;span style="color:#ae81ff">BLOG_push&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 推送目标仓库 格式 用户名/仓库名&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">TARGET_REPOSITORY_NAME&lt;/span>: &lt;span style="color:#ae81ff">baicaime/meBlog&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 同步临时目录(可选)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">CLONE_DIR&lt;/span>: &lt;span style="color:#ae81ff">tmp_public&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 构建临时目录(可选)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">BUILD_DIR&lt;/span>: &lt;span style="color:#ae81ff">tmp_build&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 配置git用户名&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">GIT_USERNAME&lt;/span>: &lt;span style="color:#ae81ff">baicaime&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">jobs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># This workflow contains a single job called &amp;#34;build&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">build&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">runs-on&lt;/span>: &lt;span style="color:#ae81ff">ubuntu-latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">env&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">HUGO_VERSION&lt;/span>: &lt;span style="color:#ae81ff">0.117.0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Install Hugo CLI&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;amp;&amp;amp; sudo dpkg -i ${{ runner.temp }}/hugo.deb&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/checkout@v3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Build with Hugo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">env&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># For maximum backward compatibility with Hugo modules&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">HUGO_ENVIRONMENT&lt;/span>: &lt;span style="color:#ae81ff">production&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">HUGO_ENV&lt;/span>: &lt;span style="color:#ae81ff">production&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> hugo \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> --minify \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> --baseURL &amp;#34;${{ steps.pages.outputs.base_url }}/&amp;#34; \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> -d ${{ env.BUILD_DIR }}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Git Config&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git config --global user.email &amp;#34;actions-push-noreply@baicai.me&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git config --global user.name &amp;#34;${{ env.GIT_USERNAME }}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> echo &amp;#34;配置git完成&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Git clone&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> echo &amp;#34;同步目标仓库(开始)&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git clone --depth 1 https://github.com/${{ env.TARGET_REPOSITORY_NAME }}.git ${{ env.CLONE_DIR }} &amp;amp;&amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> echo &amp;#34;同步目标仓库(完成)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Git push&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> cp -rf ${{ env.BUILD_DIR }}/* ${{ env.CLONE_DIR }}/
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> cd ${{ env.CLONE_DIR }}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> echo &amp;#34;${{ github.event.head_commit.message }} `date +%FT%T%z`&amp;#34; &amp;gt; _pub_time.html
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git add .
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git commit --message &amp;#34;Update ${{ env.NAME }} from ${{ env.TARGET_REPOSITORY_NAME }} ${{ github.event.head_commit.message }}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> git push -f -q https://oauth2:${{ secrets.GIT_TOKEN }}@github.com/${{ env.TARGET_REPOSITORY_NAME }}.git main
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> echo &amp;#34;git push ${{ env.TARGET_REPOSITORY_NAME }} (完成)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>on 表示 GitHub Action 触发条件，我设置了 push 和 workflow_dispatch 两个条件：&lt;/p>
+&lt;ul>
+&lt;li>push，当这个项目仓库发生推送动作后，执行 GitHub Action&lt;/li>
+&lt;li>workflow_dispatch，可以在 GitHub 项目仓库的 Action 工具栏进行手动调用&lt;/li>
+&lt;/ul>
+&lt;p>jobs 表示 GitHub Action 中的任务，我们设置了一个 build 任务，
+runs-on 表示 GitHub Action 运行环境，我们选择了 ubuntu-latest。
+build 任务包含了 Install Hugo CLI 、Checkout、Build with Hugo、Git Config、Git clone 和 Git push 六个主要步骤，
+其中 run 是执行的命令，uses 是 GitHub Action 中的一个插件，我们使用了 actions/checkout 这个插件。
+其中 Checkout 步骤中，可以在 with 中配置 submodules 值为 true 同步博客源仓库的子模块（比如主题模块，由于我们没有使用子模块方式安装hugo主题，所以不需要这个参数）。&lt;/p>
+&lt;h4 id="需要将上述-deployyml-中">需要将上述 deploy.yml 中：&lt;/h4>
+&lt;pre>&lt;code>TARGET_REPOSITORY_NAME 改为自己的 GitHub Pages 仓库，如我的设置为 baicaime/meBlog
+GIT_USERNAME 改为自己 GitHub Pages 仓库的用户名
+&lt;/code>&lt;/pre>
+&lt;p>因为我们需要从博客仓库推送到外部 GitHub Pages 仓库，需要特定权限，要在 GitHub 账户下 &lt;a href="https://github.com/settings/tokens?type=beta">Setting - Developer setting - Personal access tokens&lt;/a> 下创建一个 Token。&lt;/p>
+&lt;p>权限需要：&lt;/p>
+&lt;pre>&lt;code>Contents read/write
+&lt;/code>&lt;/pre>
+&lt;p>
+&lt;figure>
+&lt;img src="https://blog.baicai.me/posts/2023/0813/hugo_github_token.png" alt="Contents read/write" />
+&lt;/figure>
+&lt;/p>
+&lt;p>配置后复制生成的 Token（注：只会出现一次），然后在博客源仓库的&lt;/p>
+&lt;pre tabindex="0">&lt;code>Settings - secrets and variables - Actions
+&lt;/code>&lt;/pre>&lt;p>中添加&lt;/p>
+&lt;pre tabindex="0">&lt;code>GIT_TOKEN
+&lt;/code>&lt;/pre>&lt;p>环境变量为刚才的 Token，这样 GitHub Action 就可以获取到 Token 了。&lt;/p>
+&lt;h4 id="推送测试">推送测试&lt;/h4>
+&lt;p>完成上述配置后，推送代码至仓库，即可触发 GitHub Action，自动生成博客页面并推送至 GitHub Pages 仓库。&lt;/p>
+&lt;p>GitHub Pages 仓库更新后，又会自动触发官方页面部署 CI，实现网站发布。&lt;/p>
+&lt;p>现在每当我们本地通过熟悉的 Markdown 语法完成博客内容编辑后，只需要推送代码，等待几分钟，即可通过我们的自定义域名访问更新后的网站。&lt;/p>
+&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
+&lt;/code>&lt;/pre>&lt;p>例如：&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me
+&lt;/code>&lt;/pre>&lt;p>获取Webhook&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/getWebhookInfo
+&lt;/code>&lt;/pre></description></item><item><title>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</title><link>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</link><pubDate>Fri, 06 May 2022 20:57:36 +0800</pubDate><guid>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</guid><description>&lt;p>应用版本：firefox 开发者版 v101
+问题描述：微博主页可以正常访问，但点击搜索或热搜链接，都提示：&lt;/p>
+&lt;pre tabindex="0">&lt;code> 建立安全连接失败
+连接到 s.weibo.com 时发生错误。
+由于不能验证所收到的数据是否可信，无法显示您想要查看的页面。
+建议向此网站的管理员反馈这个问题。
+详细了解…
+&lt;/code>&lt;/pre>&lt;p>通过curl -v “网址” 反复重试对比发现在访问微博热搜的时候有一个加密协商被“微博账户认证网关服务器”拒绝了。&lt;/p>
+&lt;p>具体测试指令：
+通过&lt;/p>
+&lt;pre tabindex="0">&lt;code> curl -v &amp;#34;https://s.weibo.com/weibo?q=%23%E7%A5%9D%E8%9E%8D%E5%8F%B7%E5%87%86%E5%A4%87%E5%9C%A8%E7%81%AB%E6%98%9F%E8%B6%8A%E5%86%AC%23&amp;amp;topic_ad=&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>得到302跳转请求链接
+继续&lt;/p>
+&lt;pre tabindex="0">&lt;code> curl -v &amp;#34;https://passport.weibo.com/visitor/visitor?entry=miniblog&amp;amp;a=enter&amp;amp;url=https%3A%2F%2Fs.weibo.com%2Fweibo%3Fq%3D%2523%25E7%25A5%259D%25E8%259E%258D%25E5%258F%25B7%25E5%2587%2586%25E5%25A4%2587%25E5%259C%25A8%25E7%2581%25AB%25E6%2598%259F%25E8%25B6%258A%25E5%2586%25AC%2523%26topic_ad%3D&amp;amp;domain=.weibo.com&amp;amp;sudaref=&amp;amp;ua=php-sso_sdk_client-0.6.29&amp;amp;_rand=1651842429.1375&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>返回&lt;/p>
+&lt;pre tabindex="0">&lt;code> ……
+* TLSv1.2 (IN), TLS handshake, Finished (20):
+* SSL connection using TLSv1.2 / AES256-GCM-SHA384
+* ALPN, server did not agree to a protocol
+* Server certificate:
+* subject: C=CN; ST=Beijing; O=Sina.com Technology(China)Co.,ltd; CN=sina.com
+……
+&lt;/code>&lt;/pre>&lt;p>注意这段提示：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ALPN, server did not agree to a protocol
+&lt;/code>&lt;/pre>&lt;h3 id="alpn">ALPN&lt;/h3>
+&lt;p>ALPN(Application-Layer Protocol Negotiation):应用层协议协商是 TLS 的一个扩展，故而应用层协议在协商加密协议的过程中，避免了额外的往返通讯开销。
+ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商。当前主流浏览器，都只支持基于 HTTPS 部署的 HTTP/2，因为浏览器是基于ALPN协议来判断服务器是否支持HTTP2协议。&lt;/p>
+&lt;h3 id="浏览器协商原理">浏览器协商原理&lt;/h3>
+&lt;p>可以通过WireShark抓包分析ALPN协商协议交互的过程&lt;/p>
+&lt;pre>&lt;code>*浏览器在进行SSL连接，第一次发送Client Hello包时，在扩展字段里携带浏览器支持的版本。
+*服务器在返回Server Hello包时，如果服务器支持http 2，则会返回h2，如果不支持，则从客户端支持的协议列表中选取一个它支持的协议，一般为http/1.1。
+&lt;/code>&lt;/pre>
+&lt;p>浏览器和服务端都支持ALPN 协商，是用上 HTTP/2 的大前提。&lt;/p>
+&lt;pre>&lt;code>大部分 Web Server 都依赖 OpenSSL 库提供 https服务，是否支持 ALPN 完全取决于使用的 OpenSSL 版本，OpenSSL 1.0.2 版本才开始支持 ALPN。
+&lt;/code>&lt;/pre>
+&lt;h3 id="关闭firefox-alpn功能">关闭Firefox ALPN功能&lt;/h3>
+&lt;p>地址栏输入&lt;/p>
+&lt;pre tabindex="0">&lt;code> about:config
+&lt;/code>&lt;/pre>&lt;p>确认风险提示&lt;/p>
+&lt;pre>&lt;code>输入“ALPN”
+&lt;/code>&lt;/pre>
+&lt;p>将&lt;/p>
+&lt;pre tabindex="0">&lt;code> security.ssl.enable_alpn
+&lt;/code>&lt;/pre>&lt;p>的值切换为false&lt;/p>
+&lt;p>参考：
+&lt;a href="https://developer.mozilla.org/zh-CN/docs/Glossary/ALPN">ALPN&lt;/a>&lt;/p></description></item></channel></rss>

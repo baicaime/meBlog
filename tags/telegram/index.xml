@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>telegram on 白菜</title><link>https://blog.baicai.me/tags/telegram/</link><description>Recent content in telegram on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 26 Dec 2023 15:00:23 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/telegram/index.xml" rel="self" type="application/rss+xml"/><item><title>开启 Telegram 的邮箱登录</title><link>https://blog.baicai.me/article/2023/telegram_email_login/</link><pubDate>Tue, 26 Dec 2023 15:00:23 +0800</pubDate><guid>https://blog.baicai.me/article/2023/telegram_email_login/</guid><description>&lt;h2 id="telegram的邮箱登录是什么-有什么用">Telegram的邮箱登录是什么? 有什么用?&lt;/h2>
+&lt;p>邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!&lt;/p>
+&lt;h2 id="如何开启telegram邮箱登录">如何开启Telegram邮箱登录?&lt;/h2>
+&lt;p>&lt;code>注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录&lt;/code>&lt;/p>
+&lt;p>根据&lt;a href="https://core.telegram.org/api/auth">官方文档&lt;/a>来看,&lt;/p>
+&lt;ul>
+&lt;li>auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram will ask the user to verify an email that will be used to send the login code.&lt;/li>
+&lt;li>当你的登录频率足够高时, Telegram服务器会要求客户端设置邮箱登录&lt;/li>
+&lt;/ul>
+&lt;h3 id="具体方法">具体方法&lt;/h3>
+&lt;ul>
+&lt;li>使用Telegram官方移动客户端登录, 登录时选择 Tap to get a code via SMS&lt;/li>
+&lt;li>短信验证码和Telegram客户端验证码一致, 任选其一输入即可, 不需要输入2FA密码, 直接返回重新刷&lt;/li>
+&lt;/ul>
+&lt;p>如果过程中出现 &lt;code>Too many attemps, please try again later&lt;/code> 则需要休息一段时间再刷&lt;/p>
+&lt;p>直到出现让你选择登录邮箱的提示界面&lt;/p>
+&lt;p>根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)&lt;/p>
+&lt;h2 id="如何判断有没有开启邮箱登录">如何判断有没有开启邮箱登录?&lt;/h2>
+&lt;p>在设置-隐私与安全界面，可看到已设置的“登录邮箱”&lt;/p>
+&lt;h2 id="参考">参考：&lt;/h2>
+&lt;p>&lt;a href="https://telegra.ph/Telegram%E7%9A%84%E9%82%AE%E7%AE%B1%E7%99%BB%E5%BD%95-12-26">Telegram的邮箱登录&lt;/a>&lt;br>
+&lt;a href="https://core.telegram.org/api/auth#email-verification">User Authorization&lt;/a>&lt;/p></description></item><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
+&lt;p>进入官网翻译界面 &lt;a href="https://translations.telegram.org">https://translations.telegram.org&lt;/a>&lt;/p>
+&lt;p>点击 &amp;ldquo;Start Translating&amp;rdquo;&lt;/p>
+&lt;p>选择 对应语言 比如 简体中文 进入网址&lt;/p>
+&lt;p>&lt;a href="https://translations.telegram.org/zh-hans/">https://translations.telegram.org/zh-hans/&lt;/a>&lt;/p>
+&lt;p>底部有 &amp;ldquo;Sharing Link&amp;rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。&lt;/p>
+&lt;p>自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。&lt;/p>
+&lt;h3 id="telegram-中文语言包">Telegram 中文语言包&lt;/h3>
+&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
+&lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
+&lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
+&lt;h3 id="创建一个worker">创建一个Worker&lt;/h3>
+&lt;p>在首页选择Workers，若从未创建过则初始化，选择免费套餐，然后创建一个Worker。&lt;/p>
+&lt;h3 id="编辑worker内容">编辑Worker内容&lt;/h3>
+&lt;p>进入worker，点击快速编辑，将代码改为下方内容，其中hostname改为你自己的，然后点击保存部署，并可改名为例如cdn的worker。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 这就是需要代理的网址
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">hostname&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://example.domain&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;http://192.168.0.1&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;https://your.domain&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// const hostname = &amp;#34;https://your.domain/api/path&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">URL&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">url&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">fetch&lt;/span>(&lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Request&lt;/span>(&lt;span style="color:#a6e22e">hostname&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span>.&lt;span style="color:#a6e22e">pathname&lt;/span>,&lt;span style="color:#a6e22e">request&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">addEventListener&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;fetch&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">event&lt;/span> =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">respondWith&lt;/span>(&lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">request&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>})
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为域名添加dns">为域名添加DNS&lt;/h3>
+&lt;p>添加路由，配置&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-cn.you.domain/*" data-lang="cn.you.domain/*">&lt;/code>&lt;/pre>&lt;p>指向步骤1创建的 Worker，到此等待DNS生效即可。&lt;/p>
+&lt;h2 id="通过-vercel-搭建反向代理服务">通过 Vercel 搭建反向代理服务&lt;/h2>
+&lt;p>在github中新建个项目
+创建一个文件，命名为 vercel.json 文件内容：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;routes&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/.*&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>进入 vercel 后台 部署这个项目 配置好自定义域名，即可使用。&lt;/p>
+&lt;p>通用代理 json 内容 参考：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;routes&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/redirect&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;status&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">308&lt;/span>, &lt;span style="color:#f92672">&amp;#34;headers&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;Location&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain/&amp;#34;&lt;/span> } },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/custom-page&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;headers&amp;#34;&lt;/span>: {&lt;span style="color:#f92672">&amp;#34;cache-control&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;s-maxage=1000&amp;#34;&lt;/span>}, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/index.html&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/api&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/my-api.js&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;methods&amp;#34;&lt;/span>: [&lt;span style="color:#e6db74">&amp;#34;POST&amp;#34;&lt;/span>], &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users-api.js&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users/(?&amp;lt;id&amp;gt;[^/]*)&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/users-api.js?id=$id&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/legacy&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;status&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">404&lt;/span>},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;src&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/.*&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;dest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;https://example.domain/&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="通过nginx-对网站进行反向代理">通过Nginx 对网站进行反向代理&lt;/h2>
+&lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/nginx/conf.d/tgapi.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://example.domain$request_uri;
+}
+}
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
+&lt;h2 id="nginx反代telegram-api">Nginx反代Telegram Api&lt;/h2>
+&lt;h3 id="安装nginx">安装nginx&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt install -y nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="创建配置文件">创建配置文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano tgapi.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输入一下内容并保存&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">server {
+listen 80;
+server_name tgapi.domain;
+location / {
+return 444;
+}
+location ~* ^/bot {
+resolver 8.8.8.8;
+proxy_buffering off;
+proxy_pass https://api.telegram.org$request_uri;
+}
+}
+&lt;/code>&lt;/pre>&lt;h3 id="加载配置">加载配置&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl reload nginx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#或&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo nginx -s reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="测试访问">测试访问&lt;/h3>
+&lt;p>输入以下命令行,BOT_TOKEN换成自己机器人token。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl https://tgapi.domain/bot&amp;lt;BOT_TOKEN&amp;gt;/getMe
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>看的机器人信息，就说明可以使用了。&lt;/p>
+&lt;h3 id="配置-epusdt-telegram代理url">配置 epusdt telegram代理url&lt;/h3>
+&lt;p>epusdt 配置(.env)参考&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>https://tgapi.domain
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="docker-配置-nginx-参考-docker-composeyam-内容">docker 配置 nginx 参考 docker-compose.yam 内容&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">nginx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;nginx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;80:80&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">nginx:bookworm&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">./conf.d:/etc/nginx/conf.d&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">./log:/var/log/nginx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">extra_hosts&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;host.docker.internal:host-gateway&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="使用-cloudflare-worker-代理-telegram-bot-api">使用 Cloudflare Worker 代理 Telegram Bot Api&lt;/h2>
+&lt;p>使用前提&lt;/p>
+&lt;ol>
+&lt;li>一个托管在cloudflare的域名&lt;/li>
+&lt;li>k开启cloudflare的免费worker服务&lt;/li>
+&lt;/ol>
+&lt;h3 id="首先登录cloudflare以后点击左侧的workers-和-pages">首先登录Cloudflare以后点击左侧的Workers 和 Pages&lt;/h3>
+&lt;p>点击 &lt;code>创建应用程序&lt;/code>-&lt;code>创建 worker&lt;/code>&lt;/p>
+&lt;p>&lt;code>名称&lt;/code> 随意填写，点击 &lt;code>部署&lt;/code>&lt;/p>
+&lt;p>创建完成后，点击刚创建的Worker，再点击 &lt;code>快速编辑&lt;/code>&lt;/p>
+&lt;p>在左侧删除原有的代码，填入下面给出的代码&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * Helper functions to check if the request uses
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * corresponding method.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">Method&lt;/span> &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#a6e22e">method&lt;/span>) =&amp;gt; (&lt;span style="color:#a6e22e">req&lt;/span>) =&amp;gt; &lt;span style="color:#a6e22e">req&lt;/span>.&lt;span style="color:#a6e22e">method&lt;/span>.&lt;span style="color:#a6e22e">toLowerCase&lt;/span>() &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#a6e22e">method&lt;/span>.&lt;span style="color:#a6e22e">toLowerCase&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">Get&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">Method&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;get&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">Post&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">Method&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;post&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">Path&lt;/span> &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#a6e22e">regExp&lt;/span>) =&amp;gt; (&lt;span style="color:#a6e22e">req&lt;/span>) =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">URL&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>.&lt;span style="color:#a6e22e">url&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">url&lt;/span>.&lt;span style="color:#a6e22e">pathname&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>.&lt;span style="color:#a6e22e">match&lt;/span>(&lt;span style="color:#a6e22e">regExp&lt;/span>) &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>.&lt;span style="color:#a6e22e">match&lt;/span>(&lt;span style="color:#a6e22e">regExp&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * The regex to get the bot_token and api_method from request URL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * as the first and second backreference respectively.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">URL_PATH_REGEX&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">/^\/bot(?&amp;lt;bot_token&amp;gt;[^/]+)\/(?&amp;lt;api_method&amp;gt;[a-z]+)/i&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * Router handles the logic of what handler is matched given conditions
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * for each request
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Router&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">constructor&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">routes&lt;/span> &lt;span style="color:#f92672">=&lt;/span> [];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">handle&lt;/span>(&lt;span style="color:#a6e22e">conditions&lt;/span>, &lt;span style="color:#a6e22e">handler&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">routes&lt;/span>.&lt;span style="color:#a6e22e">push&lt;/span>({
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">conditions&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">handler&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">get&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>, &lt;span style="color:#a6e22e">handler&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">handle&lt;/span>([&lt;span style="color:#a6e22e">Get&lt;/span>, &lt;span style="color:#a6e22e">Path&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>)], &lt;span style="color:#a6e22e">handler&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">post&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>, &lt;span style="color:#a6e22e">handler&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">handle&lt;/span>([&lt;span style="color:#a6e22e">Post&lt;/span>, &lt;span style="color:#a6e22e">Path&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>)], &lt;span style="color:#a6e22e">handler&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">all&lt;/span>(&lt;span style="color:#a6e22e">handler&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">handler&lt;/span>([], &lt;span style="color:#a6e22e">handler&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">route&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">route&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">resolve&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">route&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">route&lt;/span>.&lt;span style="color:#a6e22e">handler&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">description&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;No matching route found&amp;#39;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">error_code&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">404&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Response&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">JSON&lt;/span>.&lt;span style="color:#a6e22e">stringify&lt;/span>({
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ok&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">error_code&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">description&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">status&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">error_code&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">statusText&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">description&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">headers&lt;/span>&lt;span style="color:#f92672">:&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;content-type&amp;#39;&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#39;application/json&amp;#39;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> );
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * It returns the matching route that returns true
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * for all the conditions if any.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">resolve&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">routes&lt;/span>.&lt;span style="color:#a6e22e">find&lt;/span>((&lt;span style="color:#a6e22e">r&lt;/span>) =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">conditions&lt;/span> &lt;span style="color:#f92672">||&lt;/span> (Array.&lt;span style="color:#a6e22e">isArray&lt;/span>(&lt;span style="color:#a6e22e">r&lt;/span>) &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">conditions&lt;/span>.&lt;span style="color:#a6e22e">length&lt;/span>)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#66d9ef">typeof&lt;/span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">conditions&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;function&amp;#39;&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">conditions&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">conditions&lt;/span>.&lt;span style="color:#a6e22e">every&lt;/span>((&lt;span style="color:#a6e22e">c&lt;/span>) =&amp;gt; &lt;span style="color:#a6e22e">c&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * Sends a POST request with JSON data to Telegram Bot API
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * and reads in the response body.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * @param {Request} request the incoming request
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">async&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">handler&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Extract the URl method from the request.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> { &lt;span style="color:#a6e22e">url&lt;/span>, ...&lt;span style="color:#a6e22e">_request&lt;/span> } &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">request&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> { &lt;span style="color:#a6e22e">pathname&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>, &lt;span style="color:#a6e22e">search&lt;/span> } &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">URL&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Leave the first match as we are interested only in backreferences.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> { &lt;span style="color:#a6e22e">bot_token&lt;/span>, &lt;span style="color:#a6e22e">api_method&lt;/span> } &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>.&lt;span style="color:#a6e22e">match&lt;/span>(&lt;span style="color:#a6e22e">URL_PATH_REGEX&lt;/span>).&lt;span style="color:#a6e22e">groups&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Build the URL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">api_url&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;https://api.telegram.org/bot&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">bot_token&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">api_method&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">search&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Get the response from API.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">response&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">await&lt;/span> &lt;span style="color:#a6e22e">fetch&lt;/span>(&lt;span style="color:#a6e22e">api_url&lt;/span>, &lt;span style="color:#a6e22e">_request&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">result&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">await&lt;/span> &lt;span style="color:#a6e22e">response&lt;/span>.&lt;span style="color:#a6e22e">text&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">res&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Response&lt;/span>(&lt;span style="color:#a6e22e">result&lt;/span>, &lt;span style="color:#a6e22e">_request&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">res&lt;/span>.&lt;span style="color:#a6e22e">headers&lt;/span>.&lt;span style="color:#a6e22e">set&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;Content-Type&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;application/json&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">res&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * Handles the incoming request.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * @param {Request} request the incoming request.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">async&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Router&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">get&lt;/span>(&lt;span style="color:#a6e22e">URL_PATH_REGEX&lt;/span>, (&lt;span style="color:#a6e22e">req&lt;/span>) =&amp;gt; &lt;span style="color:#a6e22e">handler&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">post&lt;/span>(&lt;span style="color:#a6e22e">URL_PATH_REGEX&lt;/span>, (&lt;span style="color:#a6e22e">req&lt;/span>) =&amp;gt; &lt;span style="color:#a6e22e">handler&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">resp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">await&lt;/span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">route&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">resp&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * Hook into the fetch event.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">addEventListener&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;fetch&amp;#39;&lt;/span>, (&lt;span style="color:#a6e22e">event&lt;/span>) =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">respondWith&lt;/span>(&lt;span style="color:#a6e22e">handleRequest&lt;/span>(&lt;span style="color:#a6e22e">event&lt;/span>.&lt;span style="color:#a6e22e">request&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>});
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>保存并部署&lt;/code>&lt;/p>
+&lt;p>回到管理后台首页，点击左侧的&lt;code>网站&lt;/code>，在右侧点击&lt;code>你已托管在Cloudflare的域名&lt;/code>&lt;/p>
+&lt;p>选择该域名下的 &lt;code>Workers 路由&lt;/code>&lt;/p>
+&lt;p>选择&lt;code>添加路由&lt;/code>&lt;/p>
+&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
+&lt;/code>&lt;/pre>&lt;p>例如：&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me
+&lt;/code>&lt;/pre>&lt;p>获取Webhook&lt;/p>
+&lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/getWebhookInfo
+&lt;/code>&lt;/pre></description></item></channel></rss>

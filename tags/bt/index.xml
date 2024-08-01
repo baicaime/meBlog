@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bt on 白菜</title><link>https://blog.baicai.me/tags/bt/</link><description>Recent content in bt on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 18 Oct 2022 17:05:07 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/bt/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
+这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。&lt;/p>
+&lt;p>那么安装Transmission后台守护程序&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ sudo apt install -y transmission-daemon
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#停止Transmisson后台服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl stop transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#修改配置文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>nano /etc/transmission-daemon/settings.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="启动transmission后台服务">启动Transmission后台服务&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#启动transmission服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl start transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#停止transmission服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl stop transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#查询transmission运行状态&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#将transmission设置为开机自启动&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl enable transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#关闭transmission开机自启&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl disable transmission-daemon.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Ubuntu安装 qbittorrent-nox并启动</title><link>https://blog.baicai.me/article/2021/qbittorrent/</link><pubDate>Fri, 02 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/qbittorrent/</guid><description>&lt;h3 id="qbittorrent-nox">Qbittorrent-Nox&lt;/h3>
+&lt;p>要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。&lt;/p>
+&lt;p>注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用&lt;/p>
+&lt;h3 id="安装qbittorrent">安装qbittorrent&lt;/h3>
+&lt;h4 id="安装add-apt-repository命令">安装add-apt-repository命令&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install software-properties-common -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="添加qbittorrent-nox的ppa软件源">添加qbittorrent-nox的PPA软件源&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="安装qbittorrent-noxwebui版">安装qbittorrent-nox（webui版）&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="设置开机启动">设置开机启动&lt;/h3>
+&lt;h4 id="通过rclocal完成">通过rc.local完成&lt;/h4>
+&lt;p>如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效&lt;/p>
+&lt;p>Ubuntu-18.04设置开机启动脚本
+起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&amp;hellip;&lt;/p>
+&lt;p>编辑rc.local脚本&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/rc.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在exit 0前面（前一行）添加以下内容并保存&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>qbittorrent-nox -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="通过创建自定义服务实现">通过创建自定义服务实现&lt;/h4>
+&lt;p>创建系统服务&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get install nano -y &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> nano /etc/systemd/system/qbittorrent-nox.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>粘贴以下内容，并保存。&lt;/p>
+&lt;pre tabindex="0">&lt;code>[Unit]
+Description=qBittorrent-nox
+After=network.target
+[Service]
+User=root
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox -d
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>启动qbittorrent-nox并创建服务配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl start qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>设置开机自动启动qbittorrent-nox&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看qbittorrent-nox状态&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>默认账号：admin 密码： adminadmin
+默认登陆网址：ip:8080&lt;/p></description></item></channel></rss>

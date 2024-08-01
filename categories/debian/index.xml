@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debian on 白菜</title><link>https://blog.baicai.me/categories/debian/</link><description>Recent content in Debian on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 22 Jul 2022 11:04:30 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/debian/index.xml" rel="self" type="application/rss+xml"/><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
+&lt;h3 id="1-使用-lsb_release-命令">1. 使用 lsb_release 命令&lt;/h3>
+&lt;p>lsb_release 命令可用于查看 Linux 发行版操作系统的具体版本。它可能尚未安装在你的操作系统中，因此你需要先安装它。运行以下命令来安装 lsb_release：&lt;/p>
+&lt;pre tabindex="0">&lt;code> apt-get install lsb-release
+&lt;/code>&lt;/pre>&lt;p>安装完成之后，只需要输入下面的命令就可以查看到你当前系统的版本信息：&lt;/p>
+&lt;pre tabindex="0">&lt;code> lsb_release -a
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> No LSB modules are available.
+Distributor ID: Debian
+Description: Debian GNU/Linux 11 (bullseye)
+Release: 11
+Codename: bullseye
+&lt;/code>&lt;/pre>&lt;p>以上运行结果说明当前使用的操作系统版本是 Debian 11.&lt;/p>
+&lt;h3 id="2-查看-etcissue-文件">2. 查看 /etc/issue 文件&lt;/h3>
+&lt;p>第二种查看当前 Debian 版本的方法是查看位于 /etc 目录中的 issue 文件。你可以使用 cat 命令查看文件的内容，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> cat /etc/issue
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Debian GNU/Linux 11 \n \l
+&lt;/code>&lt;/pre>&lt;h3 id="3-查看-etcos-release-文件">3. 查看 /etc/os-release 文件&lt;/h3>
+&lt;p>/etc/os-release 是一个包含操作系统标识数据的文件，它只能在运行 systemd 的最新 Debian 发行版上找到。同样可以使用 cat 命令查看该文件的内容，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat /etc/os-release
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> PRETTY_NAME=&amp;#34;Debian GNU/Linux 11 (bullseye)&amp;#34;
+NAME=&amp;#34;Debian GNU/Linux&amp;#34;
+VERSION_ID=&amp;#34;11&amp;#34;
+VERSION=&amp;#34;11 (bullseye)&amp;#34;
+VERSION_CODENAME=bullseye
+ID=debian
+HOME_URL=&amp;#34;https://www.debian.org/&amp;#34;
+SUPPORT_URL=&amp;#34;https://www.debian.org/support&amp;#34;
+BUG_REPORT_URL=&amp;#34;https://bugs.debian.org/&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>如果想知道更具体的小版本号，可以查看 /etc/debian_version 文件，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> cat /etc/debian_version
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> 11.4
+&lt;/code>&lt;/pre>&lt;h3 id="4-使用-uname-命令">4. 使用 uname 命令&lt;/h3>
+&lt;p>uname 命令可以显示电脑以及操作系统的相关信息，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> uname -a
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Linux baicai-l01 5.10.0-16-amd64 #1 SMP Debian 5.10.127-1 (2022-06-30) x86_64 GNU/Linux
+&lt;/code>&lt;/pre>&lt;h3 id="5-使用-hostnamectl-命令">5. 使用 hostnamectl 命令&lt;/h3>
+&lt;p>hostnamectl 命令用于配置或修改系统的主机名，不过也使用此命令来获取 Debian 系统的版本，只需要直接输入 hostnamectl 即可：&lt;/p>
+&lt;pre tabindex="0">&lt;code> hostnamectl
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Static hostname: baicai-l01
+Icon name: computer-desktop
+Chassis: desktop
+Machine ID: xxx
+Boot ID: xxx
+Operating System: Debian GNU/Linux 11 (bullseye)
+Kernel: Linux 5.10.0-16-amd64
+Architecture: x86-64
+&lt;/code>&lt;/pre></description></item></channel></rss>

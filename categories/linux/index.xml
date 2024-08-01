@@ -1,0 +1,1398 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 11 Jul 2024 14:31:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
+&lt;p>UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。&lt;/p>
+&lt;p>具体现象是：&lt;/p>
+&lt;ol>
+&lt;li>在一个对外提供服务的服务器上启用了 UFW，并且默认阻止所有未被允许的传入连接。&lt;/li>
+&lt;li>运行了一个 Docker 容器，并且使用 &lt;code>-p&lt;/code> 选项来把该容器的某个端口发布到服务器的所有 IP 地址上。比如：&lt;code>docker run -d --name httpd -p 0.0.0.0:8080:80 httpd:alpine&lt;/code> 将会运行一个 httpd 服务，并且将容器的 &lt;code>80&lt;/code> 端口发布到服务器的 &lt;code>8080&lt;/code> 端口上。&lt;/li>
+&lt;li>UFW 将不会阻止所有对 &lt;code>8080&lt;/code> 端口访问的请求，用命令 &lt;code>ufw deny 8080&lt;/code> 也无法阻止外部访问这个端口。&lt;/li>
+&lt;/ol>
+&lt;p>这个问题其实挺严重的，这意味着本来只是为了在内部提供服务的一个端口被暴露在公共网络上。&lt;/p>
+&lt;h2 id="解决-ufw-和-docker-的问题">解决 UFW 和 Docker 的问题&lt;/h2>
+&lt;h3 id="撤销原先的修改">撤销原先的修改&lt;/h3>
+&lt;p>如果已经按照目前网络上搜索到解决方案修改过了，请先修改回来，包括：&lt;/p>
+&lt;ol>
+&lt;li>启用 Docker 的 iptables 功能，删除所有类似 &lt;code>--iptables=false&lt;/code> 的修改，包括 &lt;code>/etc/docker/daemon.json&lt;/code> 配置文件。&lt;/li>
+&lt;li>UFW 的默认 &lt;code>FORWARD&lt;/code> 规则改回默认的 &lt;code>DROP&lt;/code>，而非 &lt;code>ACCEPT&lt;/code>。&lt;/li>
+&lt;li>删除 UFW 配置文件 &lt;code>/etc/ufw/after.rules&lt;/code> 中与 Docker 网络相关的规则。&lt;/li>
+&lt;li>如果修改了 Docker 相关的配置文件，重启 Docker。稍后还要修改 UFW 的配置，可以一并重启。&lt;/li>
+&lt;/ol>
+&lt;p>目前新的解决方案只需要修改一个 UFW 配置文件即可，Docker 的所有配置和选项都保持默认。&lt;/p>
+&lt;p>修改 UFW 的配置文件 &lt;code>/etc/ufw/after.rules&lt;/code>，在最后添加上如下规则：&lt;/p>
+&lt;pre tabindex="0">&lt;code> # BEGIN UFW AND DOCKER
+*filter
+:ufw-user-forward - [0:0]
+:ufw-docker-logging-deny - [0:0]
+:DOCKER-USER - [0:0]
+-A DOCKER-USER -j ufw-user-forward
+-A DOCKER-USER -j RETURN -s 10.0.0.0/8
+-A DOCKER-USER -j RETURN -s 172.16.0.0/12
+-A DOCKER-USER -j RETURN -s 192.168.0.0/16
+-A DOCKER-USER -p udp -m udp --sport 53 --dport 1024:65535 -j RETURN
+-A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 192.168.0.0/16
+-A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 10.0.0.0/8
+-A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 172.16.0.0/12
+-A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 192.168.0.0/16
+-A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 10.0.0.0/8
+-A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 172.16.0.0/12
+-A DOCKER-USER -j RETURN
+-A ufw-docker-logging-deny -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix &amp;#34;[UFW DOCKER BLOCK] &amp;#34;
+-A ufw-docker-logging-deny -j DROP
+COMMIT
+# END UFW AND DOCKER
+&lt;/code>&lt;/pre>&lt;p>然后重启 UFW，&lt;code>sudo systemctl restart ufw&lt;/code>。现在外部就已经无法访问 Docker 发布出来的任何端口了，但是容器内部以及私有网络地址上可以正常互相访问，而且容器也可以正常访问外部的网络。&lt;strong>可能由于某些未知原因，重启 UFW 之后规则也无法生效，请重启服务器。&lt;/strong>&lt;/p>
+&lt;p>如果希望允许外部网络访问 Docker 容器提供的服务，比如有一个容器的服务端口是 &lt;code>80&lt;/code>。那就可以用以下命令来允许外部网络访问这个服务：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow proto tcp from any to any port 80
+&lt;/code>&lt;/pre>&lt;p>这个命令会允许外部网络访问所有用 Docker 发布出来的并且内部服务端口为 &lt;code>80&lt;/code> 的所有服务。&lt;/p>
+&lt;p>如果有多个容器的服务端口为 80，但只希望外部网络访问某个特定的容器。比如该容器的私有地址为 &lt;code>172.17.0.2&lt;/code>，就用类似下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow proto tcp from any to 172.17.0.2 port 80
+&lt;/code>&lt;/pre>&lt;p>如果一个容器的服务是 UDP 协议，假如是 DNS 服务，可以用下面的命令来允许外部网络访问所有发布出来的 DNS 服务：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow proto udp from any to any port 53
+&lt;/code>&lt;/pre>&lt;p>同样的，如果只针对一个特定的容器，比如 IP 地址为 &lt;code>172.17.0.2&lt;/code>：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow proto udp from any to 172.17.0.2 port 53
+&lt;/code>&lt;/pre>&lt;h3 id="解释">解释&lt;/h3>
+&lt;p>在新增的这段规则中，下面这段规则是为了让私有网络地址可以互相访问。通常情况下，私有网络是比公共网络更信任的。&lt;/p>
+&lt;pre tabindex="0">&lt;code> -A DOCKER-USER -j RETURN -s 10.0.0.0/8
+-A DOCKER-USER -j RETURN -s 172.16.0.0/12
+-A DOCKER-USER -j RETURN -s 192.168.0.0/16
+&lt;/code>&lt;/pre>&lt;p>下面的规则是为了可以用 UFW 来管理外部网络是否允许访问 Docker 容器提供的服务，这样我们就可以在一个地方来管理防火墙的规则了。&lt;/p>
+&lt;pre tabindex="0">&lt;code> -A DOCKER-USER -j ufw-user-forward
+&lt;/code>&lt;/pre>&lt;p>例如，我们要阻止一个 IP 地址为 172.17.0.9 的容器内的所有对外连接，也就是阻止该容器访问外部网络，使用下列命令&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route deny from 172.17.0.9 to any
+&lt;/code>&lt;/pre>&lt;p>下面的规则阻止了所有外部网络发起的连接请求，但是允许内部网络访问外部网络。对于 TCP 协议，是阻止了从外部网络主动建立 TCP 连接。对于 UDP，是阻止了所有小于端口 &lt;code>32767&lt;/code> 的访问。为什么是这个端口的？由于 UDP 协议是无状态的，无法像 TCP 那样阻止发起建立连接请求的握手信号。在 GNU/Linux 上查看文件 &lt;code>/proc/sys/net/ipv4/ip_local_port_range&lt;/code> 可以看到发出 TCP/UDP 数据后，本地源端口的范围，默认为 &lt;code>32768 60999&lt;/code>。当从一个运行的容器对外访问一个 UDP 协议的服务时，本地端口将会从这个端口范围里面随机选择一个，服务器将会把数据返回到这个随机端口上。所以，我们可以假定所有容器内部的 UDP 协议的监听端口都小余 &lt;code>32768&lt;/code>，不允许外部网络主动连接小余 &lt;code>32768&lt;/code> 的 UDP 端口。&lt;/p>
+&lt;pre tabindex="0">&lt;code> -A DOCKER-USER -j DROP -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 192.168.0.0/16
+-A DOCKER-USER -j DROP -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 10.0.0.0/8
+-A DOCKER-USER -j DROP -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 172.16.0.0/12
+-A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 192.168.0.0/16
+-A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 10.0.0.0/8
+-A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 172.16.0.0/12
+-A DOCKER-USER -j RETURN
+&lt;/code>&lt;/pre>&lt;p>如果一个容器在接受数据的时候，端口号没有遵循操作系统的设定，也就是说最小端口号要小余 &lt;code>32768&lt;/code>。比如运行了一个 Dnsmasq 的容器，Dnsmasq 用于接受数据的最小端口号默认是 &lt;code>1024&lt;/code>。那可以用下面的命令来允许 Dnsmasq 这个容器使用一个更大的端口范围来接受数据。&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow proto udp from any port 53 to any port 1024:65535
+&lt;/code>&lt;/pre>&lt;p>因为 DNS 是一个非常常见的服务，所以已经有一条规则用于允许使用一个更大的端口范围来接受 DNS 数据包&lt;/p>
+&lt;h3 id="选择-ufw-user-forward-而不是-ufw-user-input-的原因">选择 &lt;code>ufw-user-forward&lt;/code> 而不是 &lt;code>ufw-user-input&lt;/code> 的原因&lt;/h3>
+&lt;h4 id="使用-ufw-user-input">使用 &lt;code>ufw-user-input&lt;/code>&lt;/h4>
+&lt;p>优点：&lt;/p>
+&lt;p>使用的 UFW 命令比较简单，也比较容易理解&lt;/p>
+&lt;p>比如，允许公众网络访问一个已经发布出来的容器端口 &lt;code>8080&lt;/code>，使用命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw allow 8080
+&lt;/code>&lt;/pre>&lt;p>缺点：&lt;/p>
+&lt;p>不仅仅是暴露了已经发布的容器端口，也暴露了主机上的端口。&lt;/p>
+&lt;p>比如，如果在主机上运行了一个端口为 &lt;code>8080&lt;/code> 的服务。命令 &lt;code>ufw allow 8080&lt;/code> 允许了公共网络访问这个服务，也允许了访问所有已经发布的容器端口为 &lt;code>8080&lt;/code> 的服务。但是我们可能只是希望保留主机上的这个服务，或者是运行在容器里面的服务，而不是两个同时暴露。&lt;/p>
+&lt;p>为了避免这个问题，我们可能需要使用类似下面的命令来管理已经发布的容器端口：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw allow proto tcp from any to 172.16.0.3 port 8080
+&lt;/code>&lt;/pre>&lt;h4 id="使用-ufw-user-forward">使用 &lt;code>ufw-user-forward&lt;/code>&lt;/h4>
+&lt;p>优点：&lt;/p>
+&lt;p>不会因为同一条命令而同时暴露主机和容器里面的服务。&lt;/p>
+&lt;p>比如，如果我们希望暴露所有容器端口为 &lt;code>8080&lt;/code> 的服务，使用下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw route allow 8080
+&lt;/code>&lt;/pre>&lt;p>现在公共网络可以访问所有容器端口为 &lt;code>8080&lt;/code> 的已经发布的服务，但是运行在主机上的 &lt;code>8080&lt;/code> 服务仍然不会被公开。如果我们希望公开主机上的 &lt;code>8080&lt;/code> 端口，可以执行下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> ufw allow 8080
+&lt;/code>&lt;/pre>&lt;h4 id="结论">结论&lt;/h4>
+&lt;p>如果我们正在使用老版本，我们可以使用 &lt;code>ufw-user-input&lt;/code>。但是要小心避免把不该暴露的服务暴露出去。&lt;/p>
+&lt;p>如果正在使用支持 &lt;code>ufw route&lt;/code> 命令的新版本，我们最好使用 &lt;code>ufw-user-forward&lt;/code>，并且使用 &lt;code>ufw route&lt;/code> 来管理与容器相关的防火墙规则。&lt;/p></description></item><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
+&lt;p>下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。&lt;/p>
+&lt;h3 id="彻底卸载-libreoffice">彻底卸载 LibreOffice&lt;/h3>
+&lt;p>终端中输入命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo aptitude purge libreoffice?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get remove --purge libreoffice*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后清理残留：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附注不完全卸载">附注（不完全卸载）：&lt;/h3>
+&lt;p>卸载libreoffice表格&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-calc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice绘图&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-draw
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice幻灯片&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-impress
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>卸载libreoffice word文档工具&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt remove libreoffice-writer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理残留&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="libreoffice简介来自官网">LibreOffice简介（来自官网）：&lt;/h3>
+&lt;p>LibreOffice 是一款功能强大的办公软件，默认使用开放文档格式 (OpenDocument Format , ODF), 并支持 *.docx, *.xlsx, *.pptx 等其他格式。&lt;/p>
+&lt;p>它包含了 Writer, Calc, Impress, Draw, Base 以及 Math 等组件，可用于处理文本文档、电子表格、演示文稿、绘图以及公式编辑。&lt;/p>
+&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P FORWARD ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -P OUTPUT ACCEPT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo iptables -F
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="oracle自带的镜像默认设置了iptable规则关闭它">Oracle自带的镜像默认设置了Iptable规则，关闭它&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get purge netfilter-persistent &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>测试端口是否已经开放&lt;/p>
+&lt;h2 id="附注">附注：&lt;/h2>
+&lt;h3 id="强制删除规则">强制删除规则&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo rm -rf /etc/iptables &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除oracle-cloud-agent防止甲骨文监控">删除oracle-cloud-agent，防止甲骨文监控&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>snap remove oracle-cloud-agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="检查防火墙服务状态">检查防火墙服务状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status iptables.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl status netfilter-persistent.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="远程检测端口开放状态">远程检测端口开放状态&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nmap ip或域名
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注2开放指定端口">附注2(开放指定端口):&lt;/h2>
+&lt;h3 id="iptables-开放指定端口">iptables 开放指定端口&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables -I INPUT -p tcp --dport &lt;span style="color:#ae81ff">80&lt;/span> -j ACCEPT
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中间的 80 为所需要开放的端口，tcp 为传输协议&lt;/p>
+&lt;h4 id="保存规则">保存规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> iptables-save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述命令我们就完成了开放指定的端口，但是如果此时服务器重启，上述规则就没有了，所以我们需要对规则进行一下持久化操作&lt;/p>
+&lt;h3 id="安装-iptables-persistent">安装 iptables-persistent&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt-get install iptables-persistent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
+&lt;h2 id="准备工作">准备工作&lt;/h2>
+&lt;p>一定要备份重要数据！&lt;/p>
+&lt;p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作&lt;/p>
+&lt;p>Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。&lt;/p>
+&lt;p>检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat /etc/apt/sources.list | grep stable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>更新 apt 源，替换 bullseye 为 bookworm：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#e6db74">&amp;#39;s/bullseye/bookworm/g&amp;#39;&lt;/span> /etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#e6db74">&amp;#39;s/bullseye/bookworm/g&amp;#39;&lt;/span> /etc/apt/sources.list.d/*.list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#e6db74">&amp;#39;s/non-free/non-free non-free-firmware/g&amp;#39;&lt;/span> /etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：&lt;/p>
+&lt;pre tabindex="0">&lt;code>deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+&lt;/code>&lt;/pre>&lt;h2 id="开始升级">开始升级&lt;/h2>
+&lt;p>更新软件源&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>先进行最小系统升级&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt upgrade --without-new-pkgs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>没问题的话开始进行全面升级，会下载好几百 MB 文件，下载速度取决于服务器网络带宽&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt full-upgrade
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果修改过 SSH 配置文件，出现提示时，请选择保留本地配置&lt;/p>
+&lt;p>更新过程种会提示一些软件是否需要自动重启，选 Yes 即可，以及一些软件的配置文件是否需要更新，按照自己的情况选择即可，默认回车即视为使用旧的配置文件，一般会出现在 OpenSSH 等软件的更新上。&lt;/p>
+&lt;p>在 apt-listchanges: News 界面可以按 q 退出：&lt;/p>
+&lt;p>全面升级结束后，重新启动&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>更新后删除不必要的软件和依赖：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt autoclean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt autoremove -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看最新的系统版本：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat /etc/debian_version
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lsb_release -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>uname -a
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="升级之后">升级之后&lt;/h2>
+&lt;p>列出已删除的软件包&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt list &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理已删除的软件包&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt purge &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 命令</title><link>https://blog.baicai.me/article/2023/linux_cmd_list/</link><pubDate>Mon, 10 Apr 2023 17:53:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/linux_cmd_list/</guid><description>&lt;h2 id="基本命令">基本命令&lt;/h2>
+&lt;pre>&lt;code>uname -m 显示机器的处理器架构
+uname -r 显示正在使用的内核版本
+dmidecode -q 显示硬件系统部件
+(SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性
+hdparm -tT /dev/sda 在磁盘上执行测试性读取操作系统信息
+arch 显示机器的处理器架构
+uname -m 显示机器的处理器架构
+uname -r 显示正在使用的内核版本
+dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI)
+hdparm -i /dev/hda 罗列一个磁盘的架构特性
+hdparm -tT /dev/sda 在磁盘上执行测试性读取操作
+cat /proc/cpuinfo 显示CPU info的信息
+cat /proc/interrupts 显示中断
+cat /proc/meminfo 校验内存使用
+cat /proc/swaps 显示哪些swap被使用
+cat /proc/version 显示内核的版本
+cat /proc/net/dev 显示网络适配器及统计
+cat /proc/mounts 显示已加载的文件系统
+lspci -tv 罗列 PCI 设备
+lsusb -tv 显示 USB 设备
+date 显示系统日期
+cal 2007 显示2007年的日历表
+date 041217002007.00 设置日期和时间 - 月日时分年.秒
+clock -w 将时间修改保存到 BIOS
+&lt;/code>&lt;/pre>
+&lt;h2 id="关机">关机&lt;/h2>
+&lt;pre>&lt;code>shutdown -h now 关闭系统(1)
+init 0 关闭系统(2)
+telinit 0 关闭系统(3)
+shutdown -h hours:minutes &amp;amp; 按预定时间关闭系统
+shutdown -c 取消按预定时间关闭系统
+shutdown -r now 重启(1)
+reboot 重启(2)
+logout 注销
+&lt;/code>&lt;/pre>
+&lt;h2 id="文件和目录">文件和目录&lt;/h2>
+&lt;pre>&lt;code>cd /home 进入 '/ home' 目录'
+cd .. 返回上一级目录
+cd ../.. 返回上两级目录
+cd 进入个人的主目录
+cd ~user1 进入个人的主目录
+cd - 返回上次所在的目录
+pwd 显示工作路径
+ls 查看目录中的文件
+ls -F 查看目录中的文件
+ls -l 显示文件和目录的详细资料
+ls -a 显示隐藏文件
+ls *[0-9]* 显示包含数字的文件名和目录名
+tree 显示文件和目录由根目录开始的树形结构(1)
+lstree 显示文件和目录由根目录开始的树形结构(2)
+mkdir dir1 创建一个叫做 'dir1' 的目录'
+mkdir dir1 dir2 同时创建两个目录
+mkdir -p /tmp/dir1/dir2 创建一个目录树
+rm -f file1 删除一个叫做 'file1' 的文件'
+rmdir dir1 删除一个叫做 'dir1' 的目录'
+rm -rf dir1 删除一个叫做 'dir1' 的目录并同时删除其内容
+rm -rf dir1 dir2 同时删除两个目录及它们的内容
+mv dir1 new_dir 重命名/移动 一个目录
+cp file1 file2 复制一个文件
+cp dir/* . 复制一个目录下的所有文件到当前工作目录
+cp -a /tmp/dir1 . 复制一个目录到当前工作目录
+cp -a dir1 dir2 复制一个目录
+ln -s file1 lnk1 创建一个指向文件或目录的软链接
+ln file1 lnk1 创建一个指向文件或目录的物理链接
+touch -t 0712250000 file1 修改一个文件或目录的时间戳 - (YYMMDDhhmm)
+file file1 outputs the mime type of the file as text
+iconv -l 列出已知的编码
+iconv -f fromEncoding -t toEncoding inputFile &amp;gt; outputFile creates a new from the given input file by assuming it is encoded in fromEncoding and converting it to toEncoding.
+find . -maxdepth 1 -name *.jpg -print -exec convert &amp;quot;{}&amp;quot; -resize 80x60 &amp;quot;thumbs/{}&amp;quot; \; batch resize files in the current directory and send them to a thumbnails directory (requires convert from Imagemagick)
+&lt;/code>&lt;/pre>
+&lt;h2 id="文件搜索">文件搜索&lt;/h2>
+&lt;pre>&lt;code>find / -name file1 从 '/' 开始进入根文件系统搜索文件和目录
+find / -user user1 搜索属于用户 'user1' 的文件和目录
+find /home/user1 -name \*.bin 在目录 '/ home/user1' 中搜索带有'.bin' 结尾的文件
+find /usr/bin -type f -atime +100 搜索在过去100天内未被使用过的执行文件
+find /usr/bin -type f -mtime -10 搜索在10天内被创建或者修改过的文件
+find / -name \*.rpm -exec chmod 755 '{}' \; 搜索以 '.rpm' 结尾的文件并定义其权限
+find / -xdev -name \*.rpm 搜索以 '.rpm' 结尾的文件，忽略光驱、捷盘等可移动设备
+locate \*.ps 寻找以 '.ps' 结尾的文件 - 先运行 'updatedb' 命令
+whereis halt 显示一个二进制文件、源码或man的位置
+which halt 显示一个二进制文件或可执行文件的完整路径
+&lt;/code>&lt;/pre>
+&lt;h2 id="挂载一个文件系统">挂载一个文件系统&lt;/h2>
+&lt;pre>&lt;code>mount /dev/hda2 /mnt/hda2 挂载一个叫做hda2的盘 - 确定目录 '/ mnt/hda2' 已经存在
+umount /dev/hda2 卸载一个叫做hda2的盘 - 先从挂载点 '/ mnt/hda2' 退出
+fuser -km /mnt/hda2 当设备繁忙时强制卸载
+umount -n /mnt/hda2 运行卸载操作而不写入 /etc/mtab 文件- 当文件为只读或当磁盘写满时非常有用
+mount /dev/fd0 /mnt/floppy 挂载一个软盘
+mount /dev/cdrom /mnt/cdrom 挂载一个cdrom或dvdrom
+mount /dev/hdc /mnt/cdrecorder 挂载一个cdrw或dvdrom
+mount /dev/hdb /mnt/cdrecorder 挂载一个cdrw或dvdrom
+mount -o loop file.iso /mnt/cdrom 挂载一个文件或ISO镜像文件
+mount -t vfat /dev/hda5 /mnt/hda5 挂载一个Windows FAT32文件系统
+mount /dev/sda1 /mnt/usbdisk 挂载一个usb 捷盘或闪存设备
+mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share 挂载一个windows网络共享
+&lt;/code>&lt;/pre>
+&lt;h2 id="磁盘空间">磁盘空间&lt;/h2>
+&lt;pre>&lt;code>df -h 显示已经挂载的分区列表
+ls -lSr |more 以尺寸大小排列文件和目录
+du -sh dir1 估算目录 'dir1' 已经使用的磁盘空间'
+du -sk * | sort -rn 以容量大小为依据依次显示文件和目录的大小
+rpm -q -a --qf '%10{SIZE}t%{NAME}n' | sort -k1,1n 以大小为依据依次显示已安装的rpm包所使用的空间 (fedora, redhat类系统)
+dpkg-query -W -f='${Installed-Size;10}t${Package}n' | sort -k1,1n 以大小为依据显示已安装的deb包所使用的空间 (ubuntu, debian类系统)
+&lt;/code>&lt;/pre>
+&lt;h2 id="用户和群组">用户和群组&lt;/h2>
+&lt;pre>&lt;code>groupadd group_name 创建一个新用户组
+groupdel group_name 删除一个用户组
+groupmod -n new_group_name old_group_name 重命名一个用户组
+useradd -c &amp;quot;Name Surname &amp;quot; -g admin -d /home/user1 -s /bin/bash user1 创建一个属于 &amp;quot;admin&amp;quot; 用户组的用户
+useradd user1 创建一个新用户
+userdel -r user1 删除一个用户 ( '-r' 排除主目录)
+usermod -c &amp;quot;User FTP&amp;quot; -g system -d /ftp/user1 -s /bin/nologin user1 修改用户属性
+passwd 修改口令
+passwd user1 修改一个用户的口令 (只允许root执行)
+chage -E 2005-12-31 user1 设置用户口令的失效期限
+pwck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的用户
+grpck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的群组
+newgrp group_name 登陆进一个新的群组以改变新创建文件的预设群组
+&lt;/code>&lt;/pre>
+&lt;h2 id="文件的权限使用设置权限使用-用于取消">文件的权限，使用“+”设置权限，使用“-”用于取消&lt;/h2>
+&lt;pre>&lt;code>chattr +a file1 只允许以追加方式读写文件
+chattr +c file1 允许这个文件能被内核自动压缩/解压
+chattr +d file1 在进行文件系统备份时，dump程序将忽略这个文件
+chattr +i file1 设置成不可变的文件，不能被删除、修改、重命名或者链接
+chattr +s file1 允许一个文件被安全地删除
+chattr +S file1 一旦应用程序对这个文件执行了写操作，使系统立刻把修改的结果写到磁盘
+chattr +u file1 若文件被删除，系统会允许你在以后恢复这个被删除的文件
+lsattr 显示特殊的属性
+&lt;/code>&lt;/pre>
+&lt;h2 id="文件的特殊属性-使用--设置权限使用---用于取消">文件的特殊属性 ，使用 “+” 设置权限，使用 “-” 用于取消&lt;/h2>
+&lt;pre>&lt;code>chattr +a file1 只允许以追加方式读写文件
+chattr +c file1 允许这个文件能被内核自动压缩/解压
+chattr +d file1 在进行文件系统备份时，dump程序将忽略这个文件
+chattr +i file1 设置成不可变的文件，不能被删除、修改、重命名或者链接
+chattr +s file1 允许一个文件被安全地删除
+chattr +S file1 一旦应用程序对这个文件执行了写操作，使系统立刻把修改的结果写到磁盘
+chattr +u file1 若文件被删除，系统会允许你在以后恢复这个被删除的文件
+lsattr 显示特殊的属性
+&lt;/code>&lt;/pre>
+&lt;h2 id="打包和压缩文件">打包和压缩文件&lt;/h2>
+&lt;pre>&lt;code>bunzip2 file1.bz2 解压一个叫做 'file1.bz2'的文件
+bzip2 file1 压缩一个叫做 'file1' 的文件
+gunzip file1.gz 解压一个叫做 'file1.gz'的文件
+gzip file1 压缩一个叫做 'file1'的文件
+gzip -9 file1 最大程度压缩
+rar a file1.rar test_file 创建一个叫做 'file1.rar' 的包
+rar a file1.rar file1 file2 dir1 同时压缩 'file1', 'file2' 以及目录 'dir1'
+rar x file1.rar 解压rar包
+unrar x file1.rar 解压rar包
+tar -cvf archive.tar file1 创建一个非压缩的 tarball
+tar -cvf archive.tar file1 file2 dir1 创建一个包含了 'file1', 'file2' 以及 'dir1'的档案文件
+tar -tf archive.tar 显示一个包中的内容
+tar -xvf archive.tar 释放一个包
+tar -xvf archive.tar -C /tmp 将压缩包释放到 /tmp目录下
+tar -cvfj archive.tar.bz2 dir1 创建一个bzip2格式的压缩包
+tar -xvfj archive.tar.bz2 解压一个bzip2格式的压缩包
+tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包
+tar -xvfz archive.tar.gz 解压一个gzip格式的压缩包
+zip file1.zip file1 创建一个zip格式的压缩包
+zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包
+unzip file1.zip 解压一个zip格式压缩包
+&lt;/code>&lt;/pre>
+&lt;h2 id="rpm-包">RPM 包&lt;/h2>
+&lt;pre>&lt;code>rpm -ivh package.rpm 安装一个rpm包
+rpm -ivh --nodeeps package.rpm 安装一个rpm包而忽略依赖关系警告
+rpm -U package.rpm 更新一个rpm包但不改变其配置文件
+rpm -F package.rpm 更新一个确定已经安装的rpm包
+rpm -e package_name.rpm 删除一个rpm包
+rpm -qa 显示系统中所有已经安装的rpm包
+rpm -qa | grep httpd 显示所有名称中包含 &amp;quot;httpd&amp;quot; 字样的rpm包
+rpm -qi package_name 获取一个已安装包的特殊信息
+rpm -qg &amp;quot;System Environment/Daemons&amp;quot; 显示一个组件的rpm包
+rpm -ql package_name 显示一个已经安装的rpm包提供的文件列表
+rpm -qc package_name 显示一个已经安装的rpm包提供的配置文件列表
+rpm -q package_name --whatrequires 显示与一个rpm包存在依赖关系的列表
+rpm -q package_name --whatprovides 显示一个rpm包所占的体积
+rpm -q package_name --scripts 显示在安装/删除期间所执行的脚本l
+rpm -q package_name --changelog 显示一个rpm包的修改历史
+rpm -qf /etc/httpd/conf/httpd.conf 确认所给的文件由哪个rpm包所提供
+rpm -qp package.rpm -l 显示由一个尚未安装的rpm包提供的文件列表
+rpm --import /media/cdrom/RPM-GPG-KEY 导入公钥数字证书
+rpm --checksig package.rpm 确认一个rpm包的完整性
+rpm -qa gpg-pubkey 确认已安装的所有rpm包的完整性
+rpm -V package_name 检查文件尺寸、 许可、类型、所有者、群组、MD5检查以及最后修改时间
+rpm -Va 检查系统中所有已安装的rpm包- 小心使用
+rpm -Vp package.rpm 确认一个rpm包还未安装
+rpm2cpio package.rpm | cpio --extract --make-directories *bin* 从一个rpm包运行可执行文件
+rpm -ivh /usr/src/redhat/RPMS/`arch`/package.rpm 从一个rpm源码安装一个构建好的包
+rpmbuild --rebuild package_name.src.rpm 从一个rpm源码构建一个 rpm 包
+&lt;/code>&lt;/pre>
+&lt;h2 id="yum-软件包升级器">YUM 软件包升级器&lt;/h2>
+&lt;pre>&lt;code>yum install package_name 下载并安装一个rpm包
+yum localinstall package_name.rpm 将安装一个rpm包，使用你自己的软件仓库为你解决所有依赖关系
+yum update package_name.rpm 更新当前系统中所有安装的rpm包
+yum update package_name 更新一个rpm包
+yum remove package_name 删除一个rpm包
+yum list 列出当前系统中安装的所有包
+yum search package_name 在rpm仓库中搜寻软件包
+yum clean packages 清理rpm缓存删除下载的包
+yum clean headers 删除所有头文件
+yum clean all 删除所有缓存的包和头文件
+&lt;/code>&lt;/pre>
+&lt;h2 id="deb-包">deb 包&lt;/h2>
+&lt;pre>&lt;code>dpkg -i package.deb 安装/更新一个 deb 包
+dpkg -r package_name 从系统删除一个 deb 包
+dpkg -l 显示系统中所有已经安装的 deb 包
+dpkg -l | grep httpd 显示所有名称中包含 &amp;quot;httpd&amp;quot; 字样的deb包
+dpkg -s package_name 获得已经安装在系统中一个特殊包的信息
+dpkg -L package_name 显示系统中已经安装的一个deb包所提供的文件列表
+dpkg --contents package.deb 显示尚未安装的一个包所提供的文件列表
+dpkg -S /bin/ping 确认所给的文件由哪个deb包提供
+APT 软件工具 (Debian, Ubuntu 以及类似系统)
+apt-get install package_name 安装/更新一个 deb 包
+apt-cdrom install package_name 从光盘安装/更新一个 deb 包
+apt-get update 升级列表中的软件包
+apt-get upgrade 升级所有已安装的软件
+apt-get remove package_name 从系统删除一个deb包
+apt-get check 确认依赖的软件仓库正确
+apt-get clean 从下载的软件包中清理缓存
+apt-cache search searched-package 返回包含所要搜索字符串的软件包名称
+&lt;/code>&lt;/pre>
+&lt;h2 id="查看文件内容">查看文件内容&lt;/h2>
+&lt;pre>&lt;code>cat file1 从第一个字节开始正向查看文件的内容
+tac file1 从最后一行开始反向查看一个文件的内容
+more file1 查看一个长文件的内容
+less file1 类似于 'more' 命令，但是它允许在文件中和正向操作一样的反向操作
+head -2 file1 查看一个文件的前两行
+tail -2 file1 查看一个文件的最后两行
+tail -f /var/log/messages 实时查看被添加到一个文件中的内容
+&lt;/code>&lt;/pre>
+&lt;h2 id="文本处理">文本处理&lt;/h2>
+&lt;pre>&lt;code>cat file1 file2 ... | command &amp;lt;&amp;gt; file1_in.txt_or_file1_out.txt general syntax for text manipulation using PIPE, STDIN and STDOUT
+cat file1 | command( sed, grep, awk, grep, etc...) &amp;gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个新文件中
+cat file1 | command( sed, grep, awk, grep, etc...) &amp;gt;&amp;gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个已有的文件中
+grep Aug /var/log/messages 在文件 '/var/log/messages'中查找关键词&amp;quot;Aug&amp;quot;
+grep ^Aug /var/log/messages 在文件 '/var/log/messages'中查找以&amp;quot;Aug&amp;quot;开始的词汇
+grep [0-9] /var/log/messages 选择 '/var/log/messages' 文件中所有包含数字的行
+grep Aug -R /var/log/* 在目录 '/var/log' 及随后的目录中搜索字符串&amp;quot;Aug&amp;quot;
+sed 's/stringa1/stringa2/g' example.txt 将example.txt文件中的 &amp;quot;string1&amp;quot; 替换成 &amp;quot;string2&amp;quot;
+sed '/^$/d' example.txt 从example.txt文件中删除所有空白行
+sed '/ *#/d; /^$/d' example.txt 从example.txt文件中删除所有注释和空白行
+echo 'esempio' | tr '[:lower:]' '[:upper:]' 合并上下单元格内容
+sed -e '1d' result.txt 从文件example.txt 中排除第一行
+sed -n '/stringa1/p' 查看只包含词汇 &amp;quot;string1&amp;quot;的行
+sed -e 's/ *$//' example.txt 删除每一行最后的空白字符
+sed -e 's/stringa1//g' example.txt 从文档中只删除词汇 &amp;quot;string1&amp;quot; 并保留剩余全部
+sed -n '1,5p;5q' example.txt 查看从第一行到第5行内容
+sed -n '5p;5q' example.txt 查看第5行
+sed -e 's/00*/0/g' example.txt 用单个零替换多个零
+cat -n file1 标示文件的行数
+cat example.txt | awk 'NR%2==1' 删除example.txt文件中的所有偶数行
+echo a b c | awk '{print $1}' 查看一行第一栏
+echo a b c | awk '{print $1,$3}' 查看一行的第一和第三栏
+paste file1 file2 合并两个文件或两栏的内容
+paste -d '+' file1 file2 合并两个文件或两栏的内容，中间用&amp;quot;+&amp;quot;区分
+sort file1 file2 排序两个文件的内容
+sort file1 file2 | uniq 取出两个文件的并集(重复的行只保留一份)
+sort file1 file2 | uniq -u 删除交集，留下其他的行
+sort file1 file2 | uniq -d 取出两个文件的交集(只留下同时存在于两个文件中的文件)
+comm -1 file1 file2 比较两个文件的内容只删除 'file1' 所包含的内容
+comm -2 file1 file2 比较两个文件的内容只删除 'file2' 所包含的内容
+comm -3 file1 file2 比较两个文件的内容只删除两个文件共有的部分
+&lt;/code>&lt;/pre>
+&lt;h2 id="字符设置和文件格式转换">字符设置和文件格式转换&lt;/h2>
+&lt;pre>&lt;code>dos2unix filedos.txt fileunix.txt 将一个文本文件的格式从MSDOS转换成UNIX
+unix2dos fileunix.txt filedos.txt 将一个文本文件的格式从UNIX转换成MSDOS
+recode ..HTML &amp;lt; page.txt &amp;gt; page.html 将一个文本文件转换成html
+recode -l | more 显示所有允许的转换格式
+&lt;/code>&lt;/pre>
+&lt;h2 id="文件系统分析">文件系统分析&lt;/h2>
+&lt;pre>&lt;code>badblocks -v /dev/hda1 检查磁盘hda1上的坏磁块
+fsck /dev/hda1 修复/检查hda1磁盘上linux文件系统的完整性
+fsck.ext2 /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性
+e2fsck /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性
+e2fsck -j /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性
+fsck.ext3 /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性
+fsck.vfat /dev/hda1 修复/检查hda1磁盘上fat文件系统的完整性
+fsck.msdos /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性
+dosfsck /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性
+&lt;/code>&lt;/pre>
+&lt;h2 id="初始化一个文件系统">初始化一个文件系统&lt;/h2>
+&lt;pre>&lt;code>mkfs /dev/hda1 在hda1分区创建一个文件系统
+mke2fs /dev/hda1 在hda1分区创建一个linux ext2的文件系统
+mke2fs -j /dev/hda1 在hda1分区创建一个linux ext3(日志型)的文件系统
+mkfs -t vfat 32 -F /dev/hda1 创建一个 FAT32 文件系统
+fdformat -n /dev/fd0 格式化一个软盘
+mkswap /dev/hda3 创建一个swap文件系统
+&lt;/code>&lt;/pre>
+&lt;h2 id="swap文件系统">SWAP文件系统&lt;/h2>
+&lt;pre>&lt;code>mkswap /dev/hda3 创建一个swap文件系统
+swapon /dev/hda3 启用一个新的swap文件系统
+swapon /dev/hda2 /dev/hdb3 启用两个swap分区
+&lt;/code>&lt;/pre>
+&lt;h2 id="备份">备份&lt;/h2>
+&lt;pre>&lt;code>dump -0aj -f /tmp/home0.bak /home 制作一个 '/home' 目录的完整备份
+dump -1aj -f /tmp/home0.bak /home 制作一个 '/home' 目录的交互式备份
+restore -if /tmp/home0.bak 还原一个交互式备份
+rsync -rogpav --delete /home /tmp 同步两边的目录
+rsync -rogpav -e ssh --delete /home ip_address:/tmp 通过SSH通道rsync
+rsync -az -e ssh --delete ip_addr:/home/public /home/local 通过ssh和压缩将一个远程目录同步到本地目录
+rsync -az -e ssh --delete /home/local ip_addr:/home/public 通过ssh和压缩将本地目录同步到远程目录
+dd bs=1M if=/dev/hda | gzip | ssh user@ip_addr 'dd of=hda.gz' 通过ssh在远程主机上执行一次备份本地磁盘的操作
+dd if=/dev/sda of=/tmp/file1 备份磁盘内容到一个文件
+tar -Puf backup.tar /home/user 执行一次对 '/home/user' 目录的交互式备份操作
+( cd /tmp/local/ &amp;amp;&amp;amp; tar c . ) | ssh -C user@ip_addr 'cd /home/share/ &amp;amp;&amp;amp; tar x -p' 通过ssh在远程目录中复制一个目录内容
+( tar c /home ) | ssh -C user@ip_addr 'cd /home/backup-home &amp;amp;&amp;amp; tar x -p' 通过ssh在远程目录中复制一个本地目录
+tar cf - . | (cd /tmp/backup ; tar xf - ) 本地将一个目录复制到另一个地方，保留原有权限及链接
+find /home/user1 -name '*.txt' | xargs cp -av --target-directory=/home/backup/ --parents 从一个目录查找并复制所有以 '.txt' 结尾的文件到另一个目录
+find /var/log -name '*.log' | tar cv --files-from=- | bzip2 &amp;gt; log.tar.bz2 查找所有以 '.log' 结尾的文件并做成一个bzip包
+dd if=/dev/hda of=/dev/fd0 bs=512 count=1 做一个将 MBR (Master Boot Record)内容复制到软盘的动作
+dd if=/dev/fd0 of=/dev/hda bs=512 count=1 从已经保存到软盘的备份中恢复MBR内容
+&lt;/code>&lt;/pre>
+&lt;h2 id="光盘">光盘&lt;/h2>
+&lt;pre>&lt;code>cdrecord -v gracetime=2 dev=/dev/cdrom -eject blank=fast -force 清空一个可复写的光盘内容
+mkisofs /dev/cdrom &amp;gt; cd.iso 在磁盘上创建一个光盘的iso镜像文件
+mkisofs /dev/cdrom | gzip &amp;gt; cd_iso.gz 在磁盘上创建一个压缩了的光盘iso镜像文件
+mkisofs -J -allow-leading-dots -R -V &amp;quot;Label CD&amp;quot; -iso-level 4 -o ./cd.iso data_cd 创建一个目录的iso镜像文件
+cdrecord -v dev=/dev/cdrom cd.iso 刻录一个ISO镜像文件
+gzip -dc cd_iso.gz | cdrecord dev=/dev/cdrom - 刻录一个压缩了的ISO镜像文件
+mount -o loop cd.iso /mnt/iso 挂载一个ISO镜像文件
+cd-paranoia -B 从一个CD光盘转录音轨到 wav 文件中
+cd-paranoia -- &amp;quot;-3&amp;quot; 从一个CD光盘转录音轨到 wav 文件中（参数-3）
+cdrecord --scanbus 扫描总线以识别scsi通道
+dd if=/dev/hdc | md5sum 校验一个设备的md5sum编码，例如一张 CD
+&lt;/code>&lt;/pre>
+&lt;h2 id="网络以太网和wifi无线">网络（以太网和WIFI无线）&lt;/h2>
+&lt;pre>&lt;code>ifconfig eth0 显示一个以太网卡的配置
+ifup eth0 启用一个 'eth0' 网络设备
+ifdown eth0 禁用一个 'eth0' 网络设备
+ifconfig eth0 192.168.1.1 netmask 255.255.255.0 控制IP地址
+ifconfig eth0 promisc 设置 'eth0' 成混杂模式以嗅探数据包 (sniffing)
+dhclient eth0 以dhcp模式启用 'eth0'
+route -n show routing table
+route add -net 0/0 gw IP_Gateway configura default gateway
+route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.1.1 configure static route to reach network '192.168.0.0/16'
+route del 0/0 gw IP_gateway remove static route
+echo &amp;quot;1&amp;quot; &amp;gt; /proc/sys/net/ipv4/ip_forward activate ip routing
+hostname show hostname of system
+host www.example.com lookup hostname to resolve name to ip address and viceversa(1)
+nslookup www.example.com lookup hostname to resolve name to ip address and viceversa(2)
+ip link show show link status of all interfaces
+mii-tool eth0 show link status of 'eth0'
+ethtool eth0 show statistics of network card 'eth0'
+netstat -tup show all active network connections and their PID
+netstat -tupl show all network services listening on the system and their PID
+tcpdump tcp port 80 show all HTTP traffic
+iwlist scan show wireless networks
+iwconfig eth1 show configuration of a wireless network card
+hostname show hostname
+host www.example.com lookup hostname to resolve name to ip address and viceversa
+nslookup www.example.com lookup hostname to resolve name to ip address and viceversa
+whois www.example.com lookup on Whois database
+&lt;/code>&lt;/pre>
+&lt;h2 id="列出目录内容">列出目录内容&lt;/h2>
+&lt;pre>&lt;code>ls -a：显示所有文件（包括隐藏文件）；
+ls -l：显示详细信息；
+ls -R：递归显示子目录结构；
+ls -ld：显示目录和链接信息；
+ctrl+r：历史记录中所搜命令（输入命令中的任意一个字符）；
+Linux中以.开头的文件是隐藏文件；
+pwd:显示当前目录
+&lt;/code>&lt;/pre>
+&lt;h2 id="查看文件的类型">查看文件的类型&lt;/h2>
+&lt;pre>&lt;code>file:查看文件的类型
+&lt;/code>&lt;/pre>
+&lt;h2 id="复制文件目录">复制文件目录&lt;/h2>
+&lt;pre>&lt;code>1、cp：复制文件和目录 cp源文件（文件夹）目标文件（文件夹）。
+常用参数：-r:递归复制整个目录树；-v：显示详细信息；
+复制文件夹时要在cp命令后面加一个-r参数：
+如：cp -r 源文件夹 目标文件夹。
+2、touch+文件名：当文件不存在的时候，创建相应的文件；当文件存在的时候，修改文件的创建时间。
+功能：生成一个空文件或修改文件的存取/修改的时间记录值；
+touch * ：将当前下的文件时间修改为系统的当前时间；
+touch –d 20040210 test：将test文件的日期改为20040210；
+touch abc：若abc文件存在，则修改为系统的当前时间；若不存在，则生成一个为当前时间的空文件。
+3、mv 文件 目标目录：移动或重命名文件或目录（如果指定文件名，则可以重命名文件）。可以将文件及目录移到另一目录下，或更改文件及目录的名称。
+格式为：mv [参数]&amp;lt;源文件或目录&amp;gt; &amp;lt;目标文件或目录&amp;gt;
+mva.txt ../：将a.txt文件移动上层目录
+mv a.txt b.txt：将a.txt改名为b.txt
+mvdir2 ../：将dir2目录上移一层
+4、rm：删除文件
+常用参数：-i：交互式 -r：递归的删除包括目录中的所有内容。
+5、mkdir +文件夹名称：创建文件夹
+6、rm -r +文件夹名称：删除文件夹（空文件夹和非空文件夹都可删除）；
+rmdir 文件夹名称：删除文件夹（只能删除空文件夹）。
+7、mkdir -p dir1/dir2 ：在当前目录下创建dir1目录，并在dir1目录下创建dir2目录， 也就是连续创建两个目录（dir1/和dir1/dir2）。
+8、rmdir –p dir1/dir2：删除dir1下的dir2目录，若dir1目录为空也删除它。
+9、rm * ：删除当前目录下的所有文件
+10、-f参数：强迫删除文件 rm –f *.txt：强迫删除所有以后缀名为txt文件。
+11、-i参数：删除文件时询问
+rm　–i * ：删除当前目录下的所有文件会有如下提示：
+rm:backup:is a directory　　　 遇到目录会略过
+rm: remove ‘myfiles.txt’ ? Y
+删除文件时会询问，可按Y或N键表示允许或拒绝删除文件。
+12、-r参数：递归删除（连子目录一同删除，这是一个相当常用的参数）。
+rm -r test ：删除test目录（含test目录下所有文件和子目录）；
+rm -r *：删除所有文件（含当前目录所有文件、所有子目录和子目录下的文件） 一般在删除目录时r和f一起用，避免麻烦；
+rm -rf test ：强行删除、不加询问。
+13、grep：功能：在文件中搜索匹配的字符并进行输出。
+格式：grep[参数] &amp;lt;要找的字串&amp;gt; &amp;lt;要寻找字 串的源文件&amp;gt;
+greplinux test.txt：搜索test.txt文件中字符串linux并输出。
+14、ln命令
+功能：在文件和目录之间建立链接
+格式：ln [参数] &amp;lt;源文件或目录&amp;gt; &amp;lt;目标文件或目录&amp;gt;
+链接分“软链接”和“硬链接”
+1.软链接:
+ln–s /usr/share/do doc ：创建一个链接文件doc，并指向目录/usr/share/do
+2.硬链接:
+ln /usr/share/test hard：创建一个硬链接文件hard，这时对于test文件对应 的存储区域来说，又多了一个文件指向它。
+&lt;/code>&lt;/pre>
+&lt;h2 id="系统常用命令">系统常用命令&lt;/h2>
+&lt;pre>&lt;code>1、显示命令
+date:查看或设置当前系统的时间：格式化显示时间：+%Y--%m--%d；
+date -s:设置当前系统的时间；
+hwclock(clock)：显示硬件时钟时间(需要管理员权限)；
+cal：查看日历；
+格式cal [参数] 月年；
+cal：显示当月的日历 cal4 2004 ：显示2004年4月的日历；
+cal- y 2003：显示2003年的日历；
+uptime：查看系统运行时间
+2、输出查看命令
+2、输出查看命令
+echo：显示输入的内容 追加文件echo &amp;quot;liuyazhuang&amp;quot; &amp;gt;&amp;gt; liuyazhuang.txt
+cat：显示文件内容,也可以将数个文件合并成一个文件；
+格式：格式：cat[参数]&amp;lt;文件名&amp;gt;
+cat test.txt：显示test.txt文件内容；
+cat test.txt | more ：逐页显示test.txt文件中的内容；
+cat test.txt &amp;gt;&amp;gt; test1.txt ：将test.txt的内容附加到test1.txt文件之后；
+cat test.txt test2.txt &amp;gt;readme.txt　: 将test.txt和test2.txt文件合并成readme.txt 文件；
+head:显示文件的头几行（默认10行） -n:指定显示的行数格式：head -n 文件名；
+tail：显示文件的末尾几行（默认10行）-n：指定显示的行数 -f：追踪显示文件更新 （一般用于查看日志，命令不会退出，而是持续显示新加入的内容）；
+格式：格式：tail[参数]&amp;lt;文件名&amp;gt;
+tail-10 /etc/passwd ：显示/etc/passwd/文件的倒数10行内容；
+tail+10 /etc/passwd ：显示/etc/passwd/文件从第10行开始到末尾的内容；
+more：用于翻页显示文件内容（只能向下翻页）；
+more命令是一般用于要显示的内容会超过一个画面长度的情况。为了避免画 面显示时瞬间就闪过去，用户可以使用more命令，让画面在显示满一页时暂停，此时可按空格健继续显示下一个画面，或按Q键停止显示；
+ls -al |more：以长格形式显示etc目录下的文件列表，显示满一个画面便暂停，可 按空格键继续显示下一画面，或按Q键跳离；
+less：翻页显示文件内容（带上下翻页）按下上键分页，按q退出；
+less命令的用法与more命令类似，也可以用来浏览超过一页的文件。所不同 的是less 命令除了可以按空格键向下显示文件外，还可以利用上下键来卷动文件。当要结束浏览时，只要在less命令的提示符“：”下按Q键即可；
+ls -al | less：以长格形式列出/etc目录中所有的内容。用户可按上下键浏览或按Q键跳离。
+3、查看硬件信息
+3、查看硬件信息
+Ispci：查看PCI设备 -v：查看详细信息
+Isusb：查看USB设备 -v：查看详细信息
+Ismod：查看加载的模块(驱动)
+4、关机、重启
+4、关机、重启
+shutdown关闭、重启计算机
+shutdown[关机、重启]时间 -h关闭计算机 -r：重启计算机
+如：立即关机：shutdown -h now
+10分钟后关机：shutdown -h +10
+23:30分关机：shutdown -h 23:30
+立即重启：shutdown -r now
+poweroff：立即关闭计算机
+reboot：立即重启计算机
+5、归档、压缩
+5、归档、压缩
+zip:压缩文件 zip liuyazhuang.zip myfile 格式为：“zip 压缩后的zip文件文件名”
+unzip：解压文件 unzip liuyazhuang.zip
+gzip：压缩文件 gzip 文件名
+tar：归档文件
+tar -cvf out.tar liuyazhuang 打包一个归档（将文件&amp;quot;liuyazhuang&amp;quot;打包成一个归档）
+tar -xvf liuyazhuang.tar 释放一个归档（释放liuyazhuang.tar归档）
+tar -cvzf backup.tar.gz/etc
+-z参数将归档后的归档文件进行gzip压缩以减少大小。
+-c：创建一个新tar文件
+-v：显示运行过程的信息
+-f：指定文件名
+-z：调用gzip压缩命令进行压缩
+-t：查看压缩文件的内容
+-x：解开tar文件
+tar -cvf test.tar *：将所有文件打包成test.tar,扩展名.tar需自行加上
+tar -zcvf test.tar.gz *：将所有文件打包成test.tar,再用gzip命令压缩
+tar -tf test.tar ：查看test.tar文件中包括了哪些文件
+tar -xvf test.tar 将test.tar解开
+tar -zxvf foo.tar.gz 解压缩
+gzip各gunzip命令
+gziptest.txt ：压缩文件时，不需要任何参数
+gizp–l test.txt.gz：显示压缩率
+6、查找
+6、查找
+locate：快速查找文件、文件夹：locate keyword
+此命令需要预先建立数据库，数据库默认每天更新一次，可用updatedb命令手工建立、更新数据库。
+find查找位置查找参数
+如：
+find . -name *liuyazhuang* 查找当前目录下名称中含有&amp;quot;liuyazhuang&amp;quot;的文件
+find / -name *.conf 查找根目录下（整个硬盘）下后缀为.conf的文件
+find / -perm 777 查找所有权限是777的文件
+find / -type d 返回根目录下所有的目录
+find . -name &amp;quot;a*&amp;quot;-exec ls -l {} \;
+find功能：用来寻找文件或目录
+格式：find [&amp;lt;路径&amp;gt;] [匹配条件]
+find / -name httpd.conf 搜索系统根目录下名为httpd.conf的文件
+7、ctrl+c :终止当前的命令
+8、who或w命令
+8、who或w命令
+功能：查看当前系统中有哪些用户登录
+格式：who/w[参数]
+9、dmesg命令
+9、dmesg命令
+功能：显示系统诊断信息、操作系统版本号、物理内存的大小以及其它信息。
+10、df命令
+10、df命令
+功能：用于查看文件系统的各个分区的占用情况。
+11、du命令
+11、du命令
+功能：查看某个目录中各级子目录所使用的硬盘空间数。
+格式：du [参数] &amp;lt;目录名&amp;gt;
+12、free命令
+12、free命令
+功能：用于查看系统内存，虚拟内存（交换空间）的大小占用情况。
+&lt;/code>&lt;/pre>
+&lt;h2 id="vim">VIM&lt;/h2>
+&lt;pre>&lt;code>VIM是一款功能强大的命令行文本编辑器，在Linux中通过vim命令可以启动vim编辑器。
+一般使用vim + 目标文件路径 的形式使用vim
+如果目标文件存在，则vim打开目标文件，如果目标文件不存在，则vim新建并打开该文件。
+:q：退出vim编辑器
+VIM模式
+vim拥有三种模式：
+（1）命令模式（常规模式）
+vim启动后，默认进入命令模式，任何模式都可以通过esc键回到命令模式（可以多按几次），命令模式下可以键入不同的命令完成选择、复制、粘贴、撤销等操作。
+命名模式常用命令如下：
+i : 在光标前插入文本
+o:在当前行的下面插入新行
+dd:删除整行
+yy：将当前行的内容放入缓冲区（复制当前行）
+n+yy :将n行的内容放入缓冲区（复制n行）
+p:将缓冲区中的文本放入光标后（粘贴）
+u：撤销上一个操作
+r:替换当前字符
+/ 查找关键字
+（2）插入模式
+在命令模式下按 &amp;quot; i &amp;quot;键，即可进入插入模式，在插入模式可以输入编辑文本内容，使用esc键可以返回命令模式。
+（3）ex模式
+在命令模式中按&amp;quot; : &amp;quot;键可以进入ex模式，光标会移动到底部，在这里可以保存修改或退出vim.
+ext模式常用命令如下：
+:w ：保存当前的修改
+:q ：退出
+:q! ：强制退出，保存修改
+:x :保存并退出，相当于:wq
+:set number 显示行号
+:! 系统命令 执行一个系统命令并显示结果
+:sh ：切换到命令行，使用ctrl+d切换回vim
+&lt;/code>&lt;/pre>
+&lt;h2 id="软件包管理命令rpm">软件包管理命令(RPM)&lt;/h2>
+&lt;pre>&lt;code>1、软件包的安装
+1、软件包的安装
+使用RPM命令的安装模式可以将软件包内所有的组件放到系统中的正确路径，安装软件包的命令是:rpm –ivh wu-ftpd-2.6.2-8.i386.rpm
+i：作用rpm的安装模式 v: 校验文件信息h: 以＃号显示安装进度
+2、软件包的删除
+2、软件包的删除
+删除模式会将指定软件包的内容全部删除，但并不包括已更改过的配置文件，删除RPM软件包的命令如下：rpm –e wu-ftpd
+注意：这里必须使用软件名“wu-ftpd”或”wu-ftpd-2.6.2-8而不是使用当初安装时的软件包名.wu-ftpd-2.6.2-8.i386.rpm
+3、软件包升级
+3、软件包升级
+升级模式会安装用户所指定的更新版本，并删除已安装在系统中的相同软件包，升级软件包命令如下：rpm –Uvh wu-ftpd-2.6.2-8.i386.rpm –Uvh：升级参数。
+4、软件包更新
+4、软件包更新
+更新模式下，rpm命令会检查在命令行中所指定的软件包是否比系统中原有的软件 包更新。如果情况属实，rpm命令会自动更新指定的软件包；反之，若系统中并没有指定软件包的较旧版本，rpm命令并不会安装此软件包。而在升级模式下，不管系统中是否有较旧的版本，rpm命令都会安装指定的软件包。
+rpm –Fvhwu-ftpd-2.6.2-8.i386.rpm -Fvh：更新参数
+5、软件包查询
+5、软件包查询
+若要获取RPM软件包的相关信息，可以使用查询模式。使用-q参数可查询一个已 安装的软件包的内容。
+rpm –q wu-ftpd
+查询软件包所安装的位置：rpm –ql package-name
+rpm –ql xv (l参数：显示文件列表)
+&lt;/code>&lt;/pre></description></item><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
+&lt;pre tabindex="0">&lt;code> Distributor ID: Debian
+Description: Debian GNU/Linux 11 (bullseye)
+Release: 11
+Codename: bullseye
+&lt;/code>&lt;/pre>&lt;p>安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#临时转换系统语言为英文，重启后会自动恢复原值的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>en_US
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xdg-user-dirs-gtk-update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>zh_CN
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
+&lt;h3 id="安装-certbot-及-certbot-nginx-插件">安装 Certbot 及 certbot nginx 插件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt -y install certbot python3-certbot-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为-nginx-网站生成证书并配置">为 nginx 网站生成证书并配置&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot --nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。&lt;/p>
+&lt;p>也可以为特定域名获取证书配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot --nginx -d baicai.me
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="使用certbot自动更新ssl证书">使用Certbot自动更新SSL证书&lt;/h3>
+&lt;p>Let&amp;rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。
+除非你更改配置，否则无需再次手动运行Certbot。
+您可以通过运行以下命令来测试证书的自动续订。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot renew --dry-run
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
+Create a Bootable USB Flash Drive&lt;/p>
+&lt;p>在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下&lt;/p>
+&lt;h3 id="下载-debian-dvd-镜像文件">下载 Debian DVD 镜像文件&lt;/h3>
+&lt;p>通过 HTTP/FTP 下载 Debian CD/DVD 映像 &lt;a href="https://www.debian.org/CD/http-ftp/">https://www.debian.org/CD/http-ftp/&lt;/a>&lt;/p>
+&lt;p>amd64 DVD版 &lt;a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/">https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/&lt;/a>&lt;/p>
+&lt;h3 id="格式化usb盘">格式化USB盘&lt;/h3>
+&lt;p>打开系统自带的磁盘管理工具，插上U盘，格式化U盘，选择格式如下：
+格式：Mac OS 扩展（日志式）
+方案：GUID 分区图&lt;/p>
+&lt;h3 id="取消usb磁盘挂载">取消Usb磁盘挂载&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 终端执行以下命令&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 列出磁盘，找到你usb硬盘的盘符&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>diskutil list
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 输出如下：可以看到usb硬盘为/dev/disk2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/disk2 &lt;span style="color:#f92672">(&lt;/span>external, physical&lt;span style="color:#f92672">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#: TYPE NAME SIZE IDENTIFIER&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: FDisk_partition_scheme *32.0 GB disk2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: 0xEF 6.4 MB disk2s2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 取消usb硬盘的挂载&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>diskutil unmountDisk /dev/disk2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="导入镜像">导入镜像&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 执行如下命令&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># if是镜像文件路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># of是导入的目的磁盘&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># bs是读写快的大小，太小会增大io，降低效率，一般1m～2m即可。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo dd &lt;span style="color:#66d9ef">if&lt;/span>&lt;span style="color:#f92672">=&lt;/span>~/Downloads/debian-11.5.0-amd64-DVD-1.iso of&lt;span style="color:#f92672">=&lt;/span>/dev/disk2 bs&lt;span style="color:#f92672">=&lt;/span>2m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 或 这里的U盘注意是rdisk2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo dd &lt;span style="color:#66d9ef">if&lt;/span>&lt;span style="color:#f92672">=&lt;/span>~/Downloads/debian-11.5.0-amd64-DVD-1.iso of&lt;span style="color:#f92672">=&lt;/span>/dev/rdisk2 bs&lt;span style="color:#f92672">=&lt;/span>2m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>if是输入文件。&lt;/li>
+&lt;li>of是输出文件&lt;/li>
+&lt;li>bs是传输文件速度&lt;/li>
+&lt;/ul>
+&lt;h3 id="等待导入完成">等待导入完成&lt;/h3>
+&lt;p>此导入需要等待一段时间，可能会比较久。耐心等待。
+直到出现records in，records out，即成功了。&lt;/p>
+&lt;h3 id="弹出u盘">弹出U盘&lt;/h3>
+&lt;p>在快要完成的时候，系统会出现“磁盘无法识别”的提示，先不要做任何操作，等待终端dd命令执行完成后，执行下面命令弹出U盘。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eject /dev/disk2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
+这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。&lt;/p>
+&lt;p>那么安装Transmission后台守护程序&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ sudo apt install -y transmission-daemon
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#停止Transmisson后台服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl stop transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#修改配置文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>nano /etc/transmission-daemon/settings.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="启动transmission后台服务">启动Transmission后台服务&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#启动transmission服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl start transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#停止transmission服务&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl stop transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#查询transmission运行状态&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#将transmission设置为开机自启动&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl enable transmission-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#关闭transmission开机自启&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl disable transmission-daemon.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>&lt;h3 id="解决-debian-安装过程慢的可行方案">解决 Debian 安装过程慢的可行方案：&lt;/h3>
+&lt;ul>
+&lt;li>如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。&lt;/li>
+&lt;li>安装时选择 expert，不要选择 安全更新。&lt;/li>
+&lt;li>安装过程修改软件源。&lt;/li>
+&lt;/ul>
+&lt;h3 id="debian-dvd-1-镜像下载地址">Debian DVD-1 镜像下载地址&lt;/h3>
+&lt;p>通过 HTTP/FTP 下载 Debian CD/DVD 映像 &lt;a href="https://www.debian.org/CD/http-ftp/">https://www.debian.org/CD/http-ftp/&lt;/a>&lt;/p>
+&lt;p>amd64 DVD版 &lt;a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/">https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/&lt;/a>&lt;/p>
+&lt;h3 id="debian-安装过程中-修改软件源中的安全源地址">Debian 安装过程中 修改软件源中的安全源地址&lt;/h3>
+&lt;p>在Debian安装步骤进入到选择安装的桌面环境和软件时, 键入 &lt;strong>Ctrl+Alt+F2&lt;/strong> 可以看到从图形界面转到了tty命令终端, 键入 &lt;strong>Enter&lt;/strong>
+这里修改软件源配置文件&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /target/etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改debian-security源地址 &lt;a href="http://mirrors.ustc.edu.cn">http://mirrors.ustc.edu.cn&lt;/a> 目测最快&lt;/p>
+&lt;pre tabindex="0">&lt;code>#deb http://security.debian.org/debian-security bullseye-security main
+deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
+&lt;/code>&lt;/pre>&lt;p>修改后 &lt;strong>Ctrl+X&lt;/strong> 退出保存&lt;/p>
+&lt;p>然后退出终端重新进入界面继续安装，键入 &lt;strong>Ctrl+Alt+F5&lt;/strong>&lt;/p>
+&lt;h3 id="debian-安装完成后更新硬件驱动">Debian 安装完成后更新硬件驱动&lt;/h3>
+&lt;p>在设置——》关于——〉更新——》软件源，去掉cdrome的源，勾选合适的源
+然后通过 dmesg 查看启动日志。
+查找哪些固件加载异常，根据情况安装驱动（比如我的缺失显卡驱动和无线网卡驱动）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 更新源&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dmesg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># demsg查看到 缺失显卡驱动&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get install firmware-amd-graphics
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># demsg查看到 缺失 rtl8168e-3.fw 固件程序&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 搜索固件信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt search rtl8168e-3.fw
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 正在排序... 完成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 全文搜索... 完成 &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># firmware-realtek/stable,now 20210315-3 all [已安装]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Binary firmware for Realtek wired/wifi/BT adapters&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 根据上面查到的信息 安装驱动包 firmware-realtek&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get install firmware-realtek
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
+&lt;h3 id="1-使用-lsb_release-命令">1. 使用 lsb_release 命令&lt;/h3>
+&lt;p>lsb_release 命令可用于查看 Linux 发行版操作系统的具体版本。它可能尚未安装在你的操作系统中，因此你需要先安装它。运行以下命令来安装 lsb_release：&lt;/p>
+&lt;pre tabindex="0">&lt;code> apt-get install lsb-release
+&lt;/code>&lt;/pre>&lt;p>安装完成之后，只需要输入下面的命令就可以查看到你当前系统的版本信息：&lt;/p>
+&lt;pre tabindex="0">&lt;code> lsb_release -a
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> No LSB modules are available.
+Distributor ID: Debian
+Description: Debian GNU/Linux 11 (bullseye)
+Release: 11
+Codename: bullseye
+&lt;/code>&lt;/pre>&lt;p>以上运行结果说明当前使用的操作系统版本是 Debian 11.&lt;/p>
+&lt;h3 id="2-查看-etcissue-文件">2. 查看 /etc/issue 文件&lt;/h3>
+&lt;p>第二种查看当前 Debian 版本的方法是查看位于 /etc 目录中的 issue 文件。你可以使用 cat 命令查看文件的内容，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> cat /etc/issue
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Debian GNU/Linux 11 \n \l
+&lt;/code>&lt;/pre>&lt;h3 id="3-查看-etcos-release-文件">3. 查看 /etc/os-release 文件&lt;/h3>
+&lt;p>/etc/os-release 是一个包含操作系统标识数据的文件，它只能在运行 systemd 的最新 Debian 发行版上找到。同样可以使用 cat 命令查看该文件的内容，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code>cat /etc/os-release
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> PRETTY_NAME=&amp;#34;Debian GNU/Linux 11 (bullseye)&amp;#34;
+NAME=&amp;#34;Debian GNU/Linux&amp;#34;
+VERSION_ID=&amp;#34;11&amp;#34;
+VERSION=&amp;#34;11 (bullseye)&amp;#34;
+VERSION_CODENAME=bullseye
+ID=debian
+HOME_URL=&amp;#34;https://www.debian.org/&amp;#34;
+SUPPORT_URL=&amp;#34;https://www.debian.org/support&amp;#34;
+BUG_REPORT_URL=&amp;#34;https://bugs.debian.org/&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>如果想知道更具体的小版本号，可以查看 /etc/debian_version 文件，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> cat /etc/debian_version
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> 11.4
+&lt;/code>&lt;/pre>&lt;h3 id="4-使用-uname-命令">4. 使用 uname 命令&lt;/h3>
+&lt;p>uname 命令可以显示电脑以及操作系统的相关信息，输入下面的命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code> uname -a
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Linux baicai-l01 5.10.0-16-amd64 #1 SMP Debian 5.10.127-1 (2022-06-30) x86_64 GNU/Linux
+&lt;/code>&lt;/pre>&lt;h3 id="5-使用-hostnamectl-命令">5. 使用 hostnamectl 命令&lt;/h3>
+&lt;p>hostnamectl 命令用于配置或修改系统的主机名，不过也使用此命令来获取 Debian 系统的版本，只需要直接输入 hostnamectl 即可：&lt;/p>
+&lt;pre tabindex="0">&lt;code> hostnamectl
+&lt;/code>&lt;/pre>&lt;p>你将看到类似下面的结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code> Static hostname: baicai-l01
+Icon name: computer-desktop
+Chassis: desktop
+Machine ID: xxx
+Boot ID: xxx
+Operating System: Debian GNU/Linux 11 (bullseye)
+Kernel: Linux 5.10.0-16-amd64
+Architecture: x86-64
+&lt;/code>&lt;/pre></description></item><item><title>删除 Debian Gnome 所有默认安装的游戏</title><link>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</link><pubDate>Fri, 22 Jul 2022 10:35:22 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</guid><description>&lt;p>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt purge aisleriot gnome-sudoku gnome-nibbles ace-of-penguins gnomine gbrainy gnome-sushi gnome-taquin gnome-tetravex gnome-robots gnome-chess lightsoff swell-foop quadrapassel tali gnome-mahjongg gnome-2048 iagno gnome-klotski five-or-more gnome-mines four-in-a-row hitori &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt autoremove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>如何关闭 Ubuntu 中的开放端口？</title><link>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</link><pubDate>Sun, 19 Jun 2022 22:53:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</guid><description>&lt;p>如何关闭 Ubuntu 中的开放端口？&lt;/p>
+&lt;h3 id="问题描述">问题描述&lt;/h3>
+&lt;p>列出所有打开的端口，以关闭一些应用程序的端口。&lt;/p>
+&lt;h3 id="最佳办法">最佳办法&lt;/h3>
+&lt;p>如果要关闭端口，则必须终止进程或停止相关服务。
+可以使用 netstat -nalp 和 lsof -i:port 工具来识别打开端口后面的进程/二进制文件。&lt;/p>
+&lt;p>netstat 可用于查看端口统计信息。
+要显示所有开放端口的列表：&lt;/p>
+&lt;pre>&lt;code>sudo netstat -lnp
+&lt;/code>&lt;/pre>
+&lt;p>列出所有侦听端口号以及每个负责的进程。终止或终止进程以关闭端口。 ( kill , pkill …)&lt;/p>
+&lt;p>关闭一个打开的端口：&lt;/p>
+&lt;pre>&lt;code>sudo fuser -k port_no/tcp
+&lt;/code>&lt;/pre>
+&lt;p>例子：&lt;/p>
+&lt;pre>&lt;code>sudo fuser -k 8080/tcp
+&lt;/code>&lt;/pre>
+&lt;h3 id="次佳办法">次佳办法&lt;/h3>
+&lt;p>要在 ubuntu 中关闭开放端口，可以使用以下命令&lt;/p>
+&lt;pre>&lt;code>sudo kill $(sudo lsof -t -i:3000)
+&lt;/code>&lt;/pre>
+&lt;p>代替 3000 你可以指定你的端口号&lt;/p>
+&lt;p>lsof 命令将提供有关进程打开的文件的信息&lt;/p>
+&lt;p>-t ：此标志指定 lsof 应仅生成带有进程标识符且没有标头的简洁输出 – 例如，以便可以将输出通过管道传输到 kill(1)。此选项选择 -w 选项。&lt;/p>
+&lt;p>-i ：此标志选择任何 Internet 地址与 i 中指定的地址匹配的文件列表。如果未指定地址，此选项将选择所有 Internet 和 x.25 (HP-UX) 网络文件的列表。&lt;/p>
+&lt;h3 id="防火墙规则应用">防火墙规则应用&lt;/h3>
+&lt;pre>&lt;code>sudo ufw allow 22
+sudo ufw deny 22
+&lt;/code>&lt;/pre>
+&lt;h3 id="附注">附注&lt;/h3>
+&lt;p>关闭特定进程&lt;/p>
+&lt;pre>&lt;code>kill $(ps -e|grep firefox|awk '{print $1}')
+&lt;/code>&lt;/pre></description></item><item><title>上传公钥实现ssh登录</title><link>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</link><pubDate>Sat, 12 Mar 2022 20:22:55 +0800</pubDate><guid>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</guid><description>&lt;h3 id="生成密钥和公钥">生成密钥和公钥&lt;/h3>
+&lt;p>如果之前已经存在就不用重新生成了&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh-keygen -t rsa
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="上传公钥">上传公钥&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中root 服务器用户， 192.168.0.1 是服务器ip。之后按照提示输入密码即可&lt;/p>
+&lt;h3 id="连接到服务器">连接到服务器&lt;/h3>
+&lt;p>直接使用ssh直接连接服务器，无需输入密码&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh root@192.168.0.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Linux 命令行中使用的 6 个元字符</title><link>https://blog.baicai.me/article/2022/linux_metacharacters/</link><pubDate>Mon, 14 Feb 2022 17:37:24 +0800</pubDate><guid>https://blog.baicai.me/article/2022/linux_metacharacters/</guid><description>&lt;pre>&lt;code>在 Linux 命令行上使用元字符是提高生产力的一个好方法。
+&lt;/code>&lt;/pre>
+&lt;p>许多 Linux 电脑是无头运行的，你可以在命令行上完成所有的管理任务。它使用许多所有人都熟悉的基本命令，如 ls、ls-l、ls-l、cd、pwd、top 等等。&lt;/p>
+&lt;pre>&lt;code>Linux 上的 Shell 元字符
+&lt;/code>&lt;/pre>
+&lt;p>你可以通过使用元字符来扩展这些命令。&lt;/p>
+&lt;h3 id="管道符-">管道符 |&lt;/h3>
+&lt;p>假设我想知道我的系统上运行的 Firefox 的所有实例。我可以使用带有 -ef 参数的 ps 命令来列出我系统上运行的所有程序实例。现在我想只看那些涉及 Firefox 的实例。我使用了我最喜欢的元字符之一，管道符 |，将其结果送到 grep，用它来搜索模式：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ps -ef | grep firefox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="输出重定向-">输出重定向 &amp;gt;&lt;/h3>
+&lt;p>另一个我最喜欢的元字符是输出重定向 &amp;gt;。我用它来打印 dmesg 命令结果中所有 AMD 相关的结果。你可能会发现这在硬件故障排除中很有帮助：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ dmesg | grep amd &amp;gt; amd.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cat amd.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span> 0.897&lt;span style="color:#f92672">]&lt;/span> amd_uncore: &lt;span style="color:#ae81ff">4&lt;/span> amd_df counters detected
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span> 0.897&lt;span style="color:#f92672">]&lt;/span> amd_uncore: &lt;span style="color:#ae81ff">6&lt;/span> amd_l3 counters detected
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span> 0.898&lt;span style="color:#f92672">]&lt;/span> perf/amd_iommu: Detected AMD IOMMU &lt;span style="color:#75715e">#0 (2 banks, 4 counters/bank).&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="星号-">星号 *&lt;/h3>
+&lt;p>星号 *（通配符）是寻找具有相同扩展名的文件时我的最爱，如 .jpg 或 .png。我首先进入我的系统中的 Picture 目录，并使用类似以下的命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls *.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>BlountScreenPicture.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DisplaySettings.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EbookStats.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>StrategicPlanMenu.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Screenshot from 01-24 19-35-05.png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="波浪号-">波浪号 ~&lt;/h3>
+&lt;p>波浪号 ~ 是在 Linux 系统上通过输入以下命令快速返回你的家目录的一种方法：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cd ~
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pwd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/home/don
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="美元符号-">美元符号 $&lt;/h3>
+&lt;p>$ 符号作为一个元字符有不同的含义。当用于匹配模式时，它意味着任何以给定字符串结尾的字符串。例如，当同时使用元字符 | 和 $ 时：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls | grep png$
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>BlountScreenPicture.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DisplaySettings.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EbookStats.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>StrategicPlanMenu.png
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Screenshot from 01-24 19-35-05.png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="上尖号-">上尖号 ^&lt;/h3>
+&lt;p>符号 ^ 将结果限制在以给定字符串开始的项目上。例如，当同时使用元字符 | 和 ^ 时：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ls | grep ^Screen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Screenshot from 01-24 19-35-05.png
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这些元字符中有许多是通往 正则表达式 的大门，所以还有很多东西可以探索。你最喜欢的 Linux 元字符是什么，它们是如何节省你的工作的？&lt;/p>
+&lt;p>via:
+&lt;a href="https://opensource.com/article/22/2/metacharacters-linux">1&lt;/a>
+&lt;a href="https://linux.cn/article-14270-1.html">2&lt;/a>&lt;/p></description></item><item><title>ubuntu上安装微信(wechat)</title><link>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</link><pubDate>Sun, 30 Jan 2022 15:19:12 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</guid><description>&lt;h2 id="介绍">介绍&lt;/h2>
+&lt;p>由于微信官网 &lt;a href="https://weixin.qq.com/">https://weixin.qq.com/&lt;/a> 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。&lt;/p>
+&lt;h2 id="安装方法">安装方法&lt;/h2>
+&lt;p>打开优麒麟应用商店官网，然后下载应用，就看到微信了
+&lt;a href="https://www.ubuntukylin.com/applications/106-cn.html">https://www.ubuntukylin.com/applications/106-cn.html&lt;/a>
+下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。
+这是linux原生的，功能少点，但比wine的要轻巧不少。&lt;/p>
+&lt;h2 id="安装方法2">安装方法2&lt;/h2>
+&lt;p>下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——&amp;gt; “复制链接”
+终端下载Deb安装：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> wget -O ~/weixin.deb &lt;span style="color:#e6db74">&amp;#34;http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo dpkg -i ~/weixin.deb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Ubuntu使用systemd配置开机运行service</title><link>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</link><pubDate>Wed, 01 Dec 2021 22:44:28 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</guid><description>&lt;h2 id="systemd">systemd&lt;/h2>
+&lt;p>Systemd 是 Linux 系统工具，用来启动守护进程，已成为大多数发行版的标准配置。&lt;/p>
+&lt;h2 id="由来">由来&lt;/h2>
+&lt;p>历史上，Linux 的启动一直采用init进程。&lt;/p>
+&lt;p>下面的命令用来启动服务。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $ sudo /etc/init.d/apache2 start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 或者&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ service apache2 start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这种方法有两个缺点。&lt;/p>
+&lt;p>一是启动时间长。init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。&lt;/p>
+&lt;p>二是启动脚本复杂。init进程只是执行启动脚本，不管其他事情。脚本需要自己处理各种情况，这往往使得脚本变得很长。&lt;/p>
+&lt;h2 id="systemd-概述">Systemd 概述&lt;/h2>
+&lt;p>Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为系统的启动和管理提供一套完整的解决方案。&lt;/p>
+&lt;p>根据 Linux 惯例，字母d是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。&lt;/p>
+&lt;p>使用了 Systemd，就不需要再用init了。Systemd 取代了initd，成为系统的第一个进程（PID 等于 1），其他进程都是它的子进程。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $ systemctl --version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上面的命令查看 Systemd 的版本。&lt;/p>
+&lt;h2 id="使用-systemd-实现开机执行-shell-脚本">使用 systemd 实现开机执行 Shell 脚本&lt;/h2>
+&lt;h3 id="通用操作步骤">通用操作步骤&lt;/h3>
+&lt;p>创建希望开机马上执行的脚本，本文举例脚本存放位置为 /home/navxin/Example/startup.sh，脚本内容如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#75715e"># 开机时在脚本的同级目录下创建一个名为 StartupTouch.txt 的文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /home/navxin/Example/startup.sh.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="开机执行的脚本需增加可执行权限才能被-systemd-运行使用如下命令">开机执行的脚本需增加可执行权限才能被 systemd 运行，使用如下命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>chmod u+x /home/navxin/Example/startup.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod g+x /home/navxin/Example/startup.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="进入-systemd-放置-service-的目录在该目录下可看到大量服务配置文件命令如下">进入 systemd 放置 service 的目录，在该目录下可看到大量服务配置文件，命令如下&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 进入 systemd 的 service 目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd /usr/lib/systemd/system
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 查看文件列表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls -al
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>在该目录创建一个新的 .service 文件用于配置开机启动脚本，本例中的文件名为 StartupExample.service，所执行命令和文件中的配置内容如下：
+&lt;/code>&lt;/pre>
+&lt;h3 id="创建服务配置文件">创建服务配置文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo touch /usr/lib/systemd/system/StartupExample.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>以下为 StartupExample.service 配置文件的内容&lt;/p>
+&lt;pre tabindex="0">&lt;code>[Unit]
+Description=Startup Example
+[Service]
+ExecStart=/home/navxin/Example/startup.sh
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;h3 id="尝试手动运行新创建的-service使用如下命令">尝试手动运行新创建的 service，使用如下命令：&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 手动运行 StartupExample.service&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl start StartupExample.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 查看运行日志&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status StartupExample.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 删除刚测试服务时创建的文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rm -f /home/navxin/Example/startup.sh.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 设置服务为 enable 状态，使之能开机运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo systemctl enable StartupExample.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 重启机器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> systemctl reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注unit">附注：Unit&lt;/h2>
+&lt;p>Systemd 可以管理所有系统资源。不同的资源统称为 Unit（单位）。&lt;/p>
+&lt;p>Unit 一共分成12种。&lt;/p>
+&lt;pre>&lt;code> Service unit：系统服务
+Target unit：多个 Unit 构成的一个组
+Device Unit：硬件设备
+Mount Unit：文件系统的挂载点
+Automount Unit：自动挂载点
+Path Unit：文件或路径
+Scope Unit：不是由 Systemd 启动的外部进程
+Slice Unit：进程组
+Snapshot Unit：Systemd 快照，可以切回某个快照
+Socket Unit：进程间通信的 socket
+Swap Unit：swap 文件
+Timer Unit：定时器
+&lt;/code>&lt;/pre>
+&lt;p>systemctl list-units命令可以查看当前系统的所有 Unit 。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出正在运行的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有Unit，包括没有找到配置文件的或者启动失败的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --all
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有没有运行的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --all --state&lt;span style="color:#f92672">=&lt;/span>inactive
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有加载失败的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --failed
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有正在运行的、类型为 service 的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --type&lt;span style="color:#f92672">=&lt;/span>service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有正在运行的、类型为 mount 的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $systemctl list-units --type&lt;span style="color:#f92672">=&lt;/span>mount
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 命令用于列出所有配置文件。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $systemctl list-unit-files
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $systemctl list-unit-files --type&lt;span style="color:#f92672">=&lt;/span>mount
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改 myadmin.service文件，增加语句&lt;/p>
+&lt;pre tabindex="0">&lt;code> After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
+Wants=network-online.target
+&lt;/code>&lt;/pre>&lt;p>全部文件内容如下(部分内容参考nginx.service)：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf"> # /lib/systemd/system/myadmin.service
+[Unit]
+Description=Start myAdmin web server
+Documentation=https://www.lyhuilin.com/
+After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
+Wants=network-online.target
+[Service]
+Environment=&amp;#34;WELCOME=Baicai myAdmin Base Environment.&amp;#34;
+ExecStartPre=/bin/echo ${WELCOME}
+ExecStart=/baicai/systemdStart/my_admin/my_admin -c /baicai/systemdStart/my_admin/conf/config.yaml
+ExecStop=/bin/kill -s TERM ${MAINPID}
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
+&lt;pre>&lt;code>sudo apt-get purge firefox
+&lt;/code>&lt;/pre>
+&lt;p>或
+sudo apt-get remove firefox&lt;/p>
+&lt;h2 id="下载最新firefox二进制压缩包">下载最新Firefox二进制压缩包&lt;/h2>
+&lt;pre>&lt;code>wget -O ~/firefox.tar.bz2 &amp;quot;https://download.mozilla.org/?product=firefox-latest&amp;amp;os=linux64&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;h2 id="解压并移动到opt目录">解压并移动到/opt目录&lt;/h2>
+&lt;pre>&lt;code>sudo tar xjf ~/firefox.tar.bz2 -C /opt/
+&lt;/code>&lt;/pre>
+&lt;h2 id="创建软链接">创建软链接&lt;/h2>
+&lt;pre>&lt;code>sudo ln -s /opt/firefox/firefox /usr/lib/firefox/firefox
+&lt;/code>&lt;/pre>
+&lt;p>在/usr/lib/中创建一个firefox可执行链接文件，该文件指向/opt中firefox可执行主程序位置。&lt;/p>
+&lt;h2 id="启动firefox">启动firefox&lt;/h2>
+&lt;p>终端启动Firefox&lt;/p>
+&lt;pre>&lt;code>firefox
+&lt;/code>&lt;/pre>
+&lt;h2 id="创建桌面快捷方式">创建桌面快捷方式&lt;/h2>
+&lt;p>进入/usr/share/applications目录&lt;/p>
+&lt;pre>&lt;code>touch firefox.desktop
+nano firefox.desktop
+&lt;/code>&lt;/pre>
+&lt;p>添加内容：&lt;/p>
+&lt;pre>&lt;code>[Desktop Entry]
+Name=firefox
+Comment=firefox
+Exec=/opt/firefox/firefox
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Application;
+Encoding=UTF-8
+StartupNotify=true
+&lt;/code>&lt;/pre>
+&lt;h2 id="卸载firefox">卸载Firefox&lt;/h2>
+&lt;p>通过上面方法安装的Firefox，如果想删除，可以在终端种输入以下命令：&lt;/p>
+&lt;pre>&lt;code>sudo rm -rf /opt/firefox
+sudo rm /usr/share/applications/firefox.desktop
+&lt;/code>&lt;/pre></description></item><item><title>使用 df 命令查看 Linux 上的可用磁盘空间</title><link>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</link><pubDate>Wed, 04 Aug 2021 16:12:56 +0800</pubDate><guid>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</guid><description>&lt;p>磁盘空间已经不像计算机早期那样珍贵，但无论你有多少磁盘空间，总有耗尽的可能。计算机需要一些磁盘空间才能启动运行，所以为了确保你没有在无意间用尽了所有的硬盘空间，偶尔检查一下是非常必要的。在 Linux 终端，你可以用 df 命令来做这件事。&lt;/p>
+&lt;p>df 命令可以显示文件系统中可用的磁盘空间。&lt;/p>
+&lt;p>要想使输出结果易于阅读，你可以加上 &amp;ndash;human-readable（或其简写 -h）选项：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ df --human-readable
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda1 1.0T 525G 500G 52% /
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在这个例子中，计算机的磁盘已经用了 52%，还有 500 GB 可用空间。&lt;/p>
+&lt;p>由于 Linux 从整体上看待所有挂载设备的文件系统，df 命令会展示出连接到计算机上的每个存储设备的详细信息。如果你有很多磁盘，那么输出结果将会反映出来：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ df --human-readable
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/root 110G 45G 61G 43% /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>devtmpfs 12G &lt;span style="color:#ae81ff">0&lt;/span> 12G 0% /dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 12G 848K 12G 1% /run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda1 1.6T 1.3T 191G 87% /home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdb1 917G 184G 687G 22% /penguin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdc1 57G 50G 4.5G 92% /sneaker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdd1 3.7T 2.4T 1.3T 65% /tux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在这个例子中，计算机的 /home 目录已经用了 87%，剩下 191 GB 的可用空间。&lt;/p>
+&lt;h3 id="查看总的可用磁盘空间">查看总的可用磁盘空间&lt;/h3>
+&lt;p>如果你的文件系统确实很复杂，而你希望看到所有磁盘的总空间，可以使用 &amp;ndash;total 选项：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ df --human-readable --total
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/root 110G 45G 61G 43% /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>devtmpfs 12G &lt;span style="color:#ae81ff">0&lt;/span> 12G 0% /dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 12G 848K 12G 1% /run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda1 1.6T 1.3T 191G 87% /home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdb1 917G 184G 687G 22% /penguin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdc1 57G 50G 4.5G 92% /sneaker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdd1 3.7T 2.4T 1.3T 65% /tux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>total 6.6T 4.0T 2.5T 62% -
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>输出的最后一行展示了文件系统的总空间、已用总空间、可用总空间。&lt;/p>
+&lt;h3 id="查看磁盘空间使用情况">查看磁盘空间使用情况&lt;/h3>
+&lt;p>如果你想大概了解哪些文件占用了磁盘空间，请阅读我们关于 du 命令[1] 的文章。&lt;/p>
+&lt;p>via:
+&lt;a href="https://opensource.com/article/21/7/check-disk-space-linux-df">https://opensource.com/article/21/7/check-disk-space-linux-df&lt;/a>
+&lt;a href="https://linux.cn/article-13646-1.html">https://linux.cn/article-13646-1.html&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 qbittorrent-nox并启动</title><link>https://blog.baicai.me/article/2021/qbittorrent/</link><pubDate>Fri, 02 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/qbittorrent/</guid><description>&lt;h3 id="qbittorrent-nox">Qbittorrent-Nox&lt;/h3>
+&lt;p>要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。&lt;/p>
+&lt;p>注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用&lt;/p>
+&lt;h3 id="安装qbittorrent">安装qbittorrent&lt;/h3>
+&lt;h4 id="安装add-apt-repository命令">安装add-apt-repository命令&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install software-properties-common -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="添加qbittorrent-nox的ppa软件源">添加qbittorrent-nox的PPA软件源&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="安装qbittorrent-noxwebui版">安装qbittorrent-nox（webui版）&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="设置开机启动">设置开机启动&lt;/h3>
+&lt;h4 id="通过rclocal完成">通过rc.local完成&lt;/h4>
+&lt;p>如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效&lt;/p>
+&lt;p>Ubuntu-18.04设置开机启动脚本
+起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&amp;hellip;&lt;/p>
+&lt;p>编辑rc.local脚本&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/rc.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在exit 0前面（前一行）添加以下内容并保存&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>qbittorrent-nox -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="通过创建自定义服务实现">通过创建自定义服务实现&lt;/h4>
+&lt;p>创建系统服务&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get install nano -y &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> nano /etc/systemd/system/qbittorrent-nox.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>粘贴以下内容，并保存。&lt;/p>
+&lt;pre tabindex="0">&lt;code>[Unit]
+Description=qBittorrent-nox
+After=network.target
+[Service]
+User=root
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox -d
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>启动qbittorrent-nox并创建服务配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl start qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>设置开机自动启动qbittorrent-nox&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看qbittorrent-nox状态&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>默认账号：admin 密码： adminadmin
+默认登陆网址：ip:8080&lt;/p></description></item><item><title>Linux 常用命令</title><link>https://blog.baicai.me/article/2021/linux_cmd/</link><pubDate>Sat, 05 Jun 2021 10:31:29 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_cmd/</guid><description>&lt;p>Linux 常用命令&lt;/p>
+&lt;h3 id="日期">日期&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">$(&lt;/span>date -d &lt;span style="color:#e6db74">&amp;#39;1 day ago&amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;+%Y-%m-%d&amp;#39;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>常用方法&lt;/p>
+&lt;h3 id="数字格式化">数字格式化&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>part&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">`&lt;/span>printf &lt;span style="color:#e6db74">&amp;#34;%03d&amp;#34;&lt;/span> $i&lt;span style="color:#e6db74">`&lt;/span> &lt;span style="color:#75715e"># 左补0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除旧文件">删除旧文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 找出5天前修改的文件名以.tar结尾的文件进行删除&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>find /www/backup -mtime +5 -name &lt;span style="color:#e6db74">&amp;#34;*.tar&amp;#34;&lt;/span> |xargs rm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="for循环">for循环&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">((&lt;/span>i&lt;span style="color:#f92672">=&lt;/span>0;i&amp;lt;10;i++&lt;span style="color:#f92672">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>_date&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>date +%Y-%m-%d -d &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#e6db74">${&lt;/span>i&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> day&amp;#34;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo $_date
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> i in &lt;span style="color:#f92672">{&lt;/span>1..10&lt;span style="color:#f92672">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> echo $i
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="文件合并">文件合并&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>find ./ -name &lt;span style="color:#e6db74">&amp;#34;item*&amp;#34;&lt;/span> | xargs sed &lt;span style="color:#e6db74">&amp;#39;a\&amp;#39;&lt;/span> &amp;gt; all.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>find ./ -name &lt;span style="color:#e6db74">&amp;#34;item*&amp;#34;&lt;/span> | xargs cat &amp;gt; all.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:s/old/new &lt;span style="color:#75715e">#替换当前行的第一个old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:s/old/new/g &lt;span style="color:#75715e">#替换当前行的所有的old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:.,$s/old/new &lt;span style="color:#75715e">#替换当前行到最后行的第一个old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:.,$s/old/new/g &lt;span style="color:#75715e">#替换当前行到最后行的所有old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:N,Ms/old/new &lt;span style="color:#75715e">#替换第N行到第M行的第一个old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:N,Ms/old/new/g &lt;span style="color:#75715e">#替换第N行到第M行的所有old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:N,Ms/old/new/gc &lt;span style="color:#75715e">#替换第N行到第M行的所有old为new，且逐一询问是否删除&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:%s/old/new &lt;span style="color:#75715e">#替换所有行的第一个old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:%s/old/new/g &lt;span style="color:#75715e">#替换所有行的所有old为new&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="文件排序交集并集差集">文件排序、交集、并集、差集&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#排序&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort a.txt |uniq -c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#一、交集&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort a.txt b.txt | uniq -d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#二、并集&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort a.txt b.txt | uniq
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#三、差集 a.txt-b.txt:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort a.txt b.txt b.txt | uniq -u
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#差集 b.txt - a.txt:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort b.txt a.txt a.txt | uniq -u
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除重复行">删除重复行&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sort -k2n all.txt | uniq &amp;gt; real.out
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort -k2n all.txt | awk &lt;span style="color:#e6db74">&amp;#39;{if ($0!=line) print;line=$0}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort -k2n all.txt | sed &lt;span style="color:#e6db74">&amp;#39;$!N; /^\(.*\)\n\1$/!P; D&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除空格">删除空格&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat all.txt |sed s/&lt;span style="color:#f92672">[[&lt;/span>:space:&lt;span style="color:#f92672">]]&lt;/span>//g
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="awk-去重">awk 去重&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>awk &lt;span style="color:#e6db74">&amp;#39;!($1 in a){a[$1];print $1}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#或&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sort $1 | uniq
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># awk结果使用逗号间隔拼接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>awk -F &lt;span style="color:#e6db74">&amp;#39;,&amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;{print $1}&amp;#39;&lt;/span> | xargs | tr &lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;,&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="常用状态查看">常用状态查看&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 按CPU和内存倒序前n个进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ps -aux --sort -pcpu,+pmem | head -n &lt;span style="color:#ae81ff">5&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 按进程名查看&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ps -f -C java
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="文件同步rsync">文件同步rsync&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>rsync -zvrtopgl --progress --delete /fromDist/ root@s1:/toDist/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="链接状态统计">链接状态统计&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>netstat -n | awk &lt;span style="color:#e6db74">&amp;#39;/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># TCP连接状态详解 &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># LISTEN: 服务器在侦听来自远方的TCP端口的连接请求&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># SYN-SENT: 在发送连接请求后等待匹配的连接请求&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># SYN_RECV: 一个连接请求已经到达，等待确认&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># SYN-RECEIVED: 再收到和发送一个连接请求后等待对方对连接请求的确认&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ESTABLISHED: 代表一个打开的连接/正常数据传输状态/当前并发连接数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># FIN_WAIT1: 等待远程TCP连接中断请求，或先前的连接中断请求的确认/应用说它已经完成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># FIN_WAIT2: 从远程TCP等待连接中断请求/另一边已同意释放&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># CLOSE-WAIT: 等待从本地用户发来的连接中断请求&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># CLOSING: 等待远程TCP对连接中断的确认/两边同时尝试关闭&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># LAST-ACK: 等待原来的发向远程TCP的连接中断请求的确认/等待所有分组死掉&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># TIME-WAIT: 等待足够的时间以确保远程TCP接收到连接中断请求的确认/另一边已初始化一个释放&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ITMED_WAIT: 等待所有分组死掉&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># CLOSED： 没有任何连接状态&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="cpu内存系统信息查看">CPU/内存/系统信息查看&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># cpu&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grep &lt;span style="color:#e6db74">&amp;#34;model name&amp;#34;&lt;/span> /proc/cpuinfo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat /proc/cpuinfo | grep physical | uniq -c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># cpu位数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo $HOSTTYPE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 内存&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grep MemTotal /proc/meminfo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># linux 版本&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat /etc/redhat-release
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat /etc/os-release
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat /etc/lsb-release
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># linux 内核版本&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>uname -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>uname -r
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="常用监控工具">常用监控工具&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 网络监控&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>iftop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># IO监控&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>iotop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 负载监控&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>htop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="进程监控">进程监控&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>pidstat -p &lt;span style="color:#ae81ff">843&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span> -u -t
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># -u：代表对 CPU 使用率的监控&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 参数 1 3 代表每秒采样一次，一共三次&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># -t：将监控级别细化到线程&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ssh相关">ssh相关&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 秘钥生成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#ae81ff">4096&lt;/span> -C &lt;span style="color:#e6db74">&amp;#34;your_hostname&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 免密登录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat ~/.ssh/id_rsa.pub | ssh root@ip &lt;span style="color:#e6db74">&amp;#34;cat &amp;gt;&amp;gt; .ssh/authorized_keys&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="firewalld防火墙使用">firewalld防火墙使用&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 禁止ping&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>firewall-cmd --permanent --add-rich-rule&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;rule protocol value=icmp drop&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 允许192.168.1.0/24主机所有连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>firewall-cmd --add-rich-rule&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;rule family=&amp;#34;ipv4&amp;#34; source address=&amp;#34;192.168.1.0&amp;#34; accept&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 禁止某IP访问&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>firewall-cmd --permanent --zone&lt;span style="color:#f92672">=&lt;/span>public --add-rich-rule&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;rule family=ipv4 source address=&amp;#39;123.56.247.76/24&amp;#39; reject&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 开放端口&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>firewall-cmd --zone&lt;span style="color:#f92672">=&lt;/span>public --permanent --add-port&lt;span style="color:#f92672">=&lt;/span>8080/tcp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>firewall-cmd --reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="文件统计">文件统计&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ls -g |awk &lt;span style="color:#e6db74">&amp;#39;BEGIN{sum=0}{sum+=$4}END{print sum/(1024*1024*1024)}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="history格式及数量修改">history格式及数量修改&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>export HISTSIZE&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">10000&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>export HISTTIMEFORMAT&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34; %Y-%m-%d %H:%M:%S - `who am i 2&amp;gt;/dev/null | awk &amp;#39;{print &lt;/span>$NF&lt;span style="color:#e6db74">}&amp;#39;|sed -e &amp;#39;s/[()]//g&amp;#39;` - `who -u am i |awk &amp;#39;{print &lt;/span>$1&lt;span style="color:#e6db74">}&amp;#39;` &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>export PROMPT_COMMAND&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;history 1 &amp;gt;&amp;gt; /var/log/.myhistory&amp;#34;&lt;/span> &lt;span style="color:#75715e">#将命令记录输出到文本中&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /var/log/.myhistory
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod /var/log/.myhistory
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -1,0 +1,22 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2024/docker_ports/"><link rel=canonical href=https://blog.baicai.me/article/2024/docker_ports/><style type=text/css>body{font-family:monospace}</style><title>docker 映射某个范围内的端口列表</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>docker 映射某个范围内的端口列表</h1><b><time>2024.03.09 00:01</time></b>
+<a href=/tags/docker>Docker</a><div><p>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口</p><h3 id=docker-composeyml>docker-compose.yml</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#39;3.6&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>web</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.18</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      <span style=color:#75715e># 将会映射8080到8090这个范围内的端口</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>8080-8090</span>:<span style=color:#ae81ff>8080-8090</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>./www:/www</span>
+</span></span></code></pre></div><h3 id=命令行>命令行</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker run -p 8080-8090:8080-8090 nginx
+</span></span></code></pre></div><h3 id=dockerfile>Dockerfile</h3><pre tabindex=0><code>Dockerfile
+
+EXPOSE 8080-8090
+</code></pre></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

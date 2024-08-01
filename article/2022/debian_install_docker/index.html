@@ -1,0 +1,147 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2022/debian_install_docker/"><link rel=canonical href=https://blog.baicai.me/article/2022/debian_install_docker/><style type=text/css>body{font-family:monospace}</style><title>安装docker</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>安装docker</h1><b><time>2022.09.30 00:38</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/debian>Debian</a><div><p>运行环境</p><pre tabindex=0><code>  Operating System: Debian GNU/Linux 11 (bullseye)
+            Kernel: Linux 5.10.0-18-amd64
+      Architecture: x86-64
+</code></pre><h3 id=通过debian官方软件仓库安装>通过Debian官方软件仓库安装</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 更新软件源 并 安装 docker及相关应用</span>
+</span></span><span style=display:flex><span>    sudo apt update <span style=color:#f92672>&amp;&amp;</span> sudo apt install -y docker docker.io docker-compose
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看docker运行状态</span>
+</span></span><span style=display:flex><span>    sudo systemctl status docker
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看docker信息</span>
+</span></span><span style=display:flex><span>    sudo docker info
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证是否安装成功    </span>
+</span></span><span style=display:flex><span>    sudo docker run hello-world
+</span></span></code></pre></div><h3 id=镜像加速器>镜像加速器</h3><p>访问 <a href=https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors>https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a> 获取自己的阿里云镜像加速器地址</p><p>修改 /etc/docker/daemon.json</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo mkdir -p /etc/docker
+</span></span><span style=display:flex><span>sudo tee /etc/docker/daemon.json <span style=color:#e6db74>&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>{
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-concurrent-downloads&#34;: 3,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-concurrent-uploads&#34;: 3,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-download-attempts&#34;: 3,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;registry-mirrors&#34;: [&#34;https://修改为自己的.mirror.aliyuncs.com&#34;,&#34;https://hub-mirror.c.163.com&#34;,&#34;https://registry.aliyuncs.com&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>sudo systemctl daemon-reload
+</span></span><span style=display:flex><span>sudo systemctl restart docker
+</span></span></code></pre></div><h3 id=清理docker对象>清理docker对象</h3><p>prune 命令用来删除不再使用的 docker 对象。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 删除所有未被 tag 标记和未被容器使用的镜像:</span>
+</span></span><span style=display:flex><span>$ docker image prune
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有未被容器使用的镜像:</span>
+</span></span><span style=display:flex><span>$ docker image prune -af
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有停止运行的容器:</span>
+</span></span><span style=display:flex><span>$ docker container prune
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有未被挂载的卷:</span>
+</span></span><span style=display:flex><span>$ docker volume prune
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有网络:</span>
+</span></span><span style=display:flex><span>$ docker network prune
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除 docker 所有资源:</span>
+</span></span><span style=display:flex><span>$ docker system prune
+</span></span></code></pre></div><h3 id=查看容器ip>查看容器ip</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看所有容器的ip</span>
+</span></span><span style=display:flex><span>$ docker inspect --format<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39;</span> <span style=color:#66d9ef>$(</span>docker ps -aq<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看指定容器的ip网络配置包含网络，ip等</span>
+</span></span><span style=display:flex><span>$ docker inspect containerId
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看容器的ip</span>
+</span></span><span style=display:flex><span>$ docker exec -it containerId ip addr 
+</span></span></code></pre></div><h3 id=修改docker启动目录>修改docker启动目录</h3><p>因为装系统时 /var 分区小，需要把docker 启动后的路径改成 /home/docker , /etc/docker/daemon.json 是 docker 的配置文件，默认是没有的，需要手动创建。</p><p>具体的操作是：</p><p>1: 设置 /etc/docker/daemon.json 文件.
+内容参考：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;data-root&#34;</span>:<span style=color:#e6db74>&#34;/home/docker&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>2.创建并修改完daemon.json文件后，需要让这个文件生效</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># a.修改完成后reload配置文件</span>
+</span></span><span style=display:flex><span>sudo systemctl daemon-reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># b.重启docker服务</span>
+</span></span><span style=display:flex><span>sudo systemctl restart docker.service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># c.查看状态</span>
+</span></span><span style=display:flex><span>sudo systemctl status docker -l
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># d.查看服务</span>
+</span></span><span style=display:flex><span>sudo docker info
+</span></span></code></pre></div><h3 id=调试镜像>调试镜像</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用--entrypoint设置（额外增加-it选项可直接进入容器），进入容器成功。</span>
+</span></span><span style=display:flex><span>docker run -it --entrypoint /bin/bash --name 容器名 镜像:v30.2.9   
+</span></span></code></pre></div><h3 id=查看程序动态库依赖关系>查看程序动态库依赖关系</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ldd (Debian GLIBC 2.36-9+deb12u1) 2.36</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Copyright (C) 2022 Free Software Foundation, Inc.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># This is free software; see the source for copying conditions.  There is NO</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Written by Roland McGrath and Ulrich Drepper.</span>
+</span></span><span style=display:flex><span>ldd --version
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 判断某条命令需要哪些共享库文件的支持，以确保指定的命令在独立的系统内可以可靠的运行</span>
+</span></span><span style=display:flex><span>ldd /bin/bash
+</span></span></code></pre></div><h3 id=参考>参考</h3><p>Docker官方安装文档：
+<a href=https://docs.docker.com/engine/install/debian/>https://docs.docker.com/engine/install/debian/</a></p><h3 id=docker-daemonjson各配置详解>docker-daemon.json各配置详解</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;api-cors-header&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————在引擎API中设置CORS标头
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;authorization-plugins&#34;</span>:[], <span style=color:#75715e>//——————要加载的授权插件
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;bridge&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————将容器附加到网桥
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;cgroup-parent&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————为所有容器设置父cgroup
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;cluster-store&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————分布式存储后端的URL
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;cluster-store-opts&#34;</span>:{}, <span style=color:#75715e>//————————设置集群存储选项（默认map []）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;cluster-advertise&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————要通告的地址或接口名称
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;debug&#34;</span>: <span style=color:#66d9ef>true</span>, <span style=color:#75715e>//————————启用调试模式，启用后，可以看到很多的启动信息。默认false
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;default-gateway&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————容器默认网关IPv4地址
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;default-gateway-v6&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————容器默认网关IPv6地址
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;default-runtime&#34;</span>:<span style=color:#e6db74>&#34;runc&#34;</span>, <span style=color:#75715e>//————————容器的默认OCI运行时（默认为&#34; runc&#34;）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;default-ulimits&#34;</span>:{}, <span style=color:#75715e>//——————容器的默认ulimit（默认[]）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;dns&#34;</span>: [<span style=color:#e6db74>&#34;192.168.1.1&#34;</span>], <span style=color:#75715e>//——————设定容器DNS的地址，在容器的 /etc/resolv.conf文件中可查看。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;dns-opts&#34;</span>: [], <span style=color:#75715e>//————————容器 /etc/resolv.conf 文件，其他设置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;dns-search&#34;</span>: [], <span style=color:#75715e>//————————设定容器的搜索域，当设定搜索域为 .example.com 时，在搜索一个名为 host 的 主机时，DNS不仅搜索host，还会搜
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//索host.example.com 。 注意：如果不设置， Docker 会默认用主机上的 /etc/resolv.conf 来配置容器。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;exec-opts&#34;</span>: [], <span style=color:#75715e>//————————运行时执行选项
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;exec-root&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————执行状态文件的根目录（默认为’/var/run/docker‘）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;fixed-cidr&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————固定IP的IPv4子网
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;fixed-cidr-v6&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————固定IP的IPv6子网
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;data-root&#34;</span>:<span style=color:#e6db74>&#34;/var/lib/docker&#34;</span>, <span style=color:#75715e>//————-Docker运行时使用的根路径，默认/var/lib/docker
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;group&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————UNIX套接字的组（默认为&#34;docker&#34;）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;hosts&#34;</span>: [], <span style=color:#75715e>//——————设置容器hosts
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;icc&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————启用容器间通信（默认为true）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;ip&#34;</span>:<span style=color:#e6db74>&#34;0.0.0.0&#34;</span>, <span style=color:#75715e>//————————绑定容器端口时的默认IP（默认0.0.0.0）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;iptables&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//———————启用iptables规则添加（默认为true）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;ipv6&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————启用IPv6网络
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;ip-forward&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//————————默认true, 启用 net.ipv4.ip_forward ,进入容器后使用 sysctl -a | grepnet.ipv4.ip_forward 查看
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;ip-masq&#34;</span>:<span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————启用IP伪装（默认为true）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;labels&#34;</span>:[<span style=color:#e6db74>&#34;nodeName=node-121&#34;</span>], <span style=color:#75715e>//————————docker主机的标签，很实用的功能,例如定义：–label nodeName=host-121
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;live-restore&#34;</span>: <span style=color:#66d9ef>true</span>, <span style=color:#75715e>//——————在容器仍在运行时启用docker的实时还原
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;log-driver&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————容器日志的默认驱动程序（默认为&#34; json-file&#34;）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;log-level&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————设置日志记录级别（&#34;调试&#34;，&#34;信息&#34;，&#34;警告&#34;，&#34;错误&#34;，&#34;致命&#34;）（默认为&#34;信息&#34;）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;max-concurrent-downloads&#34;</span>:<span style=color:#ae81ff>3</span>, <span style=color:#75715e>//——————设置每个请求的最大并发下载量（默认为3）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;max-concurrent-uploads&#34;</span>:<span style=color:#ae81ff>5</span>, <span style=color:#75715e>//——————设置每次推送的最大同时上传数（默认为5）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;mtu&#34;</span>: <span style=color:#ae81ff>0</span>, <span style=color:#75715e>//——————设置容器网络MTU
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;oom-score-adjust&#34;</span>:<span style=color:#ae81ff>-500</span>, <span style=color:#75715e>//——————设置守护程序的oom_score_adj（默认值为-500）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;pidfile&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————Docker守护进程的PID文件
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;raw-logs&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————全时间戳机制
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;selinux-enabled&#34;</span>: <span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————默认 false，启用selinux支持
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;storage-driver&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————要使用的存储驱动程序
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;swarm-default-advertise-addr&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————设置默认地址或群集广告地址的接口
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;tls&#34;</span>: <span style=color:#66d9ef>true</span>, <span style=color:#75715e>//————————默认 false, 启动TLS认证开关
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;tlscacert&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//——————默认 ~/.docker/ca.pem，通过CA认证过的的certificate文件路径
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;tlscert&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————默认 ~/.docker/cert.pem ，TLS的certificate文件路径
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;tlskey&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————默认~/.docker/key.pem，TLS的key文件路径
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;tlsverify&#34;</span>: <span style=color:#66d9ef>true</span>, <span style=color:#75715e>//————————默认false，使用TLS并做后台进程与客户端通讯的验证
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;userland-proxy&#34;</span>:<span style=color:#66d9ef>false</span>, <span style=color:#75715e>//——————使用userland代理进行环回流量（默认为true）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;userns-remap&#34;</span>:<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#75715e>//————————用户名称空间的用户/组设置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;bip&#34;</span>:<span style=color:#e6db74>&#34;192.168.88.0/22&#34;</span>, <span style=color:#75715e>//——————————指定网桥IP
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;registry-mirrors&#34;</span>: [<span style=color:#e6db74>&#34;https://192.498.89.232:89&#34;</span>], <span style=color:#75715e>//————————设置镜像加速
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;insecure-registries&#34;</span>: [<span style=color:#e6db74>&#34;192.168.0.123:12312&#34;</span>], <span style=color:#75715e>//———————设置私有仓库地址可以设为http
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;storage-opts&#34;</span>: [
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;overlay2.override_kernel_check=true&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;overlay2.size=15G&#34;</span>
+</span></span><span style=display:flex><span>], <span style=color:#75715e>//————————存储驱动程序选项
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;log-opts&#34;</span>: {
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;max-file&#34;</span>: <span style=color:#e6db74>&#34;3&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;max-size&#34;</span>: <span style=color:#e6db74>&#34;10m&#34;</span>,
+</span></span><span style=display:flex><span>}, <span style=color:#75715e>//————————容器默认日志驱动程序选项
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&#34;iptables&#34;</span>: <span style=color:#66d9ef>false</span> <span style=color:#75715e>//————————启用iptables规则添加（默认为true）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

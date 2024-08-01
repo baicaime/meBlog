@@ -1,0 +1,20 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/home_dirs_update/"><link rel=canonical href=https://blog.baicai.me/article/2023/home_dirs_update/><style type=text/css>body{font-family:monospace}</style><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</h1><b><time>2023.01.02 12:41</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/xdg-user-dirs-gtk-update>xdg-user-dirs-gtk-update</a><div><p>操作环境:</p><pre tabindex=0><code>    Distributor ID:	Debian
+    Description:	Debian GNU/Linux 11 (bullseye)
+    Release:	11
+    Codename:	bullseye
+</code></pre><p>安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span> <span style=color:#75715e>#临时转换系统语言为英文，重启后会自动恢复原值的</span>
+</span></span><span style=display:flex><span> export LANG<span style=color:#f92672>=</span>en_US
+</span></span><span style=display:flex><span> <span style=color:#75715e>#执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭</span>
+</span></span><span style=display:flex><span> xdg-user-dirs-gtk-update
+</span></span><span style=display:flex><span> <span style=color:#75715e>#转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的</span>
+</span></span><span style=display:flex><span> export LANG<span style=color:#f92672>=</span>zh_CN
+</span></span></code></pre></div><p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

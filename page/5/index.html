@@ -1,0 +1,92 @@
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/debian_gnome_remove_game/>删除 Debian Gnome 所有默认安装的游戏</a></h1><b><time>2022.07.22 10:35</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/gnome>gnome</a>
+<a href=/tags/games>games</a><div>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：
+sudo apt purge aisleriot gnome-sudoku gnome-nibbles ace-of-penguins gnomine gbrainy gnome-sushi gnome-taquin gnome-tetravex gnome-robots gnome-chess lightsoff swell-foop quadrapassel tali gnome-mahjongg gnome-2048 iagno gnome-klotski five-or-more gnome-mines four-in-a-row hitori && sudo apt autoremove</div></article><article><h1><a href=https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/>如何关闭 Ubuntu 中的开放端口？</a></h1><b><time>2022.06.19 22:53</time></b>
+<a href=/tags/ubuntu>Ubuntu</a>
+<a href=/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C>命令行</a>
+<a href=/tags/netstat>netstat</a><div>如何关闭 Ubuntu 中的开放端口？
+问题描述 列出所有打开的端口，以关闭一些应用程序的端口。
+最佳办法 如果要关闭端口，则必须终止进程或停止相关服务。 可以使用 netstat -nalp 和 lsof -i:port 工具来识别打开端口后面的进程/二进制文件。
+netstat 可用于查看端口统计信息。 要显示所有开放端口的列表：
+sudo netstat -lnp 列出所有侦听端口号以及每个负责的进程。终止或终止进程以关闭端口。 ( kill , pkill …)
+关闭一个打开的端口：
+sudo fuser -k port_no/tcp 例子：
+sudo fuser -k 8080/tcp 次佳办法 要在 ubuntu 中关闭开放端口，可以使用以下命令
+sudo kill $(sudo lsof -t -i:3000) 代替 3000 你可以指定你的端口号
+lsof 命令将提供有关进程打开的文件的信息
+-t ：此标志指定 lsof 应仅生成带有进程标识符且没有标头的简洁输出 – 例如，以便可以将输出通过管道传输到 kill(1)。此选项选择 -w 选项。
+-i ：此标志选择任何 Internet 地址与 i 中指定的地址匹配的文件列表。如果未指定地址，此选项将选择所有 Internet 和 x.25 (HP-UX) 网络文件的列表。
+<a href=https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/firefox_weibo_alpn/>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</a></h1><b><time>2022.05.06 20:57</time></b>
+<a href=/tags/firefox>firefox</a>
+<a href=/tags/weibo>weibo</a><div>应用版本：firefox 开发者版 v101 问题描述：微博主页可以正常访问，但点击搜索或热搜链接，都提示：
+建立安全连接失败 连接到 s.weibo.com 时发生错误。 由于不能验证所收到的数据是否可信，无法显示您想要查看的页面。 建议向此网站的管理员反馈这个问题。 详细了解… 通过curl -v “网址” 反复重试对比发现在访问微博热搜的时候有一个加密协商被“微博账户认证网关服务器”拒绝了。
+具体测试指令： 通过
+curl -v "https://s.weibo.com/weibo?q=%23%E7%A5%9D%E8%9E%8D%E5%8F%B7%E5%87%86%E5%A4%87%E5%9C%A8%E7%81%AB%E6%98%9F%E8%B6%8A%E5%86%AC%23&amp;topic_ad=" 得到302跳转请求链接 继续
+curl -v "https://passport.weibo.com/visitor/visitor?entry=miniblog&amp;a=enter&amp;url=https%3A%2F%2Fs.weibo.com%2Fweibo%3Fq%3D%2523%25E7%25A5%259D%25E8%259E%258D%25E5%258F%25B7%25E5%2587%2586%25E5%25A4%2587%25E5%259C%25A8%25E7%2581%25AB%25E6%2598%259F%25E8%25B6%258A%25E5%2586%25AC%2523%26topic_ad%3D&amp;domain=.weibo.com&amp;sudaref=&amp;ua=php-sso_sdk_client-0.6.29&_rand=1651842429.1375" 返回
+…… * TLSv1.2 (IN), TLS handshake, Finished (20): * SSL connection using TLSv1.2 / AES256-GCM-SHA384 * ALPN, server did not agree to a protocol * Server certificate: * subject: C=CN; ST=Beijing; O=Sina.com Technology(China)Co.,ltd; CN=sina.com …… 注意这段提示：
+ALPN, server did not agree to a protocol ALPN ALPN(Application-Layer Protocol Negotiation):应用层协议协商是 TLS 的一个扩展，故而应用层协议在协商加密协议的过程中，避免了额外的往返通讯开销。 ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商。当前主流浏览器，都只支持基于 HTTPS 部署的 HTTP/2，因为浏览器是基于ALPN协议来判断服务器是否支持HTTP2协议。
+<a href=https://blog.baicai.me/article/2022/firefox_weibo_alpn/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/linux_ssh_copy_id/>上传公钥实现ssh登录</a></h1><b><time>2022.03.12 20:22</time></b>
+<a href=/tags/linux>linux</a>
+<a href=/tags/ssh-copy-id>ssh-copy-id</a>
+<a href=/tags/ssh>ssh</a><div>生成密钥和公钥 如果之前已经存在就不用重新生成了
+$ ssh-keygen -t rsa 上传公钥 $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.1 其中root 服务器用户， 192.168.0.1 是服务器ip。之后按照提示输入密码即可
+连接到服务器 直接使用ssh直接连接服务器，无需输入密码
+$ ssh root@192.168.0.1</div></article><article><h1><a href=https://blog.baicai.me/article/2022/linux_metacharacters/>在 Linux 命令行中使用的 6 个元字符</a></h1><b><time>2022.02.14 17:37</time></b><div>在 Linux 命令行上使用元字符是提高生产力的一个好方法。 许多 Linux 电脑是无头运行的，你可以在命令行上完成所有的管理任务。它使用许多所有人都熟悉的基本命令，如 ls、ls-l、ls-l、cd、pwd、top 等等。
+Linux 上的 Shell 元字符 你可以通过使用元字符来扩展这些命令。
+管道符 | 假设我想知道我的系统上运行的 Firefox 的所有实例。我可以使用带有 -ef 参数的 ps 命令来列出我系统上运行的所有程序实例。现在我想只看那些涉及 Firefox 的实例。我使用了我最喜欢的元字符之一，管道符 |，将其结果送到 grep，用它来搜索模式：
+$ ps -ef | grep firefox 输出重定向 > 另一个我最喜欢的元字符是输出重定向 >。我用它来打印 dmesg 命令结果中所有 AMD 相关的结果。你可能会发现这在硬件故障排除中很有帮助：
+$ dmesg | grep amd > amd.txt $ cat amd.txt [ 0.897] amd_uncore: 4 amd_df counters detected [ 0.897] amd_uncore: 6 amd_l3 counters detected [ 0.898] perf/amd_iommu: Detected AMD IOMMU #0 (2 banks, 4 counters/bank).
+<a href=https://blog.baicai.me/article/2022/linux_metacharacters/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/ubuntu_wechat-install/>ubuntu上安装微信(wechat)</a></h1><b><time>2022.01.30 15:19</time></b>
+<a href=/tags/ubuntu>ubuntu</a>
+<a href=/tags/wechat>wechat</a>
+<a href=/tags/weixin>weixin</a><div>介绍 由于微信官网 https://weixin.qq.com/ 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。
+安装方法 打开优麒麟应用商店官网，然后下载应用，就看到微信了 https://www.ubuntukylin.com/applications/106-cn.html 下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。 这是linux原生的，功能少点，但比wine的要轻巧不少。
+安装方法2 下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——> “复制链接” 终端下载Deb安装：
+wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb" sudo dpkg -i ~/weixin.deb</div></article><article><h1><a href=https://blog.baicai.me/article/2021/docker_postgres/>Docker 运行 postgreSQL</a></h1><b><time>2021.12.09 14:19</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/postgres>postgres</a><div>简单步骤 安装docker，可参考 安装docker及简单的使用 或 百度解决；
+拉取postgreSQL的docker镜像文件：
+docker pull postgres 创建 docker volume，名字为“dv_pgdata"（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）： docker volume create dv_pgdata 启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面： docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=xxxxxx -p 5432:5432 -d postgres 这时候查看已存在的docker volume: docker volume ls 查看volume信息： cn2d6@navxin-desktop:~$ docker inspect dv_pgdata 在宿主机，也可以直接查看volume里的内容： cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data cn2d6@navxin-desktop:~$ ll 查看postgresql： cn2d6@navxin-desktop:~$docker exec -it 618 bash root@618f1a4128ee:/# psql -U postgres -d postgres -p 5432 -h 127.0.0.1 更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。 docker pull dpage/pgadmin4 docker run --name pgadmin -p 5080:80 \ -e 'PGADMIN_DEFAULT_EMAIL=hi@nav.
+<a href=https://blog.baicai.me/article/2021/docker_postgres/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Ubuntu使用systemd配置开机运行service</a></h1><b><time>2021.12.01 22:44</time></b>
+<a href=/tags/ubuntu>ubuntu</a><div>systemd Systemd 是 Linux 系统工具，用来启动守护进程，已成为大多数发行版的标准配置。
+由来 历史上，Linux 的启动一直采用init进程。
+下面的命令用来启动服务。
+$ sudo /etc/init.d/apache2 start # 或者 $ service apache2 start 这种方法有两个缺点。
+一是启动时间长。init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。
+二是启动脚本复杂。init进程只是执行启动脚本，不管其他事情。脚本需要自己处理各种情况，这往往使得脚本变得很长。
+Systemd 概述 Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为系统的启动和管理提供一套完整的解决方案。
+根据 Linux 惯例，字母d是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。
+使用了 Systemd，就不需要再用init了。Systemd 取代了initd，成为系统的第一个进程（PID 等于 1），其他进程都是它的子进程。
+$ systemctl --version 上面的命令查看 Systemd 的版本。
+使用 systemd 实现开机执行 Shell 脚本 通用操作步骤 创建希望开机马上执行的脚本，本文举例脚本存放位置为 /home/navxin/Example/startup.sh，脚本内容如下：
+#!/bin/bash # 开机时在脚本的同级目录下创建一个名为 StartupTouch.txt 的文件 touch /home/navxin/Example/startup.sh.txt 开机执行的脚本需增加可执行权限才能被 systemd 运行，使用如下命令 chmod u+x /home/navxin/Example/startup.sh chmod g+x /home/navxin/Example/startup.sh 进入 systemd 放置 service 的目录，在该目录下可看到大量服务配置文件，命令如下 # 进入 systemd 的 service 目录 cd /usr/lib/systemd/system # 查看文件列表 ls -al 在该目录创建一个新的 .
+<a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/docker_start/>安装docker及简单的使用</a></h1><b><time>2021.10.05 17:21</time></b>
+<a href=/tags/docker>Docker</a><div>docker的介绍，里面包括了3个基本概念 1.1 docker主要由镜像和容器构成 镜像（Image）:docker镜像好比一个模板，相当于一个文件系统
+容器（Container）:容器需要通过镜像来创建。镜像和容器就像是面向对象中的类和实例一样。容器可以被创建/启动/停止/删除等
+仓库（Repository）:仓库就是存放镜像的地方，分为私有仓库和公有仓库。类似git
+1.2 docker的运行原理 docker是一个Client-Server结构的系统，docker的守护进程运行在主机上，通过socket从客户端访问。dockerServer接收到docker-Client的指令，就会执行这个命令。
+一. Mac 系统 docker 的安装 1.1 homebrew的cask应支持Docker for Mac,所以可以直接安装 brew cask install docker
+1.2 也可以直接到官网下载，https://download.docker.com/mac/stable/Docker.dmg
+1.3 docker的参考文档：https://docs.docker.com
+1.4 dockerhub查找镜像源地址：https://hub.docker.com
+二. docker的使用 1.1 查看版本 docker --version docker-compose --version docker-machine --version 1.2 查看docker系统信息（包括镜像和容器的数量等） docker info 1.3 帮助命令 docker help 1.4 查看 cpu的状况 docker stats 三. docker的基本命令 镜像相关命令：
+1.1 查看镜像可用版本（nginx为例） docker search nginx 1.2 下载一个镜像 docker pull nginx:latest #（：后面跟镜像版本） 1.3 运行一个nginx服务器 docker run -d -p 81:80 --name webserver nginx 可选项：
+<a href=https://blog.baicai.me/article/2021/docker_start/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/ubuntu_firefox-install/>ubuntu上安装firefox</a></h1><b><time>2021.09.29 16:19</time></b>
+<a href=/tags/firefox>firefox</a>
+<a href=/tags/ubuntu>ubuntu</a><div>卸载原来Firefox sudo apt-get purge firefox 或 sudo apt-get remove firefox
+下载最新Firefox二进制压缩包 wget -O ~/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&amp;os=linux64" 解压并移动到/opt目录 sudo tar xjf ~/firefox.tar.bz2 -C /opt/ 创建软链接 sudo ln -s /opt/firefox/firefox /usr/lib/firefox/firefox 在/usr/lib/中创建一个firefox可执行链接文件，该文件指向/opt中firefox可执行主程序位置。
+启动firefox 终端启动Firefox
+firefox 创建桌面快捷方式 进入/usr/share/applications目录
+touch firefox.desktop nano firefox.desktop 添加内容：
+[Desktop Entry] Name=firefox Comment=firefox Exec=/opt/firefox/firefox Icon=/opt/firefox/browser/chrome/icons/default/default128.png Terminal=false Type=Application Categories=Application; Encoding=UTF-8 StartupNotify=true 卸载Firefox 通过上面方法安装的Firefox，如果想删除，可以在终端种输入以下命令：
+sudo rm -rf /opt/firefox sudo rm /usr/share/applications/firefox.desktop</div></article><div><a href=/page/4/>Previous Page</a>
+5 of 8
+<a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,0 +1,122 @@
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/justmysocks/>Just My Socks:：搬瓦工官方服务，多条线路，IP不怕被墙</a></h1><b><time>2023.12.09 19:42</time></b>
+<a href=/tags/aff>aff</a>
+<a href=/tags/vps>vps</a>
+<a href=/tags/aff_vps>aff_vps</a><div>Just My Socks
+搬瓦工官方服务，多条线路，IP不怕被墙
+aff注册地址：https://justmysocks.net
+一、Just My Socks介绍 Just My Socks是搬瓦工官方出品的Shadowsocks/V2ray代理服务，支持支付宝付款，提供ss账号，每个账号有5条线路，包括搬瓦工CN2 GIA线路，性价比很高且非常稳定，比买VPS灵活划算且省得折腾，保证IP可用，被封自动切换。
+Just My Socks靠谱吗？不同于其他机场，Just My Socks是搬瓦工官方推出的，已经稳定运行了近5年了（2018年10月推出的），可以说非常靠谱。
+Just My Socks怎么样？每个ss账号有5个线路，包括最快的搬瓦工CN2 GIA线路，速度很快。
+哪些人适合用Just My Socks？如果你只是为了翻墙看看YouTube、刷刷ins，使用ChatGPT或者谷歌，那么你完全不需要折腾VPS，自建ss，Just My Socks可以非常方便的达到这些需求。
+Just My Socks 是否支持ChatGPT访问？目前JMS已经可以支持ChatGPT访问了，另外官方也经常对ChatGPT访问做优化。
+二、Just My Socks购买
+目前，Just My Socks提供以下方案：
+方案名称 带宽 流量 价格 设备限制 购买链接 洛杉矶线路 500 2.5 G 500 GB / 月 $5.88 / 月 最多5个设备同时在线 立即购买 洛杉矶线路 1000 5 G 1TB / 月 $9.88 / 月 不限制设备数量 立即购买 洛杉矶线路 5000 5 G 5TB / 月 $48.
+<a href=https://blog.baicai.me/article/2023/justmysocks/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>通过 ADB 卸载系统自带应用(无需Root),精简系统app</a></h1><b><time>2023.12.05 13:31</time></b>
+<a href=/tags/adb>adb</a>
+<a href=/tags/shell>shell</a><div>准备 ADB 使用条件 要使用 ADB（Android 调试桥），你需要按照以下步骤操作：
+下载并安装 ADB 工具：
+在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。 如果你使用 macOS 或 Linux，你可以通过终端使用系统包管理器或 Homebrew 安装 ADB。 如果你使用 Windows，你可以下载 Android Studio，它包含了 ADB 工具。 连接 Android 设备：
+使用 USB 线将 Android 设备连接到计算机上。 在 Android 设备上打开开发者选项。这通常需要在设备设置中多次点击“关于手机” -> “版本号”或者类似的选项。一旦开启，返回设置菜单并找到“开发者选项”。 在“开发者选项”中，启用“USB 调试”。 打开命令提示符（Windows）/终端（macOS、Linux）：
+运行以下命令以确保 ADB 正确识别设备： adb devices 这应该显示已连接设备的列表。
+使用 ADB 列出已经安装的应用程序 打开命令提示符（Windows）/终端（macOS、Linux）：
+在命令提示符/终端中输入以下命令来列出已安装的应用程序： adb shell pm list packages 如果你想筛选出包含特定关键词的应用程序，可以使用以下命令：
+adb shell pm list packages | grep keyword 将 &ldquo;keyword&rdquo; 替换为你想要搜索的关键词。 比如魅族的手机
+<a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></h1><b><time>2023.11.20 16:02</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/k3s>k3s</a>
+<a href=/tags/kubectl>kubectl</a><div>停止和移除pod 按名称删除pod 按名称删除kubia-gpu pod：
+kubectl delete po kubia-gpu 在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。
+提示 还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。
+使用标签选择器删除pod 停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 creation_method=manual ，因此可以通过使用一个标签选择器来删除它们：
+kubectl delete po -l creation_method=manual 通过删除整个命名空间来删除pod 以下命令删除custom-namespace：
+kubectl delete ns custom-namespace 删除命名空间中的所有pod，但保留命名空间 查看 pods
+kubectl get pods 通过使用&ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：
+kubectl delete po --all 删除命名空间中的（几乎）所有资源 通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：
+kubectl delete all --all 命令中的第一个all指定正在删除所有资源类型，而&ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。
+注意 使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。
+删除资源时，kubectl将打印它删除的每个资源的名称。
+注意 kubectl delete all --all 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。
+kubectl 命令演示 kubectl 展示搜索出的pod列表（含pod所在的namespace） kubectl get pod -A |grep &lt;podname> [root@node ~]# kubectl get pod -A |grep dashboard kubernetes-dashboard dashboard-metrics-scraper-5657497c4c-j5kr8 1/1 Running 0 113m kubernetes-dashboard kubernetes-dashboard-78f87ddfc-tlmjv 1/1 Running 0 113m kubectl 删除pod命令 kubectl delete pod &lt;podname> -n &lt;namespace> 在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。 故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。
+<a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></h1><b><time>2023.11.17 22:52</time></b>
+<a href=/tags/docker>Docker</a><div>Runtime privilege and Linux capabilities 参考官方文档：Docker run reference
+By default, Docker containers are &ldquo;unprivileged&rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &ldquo;privileged&rdquo; container is given access to all devices (see the documentation on cgroups devices).
+The &ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host.
+<a href=https://blog.baicai.me/article/2023/docker_privileged/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></h1><b><time>2023.10.09 10:15</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/linux>linux</a>
+<a href=/tags/libreoffice>LibreOffice</a><div>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。
+下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。
+彻底卸载 LibreOffice 终端中输入命令：
+#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get purge libreoffice? 或
+#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo aptitude purge libreoffice? 或
+#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get remove --purge libreoffice* 然后清理残留：
+sudo apt-get clean sudo apt-get autoremove 附注（不完全卸载）： 卸载libreoffice表格
+sudo apt remove libreoffice-calc 卸载libreoffice绘图
+sudo apt remove libreoffice-draw 卸载libreoffice幻灯片
+sudo apt remove libreoffice-impress 卸载libreoffice word文档工具
+sudo apt remove libreoffice-writer 清理残留
+<a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/using_wireguard/>通过 WireGuard 搭建 VPN 访问家里内网</a></h1><b><time>2023.10.08 15:19</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/wireguard>WireGuard</a><div>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。
+IP 段选择 WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。
+在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。
+在服务器上配置 WireGuard 要使用 WireGuard，首先需要确保 Linux 内核支持。可使用 modinfo wireguard 命令检查是否内置了 WireGuard。也可用过 uname -r 检查内核版本是否为 5.6 以上。
+安装 wireguard Debian
+apt install wireguard 其他系统参考：install
+完成服务器端的配置 在正确安装 wireguard 后，你可以通过如下命令快速创建一组公钥和私钥。
+$ wg genkey | tee peer_A.key | wg pubkey > peer_A.pub && cat peer_A.key && cat peer_A.
+<a href=https://blog.baicai.me/article/2023/using_wireguard/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></h1><b><time>2023.09.28 20:29</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/k3s>k3s</a>
+<a href=/tags/kubernetes>Kubernetes</a>
+<a href=/tags/kubectl>kubectl</a><div>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。
+不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。
+参考入门指南和多云解决方案，重新整理
+目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群
+Server安装 # 局域网方案 curl -sfL https://get.k3s.io | sh - # 多云安装方案 curl -sfL https://get.k3s.io | sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native 中国用户，可以使用以下方法加速安装：
+# 局域网方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh - # 多云安装方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native --flannel-external-ip 运行此安装后：
+K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。 将安装其他实用程序，包括 ```kubectl```、```crictl```、```ctr```、```k3s-killall.sh``` 和 ```k3s-uninstall.sh```。 kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装的 kubectl 将自动使用该文件。 安装其他 Agent 节点 安装其他 Agent 节点并将它们添加到集群，请使用 K3S_URL 和 K3S_TOKEN 环境变量运行安装脚本
+<a href=https://blog.baicai.me/article/2023/quick_start/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/translations/>Telegram 界面自定义翻译</a></h1><b><time>2023.09.21 00:01</time></b>
+<a href=/tags/telegram>telegram</a>
+<a href=/tags/%E6%B1%89%E5%8C%96>汉化</a>
+<a href=/tags/%E8%AF%AD%E8%A8%80%E5%8C%85>语言包</a><div>语言包的获取方法 进入官网翻译界面 https://translations.telegram.org
+点击 &ldquo;Start Translating&rdquo;
+选择 对应语言 比如 简体中文 进入网址
+https://translations.telegram.org/zh-hans/
+底部有 &ldquo;Sharing Link&rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。
+自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。
+Telegram 中文语言包 https://t.me/setlanguage/zh-hans-beta</div></article><article><h1><a href=https://blog.baicai.me/article/2023/reverse-proxy/>搭建反向代理服务：Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.20 12:06</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/nginx>nginx</a>
+<a href=/tags/proxy>proxy</a>
+<a href=/tags/telegram>telegram</a><div>上面一篇通过nginx和cloudflare workers 搭建的反向代理。
+这一篇通过更简单的代码重下搭建个。
+通过 Cloudflare Workers 搭建反向代理服务 创建 Cloudflare workers 的步骤都是一样的，代码不一样。
+创建一个Worker 在首页选择Workers，若从未创建过则初始化，选择免费套餐，然后创建一个Worker。
+编辑Worker内容 进入worker，点击快速编辑，将代码改为下方内容，其中hostname改为你自己的，然后点击保存部署，并可改名为例如cdn的worker。
+// 这就是需要代理的网址 const hostname = "https://example.domain" // const hostname = "http://192.168.0.1" // const hostname = "https://your.domain" // const hostname = "https://your.domain/api/path" function handleRequest(request) { let url = new URL(request.url); return fetch(new Request(hostname + url.pathname,request)) } addEventListener("fetch", event => { event.respondWith(handleRequest(event.request)) }) 为域名添加DNS 添加路由，配置
+指向步骤1创建的 Worker，到此等待DNS生效即可。
+通过 Vercel 搭建反向代理服务 在github中新建个项目 创建一个文件，命名为 vercel.json 文件内容：
+{ "routes": [ { "src": "/.
+<a href=https://blog.baicai.me/article/2023/reverse-proxy/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/>Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.19 22:28</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/nginx>nginx</a>
+<a href=/tags/proxy>proxy</a>
+<a href=/tags/telegram>telegram</a><div>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！
+#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写 tg_proxy= 两种实现方案，根据个人喜好选择使用或发挥
+Nginx反代Telegram Api 安装nginx sudo apt update && sudo apt install -y nginx 创建配置文件 nano tgapi.conf 输入一下内容并保存
+server { listen 80; server_name tgapi.domain; location / { return 444; } location ~* ^/bot { resolver 8.8.8.8; proxy_buffering off; proxy_pass https://api.telegram.org$request_uri; } } 加载配置 sudo systemctl reload nginx #或 sudo nginx -s reload 测试访问 输入以下命令行,BOT_TOKEN换成自己机器人token。
+curl https://tgapi.domain/bot&lt;BOT_TOKEN>/getMe 看的机器人信息，就说明可以使用了。
+配置 epusdt telegram代理url epusdt 配置(.env)参考
+#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写 tg_proxy=https://tgapi.domain docker 配置 nginx 参考 docker-compose.
+<a href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/>Read more...</a></div></article><div><a href=/>Previous Page</a>
+2 of 8
+<a href=/page/3/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

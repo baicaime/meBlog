@@ -1,0 +1,74 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2021/docker_postgres/"><link rel=canonical href=https://blog.baicai.me/article/2021/docker_postgres/><style type=text/css>body{font-family:monospace}</style><title>Docker 运行 postgreSQL</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Docker 运行 postgreSQL</h1><b><time>2021.12.09 14:19</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/postgres>postgres</a><div><h3 id=简单步骤>简单步骤</h3><ol><li><p>安装docker，可参考 <a href=/article/2021/docker_start/>安装docker及简单的使用</a> 或 百度解决；</p></li><li><p>拉取postgreSQL的docker镜像文件：</p></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker pull postgres
+</span></span></code></pre></div><ol start=3><li>创建 docker volume，名字为“dv_pgdata"（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker volume create dv_pgdata
+</span></span></code></pre></div><ol start=4><li>启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD<span style=color:#f92672>=</span>xxxxxx -p 5432:5432 -d postgres
+</span></span></code></pre></div><ol start=5><li>这时候查看已存在的docker volume:</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker volume ls
+</span></span></code></pre></div><ol start=6><li>查看volume信息：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cn2d6@navxin-desktop:~$ docker inspect dv_pgdata
+</span></span></code></pre></div><ol start=7><li>在宿主机，也可以直接查看volume里的内容：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data
+</span></span><span style=display:flex><span>cn2d6@navxin-desktop:~$ ll
+</span></span></code></pre></div><ol start=8><li>查看postgresql：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cn2d6@navxin-desktop:~$docker exec -it <span style=color:#ae81ff>618</span> bash
+</span></span><span style=display:flex><span>root@618f1a4128ee:/# psql -U postgres -d postgres -p <span style=color:#ae81ff>5432</span> -h 127.0.0.1
+</span></span></code></pre></div><ol start=9><li>更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker pull dpage/pgadmin4
+</span></span><span style=display:flex><span>docker run --name pgadmin -p 5080:80 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -e <span style=color:#e6db74>&#39;PGADMIN_DEFAULT_EMAIL=hi@nav.xin&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -e <span style=color:#e6db74>&#39;PGADMIN_DEFAULT_PASSWORD=xxxxxx&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -e <span style=color:#e6db74>&#39;PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=True&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -e <span style=color:#e6db74>&#39;PGADMIN_CONFIG_LOGIN_BANNER=&#34;Authorised users only!&#34;&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -e <span style=color:#e6db74>&#39;PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -d dpage/pgadmin4
+</span></span></code></pre></div><h3 id=用docker-compose部署postgresql和pgadmin4>用docker-compose部署postgresql和pgAdmin4</h3><h4 id=准备步骤>准备步骤</h4><p>安装docker-compose</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    apt install docker-compose
+</span></span></code></pre></div><p>确定已经pull好postgres和pgAdmin4镜像,若未完成：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker pull postgres
+</span></span><span style=display:flex><span>    docker pull dpage/pgadmin4
+</span></span></code></pre></div><h4 id=配置内容>配置内容</h4><p>然后在任意目录下新建文件docker-compose.yml:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    touch ./docker-compose.yml
+</span></span></code></pre></div><p>内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>    <span style=color:#75715e># Use postgres/example user/password credentials </span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># https://hub.docker.com/_/postgres?tab=description</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 在当前目录下运行：sudo docker-compose up -d</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 若需停止运行，在当前目录运行：sudo docker-compose down</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># docker路由地址查看： sudo docker inspect postgres_baicai</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># sudo docker kill $(sudo docker ps -aq)</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># sudo docker rm $(sudo docker ps -aq)</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>version</span>: <span style=color:#e6db74>&#39;3.1&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>db</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>postgres</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>privileged</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>postgres_baicai</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>5432</span>:<span style=color:#ae81ff>5432</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>POSTGRES_PASSWORD</span>: <span style=color:#ae81ff>你的密码</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>PGDATA</span>: <span style=color:#ae81ff>/var/lib/postgresql/data/pgdata</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>/navxin/kn1/baicai_docker/baicai_postgres/pg_data:/var/lib/postgresql/data</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e># - pgdata:/var/lib/postgresql/data</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>pgadmin4</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>dpage/pgadmin4</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>pgadmin_baicai</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>5080</span>:<span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>PGADMIN_DEFAULT_EMAIL</span>: <span style=color:#e6db74>&#34;hi@nav.xin&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>PGADMIN_DEFAULT_PASSWORD</span>: <span style=color:#ae81ff>你的密码</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># volumes:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#   pgdata:</span>
+</span></span></code></pre></div><h4 id=部署>部署</h4><p>在当前目录下运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker-compose up -d
+</span></span></code></pre></div><p>若需停止运行，在当前目录运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker-compose down
+</span></span></code></pre></div><p>连接步骤</p><p>打开浏览器，输入localhost:5080，登录pgAdmin4之后，点击添加新服务器，特别注意，在连接地址IP里应该填写docker路由地址，端口填写5432。
+docker路由地址查看方法</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>    docker inspect postgres_baicai
+</span></span></code></pre></div><p>在输出内容中找到Gateway，对应的地址即为docker路由地址。</p><h3 id=更多参考>更多参考：</h3><p><a href=/article/2021/docker_start/>安装docker及简单的使用</a>
+<a href="https://hub.docker.com/_/postgres?tab=description">postgres</a>
+<a href=https://hub.docker.com/r/dpage/pgadmin4>dpage/pgadmin4</a></p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

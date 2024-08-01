@@ -1,0 +1,2658 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Learn Rust on 白菜</title><link>https://blog.baicai.me/categories/learn-rust/</link><description>Recent content in Learn Rust on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 25 Jun 2021 22:53:14 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/learn-rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
+&lt;h3 id="cratesio-和-rustup-的国内镜像源">crates.io 和 rustup 的国内镜像源&lt;/h3>
+&lt;p>字节跳动提供的：https://rsproxy.cn/&lt;/p>
+&lt;p>中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html&lt;/p>
+&lt;p>清华大学的：https://mirrors.tuna.tsinghua.edu.cn/help/rustup/&lt;/p>
+&lt;p>上海交通大学的：https://git.sjtu.edu.cn/sjtug/crates.io-index&lt;/p>
+&lt;h3 id="更换国内源">更换国内源&lt;/h3>
+&lt;p>更换为国内源，否则安装太慢了。
+新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">[source.crates-io]
+registry = &amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;
+# 替换成你偏好的镜像源
+replace-with = &amp;#39;sjtu&amp;#39;
+# 清华大学
+[source.tuna]
+registry = &amp;#34;https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git&amp;#34;
+# 中国科学技术大学
+[source.ustc]
+registry = &amp;#34;git://mirrors.ustc.edu.cn/crates.io-index&amp;#34;
+# 上海交通大学
+[source.sjtu]
+registry = &amp;#34;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index&amp;#34;
+# rustcc社区
+[source.rustcc]
+registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
+# 字节跳动
+[source.rsproxy]
+registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
+&lt;/code>&lt;/pre></description></item><item><title>Cargo Wix 创建Windows安装程序的cargo子命令</title><link>https://blog.baicai.me/article/2021/cargo-wix/</link><pubDate>Tue, 22 Jun 2021 22:48:53 +0800</pubDate><guid>https://blog.baicai.me/article/2021/cargo-wix/</guid><description>&lt;p>cargo-wix：创建Windows安装程序的cargo子命令
+它使用二进制项目的发行版中的构建Windows安装程序（msi）。 如果可以使用提供的应用程序提供代码签名证书，则它还支持对Windows安装程序进行签名。&lt;/p>
+&lt;h3 id="快速开始">快速开始&lt;/h3>
+&lt;p>启动命令提示符（cmd.exe），然后执行以下命令：&lt;/p>
+&lt;pre tabindex="0">&lt;code>C:\&amp;gt;cargo install cargo-wix
+C:\&amp;gt;cd Path\To\Project
+C:\Path\To\Project\&amp;gt;cargo wix init
+C:\Path\To\Project\&amp;gt;cargo wix
+&lt;/code>&lt;/pre>&lt;p>该项目的Windows安装程序（msi）将位于C:\Path\To\Project\target\wix文件夹中。&lt;/p>
+&lt;h3 id="官方文档">官方文档&lt;/h3>
+&lt;p>&lt;a href="https://crates.io/crates/cargo-wix">https://crates.io/crates/cargo-wix&lt;/a>&lt;/p></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
+&lt;p>👉 本文来自 &lt;a href="https://github.com/toml-lang/toml.io">toml-lang 的中文翻译版本&lt;/a>，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。&lt;/p>
+&lt;h1 id="toml-v100">TOML v1.0.0&lt;/h1>
+&lt;p>全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&amp;rsquo;s Obvious, Minimal Language）&lt;br>
+作者：Tom Preston-Werner、Pradyun Gedam 等人。&lt;/p>
+&lt;h3 id="宗旨">宗旨&lt;/h3>
+&lt;p>TOML 旨在成为一个语义明显且易于阅读的最小化配置文件格式。&lt;br>
+TOML 被设计成可以无歧义地映射为哈希表。&lt;br>
+TOML 应该能很容易地被解析成各种语言中的数据结构。&lt;/p>
+&lt;h3 id="目录">目录&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="#%E8%A7%84%E6%A0%BC">规格&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%B3%A8%E9%87%8A">注释&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E9%94%AE%E5%80%BC%E5%AF%B9">键值对&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E9%94%AE%E5%90%8D">键名&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%95%B4%E6%95%B0">整数&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%B5%AE%E7%82%B9%E6%95%B0">浮点数&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%B8%83%E5%B0%94%E5%80%BC">布尔值&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%9D%90%E6%A0%87%E6%97%A5%E6%9C%9F%E6%97%B6%E5%88%BB">坐标日期时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%A5%E6%9C%9F%E6%97%B6%E5%88%BB">各地日期时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%A5%E6%9C%9F">各地日期&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%B6%E5%88%BB">各地时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%95%B0%E7%BB%84">数组&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E8%A1%A8">表&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%86%85%E8%81%94%E8%A1%A8">内联表&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E8%A1%A8%E6%95%B0%E7%BB%84">表数组&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%96%87%E4%BB%B6%E6%89%A9%E5%B1%95%E5%90%8D">文件扩展名&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#mime-%E7%B1%BB%E5%9E%8B">MIME 类型&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#abnf-%E8%AF%AD%E6%B3%95">ABNF 语法&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="规格">规格&lt;/h3>
+&lt;ul>
+&lt;li>TOML 是大小写敏感的。&lt;/li>
+&lt;li>TOML 文件必须是合法的 UTF-8 编码的 Unicode 文档。&lt;/li>
+&lt;li>空白是指制表符（0x09）或空格（0x20）。&lt;/li>
+&lt;li>换行是指 LF（0x0A）或 CRLF（0x0D0A）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="注释">注释&lt;/h3>
+&lt;p>井字符将该行余下的部分标记为注释，除非它在字符串中。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 这是一个全行注释&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 这是一个行末注释&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">another&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;# 这不是一个注释&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>除制表符以外的控制字符（U+0000 至 U+0008，U+000A 至 U+001F，U+007F）不允许出现在注释中。&lt;/p>
+&lt;h3 id="键值对">键值对&lt;/h3>
+&lt;p>TOML 文档最基本的构成区块是键值对。&lt;/p>
+&lt;p>键名在等号的左边而值在右边。&lt;br>
+键名和键值周围的空白会被忽略。&lt;br>
+键、等号和值必须在同一行（不过有些值可以跨多行）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>值必须是下述类型之一。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%95%B4%E6%95%B0">整数&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%B5%AE%E7%82%B9%E6%95%B0">浮点数&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%B8%83%E5%B0%94%E5%80%BC">布尔值&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%9D%90%E6%A0%87%E6%97%A5%E6%9C%9F%E6%97%B6%E5%88%BB">坐标日期时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%A5%E6%9C%9F%E6%97%B6%E5%88%BB">各地日期时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%A5%E6%9C%9F">各地日期&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E5%9C%B0%E6%97%B6%E5%88%BB">各地时刻&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E6%95%B0%E7%BB%84">数组&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%86%85%E8%81%94%E8%A1%A8">内联表&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>不指定值是非法的。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key&lt;/span> = &lt;span style="color:#75715e"># 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>键值对后必须换行（或结束文件）。&lt;br>
+（例外见&lt;a href="#%E5%86%85%E8%81%94%E8%A1%A8">内联表&lt;/a>）&lt;/p>
+&lt;pre tabindex="0">&lt;code>first = &amp;#34;Tom&amp;#34; last = &amp;#34;Preston-Werner&amp;#34; # 非法
+&lt;/code>&lt;/pre>&lt;h3 id="键名">键名&lt;/h3>
+&lt;p>键名可以是裸露的，引号引起来的，或点分隔的。&lt;/p>
+&lt;p>&lt;strong>裸键&lt;/strong>只能包含 ASCII 字母，ASCII 数字，下划线和短横线（&lt;code>A-Za-z0-9_-&lt;/code>）。&lt;br>
+注意裸键允许仅由纯 ASCII 数字构成，例如 &lt;code>1234&lt;/code>，但是是被理解为字符串的。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bare_key&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bare-key&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">1234&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>引号键&lt;/strong>遵循与基本字符串或字面量字符串相同的规则并允许你使用更为广泛的键名。&lt;br>
+除非明显必要，使用裸键方为最佳实践。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;127.0.0.1&amp;#34;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;character encoding&amp;#34;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;ʎǝʞ&amp;#34;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;key2&amp;#39;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;quoted &amp;#34;value&amp;#34;&amp;#39;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;value&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>裸键中不能为空，但空引号键是允许的（虽然不建议如此）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>= &lt;span style="color:#e6db74">&amp;#34;no key name&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;blank&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 合法但不鼓励&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;blank&amp;#39;&lt;/span> &lt;span style="color:#75715e"># 合法但不鼓励&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>点分隔键&lt;/strong>是一系列通过点相连的裸键或引号键。&lt;br>
+这允许了你将相近属性放在一起：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Orange&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">physical&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;orange&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">physical&lt;/span>.&lt;span style="color:#a6e22e">shape&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;round&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">site&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;google.com&amp;#34;&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>等价于 JSON 的如下结构：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Orange&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;physical&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;color&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;orange&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;shape&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;round&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;site&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;google.com&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>有关点分隔键定义表的详细信息，请参阅后文&lt;a href="#%E8%A1%A8">表&lt;/a>一节。&lt;/p>
+&lt;p>点分隔符周围的空白会被忽略。&lt;br>
+不过，最佳实践是不要使用任何不必要的空白。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;banana&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 这是最佳实践&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fruit&lt;/span>. &lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;yellow&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 等同于 fruit.color&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fruit&lt;/span> . &lt;span style="color:#a6e22e">flavor&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;banana&amp;#34;&lt;/span> &lt;span style="color:#75715e"># 等同于 fruit.flavor&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>缩进被作为空白对待而被忽略。&lt;/p>
+&lt;p>多次定义同一个键是非法的。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 不要这样做
+name = &amp;#34;Tom&amp;#34;
+name = &amp;#34;Pradyun&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>注意裸键和引号键是等价的：&lt;/p>
+&lt;pre tabindex="0">&lt;code># 这是不可行的
+spelling = &amp;#34;favorite&amp;#34;
+&amp;#34;spelling&amp;#34; = &amp;#34;favourite&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>只要一个键还没有被直接定义过，你就仍可以对它和它下属的键名赋值。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 这使“fruit”键作为表存在。
+fruit.apple.smooth = true
+# 所以接下来你可以像中这样对“fruit”表添加内容：
+fruit.orange = 2
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code># 以下是非法的
+# 这将 fruit.apple 的值定义为一个整数。
+fruit.apple = 1
+# 但接下来这将 fruit.apple 像表一样对待了。
+# 整数不能变成表。
+fruit.apple.smooth = true
+&lt;/code>&lt;/pre>&lt;p>不鼓励跳跃式地定义点分隔键。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 合法但不鼓励&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">type&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;水果&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">type&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;水果&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">skin&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;薄&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">skin&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;厚&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;红&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;橙&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 建议&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">type&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;水果&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">skin&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;薄&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;红&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">type&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;水果&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">skin&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;厚&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">orange&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;红&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>由于裸键可以仅由 ASCII 整数组成，所以可能写出看起来像浮点数、但实际上是两部分的点分隔键。&lt;br>
+除非你有充分的理由（基本不太会），否则不要这样做。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">3.14159&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;派&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上面的 TOML 对应以下 JSON。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{ &lt;span style="color:#f92672">&amp;#34;3&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;14159&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;派&amp;#34;&lt;/span> } }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="字符串">字符串&lt;/h3>
+&lt;p>共有四种方式来表示字符串：基本字符串、多行基本字符串、字面量和多行字面量。&lt;br>
+所有字符串都只能包含有效的 UTF-8 字符。&lt;/p>
+&lt;p>&lt;strong>基本字符串&lt;/strong>由引号（&lt;code>&amp;quot;&lt;/code>）包裹。&lt;br>
+任何 Unicode 字符都可以使用，除了那些必须转义的：引号，反斜杠，以及除制表符外的控制字符（U+0000 至 U+0008，U+000A 至 U+001F，U+007F）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;我是一个字符串。\&amp;#34;你可以把我引起来\&amp;#34;。姓名\tJos\u00E9\n位置\t旧金山。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>为了方便，一些流行的字符有其简便转义写法。&lt;/p>
+&lt;pre tabindex="0">&lt;code>\b - backspace (U+0008)
+\t - tab (U+0009)
+\n - linefeed (U+000A)
+\f - form feed (U+000C)
+\r - carriage return (U+000D)
+\&amp;#34; - quote (U+0022)
+\\ - backslash (U+005C)
+\uXXXX - unicode (U+XXXX)
+\UXXXXXXXX - unicode (U+XXXXXXXX)
+&lt;/code>&lt;/pre>&lt;p>任何 Unicode 字符都可以用 &lt;code>\uXXXX&lt;/code> 或 &lt;code>\UXXXXXXXX&lt;/code> 的形式来转义。&lt;br>
+转义码必须是有效的 Unicode &lt;a href="https://unicode.org/glossary/#unicode_scalar_value">标量值&lt;/a>。&lt;/p>
+&lt;p>所有上面未列出的其它转义序列都是保留的；如果用了，TOML 应当产生错误。&lt;/p>
+&lt;p>有时你需要表示一小篇文本（例如译文）或者想要对非常长的字符串进行折行。&lt;br>
+TOML 对此进行了简化。&lt;/p>
+&lt;p>&lt;strong>多行基本字符串&lt;/strong>由三个引号包裹，允许折行。&lt;br>
+紧随开头引号的那个换行会被去除。&lt;br>
+其它空白和换行会被原样保留。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str1&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">Roses are red
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">Violets are blue&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>TOML 解析器可以相对灵活地解析成对所在平台有效的换行字符。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 在 Unix 系统，上面的多行字符串可能等同于：&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str2&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Roses are red\nViolets are blue&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 在 Windows 系统，它可能等价于：&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str3&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Roses are red\r\nViolets are blue&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>想书写长字符串却不想引入无关空白，可以用“行末反斜杠”。&lt;br>
+当一行的最后一个非空白字符是未被转义的 &lt;code>\&lt;/code> 时，它会连同它后面的所有空白（包括换行）一起被去除，直到下一个非空白字符或结束引号为止。&lt;br>
+所有对基本字符串有效的转义序列，对多行基本字符串也同样适用。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 下列字符串的每一个字节都完全相同：&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str1&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;The quick brown fox jumps over the lazy dog.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str2&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">The quick brown \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fox jumps over \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> the lazy dog.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str3&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> The quick brown \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fox jumps over \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> the lazy dog.\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>任何 Unicode 字符都可以使用，除了那些必须被转义的：反斜杠和除制表符、换行符、回车符外的控制字符（U+0000 至 U+0008，U+000B，U+000C，U+000E 至 U+001F，U+007F）。&lt;/p>
+&lt;p>你可以在多行基本字符串内的任何地方写一个引号或两个毗连的引号。&lt;br>
+它们也可以写在紧邻界分符内的位置。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str4&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;这有两个引号：&amp;#34;&amp;#34;。够简单。&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># str5 = &amp;#34;&amp;#34;&amp;#34;这有两个引号：&amp;#34;&amp;#34;&amp;#34;。&amp;#34;&amp;#34;&amp;#34; # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str5&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;这有三个引号：&amp;#34;&amp;#34;\&amp;#34;。&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str6&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;这有十五个引号：&amp;#34;&amp;#34;\&amp;#34;&amp;#34;&amp;#34;\&amp;#34;&amp;#34;&amp;#34;\&amp;#34;&amp;#34;&amp;#34;\&amp;#34;&amp;#34;&amp;#34;\&amp;#34;。&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># &amp;#34;这，&amp;#34;她说，&amp;#34;只是个无意义的条款。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str7&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&amp;#34;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">这，&lt;/span>&lt;span style="color:#e6db74">&amp;#34;她说，&amp;#34;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">只是个无意义的条款。&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果你常常要指定 Windows 路径或正则表达式，那么必须转义反斜杠就马上成为啰嗦而易错的了。&lt;br>
+为了帮助搞定这点，TOML 支持字面量字符串，它完全不允许转义。&lt;/p>
+&lt;p>&lt;strong>字面量字符串&lt;/strong>由单引号包裹。&lt;br>
+类似于基本字符串，他们只能表现为单行：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 所见即所得。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">winpath&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;C:\Users\nodejs\templates&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">winpath2&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;\\ServerX\admin$\system32\&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">quoted = &amp;#39;&lt;/span>&lt;span style="color:#a6e22e">Tom&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Dubs&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">Preston-Werner&lt;/span>&lt;span style="color:#e6db74">&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">regex = &amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">&amp;lt;\&lt;/span>&lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">\&lt;/span>&lt;span style="color:#a6e22e">c&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">*\&lt;/span>&lt;span style="color:#a6e22e">s&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">*&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>由于没有转义，无法在由单引号包裹的字面量字符串中写入单引号。&lt;br>
+万幸，TOML 支持一种多行版本的字面量字符串来解决这个问题。&lt;/p>
+&lt;p>&lt;strong>多行字面量字符串&lt;/strong>两侧各有三个单引号来包裹，允许换行。&lt;br>
+类似于字面量字符串，无论任何转义都不存在。&lt;br>
+紧随开始标记的那个换行会被剔除。&lt;br>
+开始结束标记之间的所有其它内容会原样对待。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">regex2&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;I [dw]on&amp;#39;&lt;/span>&lt;span style="color:#a6e22e">t&lt;/span> &lt;span style="color:#a6e22e">need&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">\&lt;/span>&lt;span style="color:#a6e22e">d&lt;/span>{&lt;span style="color:#ae81ff">2&lt;/span>} &lt;span style="color:#a6e22e">apples&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">lines = &amp;#39;&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">原始字符串中的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">第一个换行被剔除了。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#960050;background-color:#1e0010">所有其它空白&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#960050;background-color:#1e0010">都保留了。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>你可以在多行字面量字符串中的任何位置写一个或两个单引号，但三个以上的单引号序列不可以。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">quot15&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;这有十五个引号：&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#34;&amp;#39;&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># apos15 = &amp;#39;&amp;#39;&amp;#39;这有十五个撇号：&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39; # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apos15&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;这有十五个撇号：&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># &amp;#39;那，&amp;#39;她说，&amp;#39;仍然没有意义。&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">str&lt;/span> = &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">那，&lt;/span>&lt;span style="color:#e6db74">&amp;#39;她说，&amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">仍然没有意义。&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>除制表符以外的所有控制字符都不允许出现在字面量字符串中。&lt;br>
+因此，对于二进制数据，建议你使用 Base64 或其它合适的 ASCII 或 UTF-8 编码。&lt;br>
+对那些编码的处理方式，将交由应用程序自己来确定。&lt;/p>
+&lt;h3 id="整数">整数&lt;/h3>
+&lt;p>整数是纯数字。&lt;br>
+正数可以有加号前缀。&lt;br>
+负数的前缀是减号。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int1&lt;/span> = &lt;span style="color:#ae81ff">+99&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int2&lt;/span> = &lt;span style="color:#ae81ff">42&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int3&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int4&lt;/span> = &lt;span style="color:#ae81ff">-17&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对于大数，你可以在数字之间用下划线来增强可读性。&lt;br>
+每个下划线两侧必须至少有一个数字。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int5&lt;/span> = &lt;span style="color:#ae81ff">1_000&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int6&lt;/span> = &lt;span style="color:#ae81ff">5_349_221&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int7&lt;/span> = &lt;span style="color:#ae81ff">53_49_221&lt;/span> &lt;span style="color:#75715e"># 印度记数体系分组&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">int8&lt;/span> = &lt;span style="color:#ae81ff">1_2_3_4_5&lt;/span> &lt;span style="color:#75715e"># 合法但不鼓励&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>前导零是不允许的。&lt;br>
+整数值 &lt;code>-0&lt;/code> 与 &lt;code>+0&lt;/code> 是有效的，并等同于无前缀的零。&lt;/p>
+&lt;p>非负整数值也可以用十六进制、八进制或二进制来表示。&lt;br>
+在这些格式中，&lt;code>+&lt;/code> 不被允许，而（前缀后的）前导零是允许的。&lt;br>
+十六进制值大小写不敏感。&lt;br>
+数字间的下划线是允许的（但不能存在于前缀和值之间）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 带有 `0x` 前缀的十六进制&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">hex1&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">xDEADBEEF&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">hex2&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">xdeadbeef&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">hex3&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">xdead_beef&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 带有 `0o` 前缀的八进制&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">oct1&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o01234567&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">oct2&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o755&lt;/span> &lt;span style="color:#75715e"># 对于表示 Unix 文件权限很有用&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 带有 `0b` 前缀的二进制&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">b11010110&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>任何 64 位有符号整数（从 −2^63 到 2^63−1）都应当被接受并无损处理。&lt;br>
+如果无法无损表现某个整数，则必须抛出错误。&lt;/p>
+&lt;h3 id="浮点数">浮点数&lt;/h3>
+&lt;p>浮点数应当被实现为 IEEE 754 binary64 值。&lt;/p>
+&lt;p>一个浮点数由一个整数部分（遵从与十进制整数值相同的规则）后跟上一个小数部分和/或一个指数部分组成。&lt;br>
+如果小数部分和指数部分兼有，那小数部分必须在指数部分前面。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 小数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt1&lt;/span> = &lt;span style="color:#ae81ff">+1.0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt2&lt;/span> = &lt;span style="color:#ae81ff">3.1415&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt3&lt;/span> = &lt;span style="color:#ae81ff">-0.01&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 指数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt4&lt;/span> = &lt;span style="color:#ae81ff">5&lt;/span>&lt;span style="color:#a6e22e">e&lt;/span>&lt;span style="color:#ae81ff">+22&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt5&lt;/span> = &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#a6e22e">e06&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt6&lt;/span> = &lt;span style="color:#ae81ff">-2&lt;/span>&lt;span style="color:#a6e22e">E-2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 都有&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt7&lt;/span> = &lt;span style="color:#ae81ff">6.626&lt;/span>&lt;span style="color:#a6e22e">e-34&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>小数部分是一个小数点后跟一个或多个数字。&lt;/p>
+&lt;p>一个指数部分是一个 E（大小写均可）后跟一个整数部分（遵从与十进制整数值相同的规则，但可以包含前导零）。&lt;/p>
+&lt;p>小数点，如果有用到的话，每侧必须紧邻至少一个数字。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 非法的浮点数
+invalid_float_1 = .7
+invalid_float_2 = 7.
+invalid_float_3 = 3.e+20
+&lt;/code>&lt;/pre>&lt;p>与整数相似，你可以使用下划线来增强可读性。&lt;br>
+每个下划线必须被至少一个数字围绕。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">flt8&lt;/span> = &lt;span style="color:#ae81ff">224_617.445&lt;/span>&lt;span style="color:#a6e22e">_991_228&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>浮点数值 &lt;code>-0.0&lt;/code> 与 &lt;code>+0.0&lt;/code> 是有效的，并且应当遵从 IEEE 754。&lt;/p>
+&lt;p>特殊浮点值也能够表示。&lt;br>
+它们是小写的。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 无穷&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf1&lt;/span> = &lt;span style="color:#a6e22e">inf&lt;/span> &lt;span style="color:#75715e"># 正无穷&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf2&lt;/span> = &lt;span style="color:#960050;background-color:#1e0010">+&lt;/span>&lt;span style="color:#a6e22e">inf&lt;/span> &lt;span style="color:#75715e"># 正无穷&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf3&lt;/span> = &lt;span style="color:#a6e22e">-inf&lt;/span> &lt;span style="color:#75715e"># 负无穷&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 非数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf4&lt;/span> = &lt;span style="color:#a6e22e">nan&lt;/span> &lt;span style="color:#75715e"># 实际上对应信号非数码还是静默非数码，取决于实现&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf5&lt;/span> = &lt;span style="color:#960050;background-color:#1e0010">+&lt;/span>&lt;span style="color:#a6e22e">nan&lt;/span> &lt;span style="color:#75715e"># 等同于 `nan`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sf6&lt;/span> = &lt;span style="color:#a6e22e">-nan&lt;/span> &lt;span style="color:#75715e"># 有效，实际码取决于实现&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="布尔值">布尔值&lt;/h3>
+&lt;p>布尔值就是你所惯用的那样。&lt;br>
+要小写。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bool1&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bool2&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="坐标日期时刻">坐标日期时刻&lt;/h3>
+&lt;p>要准确地表示世上的一个特定时间，你可以使用指定了时区偏移量的 &lt;a href="https://tools.ietf.org/html/rfc3339">RFC 3339&lt;/a> 格式的日期时刻。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">odt1&lt;/span> = &lt;span style="color:#e6db74">1979-05-27T07:32:00Z&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">odt2&lt;/span> = &lt;span style="color:#e6db74">1979-05-27T00:32:00-07:00&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">odt3&lt;/span> = &lt;span style="color:#ae81ff">1979-05-27&lt;/span>&lt;span style="color:#a6e22e">T00&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00.999999&lt;/span>&lt;span style="color:#ae81ff">-07&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>出于可读性的目的，你可以用一个空格字符替代日期和时刻之间的 T（RFC 3339 的第 5.6 节中允许了这样做）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">odt4&lt;/span> = &lt;span style="color:#ae81ff">1979-05-27&lt;/span> &lt;span style="color:#ae81ff">07&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00&lt;/span>&lt;span style="color:#a6e22e">Z&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>毫秒级的精度是必须的。&lt;br>
+更高精度的小数秒取决于实现。&lt;br>
+如果它的值超出了实现所支持的精度，那超出的部分必须被舍弃，而不能四舍五入。&lt;/p>
+&lt;h3 id="各地日期时刻">各地日期时刻&lt;/h3>
+&lt;p>如果你省略了 &lt;a href="https://tools.ietf.org/html/rfc3339">RFC 3339&lt;/a> 日期时刻中的时区偏移量，这表示该日期时刻的使用并不涉及时区偏移。&lt;br>
+在没有其它信息的情况下，并不知道它究竟该被转化成世上的哪一刻。&lt;br>
+如果仍被要求转化，那结果将取决于实现。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ldt1&lt;/span> = &lt;span style="color:#ae81ff">1979-05-27&lt;/span>&lt;span style="color:#a6e22e">T07&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ldt2&lt;/span> = &lt;span style="color:#ae81ff">1979-05-27&lt;/span>&lt;span style="color:#a6e22e">T00&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00.999999&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>毫秒级的精度是必须的。&lt;br>
+更高精度的小数秒取决于实现。&lt;br>
+如果它的值超出了实现所支持的精度，那多余的部分必须被舍弃，而不能四舍五入。&lt;/p>
+&lt;h3 id="各地日期">各地日期&lt;/h3>
+&lt;p>如果你只写了 &lt;a href="https://tools.ietf.org/html/rfc3339">RFC 3339&lt;/a> 日期时刻中的日期部分，那它表示一整天，同时也不涉及时区偏移。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ld1&lt;/span> = &lt;span style="color:#ae81ff">1979-05-27&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="各地时刻">各地时刻&lt;/h3>
+&lt;p>如果你只写了 &lt;a href="https://tools.ietf.org/html/rfc3339">RFC 3339&lt;/a> 日期时刻中的时刻部分，它将只表示一天之中的那个时刻，而与任何特定的日期无关、亦不涉及时区偏移。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">lt1&lt;/span> = &lt;span style="color:#ae81ff">07&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">lt2&lt;/span> = &lt;span style="color:#ae81ff">00&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">32&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span>&lt;span style="color:#ae81ff">00.999999&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>毫秒级的精度是必须的。&lt;br>
+更高精度的小数秒取决于实现。&lt;br>
+如果它的值超出了实现所支持的精度，那多余的部分必须被舍弃，而不能四舍五入。&lt;/p>
+&lt;h3 id="数组">数组&lt;/h3>
+&lt;p>数组是内含值的方括号。&lt;br>
+空白会被忽略。&lt;br>
+子元素由逗号分隔。&lt;br>
+数组可以包含与键值对所允许的相同数据类型的值。&lt;br>
+可以混合不同类型的值。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">integers&lt;/span> = [ &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">colors&lt;/span> = [ &lt;span style="color:#e6db74">&amp;#34;红&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;黄&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;绿&amp;#34;&lt;/span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">nested_array_of_ints&lt;/span> = [ [ &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span> ], [&lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">5&lt;/span>] ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">nested_mixed_array&lt;/span> = [ [ &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span> ], [&lt;span style="color:#e6db74">&amp;#34;a&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;b&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span>] ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">string_array&lt;/span> = [ &lt;span style="color:#e6db74">&amp;#34;所有的&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;字符串&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;是相同的&amp;#34;&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;类型&amp;#39;&amp;#39;&amp;#39;&lt;/span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 允许混合类型的数组&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">numbers&lt;/span> = [ &lt;span style="color:#ae81ff">0.1&lt;/span>, &lt;span style="color:#ae81ff">0.2&lt;/span>, &lt;span style="color:#ae81ff">0.5&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">5&lt;/span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">contributors&lt;/span> = [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Foo Bar &amp;lt;foo@example.com&amp;gt;&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Baz Qux&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">email&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;bazqux@example.com&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">url&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;https://example.com/bazqux&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>数组可以跨行。&lt;br>
+数组的最后一个值后面可以有终逗号（也称为尾逗号）。&lt;br>
+值、逗号、结束括号前可以存在任意数量的换行和注释。&lt;br>
+数组值和逗号之间的缩进被作为空白对待而被忽略。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">integers2&lt;/span> = [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">integers3&lt;/span> = [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#75715e"># 这是可以的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="表">表&lt;/h3>
+&lt;p>表（也被称为哈希表或字典）是键值对的集合。&lt;br>
+它们由表头定义，连同方括号作为单独的行出现。&lt;br>
+看得出表头不同于数组，因为数组只有值。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">table&lt;/span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在它下方，直至下一个表头或文件结束，都是这个表的键值对。&lt;br>
+表不保证保持键值对的指定顺序。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">table-1&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key1&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;some string&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key2&lt;/span> = &lt;span style="color:#ae81ff">123&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">table-2&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key1&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;another string&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">key2&lt;/span> = &lt;span style="color:#ae81ff">456&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>表名的规则与键名相同（见前文&lt;a href="#%E9%94%AE%E5%90%8D">键名&lt;/a>定义）。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">dog&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;tater.man&amp;#34;&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">type&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;pug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>等价于 JSON 的如下结构：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{ &lt;span style="color:#f92672">&amp;#34;dog&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;tater.man&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;type&amp;#34;&lt;/span>: { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;pug&amp;#34;&lt;/span> } } } }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>键名周围的空格会被忽略。&lt;br>
+然而，最佳实践还是不要有任何多余的空白。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">b&lt;/span>.&lt;span style="color:#a6e22e">c&lt;/span>] &lt;span style="color:#75715e"># 这是最佳实践&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ &lt;span style="color:#a6e22e">d&lt;/span>.&lt;span style="color:#a6e22e">e&lt;/span>.&lt;span style="color:#a6e22e">f&lt;/span> ] &lt;span style="color:#75715e"># 等同于 [d.e.f]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ &lt;span style="color:#a6e22e">g&lt;/span> . &lt;span style="color:#a6e22e">h&lt;/span> . &lt;span style="color:#a6e22e">i&lt;/span> ] &lt;span style="color:#75715e"># 等同于 [g.h.i]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ &lt;span style="color:#a6e22e">j&lt;/span> . &lt;span style="color:#e6db74">&amp;#34;ʞ&amp;#34;&lt;/span> . &lt;span style="color:#e6db74">&amp;#39;l&amp;#39;&lt;/span> ] &lt;span style="color:#75715e"># 等同于 [j.&amp;#34;ʞ&amp;#34;.&amp;#39;l&amp;#39;]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>缩进被作为空白对待而被忽略。&lt;/p>
+&lt;p>你不必层层完整地写出你不想写的所有途径的父表。&lt;br>
+TOML 知道该怎么办。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># [x] 你&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># [x.y] 不&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># [x.y.z] 需要这些&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">x&lt;/span>.&lt;span style="color:#a6e22e">y&lt;/span>.&lt;span style="color:#a6e22e">z&lt;/span>.&lt;span style="color:#a6e22e">w&lt;/span>] &lt;span style="color:#75715e"># 来让这生效&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">x&lt;/span>] &lt;span style="color:#75715e"># 后置父表定义是可以的&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>空表是允许的，只要里面没有键值对就行了。&lt;/p>
+&lt;p>类似于键名，你不能重复定义一个表。&lt;br>
+这样做是非法的。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 不要这样做
+[fruit]
+apple = &amp;#34;红&amp;#34;
+[fruit]
+orange = &amp;#34;橙&amp;#34;
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code># 也不要这样做
+[fruit]
+apple = &amp;#34;红&amp;#34;
+[fruit.apple]
+texture = &amp;#34;光滑&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>不鼓励无序地定义表。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 有效但不鼓励&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">apple&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">animal&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">orange&lt;/span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 推荐&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">apple&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">orange&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">animal&lt;/span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>顶层表，又被称为根表，于文档开始处开始并在第一个表头（或文件结束处）前结束。&lt;br>
+不同于其它表，它没有名字且无法后置。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 顶层表开始。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Fido&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">breed&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;pug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 顶层表结束。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">owner&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Regina Dogman&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">member_since&lt;/span> = &lt;span style="color:#ae81ff">1999-08-04&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>点分隔键为最后一个键名前的每个键名创建并定义一个表，倘若这些表尚未被创建的话。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;red&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 定义一个名为 fruit 的表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 定义一个名为 fruit.apple 的表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">taste&lt;/span>.&lt;span style="color:#a6e22e">sweet&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 定义一个名为 fruit.apple.taste 的表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># fruit 和 fruit.apple 已经创建过了&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>由于表不能定义多于一次，不允许使用 &lt;code>[table]&lt;/code> 头重定义这样的表。&lt;br>
+同样地，使用点分隔键来重定义已经以 &lt;code>[table]&lt;/code> 形式定义过的表也是不允许的。&lt;br>
+不过，&lt;code>[table]&lt;/code> 形式可以被用来定义通过点分隔键定义的表中的子表。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;红&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">taste&lt;/span>.&lt;span style="color:#a6e22e">sweet&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># [fruit.apple] # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># [fruit.apple.taste] # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruit&lt;/span>.&lt;span style="color:#a6e22e">apple&lt;/span>.&lt;span style="color:#a6e22e">texture&lt;/span>] &lt;span style="color:#75715e"># 你可以添加子表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">smooth&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="内联表">内联表&lt;/h3>
+&lt;p>内联表提供了一种更为紧凑的语法来表示表。&lt;br>
+对于否则就很啰嗦的成组数据，这尤其有用。&lt;br>
+内联表被完整地定义在花括号之中：&lt;code>{&lt;/code> 和 &lt;code>}&lt;/code>。&lt;br>
+括号中，可以出现零或更多个以逗号分隔的键值对。&lt;br>
+键值对采取与标准表中的键值对相同的形式。&lt;br>
+什么类型的值都可以，包括内联表。&lt;/p>
+&lt;p>内联表得出现在同一行内。&lt;br>
+内联表中，最后一对键值对后不允许终逗号（也称为尾逗号）。&lt;br>
+不允许花括号中出现任何换行，除非在值中它们合法。&lt;br>
+即便如此，也强烈不建议把一个内联表搞成纵跨多行的样子。&lt;br>
+如果你发现自己真的需要，那意味着你应该使用标准表。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = { &lt;span style="color:#a6e22e">first&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Tom&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">last&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Preston-Werner&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">point&lt;/span> = { &lt;span style="color:#a6e22e">x&lt;/span> = &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span> = &lt;span style="color:#ae81ff">2&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">animal&lt;/span> = { &lt;span style="color:#a6e22e">type&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;pug&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述内联表等同于下面的标准表定义：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">name&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">first&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Tom&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">last&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Preston-Werner&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">point&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">x&lt;/span> = &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">y&lt;/span> = &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">animal&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">type&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;pug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>内联表是独立自足的，在内部定义全部的键与子表。&lt;br>
+不能在括号以外的地方，再添加键与子表。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">product&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">type&lt;/span> = { &lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Nail&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># type.edible = false # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>类似地，内联表不能被用于向一个已定义的表添加键或子表。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">product&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">type&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Nail&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># type = { edible = false } # 非法&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="表数组">表数组&lt;/h3>
+&lt;p>最后一个还没讲到的语法允许你写表数组。&lt;br>
+这可以通过把表名写在双方括号里的表头来表示。&lt;br>
+表头的第一例定义了这个数组及其首个表元素，而后续的每个则在该数组中创建并定义一个新的表元素。&lt;br>
+这些表按出现顺序插入该数组。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">products&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Hammer&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sku&lt;/span> = &lt;span style="color:#ae81ff">738594937&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">products&lt;/span>]] &lt;span style="color:#75715e"># 数组里的空表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">products&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;Nail&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">sku&lt;/span> = &lt;span style="color:#ae81ff">284758393&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;gray&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>等价于 JSON 的如下结构。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;products&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Hammer&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;sku&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">738594937&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Nail&amp;#34;&lt;/span>, &lt;span style="color:#f92672">&amp;#34;sku&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">284758393&lt;/span>, &lt;span style="color:#f92672">&amp;#34;color&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;gray&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>任何对表数组的引用都指向该数组里最近定义的表元素。&lt;br>
+这允许你在最近的表内定义子表，甚至子表数组。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">fruits&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;apple&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">fruits&lt;/span>.&lt;span style="color:#a6e22e">physical&lt;/span>] &lt;span style="color:#75715e"># 子表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">color&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;red&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">shape&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;round&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">fruits&lt;/span>.&lt;span style="color:#a6e22e">varieties&lt;/span>]] &lt;span style="color:#75715e"># 嵌套表数组&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;red delicious&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">fruits&lt;/span>.&lt;span style="color:#a6e22e">varieties&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;granny smith&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">fruits&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;banana&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[[&lt;span style="color:#a6e22e">fruits&lt;/span>.&lt;span style="color:#a6e22e">varieties&lt;/span>]]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">name&lt;/span> = &lt;span style="color:#e6db74">&amp;#34;plantain&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述 TOML 等价于 JSON 的如下结构。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;fruits&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;apple&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;physical&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;color&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;red&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;shape&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;round&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;varieties&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;red delicious&amp;#34;&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;granny smith&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;banana&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;varieties&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;plantain&amp;#34;&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果一个表或表数组的父级是一个数组元素，该元素必须在定义子级前先定义。&lt;br>
+顺序颠倒的行为，必须在解析时报错。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 非法的 TOML 文档
+[fruit.physical] # 子表，但它应该隶属于哪个父元素？
+color = &amp;#34;red&amp;#34;
+shape = &amp;#34;round&amp;#34;
+[[fruit]] # 解析器必须在发现“fruit”是数组而非表时抛出错误
+name = &amp;#34;apple&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>若试图向一个静态定义的数组追加内容，即便数组尚且为空，也必须在解析时报错。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 非法的 TOML 文档
+fruits = []
+[[fruits]] # 不允许
+&lt;/code>&lt;/pre>&lt;p>若试图用已经确定为数组的名称定义表，必须在解析时报错。&lt;br>
+将数组重定义为普通表的行为，也必须在解析时报错。&lt;/p>
+&lt;pre tabindex="0">&lt;code># 非法的 TOML 文档
+[[fruits]]
+name = &amp;#34;apple&amp;#34;
+[[fruits.varieties]]
+name = &amp;#34;red delicious&amp;#34;
+# 非法：该表与之前的表数组相冲突
+[fruits.varieties]
+name = &amp;#34;granny smith&amp;#34;
+[fruits.physical]
+color = &amp;#34;red&amp;#34;
+shape = &amp;#34;round&amp;#34;
+# 非法：该表数组与之前的表相冲突
+[[fruits.physical]]
+color = &amp;#34;green&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>你也可以适当使用内联表：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">points&lt;/span> = [ { &lt;span style="color:#a6e22e">x&lt;/span> = &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span> = &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#a6e22e">z&lt;/span> = &lt;span style="color:#ae81ff">3&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#a6e22e">x&lt;/span> = &lt;span style="color:#ae81ff">7&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span> = &lt;span style="color:#ae81ff">8&lt;/span>, &lt;span style="color:#a6e22e">z&lt;/span> = &lt;span style="color:#ae81ff">9&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> { &lt;span style="color:#a6e22e">x&lt;/span> = &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span> = &lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#a6e22e">z&lt;/span> = &lt;span style="color:#ae81ff">8&lt;/span> } ]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="文件扩展名">文件扩展名&lt;/h3>
+&lt;p>TOML 文件应当使用 &lt;code>.toml&lt;/code> 扩展名。&lt;/p>
+&lt;h3 id="mime-类型">MIME 类型&lt;/h3>
+&lt;p>在互联网上传输 TOML 文件时，恰当的 MIME 类型是 &lt;code>application/toml&lt;/code>。&lt;/p>
+&lt;h3 id="abnf-语法">ABNF 语法&lt;/h3>
+&lt;p>TOML 语法的严谨说明，由一个 &lt;a href="https://github.com/toml-lang/toml/blob/1.0.0/toml.abnf">ABNF 文件&lt;/a>另行提供。&lt;/p></description></item><item><title>Rust 学习指南</title><link>https://blog.baicai.me/article/2021/learn_rust/</link><pubDate>Sat, 05 Jun 2021 02:16:24 +0800</pubDate><guid>https://blog.baicai.me/article/2021/learn_rust/</guid><description>&lt;h2 id="了解">了解&lt;/h2>
+&lt;p>一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。
+这时，建议看 Rust 官网 &lt;a href="https://rust-lang.org">https://rust-lang.org&lt;/a>&lt;/p>
+&lt;h2 id="rust-官方文档">Rust 官方文档&lt;/h2>
+&lt;p>Rust 语言的学习或参考文档大都列在 &lt;a href="https://www.rust-lang.org/learn">&lt;strong>Rust 学习指引页&lt;/strong>&lt;/a> 和 &lt;a href="https://doc.rust-lang.org/">&lt;strong>Rust 官方文档主页&lt;/strong>&lt;/a> 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.rust-lang.org/book/">《Rust 程序设计语言》（The Rust Programming Language）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/book">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/stable/rust-by-example/">《通过例子学 Rust》（Rust by Example）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust-by-example">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/edition-guide/index.html">Rust 版本指南（The Edition Guide）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/edition-guide">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/cargo/index.html">Cargo 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/cargo/tree/master/src/doc/src">GitHub 仓库源文件&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/rustdoc/index.html">rustdoc 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/rustdoc">GitHub 仓库源文件&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/rustc/index.html">rustc 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/rustc">GitHub 仓库源文件&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/error-index.html">Rust 编译错误索引&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/blob/master/src/librustc_mir/error_codes.rs">GitHub 仓库源代码&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/reference/index.html">《Rust 语言参考》（The Rust Reference）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/reference">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/nomicon/">The Rustonomicon&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/nomicon">GitHub 仓库&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>还有其他更多官方或其他非官方相关的文档：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://rust-lang-nursery.github.io/cli-wg/">使用 Rust 编写命令行应用&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/cli-wg">GitHub 仓库地址&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rustwasm.github.io/docs/book/">Rust 和 WebAssembly 教程（WebAssembly Book）&lt;/a>，对应 &lt;a href="https://github.com/rustwasm/book">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-embedded.github.io/book/">嵌入式 Rust 教程&lt;/a>，对应 &lt;a href="https://github.com/rust-embedded/book">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-lang-nursery.github.io/rust-cookbook/">A Rust Cookbook&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/rust-cookbook">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://doc.rust-lang.org/nightly/unstable-book/">The Unstable Book&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/unstable-book">GitHub 仓库源代码&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-lang.github.io/rustc-guide/">rustc 指引——Rust 编译器的工作原理及如何参与贡献（rustc-guide）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rustc-guide">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rust-lang/rustup.rs">rustup 命令说明&lt;/a>，本翻译项目会将 &lt;code>rustup&lt;/code> 的相关说明翻译成中文&lt;/li>
+&lt;li>&lt;a href="https://rust-lang.github.io/rfcs/">Rust RFC——Rust 发展相关制定的文稿&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rfcs">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-lang-nursery.github.io/mdBook/">mdBook 使用手册&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/mdBook">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-lang-nursery.github.io/api-guidelines/">Rust API 指导原则&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/api-guidelines">GitHub 仓库&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rust-lang.github.io/async-book/">async-book&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/async-book">GitHub 仓库&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>上述文档的源文件有些是放在 &lt;a href="https://github.com/rust-lang/rust">rust&lt;/a> 和 &lt;a href="https://github.com/rust-lang/cargo">cargo&lt;/a> 的仓库的子目录中：&lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc">Rust 文档&lt;/a> 和 &lt;a href="https://github.com/rust-lang/cargo/tree/master/src/doc">cargo 文档&lt;/a>。&lt;/p>
+&lt;h2 id="rust-资源">Rust 资源&lt;/h2>
+&lt;p>Rust 相关的中文资源，包括网站，或者国内的 Rust 的文章或书籍。&lt;/p>
+&lt;h3 id="rust-相关的中文网站">Rust 相关的中文网站&lt;/h3>
+&lt;blockquote>
+&lt;p>以下列出目前搜集到的 Rust 中文网站：&lt;/p>
+&lt;/blockquote>
+&lt;p>Rust 语言中文社区：https://rust.cc/&lt;/p>
+&lt;p>Rust Wiki 网：https://rustwiki.org/&lt;/p>
+&lt;h2 id="rust-语言术语中英文对照表">Rust 语言术语中英文对照表&lt;/h2>
+&lt;p>👉 部分来自 &lt;a href="https://github.com/rust-lang-cn/english-chinese-glossary-of-rust">Rust 语言术语中英文对照表&lt;/a>仓库，收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在原仓库指出或修改错误。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>English 英文&lt;/th>
+&lt;th>Chinese 中文&lt;/th>
+&lt;th>Note 备注&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>A&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Abstract Syntax Tree&lt;/td>
+&lt;td>抽象语法树&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ABI&lt;/td>
+&lt;td>应用程序二进制接口&lt;/td>
+&lt;td>Application Binary Interface 缩写&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>accumulator&lt;/td>
+&lt;td>累加器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>accumulator variable&lt;/td>
+&lt;td>累加器变量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ahead-of-time compiled&lt;/td>
+&lt;td>预编译&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ahead-of-time compiled language&lt;/td>
+&lt;td>预编译语言&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>alias&lt;/td>
+&lt;td>别名&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>aliasing&lt;/td>
+&lt;td>别名使用&lt;/td>
+&lt;td>参见 &lt;a href="https://en.wikipedia.org/wiki/Pointer_aliasing">Wikipedia&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>angle brackets&lt;/td>
+&lt;td>尖括号，“&amp;lt;”和“&amp;gt;”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>annotate&lt;/td>
+&lt;td>标注，注明（动词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>annotation&lt;/td>
+&lt;td>标注，注明（名词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ARC&lt;/td>
+&lt;td>原子引用计数器&lt;/td>
+&lt;td>Atomic Referecne Counter&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>anonymity&lt;/td>
+&lt;td>匿名&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>argument&lt;/td>
+&lt;td>参数，实参，实际参数&lt;/td>
+&lt;td>不严格区分的话， argument（参数）和 &lt;!-- raw HTML omitted --> parameter（参量）可以互换地使用&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>argument type&lt;/td>
+&lt;td>参数类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>assignment&lt;/td>
+&lt;td>赋值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>associated functions&lt;/td>
+&lt;td>关联函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>associated items&lt;/td>
+&lt;td>关联项&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>associated types&lt;/td>
+&lt;td>关联类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>asterisk&lt;/td>
+&lt;td>星号（*)&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>atomic&lt;/td>
+&lt;td>原子的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>attribute&lt;/td>
+&lt;td>属性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>automated building&lt;/td>
+&lt;td>自动构建&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>automated test&lt;/td>
+&lt;td>自动测试，自动化测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>B&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>baroque macro&lt;/td>
+&lt;td>巴洛克宏&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>benchmark&lt;/td>
+&lt;td>基准&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>binary&lt;/td>
+&lt;td>二进制的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>binary executable&lt;/td>
+&lt;td>二进制的可执行文件&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>bind&lt;/td>
+&lt;td>绑定&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>block&lt;/td>
+&lt;td>语句块，代码块&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>boolean&lt;/td>
+&lt;td>布尔型，布尔值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>borrow check&lt;/td>
+&lt;td>借用检查&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>borrower&lt;/td>
+&lt;td>借用者，借入者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>borrowing&lt;/td>
+&lt;td>借用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>bound&lt;/td>
+&lt;td>约束，限定，限制&lt;/td>
+&lt;td>此词和 constraint 意思相近，&lt;!-- raw HTML omitted -->constraint 在 C# 语言中翻译成“约束”&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>box&lt;/td>
+&lt;td>箱子，盒子，装箱类型&lt;/td>
+&lt;td>一般不译，作动词时翻译成“装箱”，&lt;!-- raw HTML omitted -->具有所有权的智能指针&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>boxed&lt;/td>
+&lt;td>装箱，装包&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>boxing&lt;/td>
+&lt;td>装箱，装包&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>brace&lt;/td>
+&lt;td>大括号，“{”或“}”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>buffer&lt;/td>
+&lt;td>缓冲，缓冲区，缓冲器，缓存&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>build&lt;/td>
+&lt;td>构建&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>builder pattern&lt;/td>
+&lt;td>创建者模式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>C&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>call&lt;/td>
+&lt;td>调用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>caller&lt;/td>
+&lt;td>调用者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>capacity&lt;/td>
+&lt;td>容器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>capture&lt;/td>
+&lt;td>捕获&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>cargo&lt;/td>
+&lt;td>(Rust 包管理器，不译)&lt;/td>
+&lt;td>该词作名词时意思是“货物”，&lt;!-- raw HTML omitted -->作动词时意思是“装载货物”&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>cargo-fy&lt;/td>
+&lt;td>Cargo 化，使用 Cargo 创建项目&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>case analysis&lt;/td>
+&lt;td>事例分析&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>cast&lt;/td>
+&lt;td>类型转换，转型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>casting&lt;/td>
+&lt;td>类型转换&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>chaining method call&lt;/td>
+&lt;td>链式方法调用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>channel&lt;/td>
+&lt;td>信道，通道&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>closure&lt;/td>
+&lt;td>闭包&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>coercion&lt;/td>
+&lt;td>强制类型转换，强制转换&lt;/td>
+&lt;td>coercion 原意是“强制，胁迫”&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>collection&lt;/td>
+&lt;td>集合&lt;/td>
+&lt;td>参见 &lt;a href="https://zh.wikipedia.org/wiki/%E9%9B%86%E5%90%88_(%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6)">Wikipedia&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>combinator&lt;/td>
+&lt;td>组合算子，组合器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>comma&lt;/td>
+&lt;td>逗号，“,”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>command&lt;/td>
+&lt;td>命令&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>command line&lt;/td>
+&lt;td>命令行&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>comment&lt;/td>
+&lt;td>注释&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compile&lt;/td>
+&lt;td>编译（动词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compile time&lt;/td>
+&lt;td>编译期，编译期间，编译时&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compilation&lt;/td>
+&lt;td>编译（名词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compilation unit&lt;/td>
+&lt;td>编译单元&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compiler&lt;/td>
+&lt;td>编译器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compiler intrinsics&lt;/td>
+&lt;td>编译器固有功能&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>compound&lt;/td>
+&lt;td>复合（类型，数据）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>concurrency&lt;/td>
+&lt;td>并发&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>conditional compilation&lt;/td>
+&lt;td>条件编译&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>configuration&lt;/td>
+&lt;td>配置&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>constructor&lt;/td>
+&lt;td>构造器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>consumer&lt;/td>
+&lt;td>消费者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>container&lt;/td>
+&lt;td>容器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>container type&lt;/td>
+&lt;td>容器类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>convert&lt;/td>
+&lt;td>转换，转化，转&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>copy&lt;/td>
+&lt;td>复制，拷贝&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>crate&lt;/td>
+&lt;td>包，包装箱，装包&lt;/td>
+&lt;td>一般不译，crate 是 Rust 的基本编译单元&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>curly braces&lt;/td>
+&lt;td>大括号，包含“{”和“}”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>custom type&lt;/td>
+&lt;td>自定义类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>D&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dangling pointer&lt;/td>
+&lt;td>悬垂指针&lt;/td>
+&lt;td>use after free 在释放后使用&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>data race&lt;/td>
+&lt;td>数据竞争&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dead code&lt;/td>
+&lt;td>死代码，无效代码，不可达代码&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>deallocate&lt;/td>
+&lt;td>释放，重新分配&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>declare&lt;/td>
+&lt;td>声明&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>deep copy&lt;/td>
+&lt;td>深拷贝，深复制&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dependency&lt;/td>
+&lt;td>依赖&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>deref coercions&lt;/td>
+&lt;td>强制多态&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dereference&lt;/td>
+&lt;td>解引用&lt;/td>
+&lt;td>Rust 文章中有时简写为 Deref&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>derive&lt;/td>
+&lt;td>派生&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>designator&lt;/td>
+&lt;td>指示符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>destruction&lt;/td>
+&lt;td>销毁，毁灭&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>destructor&lt;/td>
+&lt;td>析构器，析构函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>destructure&lt;/td>
+&lt;td>解构&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>destructuring&lt;/td>
+&lt;td>解构，解构赋值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>desugar&lt;/td>
+&lt;td>脱糖&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>diverge function&lt;/td>
+&lt;td>发散函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>device drive&lt;/td>
+&lt;td>设备驱动&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>directory&lt;/td>
+&lt;td>目录&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dispatch&lt;/td>
+&lt;td>分发&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>diverging functions&lt;/td>
+&lt;td>发散函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>documentation&lt;/td>
+&lt;td>文档&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dot operator&lt;/td>
+&lt;td>点运算符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>DST&lt;/td>
+&lt;td>动态大小类型&lt;/td>
+&lt;td>dynamic sized type，一般不译，&lt;!-- raw HTML omitted -->使用英文缩写形式&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dynamic language&lt;/td>
+&lt;td>动态类型语言&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>dynamic trait type&lt;/td>
+&lt;td>动态特质类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>E&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>enumeration&lt;/td>
+&lt;td>枚举&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>encapsulation&lt;/td>
+&lt;td>封装&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>equality test&lt;/td>
+&lt;td>相等测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>elision&lt;/td>
+&lt;td>省略&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>exhaustiveness checking&lt;/td>
+&lt;td>穷尽性检查，无遗漏检查&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>expression&lt;/td>
+&lt;td>表达式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>expression-oriented language&lt;/td>
+&lt;td>面向表达式的语言&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>explicit&lt;/td>
+&lt;td>显式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>explicit discriminator&lt;/td>
+&lt;td>显式的辨别值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>explicit type conversion&lt;/td>
+&lt;td>显式类型转换&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>extension&lt;/td>
+&lt;td>扩展名&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>extern&lt;/td>
+&lt;td>外，外部&lt;/td>
+&lt;td>作关键字时不译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>F&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>fat pointer&lt;/td>
+&lt;td>胖指针&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>feature gate&lt;/td>
+&lt;td>功能开关&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>field&lt;/td>
+&lt;td>字段&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>field-level mutability&lt;/td>
+&lt;td>字段级别可变性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>file&lt;/td>
+&lt;td>文件&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>fmt&lt;/td>
+&lt;td>格式化，是 format 的缩写&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>formatter&lt;/td>
+&lt;td>格式化程序，格式化工具，格式器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>floating-point number&lt;/td>
+&lt;td>浮点数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>flow control&lt;/td>
+&lt;td>流程控制&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Foreign Function Interface（FFI）&lt;/td>
+&lt;td>外部语言函数接口&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>fragment specifier&lt;/td>
+&lt;td>片段分类符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>free variables&lt;/td>
+&lt;td>自由变量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>freeze&lt;/td>
+&lt;td>冻结&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>function&lt;/td>
+&lt;td>函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>function declaration&lt;/td>
+&lt;td>函数声明&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>functional&lt;/td>
+&lt;td>函数式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>G&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>garbage collector&lt;/td>
+&lt;td>垃圾回收&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>generalize&lt;/td>
+&lt;td>泛化，泛型化&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>generator&lt;/td>
+&lt;td>生成器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>generic&lt;/td>
+&lt;td>泛型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>generic type&lt;/td>
+&lt;td>泛型类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>growable&lt;/td>
+&lt;td>可增长的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>guard&lt;/td>
+&lt;td>守卫&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>H&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>handle error&lt;/td>
+&lt;td>句柄错误&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hash&lt;/td>
+&lt;td>哈希，哈希值，散列&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hash map&lt;/td>
+&lt;td>散列映射，哈希表&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>heap&lt;/td>
+&lt;td>堆&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hierarchy&lt;/td>
+&lt;td>层次，分层，层次结构&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>higher rank lifetime&lt;/td>
+&lt;td>高阶生命周期&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>higher rank trait bound&lt;/td>
+&lt;td>高阶特质约束&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>higher tank type&lt;/td>
+&lt;td>高阶类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hygiene&lt;/td>
+&lt;td>卫生&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>hygienic macro system&lt;/td>
+&lt;td>卫生宏系统&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>I&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ICE&lt;/td>
+&lt;td>编译内部错误&lt;/td>
+&lt;td>internal comppiler error 的缩写&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>immutable&lt;/td>
+&lt;td>不可变的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>implement&lt;/td>
+&lt;td>实现&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>implementor&lt;/td>
+&lt;td>实现者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>implicit&lt;/td>
+&lt;td>隐式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>implicit discriminator&lt;/td>
+&lt;td>隐式的辨别值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>implicit type conversion&lt;/td>
+&lt;td>隐式类型转换&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>import&lt;/td>
+&lt;td>导入&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>in assignment&lt;/td>
+&lt;td>在赋值（语句）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>index&lt;/td>
+&lt;td>索引&lt;/td>
+&lt;td>英语复数形式：indices&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>infer&lt;/td>
+&lt;td>推导（动词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>inference&lt;/td>
+&lt;td>推导（名词）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>inherited mutability&lt;/td>
+&lt;td>承袭可变性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>inheritance&lt;/td>
+&lt;td>继承&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>integrated development &lt;!-- raw HTML omitted -->environment(IDE)&lt;/td>
+&lt;td>集成开发环境&lt;/td>
+&lt;td>中文著作中通常直接写成 IDE&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>integration-style test&lt;/td>
+&lt;td>集成测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>interior mutability&lt;/td>
+&lt;td>内部可变性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>installer&lt;/td>
+&lt;td>安装程序，安装器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>instance&lt;/td>
+&lt;td>实例&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>instance method&lt;/td>
+&lt;td>实例方法&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>integer&lt;/td>
+&lt;td>整型，整数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>interact&lt;/td>
+&lt;td>相互作用，相互影响&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>interior mutability&lt;/td>
+&lt;td>内部可变性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>intrinsic&lt;/td>
+&lt;td>固有的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>invoke&lt;/td>
+&lt;td>调用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>item&lt;/td>
+&lt;td>项，条目，项目&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iterate&lt;/td>
+&lt;td>重复&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iteration&lt;/td>
+&lt;td>迭代&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iterator&lt;/td>
+&lt;td>迭代器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iterator adaptors&lt;/td>
+&lt;td>迭代器适配器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iterator invalidation&lt;/td>
+&lt;td>迭代器失效&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>L&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>LHS&lt;/td>
+&lt;td>左操作数&lt;/td>
+&lt;td>left-hand side 的非正式缩写，&lt;!-- raw HTML omitted -->与 RHS 相对&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>lender&lt;/td>
+&lt;td>借出者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>library&lt;/td>
+&lt;td>库&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>lifetime&lt;/td>
+&lt;td>生存时间，寿命，生命周期&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>lifetime elision&lt;/td>
+&lt;td>生命周期省略&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>link&lt;/td>
+&lt;td>链接&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>linked-list&lt;/td>
+&lt;td>链表&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>lint&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>lint 英文本义是“纱布，绒毛”，此词在&lt;!-- raw HTML omitted -->计算机领域中表示程序代码中可疑和&lt;!-- raw HTML omitted -->不具结构性的片段，参见 &lt;a href="https://en.wikipedia.org/wiki/Lint_%28software%29">Wikipedia&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>list&lt;/td>
+&lt;td>列表&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>listener&lt;/td>
+&lt;td>监听器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>literal&lt;/td>
+&lt;td>数据，常量数据，字面值，字面量，&lt;!-- raw HTML omitted -->字面常量，字面上的&lt;/td>
+&lt;td>英文意思：字面意义的（内容）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>LLVM&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>Low Level Virtual Machine 的缩写，&lt;!-- raw HTML omitted -->是构建编译器的系统&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>loop&lt;/td>
+&lt;td>循环&lt;/td>
+&lt;td>作关键字时不译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>low-level code&lt;/td>
+&lt;td>底层代码&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>low-level language&lt;/td>
+&lt;td>底层语言&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>l-value&lt;/td>
+&lt;td>左值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>M&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>main function&lt;/td>
+&lt;td>main 函数，主函数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>macro&lt;/td>
+&lt;td>宏&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>map&lt;/td>
+&lt;td>映射&lt;/td>
+&lt;td>一般不译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>match guard&lt;/td>
+&lt;td>匹配守卫&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>memory&lt;/td>
+&lt;td>内存&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>memory leak&lt;/td>
+&lt;td>内存泄露&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>memory safe&lt;/td>
+&lt;td>内存安全&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>meta&lt;/td>
+&lt;td>原则，元&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>metadata&lt;/td>
+&lt;td>元数据&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>metaprogramming&lt;/td>
+&lt;td>元编程&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>metavariable&lt;/td>
+&lt;td>元变量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>method call syntax&lt;/td>
+&lt;td>方法调用语法&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>method chaining&lt;/td>
+&lt;td>方法链&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>method definition&lt;/td>
+&lt;td>方法定义&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>modifier&lt;/td>
+&lt;td>修饰符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>module&lt;/td>
+&lt;td>模块&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>monomorphization&lt;/td>
+&lt;td>单态&lt;/td>
+&lt;td>mono: one, morph: form&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>move&lt;/td>
+&lt;td>移动，转移&lt;/td>
+&lt;td>按照 Rust 所规定的内容，&lt;!-- raw HTML omitted -->英语单词 transfer 的意思&lt;!-- raw HTML omitted -->比 move 更贴合实际描述&lt;!-- raw HTML omitted -->参考：&lt;a href="http://rustwiki.org/rust-by-example/scope/move.html">Rust by Example&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>move semantics&lt;/td>
+&lt;td>移动语义&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>mutability&lt;/td>
+&lt;td>可变性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>mutable&lt;/td>
+&lt;td>可变&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>mutable reference&lt;/td>
+&lt;td>可变引用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>multiple bounds&lt;/td>
+&lt;td>多重约束&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>mutiple patterns&lt;/td>
+&lt;td>多重模式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>N&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>nest&lt;/td>
+&lt;td>嵌套&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Nightly Rust&lt;/td>
+&lt;td>Rust 开发版&lt;/td>
+&lt;td>nightly本意是“每夜，每天晚上”，&lt;!-- raw HTML omitted -->指代码每天都更新&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>NLL&lt;/td>
+&lt;td>非词法生命周期&lt;/td>
+&lt;td>non lexical lifetime 的缩写，&lt;!-- raw HTML omitted -->一般不译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>non-copy type&lt;/td>
+&lt;td>非复制类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>non-generic&lt;/td>
+&lt;td>非泛型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>no-op&lt;/td>
+&lt;td>空操作，空运算&lt;/td>
+&lt;td>(此词出现在类型转换章节中）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>non-commutative&lt;/td>
+&lt;td>非交换的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>non-scalar cast&lt;/td>
+&lt;td>非标量转换&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>notation&lt;/td>
+&lt;td>符号，记号&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>numeric&lt;/td>
+&lt;td>数值，数字&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>O&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>optimization&lt;/td>
+&lt;td>优化&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>out-of-bounds accessing&lt;/td>
+&lt;td>越界访问&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>orphan rule&lt;/td>
+&lt;td>孤儿规则&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>overflow&lt;/td>
+&lt;td>溢出，越界&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>own&lt;/td>
+&lt;td>占有，拥有&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>owner&lt;/td>
+&lt;td>所有者，拥有者&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ownership&lt;/td>
+&lt;td>所有权&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>P&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>package manager&lt;/td>
+&lt;td>包管理器，软件包管理器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>panic&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>此单词直接翻译是“恐慌”，&lt;!-- raw HTML omitted -->在 Rust 中用于不可恢复的错误处理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parameter&lt;/td>
+&lt;td>参量，形参，形式参量&lt;/td>
+&lt;td>不严格区分的话， argument（参数）和 &lt;!-- raw HTML omitted --> parameter（参量）可以互换地使用&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parametric polymorphism&lt;/td>
+&lt;td>参数多态&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parent scope&lt;/td>
+&lt;td>父级作用域&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parentheses&lt;/td>
+&lt;td>小括号，包括“(”和“)”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parse&lt;/td>
+&lt;td>分析，解析&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>parser&lt;/td>
+&lt;td>（语法）分析器，解析器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>pattern&lt;/td>
+&lt;td>模式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>pattern match&lt;/td>
+&lt;td>模式匹配&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>phantom type&lt;/td>
+&lt;td>虚类型，虚位类型&lt;/td>
+&lt;td>phantom 相关的专有名词：&lt;!-- raw HTML omitted -->phantom bug 幻影指令&lt;!-- raw HTML omitted -->phantom power 幻象电源&lt;!-- raw HTML omitted -->参见：&lt;a href="https://wiki.haskell.org/Phantom_type">Haskell&lt;/a>、&lt;a href="https://en.wikibooks.org/wiki/Haskell/Phantom_types">Haskell/Phantom_type&lt;/a>、&lt;!-- raw HTML omitted -->&lt;a href="http://rustwiki.org/rust-by-example/generics/phantom.html">Rust/Phantom&lt;/a>、&lt;a href="https://doc.rust-lang.org/std/marker/struct.PhantomData.html">stdlib/PhantomData&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>platform&lt;/td>
+&lt;td>平台&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>polymorphism&lt;/td>
+&lt;td>多态&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>powershell&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>Windows 系统的一种命令行外壳程序&lt;!-- raw HTML omitted -->和脚本环境&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>possibility of absence&lt;/td>
+&lt;td>不存在的可能性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>precede&lt;/td>
+&lt;td>预先？，在&amp;hellip;发生（或出现）&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>prelude&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>预先导入模块，英文本意：序曲，前奏&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>primitive types&lt;/td>
+&lt;td>原生类型，基本类型，简单类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>print&lt;/td>
+&lt;td>打印&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>process&lt;/td>
+&lt;td>进程&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>procedural macros&lt;/td>
+&lt;td>过程宏，程序宏&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>project&lt;/td>
+&lt;td>项目，工程&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>prototype&lt;/td>
+&lt;td>原型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>R&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>race condition&lt;/td>
+&lt;td>竞态条件&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RAII&lt;/td>
+&lt;td>资源获取即初始化（一般不译）&lt;/td>
+&lt;td>resource acquisition is initialization 的缩写&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>range&lt;/td>
+&lt;td>区间，范围&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>range expression&lt;/td>
+&lt;td>区间表达式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>raw identifier&lt;/td>
+&lt;td>原始标识符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>raw pointer&lt;/td>
+&lt;td>原始指针，裸指针&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RC&lt;/td>
+&lt;td>引用计数&lt;/td>
+&lt;td>reference counted&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Reader&lt;/td>
+&lt;td>读取器&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>recursive macro&lt;/td>
+&lt;td>递归宏&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>reference&lt;/td>
+&lt;td>引用&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>reference cycle&lt;/td>
+&lt;td>引用循环&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>release&lt;/td>
+&lt;td>发布&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>resource&lt;/td>
+&lt;td>资源&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>resource leak&lt;/td>
+&lt;td>资源泄露&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RHS&lt;/td>
+&lt;td>右操作数&lt;/td>
+&lt;td>right-hand side 的非正式缩写，&lt;!-- raw HTML omitted -->与 LHS 相对&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>root directory&lt;/td>
+&lt;td>根目录&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>runtime&lt;/td>
+&lt;td>运行时&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>runtime behavior&lt;/td>
+&lt;td>运行时行为&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>runtime overhead&lt;/td>
+&lt;td>运行时开销&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Rust&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>一种编程语言&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Rustacean&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>编写 Rust 的程序员或爱好者的通称&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>rustc&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>Rust 语言编译器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>r-value&lt;/td>
+&lt;td>右值&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>S&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>scalar&lt;/td>
+&lt;td>标量，数量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>schedule&lt;/td>
+&lt;td>调度&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>scope&lt;/td>
+&lt;td>作用域&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>screen&lt;/td>
+&lt;td>屏幕&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>script&lt;/td>
+&lt;td>脚本&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>semicolon&lt;/td>
+&lt;td>分号，“;”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>self&lt;/td>
+&lt;td>自身，作关键字时不译&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>shadow&lt;/td>
+&lt;td>遮蔽，隐蔽，隐藏，覆盖&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>shallow copy&lt;/td>
+&lt;td>浅拷贝，浅复制&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>signature&lt;/td>
+&lt;td>标记&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>slice&lt;/td>
+&lt;td>切片&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>snake case&lt;/td>
+&lt;td>蛇形命名&lt;/td>
+&lt;td>参见：&lt;a href="https://en.wikipedia.org/wiki/Snake_case">Snake case&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>source file&lt;/td>
+&lt;td>源文件&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>source code&lt;/td>
+&lt;td>源代码&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>specialization&lt;/td>
+&lt;td>泛型特化&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>square&lt;/td>
+&lt;td>平方，二次方，二次幂&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>square brackets&lt;/td>
+&lt;td>中括号，“[”和“]”&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>src&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>source 的缩写，指源代码&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>stack&lt;/td>
+&lt;td>栈&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>stack unwind&lt;/td>
+&lt;td>栈解开、栈展开&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>statement&lt;/td>
+&lt;td>语句&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>statically allocated&lt;/td>
+&lt;td>静态分配&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>statically allocated string&lt;/td>
+&lt;td>静态分配的字符串&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>statically dispatch&lt;/td>
+&lt;td>静态分发&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>static method&lt;/td>
+&lt;td>静态方法&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>string&lt;/td>
+&lt;td>字符串&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>string literal&lt;/td>
+&lt;td>字符串常量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>string slices&lt;/td>
+&lt;td>字符串片段&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>stringify&lt;/td>
+&lt;td>字符串化&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>subscript notation&lt;/td>
+&lt;td>下标&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>sugar&lt;/td>
+&lt;td>糖&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>super&lt;/td>
+&lt;td>父级，作关键字时不译&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>syntax context&lt;/td>
+&lt;td>语法上下文&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>systems programming language&lt;/td>
+&lt;td>系统级编程语言&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>T&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>tagged union&lt;/td>
+&lt;td>标记联合&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>target triple&lt;/td>
+&lt;td>多层次指标，三层/重 指标/目标&lt;/td>
+&lt;td>triple 本义是“三”，但此处虚指“多”，&lt;!-- raw HTML omitted -->此词翻译需要更多讨论&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>terminal&lt;/td>
+&lt;td>终端&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>testing&lt;/td>
+&lt;td>测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>testsuit&lt;/td>
+&lt;td>测试套件&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>the least significant bit (LSB)&lt;/td>
+&lt;td>最低数字位&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>the most significant bit (MSB)&lt;/td>
+&lt;td>最高数字位&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>thread&lt;/td>
+&lt;td>线程&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>TOML&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>Tom&amp;rsquo;s Obvious, Minimal Language &lt;!-- raw HTML omitted -->的缩写，一种配置语言&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>token tree&lt;/td>
+&lt;td>令牌树？&lt;/td>
+&lt;td>待进一步斟酌&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>trait&lt;/td>
+&lt;td>特质&lt;/td>
+&lt;td>其字面上有“特性，特征”之意&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>trait bound&lt;/td>
+&lt;td>特质约束&lt;/td>
+&lt;td>bound 有“约束，限制，限定”之意&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>trait object&lt;/td>
+&lt;td>特质对象&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>transmute&lt;/td>
+&lt;td>（不译）&lt;/td>
+&lt;td>其字面上有“变化，变形，变异”之意，&lt;!-- raw HTML omitted -->不作翻译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>trivial&lt;/td>
+&lt;td>平凡的&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>troubleshooting&lt;/td>
+&lt;td>疑难解答，故障诊断，&lt;!-- raw HTML omitted -->故障排除，故障分析&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>tuple&lt;/td>
+&lt;td>元组&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>two&amp;rsquo;s complement&lt;/td>
+&lt;td>补码，二补数&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>two-word object&lt;/td>
+&lt;td>双字对象&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type annotation&lt;/td>
+&lt;td>类型标注&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type erasure&lt;/td>
+&lt;td>类型擦除&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type inference&lt;/td>
+&lt;td>类型推导&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type inference engine&lt;/td>
+&lt;td>类型推导引擎&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type parameter&lt;/td>
+&lt;td>类型参量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type placeholder&lt;/td>
+&lt;td>类型占位符&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>type signature&lt;/td>
+&lt;td>类型标记&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>U&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>undefined behavior&lt;/td>
+&lt;td>未定义行为&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>uninstall&lt;/td>
+&lt;td>卸载&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unit-like struct&lt;/td>
+&lt;td>类单元结构体&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unit struct&lt;/td>
+&lt;td>单元结构体&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;ldquo;unit-style&amp;rdquo; tests&lt;/td>
+&lt;td>单元测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unit test&lt;/td>
+&lt;td>单元测试&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unit type&lt;/td>
+&lt;td>单元类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>universal function call syntax &lt;!-- raw HTML omitted -->(UFCS)&lt;/td>
+&lt;td>通用函数调用语法&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unsized types&lt;/td>
+&lt;td>不定长类型&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unwind&lt;/td>
+&lt;td>展开&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>unwrap&lt;/td>
+&lt;td>解包&lt;/td>
+&lt;td>暂译！&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>V&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>variable binding&lt;/td>
+&lt;td>变量绑定&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>variable shadowing&lt;/td>
+&lt;td>变量遮蔽，变量隐蔽,&lt;!-- raw HTML omitted -->变量隐藏，变量覆盖&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>variable capture&lt;/td>
+&lt;td>变量捕获&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>variant&lt;/td>
+&lt;td>变量&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>vector&lt;/td>
+&lt;td>（动态数组，一般不译）&lt;/td>
+&lt;td>vector 本义是“向量”&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>visibility&lt;/td>
+&lt;td>可见性&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>vtable&lt;/td>
+&lt;td>虚表&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>W&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>where clause&lt;/td>
+&lt;td>where 子句，where 从句，where 分句&lt;/td>
+&lt;td>在数据库的官方手册中多翻译成“子句”，英语语法中翻译成“从句”&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>wrap&lt;/td>
+&lt;td>包裹&lt;/td>
+&lt;td>暂译！&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>wrapped&lt;/td>
+&lt;td>装包&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>wrapper&lt;/td>
+&lt;td>装包&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Y&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>yield&lt;/td>
+&lt;td>产生(收益、效益等)，产出，提供&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Z&lt;/strong>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>zero-cost abstractions&lt;/td>
+&lt;td>零开销抽象&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>zero-width space(ZWSP)&lt;/td>
+&lt;td>零宽空格&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

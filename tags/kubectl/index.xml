@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubectl on 白菜</title><link>https://blog.baicai.me/tags/kubectl/</link><description>Recent content in kubectl on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 20 Nov 2023 16:02:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/kubectl/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
+&lt;h3 id="按名称删除pod">按名称删除pod&lt;/h3>
+&lt;p>按名称删除kubia-gpu pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po kubia-gpu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。&lt;/p>
+&lt;h4 id="提示">提示&lt;/h4>
+&lt;p>还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。&lt;/p>
+&lt;h3 id="使用标签选择器删除pod">使用标签选择器删除pod&lt;/h3>
+&lt;p>停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 &lt;code>creation_method=manual&lt;/code> ，因此可以通过使用一个标签选择器来删除它们：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po -l creation_method&lt;span style="color:#f92672">=&lt;/span>manual
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="通过删除整个命名空间来删除pod">通过删除整个命名空间来删除pod&lt;/h3>
+&lt;p>以下命令删除custom-namespace：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete ns custom-namespace
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的所有pod但保留命名空间">删除命名空间中的所有pod，但保留命名空间&lt;/h3>
+&lt;p>查看 pods&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get pods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过使用&amp;ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除命名空间中的几乎所有资源">删除命名空间中的（几乎）所有资源&lt;/h3>
+&lt;p>通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete all --all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>命令中的第一个all指定正在删除所有资源类型，而&amp;ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。&lt;/p>
+&lt;h4 id="注意">注意&lt;/h4>
+&lt;p>使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。&lt;/p>
+&lt;p>删除资源时，kubectl将打印它删除的每个资源的名称。&lt;/p>
+&lt;h4 id="注意-1">注意&lt;/h4>
+&lt;p>&lt;code>kubectl delete all --all&lt;/code> 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。&lt;/p>
+&lt;h2 id="kubectl-命令演示">kubectl 命令演示&lt;/h2>
+&lt;h3 id="kubectl-展示搜索出的pod列表含pod所在的namespace">kubectl 展示搜索出的pod列表（含pod所在的namespace）&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get pod -A |grep &amp;lt;podname&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A |grep dashboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubernetes-dashboard dashboard-metrics-scraper-5657497c4c-j5kr8 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 113m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubernetes-dashboard kubernetes-dashboard-78f87ddfc-tlmjv 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 113m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="kubectl-删除pod命令">kubectl 删除pod命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete pod &amp;lt;podname&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。
+故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。&lt;/p>
+&lt;h3 id="查看deployment信息">查看deployment信息&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl get deployment -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@debian ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get deployment --all-namespaces&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAMESPACE NAME READY UP-TO-DATE AVAILABLE AGE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system coredns 2/2 &lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span> 4h7m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubernetes-dashboard dashboard-metrics-scraper 1/1 &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> 117m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubernetes-dashboard kubernetes-dashboard 1/1 &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> 117m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除deployment配置">删除deployment配置&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete deployment &amp;lt;deployment名&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl delete deployment kubernetes-dashboard -n kubernetes-dashboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>deployment.apps &lt;span style="color:#e6db74">&amp;#34;kubernetes-dashboard&amp;#34;&lt;/span> deleted
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl delete deployment dashboard-metrics-scraper -n kubernetes-dashboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>deployment.apps &lt;span style="color:#e6db74">&amp;#34;dashboard-metrics-scraper&amp;#34;&lt;/span> deleted
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="然后进行删除pod命令即可我删除deployment后再次查询pod发现上面的pod已经开始自行删除了这步可酌情处理">然后进行删除pod命令即可，我删除deployment后，再次查询pod发现，上面的pod已经开始自行删除了（这步可酌情处理）&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete pod &amp;lt;podname&amp;gt; -n &amp;lt;namespace&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># delete pod dashboard-metrics-scraper-5657497c4c-j5kr8 -n kubernetes-dashboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pod &lt;span style="color:#e6db74">&amp;#34;dashboard-metrics-scraper-5657497c4c-j5kr8&amp;#34;&lt;/span> deleted
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 附一个我这边删除deployment后pod自行删除的情况&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A|grep dashboard&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
+&lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
+&lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
+&lt;p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群&lt;/p>
+&lt;h3 id="server安装">Server安装&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 局域网方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://get.k3s.io | sh -
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 多云安装方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://get.k3s.io | sh -s - --node-external-ip&lt;span style="color:#f92672">=&lt;/span>Server公网地址 --flannel-backend&lt;span style="color:#f92672">=&lt;/span>wireguard-native
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中国用户，可以使用以下方法加速安装：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 局域网方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR&lt;span style="color:#f92672">=&lt;/span>cn sh -
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 多云安装方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR&lt;span style="color:#f92672">=&lt;/span>cn sh -s - --node-external-ip&lt;span style="color:#f92672">=&lt;/span>Server公网地址 --flannel-backend&lt;span style="color:#f92672">=&lt;/span>wireguard-native --flannel-external-ip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>运行此安装后：&lt;/p>
+&lt;pre tabindex="0">&lt;code>K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。
+将安装其他实用程序，包括 ```kubectl```、```crictl```、```ctr```、```k3s-killall.sh``` 和 ```k3s-uninstall.sh```。
+kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装的 kubectl 将自动使用该文件。
+&lt;/code>&lt;/pre>&lt;h3 id="安装其他-agent-节点">安装其他 Agent 节点&lt;/h3>
+&lt;p>安装其他 Agent 节点并将它们添加到集群，请使用 K3S_URL 和 K3S_TOKEN 环境变量运行安装脚本&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 局域网方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://get.k3s.io | K3S_URL&lt;span style="color:#f92672">=&lt;/span>https://myserver:6443 K3S_TOKEN&lt;span style="color:#f92672">=&lt;/span>mynodetoken sh -
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 多云安装方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://get.k3s.io | K3S_URL&lt;span style="color:#f92672">=&lt;/span>https://Server公网地址:6443 K3S_TOKEN&lt;span style="color:#f92672">=&lt;/span>mynodetoken sh -s - --node-external-ip&lt;span style="color:#f92672">=&lt;/span>Agent公网地址
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 局域网方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR&lt;span style="color:#f92672">=&lt;/span>cn K3S_URL&lt;span style="color:#f92672">=&lt;/span>https://myserver:6443 K3S_TOKEN&lt;span style="color:#f92672">=&lt;/span>mynodetoken sh -
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 多云安装方案&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR&lt;span style="color:#f92672">=&lt;/span>cn K3S_URL&lt;span style="color:#f92672">=&lt;/span>https://Server公网地址:6443 K3S_TOKEN&lt;span style="color:#f92672">=&lt;/span>mynodetoken sh -s - --node-external-ip&lt;span style="color:#f92672">=&lt;/span>Agent公网地址
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>备注：
+&lt;code>K3S_URL&lt;/code> 参数会导致安装程序将 K3s 配置为 Agent 而不是 Server。K3s Agent 将注册到在 URL 上监听的 K3s Server。&lt;code>K3S_TOKEN&lt;/code> 使用的值存储在 Server 节点上的 &lt;code>/var/lib/rancher/k3s/server/node-token&lt;/code> 中。
+每台主机必须具有唯一的主机名。如果你的计算机没有唯一的主机名，请传递 K3S_NODE_NAME 环境变量，并为每个节点提供一个有效且唯一的主机名。&lt;/p>
+&lt;h3 id="在本机访问k3s集群">在本机访问k3s集群&lt;/h3>
+&lt;p>安装kubectl&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>brew install kubectl
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>复制 Server 中 &lt;code>/etc/rancher/k3s/k3s.yaml&lt;/code> 的内容&lt;/p>
+&lt;p>写入本机的&lt;code>~/.kube/config&lt;/code>文件.&lt;/p>
+&lt;p>参考scp复制指令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>scp server:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="测试指令">测试指令&lt;/h3>
+&lt;p>查看节点状态：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ kubectl get node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME STATUS ROLES AGE VERSION
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vm-4-10-debian Ready &amp;lt;none&amp;gt; 35m v1.27.6+k3s1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vm-4-9-debian Ready control-plane,master 39m v1.27.6+k3s1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>检查跨网通讯：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ kubectl get pod -A -o wide
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAMESPACE NAME READY STATUS RESTARTS AGE IP NODE NOMINATED NODE READINESS GATES
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system local-path-provisioner-957fdf8bc-gcgj4 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 38m 10.42.0.5 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system coredns-77ccd57875-vsxmt 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 38m 10.42.0.6 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system helm-install-traefik-crd-sv9jh 0/1 Completed &lt;span style="color:#ae81ff">0&lt;/span> 38m 10.42.0.4 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system metrics-server-5f8b4ffd8-zd4db 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 38m 10.42.0.3 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system helm-install-traefik-jp8sk 0/1 Completed &lt;span style="color:#ae81ff">2&lt;/span> 38m 10.42.0.2 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system svclb-traefik-0782c5d1-wr5kd 2/2 Running &lt;span style="color:#ae81ff">0&lt;/span> 37m 10.42.0.7 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system traefik-64f55bb67d-4lr2g 1/1 Running &lt;span style="color:#ae81ff">0&lt;/span> 37m 10.42.0.8 vm-4-9-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system svclb-traefik-0782c5d1-444jv 2/2 Running &lt;span style="color:#ae81ff">0&lt;/span> 34m 10.42.1.2 vm-4-10-debian &amp;lt;none&amp;gt; &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看节点资源使用情况：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ kubectl top node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME CPU&lt;span style="color:#f92672">(&lt;/span>cores&lt;span style="color:#f92672">)&lt;/span> CPU% MEMORY&lt;span style="color:#f92672">(&lt;/span>bytes&lt;span style="color:#f92672">)&lt;/span> MEMORY%
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vm-4-9-debian 24m 2% 1369Mi 69%
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vm-4-10-debian &amp;lt;unknown&amp;gt; &amp;lt;unknown&amp;gt; &amp;lt;unknown&amp;gt; &amp;lt;unknown&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看POD资源使用情况:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ kubectl top pod -A
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAMESPACE NAME CPU&lt;span style="color:#f92672">(&lt;/span>cores&lt;span style="color:#f92672">)&lt;/span> MEMORY&lt;span style="color:#f92672">(&lt;/span>bytes&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system coredns-77ccd57875-vsxmt 1m 20Mi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system local-path-provisioner-957fdf8bc-gcgj4 1m 14Mi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system metrics-server-5f8b4ffd8-zd4db 3m 24Mi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system svclb-traefik-0782c5d1-wr5kd 0m 0Mi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-system traefik-64f55bb67d-4lr2g 1m 33Mi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>到此k3s集群部署完成， 如果有更多的主机，可以重复agent的配置步骤进行添加。&lt;/p>
+&lt;h3 id="k3s-server-节点的入站规则">K3s Server 节点的入站规则&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">协议&lt;/th>
+&lt;th style="text-align:center">端口&lt;/th>
+&lt;th style="text-align:center">源&lt;/th>
+&lt;th style="text-align:center">目标&lt;/th>
+&lt;th style="text-align:left">描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">TCP&lt;/td>
+&lt;td style="text-align:center">2379-2380&lt;/td>
+&lt;td style="text-align:center">Servers&lt;/td>
+&lt;td style="text-align:center">Servers&lt;/td>
+&lt;td style="text-align:left">只有具有嵌入式 etcd 的 HA 需要&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">TCP&lt;/td>
+&lt;td style="text-align:center">6443&lt;/td>
+&lt;td style="text-align:center">Agents&lt;/td>
+&lt;td style="text-align:center">Servers&lt;/td>
+&lt;td style="text-align:left">K3s supervisor 和 Kubernetes API Server&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">UDP&lt;/td>
+&lt;td style="text-align:center">8472&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:left">只有 Flannel VXLAN 需要&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">TCP&lt;/td>
+&lt;td style="text-align:center">10250&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:left">Kubelet 指标&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">UDP&lt;/td>
+&lt;td style="text-align:center">51820&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:left">只有使用 IPv4 的 Flannel Wireguard 才需要&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">UDP&lt;/td>
+&lt;td style="text-align:center">51821&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:center">所有节点&lt;/td>
+&lt;td style="text-align:left">只有使用 IPv6 的 Flannel Wireguard 才需要&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>所有出站流量通常都是允许的。&lt;/p>
+&lt;h3 id="参考">参考：&lt;/h3>
+&lt;p>&lt;a href="https://docs.k3s.io/zh/quick-start">快速入门指南&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://docs.k3s.io/zh/installation/network-options#%E5%B5%8C%E5%85%A5%E5%BC%8F-k3s-%E5%A4%9A%E4%BA%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">嵌入式 k3s 多云解决方案&lt;/a>&lt;/p></description></item></channel></rss>

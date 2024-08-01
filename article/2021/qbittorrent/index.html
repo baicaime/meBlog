@@ -1,0 +1,34 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2021/qbittorrent/"><link rel=canonical href=https://blog.baicai.me/article/2021/qbittorrent/><style type=text/css>body{font-family:monospace}</style><title>Ubuntu安装 qbittorrent-nox并启动</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Ubuntu安装 qbittorrent-nox并启动</h1><b><time>2021.07.02 21:01</time></b>
+<a href=/tags/qbittorrent>qBittorrent</a>
+<a href=/tags/ubuntu>Ubuntu</a>
+<a href=/tags/bt>bt</a><div><h3 id=qbittorrent-nox>Qbittorrent-Nox</h3><p>要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。</p><p>注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用</p><h3 id=安装qbittorrent>安装qbittorrent</h3><h4 id=安装add-apt-repository命令>安装add-apt-repository命令</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt-get update <span style=color:#f92672>&amp;&amp;</span> sudo apt-get install software-properties-common -y
+</span></span></code></pre></div><h4 id=添加qbittorrent-nox的ppa软件源>添加qbittorrent-nox的PPA软件源</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+</span></span></code></pre></div><h4 id=安装qbittorrent-noxwebui版>安装qbittorrent-nox（webui版）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt-get update <span style=color:#f92672>&amp;&amp;</span> sudo apt-get install qbittorrent-nox
+</span></span></code></pre></div><h3 id=设置开机启动>设置开机启动</h3><h4 id=通过rclocal完成>通过rc.local完成</h4><p>如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效</p><p>Ubuntu-18.04设置开机启动脚本
+起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&mldr;</p><p>编辑rc.local脚本</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>nano /etc/rc.local
+</span></span></code></pre></div><p>在exit 0前面（前一行）添加以下内容并保存</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>qbittorrent-nox -d
+</span></span></code></pre></div><h4 id=通过创建自定义服务实现>通过创建自定义服务实现</h4><p>创建系统服务</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt-get install nano -y <span style=color:#f92672>&amp;&amp;</span> nano /etc/systemd/system/qbittorrent-nox.service
+</span></span></code></pre></div><p>粘贴以下内容，并保存。</p><pre tabindex=0><code>[Unit]
+Description=qBittorrent-nox
+After=network.target
+
+[Service]
+User=root
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox -d
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><p>启动qbittorrent-nox并创建服务配置</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>systemctl start qbittorrent-nox
+</span></span></code></pre></div><p>设置开机自动启动qbittorrent-nox</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>systemctl enable qbittorrent-nox
+</span></span></code></pre></div><p>查看qbittorrent-nox状态</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo systemctl status qbittorrent-nox
+</span></span></code></pre></div><p>默认账号：admin 密码： adminadmin
+默认登陆网址：ip:8080</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on 白菜</title><link>https://blog.baicai.me/tags/ubuntu/</link><description>Recent content in Ubuntu on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Sun, 19 Jun 2022 22:53:02 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>如何关闭 Ubuntu 中的开放端口？</title><link>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</link><pubDate>Sun, 19 Jun 2022 22:53:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</guid><description>&lt;p>如何关闭 Ubuntu 中的开放端口？&lt;/p>
+&lt;h3 id="问题描述">问题描述&lt;/h3>
+&lt;p>列出所有打开的端口，以关闭一些应用程序的端口。&lt;/p>
+&lt;h3 id="最佳办法">最佳办法&lt;/h3>
+&lt;p>如果要关闭端口，则必须终止进程或停止相关服务。
+可以使用 netstat -nalp 和 lsof -i:port 工具来识别打开端口后面的进程/二进制文件。&lt;/p>
+&lt;p>netstat 可用于查看端口统计信息。
+要显示所有开放端口的列表：&lt;/p>
+&lt;pre>&lt;code>sudo netstat -lnp
+&lt;/code>&lt;/pre>
+&lt;p>列出所有侦听端口号以及每个负责的进程。终止或终止进程以关闭端口。 ( kill , pkill …)&lt;/p>
+&lt;p>关闭一个打开的端口：&lt;/p>
+&lt;pre>&lt;code>sudo fuser -k port_no/tcp
+&lt;/code>&lt;/pre>
+&lt;p>例子：&lt;/p>
+&lt;pre>&lt;code>sudo fuser -k 8080/tcp
+&lt;/code>&lt;/pre>
+&lt;h3 id="次佳办法">次佳办法&lt;/h3>
+&lt;p>要在 ubuntu 中关闭开放端口，可以使用以下命令&lt;/p>
+&lt;pre>&lt;code>sudo kill $(sudo lsof -t -i:3000)
+&lt;/code>&lt;/pre>
+&lt;p>代替 3000 你可以指定你的端口号&lt;/p>
+&lt;p>lsof 命令将提供有关进程打开的文件的信息&lt;/p>
+&lt;p>-t ：此标志指定 lsof 应仅生成带有进程标识符且没有标头的简洁输出 – 例如，以便可以将输出通过管道传输到 kill(1)。此选项选择 -w 选项。&lt;/p>
+&lt;p>-i ：此标志选择任何 Internet 地址与 i 中指定的地址匹配的文件列表。如果未指定地址，此选项将选择所有 Internet 和 x.25 (HP-UX) 网络文件的列表。&lt;/p>
+&lt;h3 id="防火墙规则应用">防火墙规则应用&lt;/h3>
+&lt;pre>&lt;code>sudo ufw allow 22
+sudo ufw deny 22
+&lt;/code>&lt;/pre>
+&lt;h3 id="附注">附注&lt;/h3>
+&lt;p>关闭特定进程&lt;/p>
+&lt;pre>&lt;code>kill $(ps -e|grep firefox|awk '{print $1}')
+&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装微信(wechat)</title><link>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</link><pubDate>Sun, 30 Jan 2022 15:19:12 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</guid><description>&lt;h2 id="介绍">介绍&lt;/h2>
+&lt;p>由于微信官网 &lt;a href="https://weixin.qq.com/">https://weixin.qq.com/&lt;/a> 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。&lt;/p>
+&lt;h2 id="安装方法">安装方法&lt;/h2>
+&lt;p>打开优麒麟应用商店官网，然后下载应用，就看到微信了
+&lt;a href="https://www.ubuntukylin.com/applications/106-cn.html">https://www.ubuntukylin.com/applications/106-cn.html&lt;/a>
+下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。
+这是linux原生的，功能少点，但比wine的要轻巧不少。&lt;/p>
+&lt;h2 id="安装方法2">安装方法2&lt;/h2>
+&lt;p>下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——&amp;gt; “复制链接”
+终端下载Deb安装：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> wget -O ~/weixin.deb &lt;span style="color:#e6db74">&amp;#34;http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo dpkg -i ~/weixin.deb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Ubuntu使用systemd配置开机运行service</title><link>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</link><pubDate>Wed, 01 Dec 2021 22:44:28 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</guid><description>&lt;h2 id="systemd">systemd&lt;/h2>
+&lt;p>Systemd 是 Linux 系统工具，用来启动守护进程，已成为大多数发行版的标准配置。&lt;/p>
+&lt;h2 id="由来">由来&lt;/h2>
+&lt;p>历史上，Linux 的启动一直采用init进程。&lt;/p>
+&lt;p>下面的命令用来启动服务。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $ sudo /etc/init.d/apache2 start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 或者&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ service apache2 start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这种方法有两个缺点。&lt;/p>
+&lt;p>一是启动时间长。init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。&lt;/p>
+&lt;p>二是启动脚本复杂。init进程只是执行启动脚本，不管其他事情。脚本需要自己处理各种情况，这往往使得脚本变得很长。&lt;/p>
+&lt;h2 id="systemd-概述">Systemd 概述&lt;/h2>
+&lt;p>Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为系统的启动和管理提供一套完整的解决方案。&lt;/p>
+&lt;p>根据 Linux 惯例，字母d是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。&lt;/p>
+&lt;p>使用了 Systemd，就不需要再用init了。Systemd 取代了initd，成为系统的第一个进程（PID 等于 1），其他进程都是它的子进程。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $ systemctl --version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上面的命令查看 Systemd 的版本。&lt;/p>
+&lt;h2 id="使用-systemd-实现开机执行-shell-脚本">使用 systemd 实现开机执行 Shell 脚本&lt;/h2>
+&lt;h3 id="通用操作步骤">通用操作步骤&lt;/h3>
+&lt;p>创建希望开机马上执行的脚本，本文举例脚本存放位置为 /home/navxin/Example/startup.sh，脚本内容如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#75715e"># 开机时在脚本的同级目录下创建一个名为 StartupTouch.txt 的文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /home/navxin/Example/startup.sh.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="开机执行的脚本需增加可执行权限才能被-systemd-运行使用如下命令">开机执行的脚本需增加可执行权限才能被 systemd 运行，使用如下命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>chmod u+x /home/navxin/Example/startup.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod g+x /home/navxin/Example/startup.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="进入-systemd-放置-service-的目录在该目录下可看到大量服务配置文件命令如下">进入 systemd 放置 service 的目录，在该目录下可看到大量服务配置文件，命令如下&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 进入 systemd 的 service 目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd /usr/lib/systemd/system
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 查看文件列表&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls -al
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>在该目录创建一个新的 .service 文件用于配置开机启动脚本，本例中的文件名为 StartupExample.service，所执行命令和文件中的配置内容如下：
+&lt;/code>&lt;/pre>
+&lt;h3 id="创建服务配置文件">创建服务配置文件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo touch /usr/lib/systemd/system/StartupExample.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>以下为 StartupExample.service 配置文件的内容&lt;/p>
+&lt;pre tabindex="0">&lt;code>[Unit]
+Description=Startup Example
+[Service]
+ExecStart=/home/navxin/Example/startup.sh
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;h3 id="尝试手动运行新创建的-service使用如下命令">尝试手动运行新创建的 service，使用如下命令：&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 手动运行 StartupExample.service&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl start StartupExample.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 查看运行日志&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status StartupExample.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 删除刚测试服务时创建的文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rm -f /home/navxin/Example/startup.sh.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 设置服务为 enable 状态，使之能开机运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo systemctl enable StartupExample.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 重启机器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> systemctl reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="附注unit">附注：Unit&lt;/h2>
+&lt;p>Systemd 可以管理所有系统资源。不同的资源统称为 Unit（单位）。&lt;/p>
+&lt;p>Unit 一共分成12种。&lt;/p>
+&lt;pre>&lt;code> Service unit：系统服务
+Target unit：多个 Unit 构成的一个组
+Device Unit：硬件设备
+Mount Unit：文件系统的挂载点
+Automount Unit：自动挂载点
+Path Unit：文件或路径
+Scope Unit：不是由 Systemd 启动的外部进程
+Slice Unit：进程组
+Snapshot Unit：Systemd 快照，可以切回某个快照
+Socket Unit：进程间通信的 socket
+Swap Unit：swap 文件
+Timer Unit：定时器
+&lt;/code>&lt;/pre>
+&lt;p>systemctl list-units命令可以查看当前系统的所有 Unit 。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出正在运行的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有Unit，包括没有找到配置文件的或者启动失败的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --all
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有没有运行的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --all --state&lt;span style="color:#f92672">=&lt;/span>inactive
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有加载失败的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --failed
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有正在运行的、类型为 service 的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $ systemctl list-units --type&lt;span style="color:#f92672">=&lt;/span>service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 列出所有正在运行的、类型为 mount 的 Unit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $systemctl list-units --type&lt;span style="color:#f92672">=&lt;/span>mount
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 命令用于列出所有配置文件。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $systemctl list-unit-files
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> $systemctl list-unit-files --type&lt;span style="color:#f92672">=&lt;/span>mount
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改 myadmin.service文件，增加语句&lt;/p>
+&lt;pre tabindex="0">&lt;code> After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
+Wants=network-online.target
+&lt;/code>&lt;/pre>&lt;p>全部文件内容如下(部分内容参考nginx.service)：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf"> # /lib/systemd/system/myadmin.service
+[Unit]
+Description=Start myAdmin web server
+Documentation=https://www.lyhuilin.com/
+After=network-online.target remote-fs.target nss-lookup.target navxin-kn1.mount
+Wants=network-online.target
+[Service]
+Environment=&amp;#34;WELCOME=Baicai myAdmin Base Environment.&amp;#34;
+ExecStartPre=/bin/echo ${WELCOME}
+ExecStart=/baicai/systemdStart/my_admin/my_admin -c /baicai/systemdStart/my_admin/conf/config.yaml
+ExecStop=/bin/kill -s TERM ${MAINPID}
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
+&lt;pre>&lt;code>sudo apt-get purge firefox
+&lt;/code>&lt;/pre>
+&lt;p>或
+sudo apt-get remove firefox&lt;/p>
+&lt;h2 id="下载最新firefox二进制压缩包">下载最新Firefox二进制压缩包&lt;/h2>
+&lt;pre>&lt;code>wget -O ~/firefox.tar.bz2 &amp;quot;https://download.mozilla.org/?product=firefox-latest&amp;amp;os=linux64&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;h2 id="解压并移动到opt目录">解压并移动到/opt目录&lt;/h2>
+&lt;pre>&lt;code>sudo tar xjf ~/firefox.tar.bz2 -C /opt/
+&lt;/code>&lt;/pre>
+&lt;h2 id="创建软链接">创建软链接&lt;/h2>
+&lt;pre>&lt;code>sudo ln -s /opt/firefox/firefox /usr/lib/firefox/firefox
+&lt;/code>&lt;/pre>
+&lt;p>在/usr/lib/中创建一个firefox可执行链接文件，该文件指向/opt中firefox可执行主程序位置。&lt;/p>
+&lt;h2 id="启动firefox">启动firefox&lt;/h2>
+&lt;p>终端启动Firefox&lt;/p>
+&lt;pre>&lt;code>firefox
+&lt;/code>&lt;/pre>
+&lt;h2 id="创建桌面快捷方式">创建桌面快捷方式&lt;/h2>
+&lt;p>进入/usr/share/applications目录&lt;/p>
+&lt;pre>&lt;code>touch firefox.desktop
+nano firefox.desktop
+&lt;/code>&lt;/pre>
+&lt;p>添加内容：&lt;/p>
+&lt;pre>&lt;code>[Desktop Entry]
+Name=firefox
+Comment=firefox
+Exec=/opt/firefox/firefox
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Application;
+Encoding=UTF-8
+StartupNotify=true
+&lt;/code>&lt;/pre>
+&lt;h2 id="卸载firefox">卸载Firefox&lt;/h2>
+&lt;p>通过上面方法安装的Firefox，如果想删除，可以在终端种输入以下命令：&lt;/p>
+&lt;pre>&lt;code>sudo rm -rf /opt/firefox
+sudo rm /usr/share/applications/firefox.desktop
+&lt;/code>&lt;/pre></description></item><item><title>如何知道谁在ping我？</title><link>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</link><pubDate>Sat, 28 Aug 2021 21:14:41 +0800</pubDate><guid>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</guid><description>&lt;blockquote>
+&lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>
+&lt;/blockquote>
+&lt;p>在您要监控的计算机的终端应用程序中：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo tcpdump -i ethX icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>选项：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>-n avoid a &lt;span style="color:#f92672">(&lt;/span>potentially slow&lt;span style="color:#f92672">)&lt;/span> reverse DNS query
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>−i interface
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo To print all ICMP packets that are echo requests/replies
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>它将开始侦听 ethX 并等待到达的数据包。&lt;/p>
+&lt;p>示例：我有 2 台 pc win7 192.168.0.8 , Ubuntu 192.168.0.57 它将监控到达的数据包：
+在Win上：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ping 192.168.0.57
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 Ubuntu 上：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>tcpdump -i eth0 icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo -n
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;!-- raw HTML omitted -->
+&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
+&lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
+&lt;/blockquote>
+&lt;p>Zlib 是一个用于数据压缩的开源库。&lt;/p>
+&lt;p>作为使用者，你可能会遇到需要安装 zlib（或 zlib-devel 包）作为另一个应用程序的依赖项的情况。&lt;/p>
+&lt;p>但问题来了，如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt install zlib
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Reading package lists... Done
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Building dependency tree
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Reading state information... Done
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> E: Unable to locate package zlib
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>为什么会看到这个 Ubable to locate package 错误呢？因为没有名为 zlib 的包。&lt;/p>
+&lt;p>如果你 使用 apt search 命令，你会发现有几个包可以让你安装：zlib 1g 和 zlib 1g-dev。当你知道这些后，只需一个 apt 命令就可以安装它们。&lt;/p>
+&lt;h2 id="在基于-ubuntu-的-linux-发行版上安装-zlib">在基于 Ubuntu 的 Linux 发行版上安装 Zlib&lt;/h2>
+&lt;p>打开终端，使用以下命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt install zlib1g
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请记住 g 前面的字母是数字 1，而不是小写的字母 L。很多人在输入命令时都会犯这个错误。&lt;/p>
+&lt;p>另一个包，zlib 1g-dev 是开发包。只有在你需要时才安装它，否则你应该使用 zlib 1g 包。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt install zlib1g-dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>你也可以 Zlib 网站 下载源代码并安装它。但是，除非你有充分的理由，否则我不推荐使用源代码方式来安装 zlib。例如，如果你需要最新或特定版本的 zlib，但该版本在发行版的仓库中不可用。&lt;/p>
+&lt;p>有趣的是，像安装 zlib 这样看似很小的东西可能会变得很麻烦，有两个原因：一个是不同的包名；另一个是包含“隐藏”数字 1，它与小写 L 混淆了。&lt;/p>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;p>Zlib &lt;a href="https://zlib.net/">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 qbittorrent-nox并启动</title><link>https://blog.baicai.me/article/2021/qbittorrent/</link><pubDate>Fri, 02 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/qbittorrent/</guid><description>&lt;h3 id="qbittorrent-nox">Qbittorrent-Nox&lt;/h3>
+&lt;p>要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。&lt;/p>
+&lt;p>注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用&lt;/p>
+&lt;h3 id="安装qbittorrent">安装qbittorrent&lt;/h3>
+&lt;h4 id="安装add-apt-repository命令">安装add-apt-repository命令&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install software-properties-common -y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="添加qbittorrent-nox的ppa软件源">添加qbittorrent-nox的PPA软件源&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="安装qbittorrent-noxwebui版">安装qbittorrent-nox（webui版）&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt-get install qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="设置开机启动">设置开机启动&lt;/h3>
+&lt;h4 id="通过rclocal完成">通过rc.local完成&lt;/h4>
+&lt;p>如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效&lt;/p>
+&lt;p>Ubuntu-18.04设置开机启动脚本
+起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&amp;hellip;&lt;/p>
+&lt;p>编辑rc.local脚本&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/rc.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在exit 0前面（前一行）添加以下内容并保存&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>qbittorrent-nox -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="通过创建自定义服务实现">通过创建自定义服务实现&lt;/h4>
+&lt;p>创建系统服务&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt-get install nano -y &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> nano /etc/systemd/system/qbittorrent-nox.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>粘贴以下内容，并保存。&lt;/p>
+&lt;pre tabindex="0">&lt;code>[Unit]
+Description=qBittorrent-nox
+After=network.target
+[Service]
+User=root
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox -d
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>启动qbittorrent-nox并创建服务配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl start qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>设置开机自动启动qbittorrent-nox&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看qbittorrent-nox状态&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status qbittorrent-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>默认账号：admin 密码： adminadmin
+默认登陆网址：ip:8080&lt;/p></description></item></channel></rss>

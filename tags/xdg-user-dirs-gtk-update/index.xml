@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>xdg-user-dirs-gtk-update on 白菜</title><link>https://blog.baicai.me/tags/xdg-user-dirs-gtk-update/</link><description>Recent content in xdg-user-dirs-gtk-update on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 02 Jan 2023 12:41:04 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/xdg-user-dirs-gtk-update/index.xml" rel="self" type="application/rss+xml"/><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
+&lt;pre tabindex="0">&lt;code> Distributor ID: Debian
+Description: Debian GNU/Linux 11 (bullseye)
+Release: 11
+Codename: bullseye
+&lt;/code>&lt;/pre>&lt;p>安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#临时转换系统语言为英文，重启后会自动恢复原值的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>en_US
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xdg-user-dirs-gtk-update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>zh_CN
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item></channel></rss>

@@ -1,0 +1,29 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/"><link rel=canonical href=https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/><style type=text/css>body{font-family:monospace}</style><title>docker golang:alpine CGO 制作镜像的正确姿势</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>docker golang:alpine CGO 制作镜像的正确姿势</h1><b><time>2023.09.04 23:23</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/golang>Golang</a><div><p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。</p><p>这时就需要安装 build-base 配置编译环境。</p><p>参考 Dockerfile 如下：</p><pre tabindex=0><code>FROM golang:alpine as builder
+ENV CGO_ENABLED=1
+WORKDIR /app
+COPY . .
+RUN apk add --no-cache --update git build-base
+RUN go mod tidy \
+	&amp;&amp; go build -o api_client_linux ./cmd/api_client/
+
+
+FROM alpine:latest as runner
+ENV TZ=Asia/Shanghai
+RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++
+WORKDIR /app
+
+COPY --from=builder /app/api_client_linux .
+VOLUME /app/conf
+EXPOSE 8080
+
+ENTRYPOINT [&#34;./api_client_linux&#34; ,&#34;-c&#34;,&#34;/app/conf/config.yaml&#34;]
+</code></pre><p>运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：</p><table><thead><tr><th style=text-align:left>包名</th><th style=text-align:left>用途</th></tr></thead><tbody><tr><td style=text-align:left>ca-certificates:</td><td style=text-align:left>CA证书，使用TLS</td></tr><tr><td style=text-align:left>tzdata:</td><td style=text-align:left>时区配置</td></tr><tr><td style=text-align:left>libc6-compat:</td><td style=text-align:left>C 标准库</td></tr><tr><td style=text-align:left>libgcc:</td><td style=text-align:left>GCC 相关库，CGO编译程序依赖</td></tr><tr><td style=text-align:left>libstdc++:</td><td style=text-align:left>C++ 标准库</td></tr></tbody></table></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,0 +1,47 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2021/jsdelivr_github/"><link rel=canonical href=https://blog.baicai.me/article/2021/jsdelivr_github/><style type=text/css>body{font-family:monospace}</style><title>免费CDN：jsDelivr+Github 使用方法</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>免费CDN：jsDelivr+Github 使用方法</h1><b><time>2021.07.02 23:50</time></b>
+<a href=/tags/jsdelivr>jsDelivr</a>
+<a href=/tags/github>Github</a>
+<a href=/tags/cdn>CDN</a><div><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。</p><h3 id=用-jsdelivr-免费cdn托管静态资源>用 jsDelivr 免费CDN托管静态资源</h3><p>国内的免费 CDN 不少，但需要备案
+国外的免费 CDN 也不少，但在国内速度慢
+但 jsDelivr 是一个特殊的存在，虽然是一家国外 CDN 但是有国内节点</p><p>jsDelivr官网： <a href=https://www.jsdelivr.com>https://www.jsdelivr.com</a></p><blockquote><p>放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。</p></blockquote><h3 id=使用步骤>使用步骤</h3><p>1、新建Github仓库</p><p>2、克隆Github仓库到本地</p><p>执行以下命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone 一键复制的仓库地址
+</span></span></code></pre></div><p>3、上传资源</p><p>复制需要上传的资源到本地git仓库（注：jsDelivr不支持加载超过20M的资源），在本地git仓库目录下，执行以下命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git status                    <span style=color:#75715e>#查看状态</span>
+</span></span><span style=display:flex><span>git add .                     <span style=color:#75715e>#添加所有文件到暂存区</span>
+</span></span><span style=display:flex><span>git commit -m <span style=color:#e6db74>&#39;第一次提交&#39;</span>      <span style=color:#75715e>#把文件提交到仓库</span>
+</span></span><span style=display:flex><span>git push                      <span style=color:#75715e>#推送至远程仓库</span>
+</span></span></code></pre></div><p>4、发布仓库</p><p>点击release发布</p><p>自定义发布版本号
+5、通过jsDelivr引用资源</p><p>使用方法：<code>https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径</code>
+例如：</p><pre><code>https://cdn.jsdelivr.net/gh/baicaime/meBlog/index.html
+https://cdn.jsdelivr.net/gh/baicaime/meBlog/favicon-16x16.png
+https://cdn.jsdelivr.net/gh/clin003/cdn/v@3.1.3/css.css
+</code></pre><p>注意：版本号不是必需的，是为了区分新旧资源，如果不使用版本号，将会直接引用最新资源，除此之外还可以使用某个范围内的版本，查看所有资源等，具体使用方法如下：</p><pre><code>// 加载任何Github发布、提交或分支
+https://cdn.jsdelivr.net/gh/user/repo@version/file
+
+// 加载 jQuery v3.2.1
+https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js
+
+// 使用版本范围而不是特定版本
+https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js
+https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js
+
+// 完全省略该版本以获取最新版本
+https://cdn.jsdelivr.net/gh/jquery/jquery/dist/jquery.min.js
+
+// 将“.min”添加到任何JS/CSS文件中以获取缩小版本，如果不存在，将为会自动生成
+https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/src/core.min.js
+
+// 在末尾添加 / 以获取资源目录列表
+https://cdn.jsdelivr.net/gh/jquery/jquery/
+
+// 刷新cnd资源 将域名中的 cdn 改为 purge 即可
+https://purge.jsdelivr.net/gh/baicaime/meBlog/index.html
+
+// 使用最新版本资源
+https://purge.jsdelivr.net/gh/baicaime/meBlog@latest/index.html
+</code></pre></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

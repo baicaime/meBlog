@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>certbot on 白菜</title><link>https://blog.baicai.me/tags/certbot/</link><description>Recent content in certbot on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 01 Nov 2022 22:18:02 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/certbot/index.xml" rel="self" type="application/rss+xml"/><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
+&lt;h3 id="安装-certbot-及-certbot-nginx-插件">安装 Certbot 及 certbot nginx 插件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt -y install certbot python3-certbot-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为-nginx-网站生成证书并配置">为 nginx 网站生成证书并配置&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot --nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。&lt;/p>
+&lt;p>也可以为特定域名获取证书配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot --nginx -d baicai.me
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="使用certbot自动更新ssl证书">使用Certbot自动更新SSL证书&lt;/h3>
+&lt;p>Let&amp;rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。
+除非你更改配置，否则无需再次手动运行Certbot。
+您可以通过运行以下命令来测试证书的自动续订。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot renew --dry-run
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -1,0 +1,113 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/hugo_github_action_blog/"><link rel=canonical href=https://blog.baicai.me/article/2023/hugo_github_action_blog/><style type=text/css>body{font-family:monospace}</style><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Hugo + GitHub Action + Github Pages，搭建博客自动发布</h1><b><time>2023.08.13 11:31</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/hugo>hugo</a>
+<a href=/tags/github-action>github action</a>
+<a href=/tags/bash>bash</a>
+<a href=/tags/blog>blog</a><div><p>我的方案由以下两个核心部分：</p><ul><li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。</li><li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。</li></ul><h2 id=使用-hugo-搭建博客>使用 Hugo 搭建博客</h2><p>Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。</p><h3 id=安装-hugo>安装 Hugo</h3><p>我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>brew install hugo
+</span></span></code></pre></div><p>完成后，使用以下命令进行验证(查看版本号)：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo version
+</span></span></code></pre></div><h3 id=创建-hugo-网站>创建 Hugo 网站</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo new site blog-demo
+</span></span></code></pre></div><h3 id=配置主题>配置主题</h3><p>创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd blog-demo
+</span></span><span style=display:flex><span>git clone  git@github.com:colorchestra/smol.git themes/smol
+</span></span><span style=display:flex><span>cd themes/smol
+</span></span><span style=display:flex><span>rm -rf .git
+</span></span></code></pre></div><p>初始化主题基础配置后，我们可以在 config.toml 文件中进行站点细节配置，具体配置项参考主题说明文档。</p><p>参考config.toml内容</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#a6e22e>theme</span> = <span style=color:#e6db74>&#34;smol&#34;</span>
+</span></span></code></pre></div><h3 id=发布新文章>发布新文章</h3><pre tabindex=0><code>hugo new posts/blog-test.md
+</code></pre><h3 id=本地调试站点>本地调试站点</h3><p>进行本地实时调试预览。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo server
+</span></span></code></pre></div><p>运行服务后，我们可以通过浏览器 http://localhost:1313 地址访问我们的本地预览网页。</p><h2 id=github-pages-仓库>GITHUB PAGES 仓库</h2><p>GitHub Pages 仓库建立完成后，可以在设置中配置自己注册的自定义域名来指向 GitHub Pages 生成的网址。此外，需要将博客站点配置文件 config.toml 中的 baseURL 改为自己的自定义域名。</p><h3 id=github-pages-发布博客>GitHub Pages 发布博客</h3><p>我们现在已经可以通过自定义域名来访问我们的 GitHub Pages 页面了，目前因为项目仓库是空的，访问后会报 404 页面。</p><p>Hugo 生成的静态网站通过 GitHub Pages 服务进行托管，因此我们需要上传 Hugo 生成的静态网页文件至 GitHub Page 项目仓库。</p><h3 id=手动发布>手动发布</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo
+</span></span><span style=display:flex><span>cd public
+</span></span></code></pre></div><p>Hugo 默认会将生成的静态网页文件存放在 public/ 目录下，我们可以通过将 public/ 目录初始化为 git 仓库并关联我们的 clin003/blog_html 远程仓库来推送我们的网页静态文件。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git init
+</span></span><span style=display:flex><span>git remote add origin git@github.com:baicaime/meBlog
+</span></span><span style=display:flex><span>git add .
+</span></span><span style=display:flex><span>git commit -m <span style=color:#e6db74>&#34;debug&#34;</span>
+</span></span><span style=display:flex><span>git push origin main
+</span></span></code></pre></div><p>推送到 GitHub Pages 仓库，稍等几分钟即可通过我们的自定义域名来访问我们的博客站点了，和</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo server 
+</span></span></code></pre></div><p>本地调试完全一致。</p><h3 id=自动发布>自动发布</h3><p>因为我们的博客基于 GitHub 与 GitHub Pages，可以通过官方提供的 GitHub Action 进行 CI 自动发布。
+GitHub Action 是一个持续集成和持续交付(CI/CD) 平台，可用于自动执行构建、测试和部署管道，可以通过简单的配置即可直接使用。</p><p>配置在仓库目录
+<code>.github/workflows</code>
+下，以 .yml 为后缀。我的 GitHub Action 配置为
+<code>deploy.yml</code>
+自动发布示例配置如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy Hugo site to Pages</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>: [ <span style=color:#e6db74>&#34;main&#34;</span> ]
+</span></span><span style=display:flex><span>  <span style=color:#f92672>workflow_dispatch</span>:
+</span></span><span style=display:flex><span><span style=color:#f92672>permissions</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>contents</span>: <span style=color:#ae81ff>read</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>pages</span>: <span style=color:#ae81ff>write</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>id-token</span>: <span style=color:#ae81ff>write</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>defaults</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>run</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>shell</span>: <span style=color:#ae81ff>bash</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>NAME</span>: <span style=color:#ae81ff>BLOG_push</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 推送目标仓库 格式 用户名/仓库名</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>TARGET_REPOSITORY_NAME</span>: <span style=color:#ae81ff>baicaime/meBlog</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 同步临时目录(可选)</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>CLONE_DIR</span>: <span style=color:#ae81ff>tmp_public</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 构建临时目录(可选)</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>BUILD_DIR</span>: <span style=color:#ae81ff>tmp_build</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 配置git用户名</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>GIT_USERNAME</span>: <span style=color:#ae81ff>baicaime</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#75715e># This workflow contains a single job called &#34;build&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:    
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>HUGO_VERSION</span>: <span style=color:#ae81ff>0.117.0</span>    
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install Hugo CLI</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          &amp;&amp; sudo dpkg -i ${{ runner.temp }}/hugo.deb</span>          
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build with Hugo</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>          <span style=color:#75715e># For maximum backward compatibility with Hugo modules</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>HUGO_ENVIRONMENT</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>HUGO_ENV</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            --minify \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            --baseURL &#34;${{ steps.pages.outputs.base_url }}/&#34; \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            -d ${{ env.BUILD_DIR }}</span>          
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git Config</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config --global user.email &#34;actions-push-noreply@baicai.me&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config --global user.name &#34;${{ env.GIT_USERNAME }}&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;配置git完成&#34;</span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git clone</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;同步目标仓库(开始)&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git clone --depth 1 https://github.com/${{ env.TARGET_REPOSITORY_NAME }}.git ${{ env.CLONE_DIR }} &amp;&gt; /dev/null
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;同步目标仓库(完成)&#34;</span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git push</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          cp -rf ${{ env.BUILD_DIR }}/*  ${{ env.CLONE_DIR }}/
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          cd ${{ env.CLONE_DIR }}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;${{ github.event.head_commit.message }} `date +%FT%T%z`&#34; &gt; _pub_time.html         
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git add .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git commit --message &#34;Update ${{ env.NAME }} from ${{ env.TARGET_REPOSITORY_NAME }} ${{ github.event.head_commit.message }}&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git push -f -q https://oauth2:${{ secrets.GIT_TOKEN }}@github.com/${{ env.TARGET_REPOSITORY_NAME }}.git main
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo  &#34;git push  ${{ env.TARGET_REPOSITORY_NAME }} (完成)&#34;</span>          
+</span></span></code></pre></div><p>on 表示 GitHub Action 触发条件，我设置了 push 和 workflow_dispatch 两个条件：</p><ul><li>push，当这个项目仓库发生推送动作后，执行 GitHub Action</li><li>workflow_dispatch，可以在 GitHub 项目仓库的 Action 工具栏进行手动调用</li></ul><p>jobs 表示 GitHub Action 中的任务，我们设置了一个 build 任务，
+runs-on 表示 GitHub Action 运行环境，我们选择了 ubuntu-latest。
+build 任务包含了 Install Hugo CLI 、Checkout、Build with Hugo、Git Config、Git clone 和 Git push 六个主要步骤，
+其中 run 是执行的命令，uses 是 GitHub Action 中的一个插件，我们使用了 actions/checkout 这个插件。
+其中 Checkout 步骤中，可以在 with 中配置 submodules 值为 true 同步博客源仓库的子模块（比如主题模块，由于我们没有使用子模块方式安装hugo主题，所以不需要这个参数）。</p><h4 id=需要将上述-deployyml-中>需要将上述 deploy.yml 中：</h4><pre><code>TARGET_REPOSITORY_NAME 改为自己的 GitHub Pages 仓库，如我的设置为 baicaime/meBlog
+GIT_USERNAME 改为自己 GitHub Pages 仓库的用户名
+</code></pre><p>因为我们需要从博客仓库推送到外部 GitHub Pages 仓库，需要特定权限，要在 GitHub 账户下 <a href="https://github.com/settings/tokens?type=beta">Setting - Developer setting - Personal access tokens</a> 下创建一个 Token。</p><p>权限需要：</p><pre><code>Contents 	read/write
+</code></pre><p><figure><img src=/posts/2023/0813/hugo_github_token.png alt="Contents 	read/write"></figure></p><p>配置后复制生成的 Token（注：只会出现一次），然后在博客源仓库的</p><pre tabindex=0><code>Settings - secrets and variables - Actions 
+</code></pre><p>中添加</p><pre tabindex=0><code>GIT_TOKEN
+</code></pre><p>环境变量为刚才的 Token，这样 GitHub Action 就可以获取到 Token 了。</p><h4 id=推送测试>推送测试</h4><p>完成上述配置后，推送代码至仓库，即可触发 GitHub Action，自动生成博客页面并推送至 GitHub Pages 仓库。</p><p>GitHub Pages 仓库更新后，又会自动触发官方页面部署 CI，实现网站发布。</p><p>现在每当我们本地通过熟悉的 Markdown 语法完成博客内容编辑后，只需要推送代码，等待几分钟，即可通过我们的自定义域名访问更新后的网站。</p><p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 <a href=https://github.com/baicaime/meBlog>baicaime/meBlog</a> 仓库中</p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

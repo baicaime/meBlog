@@ -1,0 +1,102 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2024/find_subdomain/"><link rel=canonical href=https://blog.baicai.me/article/2024/find_subdomain/><style type=text/css>body{font-family:monospace}</style><title>查找子域名解析: 子域名探测方法大全</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1722476884"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>查找子域名解析: 子域名探测方法大全</h1><b><time>2024.02.05 18:58</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/%E5%AD%90%E5%9F%9F%E5%90%8D>子域名</a>
+<a href=/tags/dns>DNS</a>
+<a href=/tags/subdomain>subdomain</a><div><h2 id=子域名探测>子域名探测</h2><p>通过收集子域名信息来进行渗透是目前常见的一种手法。
+子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。
+在挖SRC漏洞时，子域名信息的收集至关重要！</p><h2 id=为什么要进行子域名探测>为什么要进行子域名探测？</h2><p>子域名探测可以帮我们发现渗透测试中更多的服务，这将增加发现漏洞的可能性<br>查找一些用户上较少，被人遗忘的子域名，其上运行的应用程序可能会使我们发现关键漏洞<br>通常，同一组织的不同域名/应用程序中存在相同的漏洞<br>子域名中的常见资产类型一般包括办公系统，邮箱系统，论坛，商城等，其他管理系统，网站管理后台等较少出现在子域名中</p><h2 id=子域名探测方法大全>子域名探测方法大全</h2><p>在线接口<br>暴力枚举<br>搜索引擎<br>Certificate Transparency（证书透明）<br>Subject Alternate Name (SAN) - 主题备用名称<br>Public datasets（公开数据集）<br>信息泄露<br>内容解析（HTML，JavaScript，文件）<br>DNS解析<br>区域传送<br>DNS aggregators（DNS聚合器）<br>DNS Cache Snooping（域名缓存侦测）<br>Alterations & permutations（换置 & 排序）<br>DNSSEC(Domain Name System Security Extensions)，DNS安全扩展，DNSSEC区域漫步<br>CSP HTTP首部<br>SPF记录<br>虚拟主机爆破<br>ASN发现<br>爬虫 Scraping（抓取）</p><h3 id=在线接口>在线接口</h3><pre tabindex=0><code>https://crt.sh/
+https://censys.io/
+https://transparencyreport.google.com/https/certificates
+https://dnsdumpster.com/
+https://hackertarget.com/find-dns-host-records/
+https://x.threatbook.cn/
+https://www.virustotal.com/gui/home/search
+https://site.ip138.com/baidu.com/domain.htm
+https://www.t1h2ua.cn/tools/
+http://tool.chinaz.com/subdomain/
+</code></pre><h3 id=暴力枚举>暴力枚举</h3><p>Layer子域名爆破机 Layer是windows下的一款子域名探测工具，其工作原理是利用子域名字典进行爆破，使用简单容易上手。</p><p>Amass 工具描述：爆破, google, VirusTotal, alt names</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go install github.com/OWASP/Amass/...
+</span></span><span style=display:flex><span>amass -d target.com -o $outfile
+</span></span></code></pre></div><p>Knock 工具描述：AXFR, virustotal, 爆破</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>apt-get install python-dnspython git clone https://xxx.com/guelfoweb/knock.git
+</span></span><span style=display:flex><span>cd knock
+</span></span><span style=display:flex><span>nano knockpy/config.json <span style=color:#75715e># &lt;- set your virustotal API_KEY python setup.py install</span>
+</span></span></code></pre></div><h3 id=搜索引擎>搜索引擎</h3><p>Google<br>intitle=公司名称<br>过滤掉 -site:www.target.com<br>我们可以在Google搜索中使用 site:运算符来查找一个域的所有子域名<br>谷歌还额外支持减号运算符 site:*.wikimedia.org -www -store -jobs -uk 以排除我们不感兴趣的子域名</p><p>Bing<br>Bing搜索引擎也支持一些高级搜索运算符。<br>与Google一样，Bing也支持site:运算符，可以帮助您检查除Google搜索之外的其他结果。<br>发现子域名: site:target.com</p><p>百度<br>intitle=公司名称</p><p>钟馗之眼</p><pre tabindex=0><code>https://www.zoomeye.org/ site=target.com  
+</code></pre><p>duckduckgo</p><pre tabindex=0><code>https://duckduckgo.com  site:target.com  
+</code></pre><h3 id=certificate-transparency-证书透明>Certificate Transparency （证书透明）</h3><h5 id=ssltls证书>SSL/TLS证书</h5><p>证书透明度(Certificate Transparency)是证书授权机构的一个项目，证书授权机构会将每个SSL/TLS证书发布到公共日志中。<br>一个SSL/TLS证书通常包含域名、子域名和邮件地址。<br>查找某个域名所属证书的最简单的方法就是使用搜索引擎搜索一些公开的CT日志。</p><p>在线查询：</p><pre tabindex=0><code>https://crt.sh/  
+https://censys.io/  
+https://developers.facebook.com/tools/ct/  
+https://google.com/transparencyreport/https/ct/  
+https://transparencyreport.google.com/https/certificates
+</code></pre><p>CTFR 工具描述：滥用证书透明记录</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/UnaPibaGeek/ctfr.git
+</span></span><span style=display:flex><span>cd ctfr
+</span></span><span style=display:flex><span>pip3 install -r requirements.txt
+</span></span><span style=display:flex><span>python3 ctfr.py -d target.com -o $outfile
+</span></span></code></pre></div><p>Censys_subdomain_enum.py<br>工具描述：提取子域名，从Censys的SSL/TLS证书中收集子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install censys
+</span></span><span style=display:flex><span>git clone https://github.com/appsecco/the-art-of-subdomain-enumeration.git
+</span></span><span style=display:flex><span>python censys_enumeration.py target.com
+</span></span></code></pre></div><p>Cloudflare_enum.py<br>工具描述：从Cloudflare提取子域名 dns聚合器</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install censys
+</span></span><span style=display:flex><span>git clone https://github.com/appsecco/the-art-of-subdomain-enumeration.git
+</span></span><span style=display:flex><span>cloudflare_subdomain_enum.py your@cloudflare.email target.com
+</span></span></code></pre></div><p>Crt_enum_web.py<br>工具描述：解析https://crt.sh/页面的子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install psycopg2
+</span></span><span style=display:flex><span>git clone https://github.com/appsecco/the-art-of-subdomain-enumeration.git
+</span></span><span style=display:flex><span>python3 crtsh_enum_web.py target.com
+</span></span></code></pre></div><p>San_subdomain_enum.py<br>工具描述：SSL/TLS证书中的SAN获取子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/appsecco/the-art-of-subdomain-enumeration.git
+</span></span><span style=display:flex><span>./san_subdomain_enum.py target.com
+</span></span></code></pre></div><h4 id=subject-alternate-name-san-主题备用名称>Subject Alternate Name （SAN）-主题备用名称</h4><p>SAN(Subject Alternate Name)主题备用名称，主题备用名称证书简单来说，在需要多个域名，将其用于各项服务时，可使用SAN证书。<br>允许在安全证书中使用subjectAltName字段将多种值与证书关联，这些值被称为主题备用名称。名称可包括：IP地址、DNS名称等。</p><p>San_subdomain_enum.py<br>工具描述：SSL/TLS证书中的SAN获取子域名 如上。</p><h4 id=public-datasets-公开数据集>Public datasets （公开数据集）</h4><p>有些项目收集了全互联网范围内的扫描数据，并将其提供给研究人员和安全社区。<br>该项目发布的数据集是子域名信息的宝库。<br>虽然在这个庞大的数据集中找到子域名就像大海捞针，但却值得我们去一试。</p><p>Rapid7 Forward DNS dataset (Project Sonar)<br>工具描述：来自rapid7 sonar项目的公共数据集</p><p>数据聚合网站</p><pre tabindex=0><code>https://opendata.rapid7.com/
+</code></pre><h3 id=信息泄漏>信息泄漏</h3><p>信息泄露<br>首先找到目标站点，在官网中可能会找到相关资产（多为办公系统，邮箱系统等），关注一下页面底部，也许有管理后台等收获。</p><p>文件泄漏<br>crossdomain.xml(跨域策略文件cdx) robots.txt</p><p>Git仓库泄露</p><p>从流量中分析提取</p><h3 id=内容解析htmljavascript文件>内容解析（HTML，JavaScript，文件）</h3><p>BiLE-suite<br>工具描述：HTML解析，反向dns解析</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>aptitude install httrack  
+</span></span><span style=display:flex><span>git clone https://github.com/sensepost/BiLE-suite.git
+</span></span><span style=display:flex><span>perl BiLE.pl target.com
+</span></span></code></pre></div><p>Second Order<br>工具描述：第二阶段域名扫描 通过HTML提取子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get xxx.com/mhmdiaa/second-order
+</span></span><span style=display:flex><span>cp ~/go/src/xxx.com/mhmdiaa/second-order/config.json
+</span></span><span style=display:flex><span>~/go/src/xxx.com/mhmdiaa/second-order/config-subs-enum.json
+</span></span></code></pre></div><p>编辑修改LogCrawledURLs为True</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>second-order -base https://target.com -config config.json -output target.com
+</span></span></code></pre></div><h3 id=dns解析>DNS解析</h3><p>在线查询:</p><pre tabindex=0><code>VirusTotal(https://www.virustotal.com/)
+ViewDNS(https://viewdns.info/)
+DNSdumpster(https://dnsdumpster.com/)
+</code></pre><p>BiLE-suite<br>工具描述：HTML解析，反向dns解析 如上。</p><p>Massdns<br>工具描述：dns解析</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/blechschmidt/massdns.git
+</span></span><span style=display:flex><span>cd massdns/
+</span></span><span style=display:flex><span>make
+</span></span></code></pre></div><p>解析域名：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>/bin/massdns -r lists/resolvers.txt -t AAAA -w results.txt domains.txt -o S -w output.txt
+</span></span></code></pre></div><p>爆破域名：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./scripts/subbrute.py wordlist.txt target.com | ./bin/massdns -r lists/resolvers.txt -t A -o S -w output.txt
+</span></span></code></pre></div><p>CT解析：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./scripts/ct.py target.com | ./bin/massdns -r lists/resolvers.txt -t A -o S -w output.txt
+</span></span></code></pre></div><h3 id=区域传送>区域传送</h3><p>域传送是一种DNS事务，DNS服务器将其全部或部分域文件的副本传递给另一个DNS服务器。<br>如果未安全地配置域传输送，则任何人都可以对指定名称的服务器启动域传送并获取域文件的副本。<br>根据设计，域文件包含有关域和保存在域中的大量主机信息。</p><p>Windows：<br>1.nslookup命令进入交互式shell<br>2.server命令 参数设定查询将要使用的DNS服务器<br>3.ls命令列出某个域中的所有域名</p><p>Linux：<br>Dig<br>工具描述：dns区域传送，dns反向解析，dns解析</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>dig +multi AXFR target.com
+</span></span><span style=display:flex><span>dig +multi AXFR $ns_server target.com
+</span></span></code></pre></div><h3 id=dns-aggregators-dns聚合器>DNS aggregators （DNS聚合器）</h3><p>Cloudflare_enum.py<br>工具描述：从Cloudflare提取子域名 dns聚合器</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install censys
+</span></span><span style=display:flex><span>git clone https://xxx.com/appsecco/the-art-of-subdomain-enumeration.git
+</span></span><span style=display:flex><span>cloudflare_subdomain_enum.py your@cloudflare.email<span style=color:#f92672>[</span>4<span style=color:#f92672>]</span> target.com
+</span></span></code></pre></div><h3 id=dns-cache-snooping-域名缓存侦测>DNS Cache Snooping （域名缓存侦测）</h3><p>域名缓存侦测（DNS Cache Snooping）技术<br>在企业网络中，通常都会配置DNS服务器，为网络内的主机提供域名解析服务。<br>这些DNS不仅解析自己的私有域名，还会用递归方式，请求公网的DNS解析第三方域名，如baidu.com之类。<br>为了提升性能，通常会使用缓存记录，记录解析过的域名，尤其是第三方域名。<br>域名缓存侦测（DNS Cache Snooping）技术就是向这些服务器发送域名解析请求，但要求不使用递归模式。<br>这样DNS只能解析私有域名和缓存中保存的域名。<br>借助该项技术，渗透测试人员就知道哪些域名是否被过请求过。<br>例如，测试人员可以提交某安全软件更新所使用的域名，如果有记录，说明该网络使用该种安全软件。</p><h3 id=alterations--permutations-换置--排序>Alterations & permutations (换置 & 排序)</h3><p>AltDNS<br>工具描述：通过换置&排序技术发现子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://xxx.com/infosec-au/altdns.git  
+</span></span><span style=display:flex><span>cd altdns
+</span></span><span style=display:flex><span>pip install -r requirements.txt
+</span></span><span style=display:flex><span>./altdns.py -i subdomains.txt -o data_output -w words.txt -r -s results_output.txt
+</span></span></code></pre></div><h3 id=dnssecdomain-name-system-security-extensionsdns安全扩展dnssec区域漫步>DNSSEC(Domain Name System Security Extensions),DNS安全扩展，DNSSEC区域漫步</h3><p>由于DNSSEC处理不存在域名的方式，您可以"遍历"DNSSEC域并枚举该域中的所有域名。</p><p>Ldns-walk<br>工具描述：DNSSEC zone walking, 如果DNSSEC NSEC开启，可以获得全部域名。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>aptitude install ldnsutils
+</span></span><span style=display:flex><span>ldns-walk target.com
+</span></span><span style=display:flex><span>ldns-walk @nsserver.com target.com
+</span></span></code></pre></div><p>如果DNSSEC NSEC开启，可以获得全部域名。</p><h3 id=csp-http-首部>CSP HTTP 首部</h3><p>Domains-from-csp<br>工具描述：从CSP头提取子域名</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/yamakira/domains-from-csp.git
+</span></span><span style=display:flex><span>pip install click
+</span></span><span style=display:flex><span>python csp_parser.py $URL
+</span></span><span style=display:flex><span>python csp_parser.py $URL -r
+</span></span></code></pre></div><h3 id=spf记录>SPF记录</h3><p>SPF是通过域名的TXT记录来进行设置的，SPF记录列出了所有被授权代表域名发送电子邮件的主机</p><p>Assets-from-spf<br>工具描述：SPF域名记录</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/yamakira/assets-from-spf.git  
+</span></span><span style=display:flex><span>pip install click ipwhois
+</span></span><span style=display:flex><span>python assets_from_spf.py target.com
+</span></span></code></pre></div><h3 id=虚拟主机爆破>虚拟主机爆破</h3><p>vhost-brute<br>工具描述：虚拟主机爆破</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>aptitude install php-curl git clone https://github.com/gwen001/vhost-brute.git
+</span></span></code></pre></div><p>Virtual-host-discovery<br>工具描述：虚拟主机爆破</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/jobertabma/virtual-host-discovery.git
+</span></span><span style=display:flex><span>ruby scan.rb --ip<span style=color:#f92672>=</span>1.1.1.1 --host<span style=color:#f92672>=</span>target.com --output output.txt
+</span></span></code></pre></div><h3 id=asn发现>ASN发现</h3><p>通过域名查询到 ASN，再通过 ASN 查询到所属的所有 ip 范围</p><h3 id=爬虫-scraping抓取>爬虫 Scraping（抓取）</h3><h4 id=泛解析问题>泛解析问题</h4><p>目前最好的解决方式是通过先获取一个绝对不存在域名的响应内容，再遍历获取每个字典对应的子域名的响应内容，通过和不存在域名的内容做相似度比对，来枚举子域名，但这样的实现是以牺牲速度为代价</p><h3 id=tools>Tools</h3><ul><li><p>工具也有很多厉害的，平时我一般使用 OneForALL + ESD + JSfinder 来进行搜集，（ESD 可以加载 layer 的字典，很好用）
+<code>https://github.com/shmilylty/OneForAll</code></p></li><li><p>强大的快速子域枚举工具
+<code>https://github.com/aboul3la/Sublist3r</code></p></li><li><p>Knock子域名获取，可用于查找子域名接管漏洞
+<code>https://github.com/guelfoweb/knock</code></p></li><li><p>一款便捷高效的子域名爆破工具
+<code>https://github.com/yanxiu0614/subdomain3</code></p></li><li><p>Go语言开发的子域名枚举工具
+<code>https://github.com/caffix/amass</code></p></li><li><p>继承于Sublist3r项目的模块化体系结构
+<code>https://github.com/Ice3man543/subfinder</code></p></li><li><p>带有网页截图功能的子可视化域名枚举工具
+<code>https://github.com/janniskirschner/horn3t</code></p></li><li><p>Lijiejie开发的一款使用广泛的子域名爆破枚举工具
+<code>https://github.com/lijiejie/subDomainsBrute</code></p></li><li><p>猪猪侠开发的一款域名收集全面、精准的子域名枚举工具
+<code>https://github.com/ring04h/wydomain</code></p></li></ul><h3 id=子域名监控>子域名监控</h3><p><code>https://github.com/LangziFun/LangSrcCurise</code></p><p><code>https://www.freebuf.com/sectool/198396.html</code></p><h3 id=参考>参考</h3><p><a href=https://mp.weixin.qq.com/s/m8ucI1bDxILM8wLU6pLmoQ>1</a>
+<a href=https://xz.aliyun.com/t/3478>2</a>
+<a href=https://blog.csdn.net/qq_39293438/article/details/104829825>3</a>
+<a href=https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt>4</a></p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></li><li><a href=/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></li><li><a href=/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></li><li><a href=/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></li><li><a href=/article/2024/bandwagonhost_20240130/>搬瓦工49刀GIA和软银限量版补货</a></li></ul></div></div></aside><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
