@@ -1,4 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Golang on 白菜</title><link>https://blog.baicai.me/tags/golang/</link><description>Recent content in Golang on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 30 Jan 2024 15:40:46 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>该机型可选择洛杉矶 DC6 DC9 的 CN2 GIA 机房及日本软银（JPOS_1）线路，配置为512内存,10 GB SSD,500GB月流量，售价为$49.99/年，是当前瓦工还会补货的最经济GIA线路机器。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Golang on 白菜</title><link>https://blog.baicai.me/tags/golang/</link><description>Recent content in Golang on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 19:52:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0b1101&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0b1100&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%b的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="八进制-0o或者0o-表示">八进制 0O或者0o 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">oct&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o1234567&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%o的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="十六进制-0x或者0x-表示">十六进制 0X或者0x 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">hex&lt;/span> = &lt;span style="color:#ae81ff">0x1234&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0xf&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%x的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="进制转换">进制转换&lt;/h3>
+&lt;pre tabindex="0">&lt;code>1. 二进制转八进制 %b -&amp;gt; %o
+2. 二进制转十进制 %b -&amp;gt; %d
+3. 二进制转十六进制 %b -&amp;gt; %x
+4. 八进制转二进制 %o -&amp;gt; %b
+5. 八进制转十进制 %o -&amp;gt; %d
+6. 八进制转十六进制 %o -&amp;gt; %x
+7. 十进制转二进制 %d -&amp;gt; %b
+8. 十进制转八进制 %d -&amp;gt; %o
+9. 十进制转十六进制 %d -&amp;gt; %x
+10. 十六进制转二进制 %x -&amp;gt; %b
+11. 十六进制转八进制 %x -&amp;gt; %o
+12. 十六进制转十进制 %x -&amp;gt; %d
+// 例
+fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>%b 表示为二进制
+%c 该值对应的unicode码值
+%d 表示为十进制
+%o 表示为八进制
+%q 该值对应的单引号括起来的go语法字符字面值，必要时会采用安全的转义表示
+%x 表示为十六进制，使用a-f
+%X 表示为十六进制，使用A-F
+%U 表示为Unicode格式：U+1234，等价于&amp;#34;U+%04X&amp;#34;
+%E 用科学计数法表示
+%f 用浮点数表示
+&lt;/code>&lt;/pre>&lt;p>快速测试
+&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>该机型可选择洛杉矶 DC6 DC9 的 CN2 GIA 机房及日本软银（JPOS_1）线路，配置为512内存,10 GB SSD,500GB月流量，售价为$49.99/年，是当前瓦工还会补货的最经济GIA线路机器。&lt;/p>
 &lt;p>DC6和DC9具有三网回程GIA；去程电信联通走GIA，移动直连，平峰延迟在150ms左右，高峰时期一般不超过200ms。日本软银是直连线路，地利原因延迟较低。而论全天稳定性还是GIA比较可靠。该机器下单时请选择需要的机房，此后切换机房会扣流量。&lt;/p>
 &lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=94">直达地址&lt;/a>&lt;/p>
 &lt;p>循环优惠码：BWHCCNCXVV （6.78%）&lt;/p></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>

@@ -1,9 +1,22 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727159440"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727179300"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/>Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.19 22:28</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/reverse-proxy/>搭建反向代理服务：Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.20 12:06</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/nginx>nginx</a>
+<a href=/tags/proxy>proxy</a>
+<a href=/tags/telegram>telegram</a><div>上面一篇通过nginx和cloudflare workers 搭建的反向代理。
+这一篇通过更简单的代码重下搭建个。
+通过 Cloudflare Workers 搭建反向代理服务 创建 Cloudflare workers 的步骤都是一样的，代码不一样。
+创建一个Worker 在首页选择Workers，若从未创建过则初始化，选择免费套餐，然后创建一个Worker。
+编辑Worker内容 进入worker，点击快速编辑，将代码改为下方内容，其中hostname改为你自己的，然后点击保存部署，并可改名为例如cdn的worker。
+// 这就是需要代理的网址 const hostname = "https://example.domain" // const hostname = "http://192.168.0.1" // const hostname = "https://your.domain" // const hostname = "https://your.domain/api/path" function handleRequest(request) { let url = new URL(request.url); return fetch(new Request(hostname + url.pathname,request)) } addEventListener("fetch", event => { event.respondWith(handleRequest(event.request)) }) 为域名添加DNS 添加路由，配置
+指向步骤1创建的 Worker，到此等待DNS生效即可。
+通过 Vercel 搭建反向代理服务 在github中新建个项目 创建一个文件，命名为 vercel.json 文件内容：
+{ "routes": [ { "src": "/.
+<a href=https://blog.baicai.me/article/2023/reverse-proxy/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/nginx_tgapi_proxy/>Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.19 22:28</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/nginx>nginx</a>
 <a href=/tags/proxy>proxy</a>
@@ -71,10 +84,7 @@ Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是�
 cat /etc/apt/sources.list | grep stable 更新 apt 源，替换 bullseye 为 bookworm：
 sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list.d/*.list 对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：
 sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：
-<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
-<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
-<a href=/tags/linux>linux</a><div>基本命令 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作系统信息 arch 显示机器的处理器架构 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /proc/meminfo 校验内存使用 cat /proc/swaps 显示哪些swap被使用 cat /proc/version 显示内核的版本 cat /proc/net/dev 显示网络适配器及统计 cat /proc/mounts 显示已加载的文件系统 lspci -tv 罗列 PCI 设备 lsusb -tv 显示 USB 设备 date 显示系统日期 cal 2007 显示2007年的日历表 date 041217002007.
-<a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
 3 of 8
 <a href=/page/4/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

@@ -1,9 +1,12 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727159440"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727179300"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/cmd_sqlite/>Mac终端查看sqlite3数据库</a></h1><b><time>2024.09.24 14:23</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
+<a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a>
+<a href=/tags/golang>Golang</a><div>二进制 0B或者0b 表示 var bin1 = 0b1101 package main import "fmt" func main(){ var num01 int = 0b1100 fmt.Printf("%b的十进制为%d", num01,num01) } 八进制 0O或者0o 表示 var oct = 0o1234567 package main import "fmt" func main(){ var num01 int = 0o10 fmt.Printf("%o的十进制为%d", num01,num01) } 十六进制 0X或者0x 表示 var hex = 0x1234 package main import "fmt" func main(){ var num01 int = 0xf fmt.Printf("%x的十进制为%d", num01,num01) } 进制转换 1. 二进制转八进制 %b -> %o 2. 二进制转十进制 %b -> %d 3.
+<a href=https://blog.baicai.me/article/2024/fmt_int/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/cmd_sqlite/>Mac终端查看sqlite3数据库</a></h1><b><time>2024.09.24 14:23</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/mac>mac</a>
 <a href=/tags/sqlite>sqlite</a><div>用sqlite命令打开数据库文件 sqlite3 db.file 这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。
@@ -85,31 +88,7 @@ auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram w
 根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)
 如何判断有没有开启邮箱登录? 在设置-隐私与安全界面，可看到已设置的“登录邮箱”
 参考： Telegram的邮箱登录
-<a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/giffgaff/>Giffgaff 使用手册</a></h1><b><time>2023.12.25 13:21</time></b>
-<a href=/tags/aff>aff</a>
-<a href=/tags/sim>sim</a>
-<a href=/tags/aff_sim>aff_sim</a>
-<a href=/tags/giffgaff>giffgaff</a><div>giffgaff 介绍 giffgaff是来自英国的一家新锐低成本运营商，隶属于英国三大运营商O2旗下，2009年创立，采用了无营业网点，纯线上客服，灵活套餐的特色服务来降低用户成本，特别适合短期游客及英国留学生。它支持全球漫游，在中国也可收发短信，接听电话和上网
-获取渠道 充值就送5磅话费的福利，官网申请通过邀请链接有此项福利！
-giffgaff 漫游资费 20p表示20便士，1便士=0.01英镑，20便士=0.2英镑 漫游上网 = 每兆0.2磅 拨打电话及语音信箱 = 每分钟1磅 接听电话 = 每分钟1磅 发短信 = 每条0.3磅 接收短信免费 Q：哪里可以查到通话记录与账单？
-A：https://www.giffgaff.com/profile/usage-statement，一般是激活后一周后官网里可以看到具体的通话记录与账单
-giffgaff 保号攻略 海外运营商一般都有保号要求，gg卡要求每180天话费余额变动一次，否则号码会被冻结。在国内保号最简单的办法，就是发出一条短信，发给国内外手机号码均可以，每条0.3磅，因此一年消费0.6磅，仅仅不到6元人民币。每次充值或消费后，保号周期从话费余额变动之日起开始计算。首次充值，也属于余额变动，因此在180天内完成保号即可。
-giffgaff 常用功能 查询手机卡号码：编辑短信内容 NUMBER 到 2020
-查询话费余额：拨号界面 输入 *100#
-关闭语音信箱：拨号界面 输入 ##002#
-打开语音信箱：拨号界面 输入 **6144310*20#
-默认PIN：5555 特别提醒：上述功能均可以在国内免费使用哦
-首次充值激活：https://www.giffgaff.com/activate
-登录个人账户/重置密码：https://www.giffgaff.com/auth/login
-查询话费余额/SIM号码：https://www.giffgaff.com/dashboard
-续费充值：https://www.giffgaff.com/top-up
-话费账单查询：https://www.giffgaff.com/profile/usage-statement
-个人资料修改：https://www.giffgaff.com/profile/details
-PUK码申请：https://www.giffgaff.com/help/articles/i-blocked-my-sim-what-can-i-do
-申请换号：https://www.giffgaff.com/profile/details/getnumber
-换SIM卡：https://www.giffgaff.com/support/lost/sim
-邀请注册：https://giffgaff.com/orders/affiliate/clin061_1700809312711
-参考 giffgaff 使用手册</div></article><div>1 of 8
+<a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><div>1 of 8
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

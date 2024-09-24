@@ -1,9 +1,14 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727159440"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727179300"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/debian_version_check/>查看 Debian 系统版本的方式</a></h1><b><time>2022.07.22 11:04</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/create_use1/>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</a></h1><b><time>2022.07.22 14:26</time></b>
+<a href=/tags/postgres>postgres</a><div>系统环境： Debian 11
+切换到超级用户： sudo su postgres 进入psql： psql 创建一个用户： CREATE USER username WITH PASSWORD 'password'; 查看角色列表： \du 创建数据库并制定所有者和编码： CREATE DATABASE dbname WITH OWNER username ENCODING UTF8; 创建一个数据库： CREATE DATABASE dbname; 查看数据库列表： \l 更改刚创建的数据库所有权： ALTER DATABASE dbname OWNER TO username; 删除表字段 要删除一个字段，使用下面这样的命令：
+ALTER TABLE products DROP COLUMN description; 不管字段里有啥数据，都会消失，和这个字段相关的约束也会被删除。不过， 如果这个字段被另一个表的外键约束所引用，PostgreSQL 则不会隐含地删除该约束。你可以通过使用CASCADE指明删除任何依赖该字段的东西：
+ALTER TABLE products DROP COLUMN description CASCADE; 通过psql连接数据库 psql -h 127.0.0.1 -p 5432 -U username -d dbname 备份数据库 pg_dump dbname > dbname.
+<a href=https://blog.baicai.me/article/2022/create_use1/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_version_check/>查看 Debian 系统版本的方式</a></h1><b><time>2022.07.22 11:04</time></b>
 <a href=/tags/debian>debian</a><div>查看 Dibian 系统发行版本号的方式
 1. 使用 lsb_release 命令 lsb_release 命令可用于查看 Linux 发行版操作系统的具体版本。它可能尚未安装在你的操作系统中，因此你需要先安装它。运行以下命令来安装 lsb_release：
 apt-get install lsb-release 安装完成之后，只需要输入下面的命令就可以查看到你当前系统的版本信息：
@@ -75,18 +80,7 @@ Systemd 概述 Systemd 就是为了解决这些问题而诞生的。它的设计
 $ systemctl --version 上面的命令查看 Systemd 的版本。
 使用 systemd 实现开机执行 Shell 脚本 通用操作步骤 创建希望开机马上执行的脚本，本文举例脚本存放位置为 /home/navxin/Example/startup.sh，脚本内容如下：
 #!/bin/bash # 开机时在脚本的同级目录下创建一个名为 StartupTouch.txt 的文件 touch /home/navxin/Example/startup.sh.txt 开机执行的脚本需增加可执行权限才能被 systemd 运行，使用如下命令 chmod u+x /home/navxin/Example/startup.sh chmod g+x /home/navxin/Example/startup.sh 进入 systemd 放置 service 的目录，在该目录下可看到大量服务配置文件，命令如下 # 进入 systemd 的 service 目录 cd /usr/lib/systemd/system # 查看文件列表 ls -al 在该目录创建一个新的 .
-<a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/docker_start/>安装docker及简单的使用</a></h1><b><time>2021.10.05 17:21</time></b>
-<a href=/tags/docker>Docker</a><div>docker的介绍，里面包括了3个基本概念 1.1 docker主要由镜像和容器构成 镜像（Image）:docker镜像好比一个模板，相当于一个文件系统
-容器（Container）:容器需要通过镜像来创建。镜像和容器就像是面向对象中的类和实例一样。容器可以被创建/启动/停止/删除等
-仓库（Repository）:仓库就是存放镜像的地方，分为私有仓库和公有仓库。类似git
-1.2 docker的运行原理 docker是一个Client-Server结构的系统，docker的守护进程运行在主机上，通过socket从客户端访问。dockerServer接收到docker-Client的指令，就会执行这个命令。
-一. Mac 系统 docker 的安装 1.1 homebrew的cask应支持Docker for Mac,所以可以直接安装 brew cask install docker
-1.2 也可以直接到官网下载，https://download.docker.com/mac/stable/Docker.dmg
-1.3 docker的参考文档：https://docs.docker.com
-1.4 dockerhub查找镜像源地址：https://hub.docker.com
-二. docker的使用 1.1 查看版本 docker --version docker-compose --version docker-machine --version 1.2 查看docker系统信息（包括镜像和容器的数量等） docker info 1.3 帮助命令 docker help 1.4 查看 cpu的状况 docker stats 三. docker的基本命令 镜像相关命令：
-1.1 查看镜像可用版本（nginx为例） docker search nginx 1.2 下载一个镜像 docker pull nginx:latest #（：后面跟镜像版本） 1.3 运行一个nginx服务器 docker run -d -p 81:80 --name webserver nginx 可选项：
-<a href=https://blog.baicai.me/article/2021/docker_start/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
 5 of 8
 <a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

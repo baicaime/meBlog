@@ -1,4 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>收集与整理 on 白菜</title><link>https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/</link><description>Recent content in 收集与整理 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 05 Feb 2024 18:58:56 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>收集与整理 on 白菜</title><link>https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/</link><description>Recent content in 收集与整理 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 19:52:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E6%94%B6%E9%9B%86%E4%B8%8E%E6%95%B4%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0b1101&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0b1100&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%b的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="八进制-0o或者0o-表示">八进制 0O或者0o 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">oct&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o1234567&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#a6e22e">o10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%o的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="十六进制-0x或者0x-表示">十六进制 0X或者0x 表示&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">hex&lt;/span> = &lt;span style="color:#ae81ff">0x1234&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">num01&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">0xf&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%x的十进制为%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">num01&lt;/span>,&lt;span style="color:#a6e22e">num01&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="进制转换">进制转换&lt;/h3>
+&lt;pre tabindex="0">&lt;code>1. 二进制转八进制 %b -&amp;gt; %o
+2. 二进制转十进制 %b -&amp;gt; %d
+3. 二进制转十六进制 %b -&amp;gt; %x
+4. 八进制转二进制 %o -&amp;gt; %b
+5. 八进制转十进制 %o -&amp;gt; %d
+6. 八进制转十六进制 %o -&amp;gt; %x
+7. 十进制转二进制 %d -&amp;gt; %b
+8. 十进制转八进制 %d -&amp;gt; %o
+9. 十进制转十六进制 %d -&amp;gt; %x
+10. 十六进制转二进制 %x -&amp;gt; %b
+11. 十六进制转八进制 %x -&amp;gt; %o
+12. 十六进制转十进制 %x -&amp;gt; %d
+// 例
+fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>%b 表示为二进制
+%c 该值对应的unicode码值
+%d 表示为十进制
+%o 表示为八进制
+%q 该值对应的单引号括起来的go语法字符字面值，必要时会采用安全的转义表示
+%x 表示为十六进制，使用a-f
+%X 表示为十六进制，使用A-F
+%U 表示为Unicode格式：U+1234，等价于&amp;#34;U+%04X&amp;#34;
+%E 用科学计数法表示
+%f 用浮点数表示
+&lt;/code>&lt;/pre>&lt;p>快速测试
+&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
 &lt;p>通过收集子域名信息来进行渗透是目前常见的一种手法。
 子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。
 在挖SRC漏洞时，子域名信息的收集至关重要！&lt;/p>
