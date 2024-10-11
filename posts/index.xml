@@ -1,4 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 19:52:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 11 Oct 2024 14:53:59 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker本地镜像的导出、导入 (export,import,save,load)</title><link>https://blog.baicai.me/article/2024/docker_export_import_save_load/</link><pubDate>Fri, 11 Oct 2024 14:53:59 +0800</pubDate><guid>https://blog.baicai.me/article/2024/docker_export_import_save_load/</guid><description>&lt;p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。&lt;/p>
+&lt;h2 id="一使用-export-和-import">一、使用 export 和 import&lt;/h2>
+&lt;h3 id="1查看本机的容器">1，查看本机的容器&lt;/h3>
+&lt;p>使用 &lt;code>docker ps -a&lt;/code> 命令查看本机所有的容器。&lt;/p>
+&lt;h3 id="2导出镜像">2，导出镜像&lt;/h3>
+&lt;p>（1）使用 &lt;code>docker export&lt;/code> 命令根据容器 ID 将镜像导出成一个文件。&lt;/p>
+&lt;p>&lt;code>docker export 镜像ID &amp;gt; server.tar&lt;/code>&lt;/p>
+&lt;p>（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。&lt;/p>
+&lt;h3 id="3导入镜像">3，导入镜像&lt;/h3>
+&lt;p>（1）使用 &lt;code>docker import&lt;/code> 命令则可将这个镜像文件导入进来。&lt;/p>
+&lt;p>&lt;code>docker import - new_server &amp;lt; server.tar&lt;/code>&lt;/p>
+&lt;p>（2）执行 &lt;code>docker images&lt;/code> 命令可以看到镜像确实已经导入进来了。&lt;/p>
+&lt;h2 id="二使用-save-和-load">二、使用 save 和 load&lt;/h2>
+&lt;h3 id="1查看本机的容器-1">1，查看本机的容器&lt;/h3>
+&lt;p>这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 &lt;code>docker images&lt;/code> 命令查看本机所有的镜像。&lt;/p>
+&lt;h3 id="2保存镜像">2，保存镜像&lt;/h3>
+&lt;p>（1）下面使用 &lt;code>docker save&lt;/code> 命令根据 ID 将镜像保存成一个文件。&lt;/p>
+&lt;p>&lt;code>docker save 镜像ID &amp;gt; server.tar&lt;/code>&lt;/p>
+&lt;p>（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：&lt;/p>
+&lt;p>&lt;code>docker save -o images.tar postgres mongo&lt;/code>&lt;/p>
+&lt;h3 id="3载入镜像">3，载入镜像&lt;/h3>
+&lt;p>使用 &lt;code>docker load&lt;/code> 命令则可将这个镜像文件载入进来。&lt;/p>
+&lt;p>&lt;code>docker load &amp;lt; server.tar&lt;/code>&lt;/p>
+&lt;h2 id="附两种方案的差别">附：两种方案的差别&lt;/h2>
+&lt;p>特别注意：两种方法不可混用。&lt;br>
+如果使用 &lt;code>import&lt;/code> 导入 &lt;code>save&lt;/code> 产生的文件，虽然导入不提示错误，但是启动容器时会提示失败，会出现类似&amp;quot;docker: Error response from daemon: Container command not found or does not exist&amp;quot;的错误。&lt;/p>
+&lt;h3 id="1文件大小不同">1，文件大小不同&lt;/h3>
+&lt;p>export 导出的镜像文件体积小于 save 保存的镜像&lt;/p>
+&lt;h3 id="2是否可以对镜像重命名">2，是否可以对镜像重命名&lt;/h3>
+&lt;p>docker import 可以为镜像指定新名称
+docker load 不能对载入的镜像重命名&lt;/p>
+&lt;h3 id="3是否可以同时将多个镜像打包到一个文件中">3，是否可以同时将多个镜像打包到一个文件中&lt;/h3>
+&lt;p>docker export 不支持
+docker save 支持&lt;/p>
+&lt;h3 id="4是否包含镜像历史">4，是否包含镜像历史&lt;/h3>
+&lt;p>export 导出（import 导入）是根据容器拿到的镜像，再导入时会丢失镜像所有的历史记录和元数据信息（即仅保存容器当时的快照状态），所以无法进行回滚操作。&lt;/p>
+&lt;p>save 保存（load 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。&lt;/p>
+&lt;h3 id="5应用场景不同">5，应用场景不同&lt;/h3>
+&lt;p>docker export 的应用场景：主要用来制作基础镜像，比如我们从一个 ubuntu 镜像启动一个容器，然后安装一些软件和进行一些设置后，使用 docker export 保存为一个基础镜像。然后，把这个镜像分发给其他人使用，比如作为基础的开发环境。&lt;/p>
+&lt;p>docker save 的应用场景：如果我们的应用是使用 docker-compose.yml 编排的多个镜像组合，但我们要部署的客户服务器并不能连外网。这时就可以使用 docker save 将用到的镜像打个包，然后拷贝到客户服务器上使用 docker load 载入。&lt;/p></description></item><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0b1101&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>

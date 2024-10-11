@@ -1,9 +1,23 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727179400"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1728630593"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Docker本地镜像的导出、导入 (export,import,save,load)</a></h1><b><time>2024.10.11 14:53</time></b>
+<a href=/tags/docker>Docker</a><div>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。
+一、使用 export 和 import 1，查看本机的容器 使用 docker ps -a 命令查看本机所有的容器。
+2，导出镜像 （1）使用 docker export 命令根据容器 ID 将镜像导出成一个文件。
+docker export 镜像ID > server.tar
+（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。
+3，导入镜像 （1）使用 docker import 命令则可将这个镜像文件导入进来。
+docker import - new_server &lt; server.tar
+（2）执行 docker images 命令可以看到镜像确实已经导入进来了。
+二、使用 save 和 load 1，查看本机的容器 这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 docker images 命令查看本机所有的镜像。
+2，保存镜像 （1）下面使用 docker save 命令根据 ID 将镜像保存成一个文件。
+docker save 镜像ID > server.tar
+（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：
+docker save -o images.
+<a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
 <a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a>
 <a href=/tags/golang>Golang</a><div>二进制 0B或者0b 表示 var bin1 = 0b1101 package main import "fmt" func main(){ var num01 int = 0b1100 fmt.Printf("%b的十进制为%d", num01,num01) } 八进制 0O或者0o 表示 var oct = 0o1234567 package main import "fmt" func main(){ var num01 int = 0o10 fmt.Printf("%o的十进制为%d", num01,num01) } 十六进制 0X或者0x 表示 var hex = 0x1234 package main import "fmt" func main(){ var num01 int = 0xf fmt.Printf("%x的十进制为%d", num01,num01) } 进制转换 1. 二进制转八进制 %b -> %o 2. 二进制转十进制 %b -> %d 3.
 <a href=https://blog.baicai.me/article/2024/fmt_int/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/cmd_sqlite/>Mac终端查看sqlite3数据库</a></h1><b><time>2024.09.24 14:23</time></b>
@@ -78,17 +92,7 @@ DC6和DC9具有三网回程GIA；去程电信联通走GIA，移动直连，平�
 NextDNS 是一款强大而智能的域名解析服务，它能够在网络浏览时保护您的设备和个人信息安全。通过将域名解析引擎与广泛的安全性和隐私保护功能相结合，NextDNS 为用户提供了一个全方位的解决方案，确保他们在互联网上的安全与隐私。
 这款工具的优势在于其简单易用的界面和高度定制化的功能。用户可以根据自己的需求配置和管理其安全策略，从而实现对广告屏蔽、恶意软件防护、成人内容过滤等方面的精准控制。此外，NextDNS 还提供了详尽的统计数据和报告，帮助用户了解其网络流量和潜在威胁，让用户更好地保护自己的网络安全。
 值得一提的是，NextDNS 不仅适用于个人用户，也可以为企业和组织提供全面的网络安全保护。其灵活的部署方式和多样化的功能使其成为了企业级网络安全解决方案的首选。
-总的来说，NextDNS 是一款功能强大、易于使用且高度可定制化的网络安全工具。无论是普通用户还是企业用户，都能从其提供的全面安全保护中受益。如果您在寻找一个能够确保您在互联网上安全浏览和保护隐私的工具，NextDNS 绝对是一个值得考虑的选择。</div></article><article><h1><a href=https://blog.baicai.me/article/2023/telegram_email_login/>开启 Telegram 的邮箱登录</a></h1><b><time>2023.12.26 15:00</time></b>
-<a href=/tags/telegram>telegram</a>
-<a href=/tags/email>Email</a><div>Telegram的邮箱登录是什么? 有什么用? 邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!
-如何开启Telegram邮箱登录? 注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录
-根据官方文档来看,
-auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram will ask the user to verify an email that will be used to send the login code. 当你的登录频率足够高时, Telegram服务器会要求客户端设置邮箱登录 具体方法 使用Telegram官方移动客户端登录, 登录时选择 Tap to get a code via SMS 短信验证码和Telegram客户端验证码一致, 任选其一输入即可, 不需要输入2FA密码, 直接返回重新刷 如果过程中出现 Too many attemps, please try again later 则需要休息一段时间再刷
-直到出现让你选择登录邮箱的提示界面
-根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)
-如何判断有没有开启邮箱登录? 在设置-隐私与安全界面，可看到已设置的“登录邮箱”
-参考： Telegram的邮箱登录
-<a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><div>1 of 8
+总的来说，NextDNS 是一款功能强大、易于使用且高度可定制化的网络安全工具。无论是普通用户还是企业用户，都能从其提供的全面安全保护中受益。如果您在寻找一个能够确保您在互联网上安全浏览和保护隐私的工具，NextDNS 绝对是一个值得考虑的选择。</div></article><div>1 of 8
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

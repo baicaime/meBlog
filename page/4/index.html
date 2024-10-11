@@ -1,9 +1,18 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1727179400"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1728630593"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
+<a href=/tags/debian>debian</a><div>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。
+准备工作 一定要备份重要数据！
+以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作
+Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。
+检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye
+cat /etc/apt/sources.list | grep stable 更新 apt 源，替换 bullseye 为 bookworm：
+sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list.d/*.list 对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：
+sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：
+<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/linux>linux</a><div>基本命令 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作系统信息 arch 显示机器的处理器架构 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /proc/meminfo 校验内存使用 cat /proc/swaps 显示哪些swap被使用 cat /proc/version 显示内核的版本 cat /proc/net/dev 显示网络适配器及统计 cat /proc/mounts 显示已加载的文件系统 lspci -tv 罗列 PCI 设备 lsusb -tv 显示 USB 设备 date 显示系统日期 cal 2007 显示2007年的日历表 date 041217002007.
 <a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/mac_cmd/>Mac 常用命令</a></h1><b><time>2023.03.31 22:54</time></b>
@@ -60,14 +69,7 @@ Debian 安装完成后更新硬件驱动 在设置——》关于——〉更新
 Operating System: Debian GNU/Linux 11 (bullseye) Kernel: Linux 5.10.0-18-amd64 Architecture: x86-64 通过Debian官方软件仓库安装 # 更新软件源 并 安装 docker及相关应用 sudo apt update && sudo apt install -y docker docker.io docker-compose # 查看docker运行状态 sudo systemctl status docker # 查看docker信息 sudo docker info # 验证是否安装成功 sudo docker run hello-world 镜像加速器 访问 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 获取自己的阿里云镜像加速器地址
 修改 /etc/docker/daemon.json
 sudo mkdir -p /etc/docker sudo tee /etc/docker/daemon.json &lt;&lt;-'EOF' { "max-concurrent-downloads": 3, "max-concurrent-uploads": 3, "max-download-attempts": 3, "registry-mirrors": ["https://修改为自己的.mirror.aliyuncs.com","https://hub-mirror.c.163.com","https://registry.aliyuncs.com"] } EOF sudo systemctl daemon-reload sudo systemctl restart docker 清理docker对象 prune 命令用来删除不再使用的 docker 对象。
-<a href=https://blog.baicai.me/article/2022/debian_install_docker/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/nginx_autoindex_conf/>nginx 启用目录索引，显示文件列表</a></h1><b><time>2022.07.23 23:52</time></b>
-<a href=/tags/nginx>nginx</a><div>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。
-但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。
-官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html server { listen 80; ... ... location /index_dir { autoindex on; } } 除了简单地使用自动索引打开或关闭之外，还可以对其做其他的配置，包括：
-autoindex_exact_size; 显示输出的确切文件大小，还是最接近的KB，MB或GB。默认为on，显示出文件的确切大小，单位是bytes。改为off后，显示出文件的大概大小，单位是kB或者MB或者GB。 autoindex_format; 该指令指定Nginx索引列表应以什么格式输出。该指令有4个选项：html/xml/json/jsonp。 autoindex_localtime; 显示的文件时间为GMT时间。 注意:改为on后，显示的文件时间为文件的服务器时间。 使用这几个配置后配置内容类似于如下内容：
-location /index_dir/ { root /data/index_dir/; autoindex on; autoindex_exact_size off; autoindex_format html; autoindex_localtime on; } 如果有中文目录的话会出现乱码问题，所以还需要在下面添加这一句：
-charset utf-8; 或
-charset utf-8,gbk;</div></article><div><a href=/page/3/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2022/debian_install_docker/>Read more...</a></div></article><div><a href=/page/3/>Previous Page</a>
 4 of 8
 <a href=/page/5/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
