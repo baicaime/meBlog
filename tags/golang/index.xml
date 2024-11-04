@@ -54,18 +54,7 @@ fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
 %E 用科学计数法表示
 %f 用浮点数表示
 &lt;/code>&lt;/pre>&lt;p>快速测试
-&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>中国电信/联通 CN2 GIA
-中国移动 CMIN2&lt;/p>
-&lt;p>方案配置：
-硬盘：20 GB SSD
-内存：1 GB
-CPU：1 核
-流量：1000 GB/月
-带宽：2.5Gbps&lt;/p>
-&lt;p>价格：$53.00 USD/年
-优惠后：$49.41 USD/年&lt;/p>
-&lt;p>优惠码：BWHCGLUKKB&lt;/p>
-&lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=149">直达地址&lt;/a>&lt;/p></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
 &lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
 &lt;p>参考 Dockerfile 如下：&lt;/p>
 &lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
