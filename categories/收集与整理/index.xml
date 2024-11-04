@@ -321,10 +321,18 @@ Dig&lt;br>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/m8ucI1bDxILM8wLU6pLmoQ">1&lt;/a>
 &lt;a href="https://xz.aliyun.com/t/3478">2&lt;/a>
 &lt;a href="https://blog.csdn.net/qq_39293438/article/details/104829825">3&lt;/a>
-&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>该机型可选择洛杉矶 DC6 DC9 的 CN2 GIA 机房及日本软银（JPOS_1）线路，配置为512内存,10 GB SSD,500GB月流量，售价为$49.99/年，是当前瓦工还会补货的最经济GIA线路机器。&lt;/p>
-&lt;p>DC6和DC9具有三网回程GIA；去程电信联通走GIA，移动直连，平峰延迟在150ms左右，高峰时期一般不超过200ms。日本软银是直连线路，地利原因延迟较低。而论全天稳定性还是GIA比较可靠。该机器下单时请选择需要的机房，此后切换机房会扣流量。&lt;/p>
-&lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=94">直达地址&lt;/a>&lt;/p>
-&lt;p>循环优惠码：BWHCCNCXVV （6.78%）&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>搬瓦工49刀GIA和软银限量版补货</title><link>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</link><pubDate>Tue, 30 Jan 2024 15:40:46 +0800</pubDate><guid>https://blog.baicai.me/article/2024/bandwagonhost_20240130/</guid><description>&lt;p>中国电信/联通 CN2 GIA
+中国移动 CMIN2&lt;/p>
+&lt;p>方案配置：
+硬盘：20 GB SSD
+内存：1 GB
+CPU：1 核
+流量：1000 GB/月
+带宽：2.5Gbps&lt;/p>
+&lt;p>价格：$53.00 USD/年
+优惠后：$49.41 USD/年&lt;/p>
+&lt;p>优惠码：BWHCGLUKKB&lt;/p>
+&lt;p>&lt;a href="https://bandwagonhost.com/aff.php?aff=73526&amp;amp;pid=149">直达地址&lt;/a>&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
 &lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
