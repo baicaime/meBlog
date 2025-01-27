@@ -1,5 +1,5 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1730688341"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1737949006"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -76,6 +76,6 @@ wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixi
 docker pull postgres 创建 docker volume，名字为“dv_pgdata"（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）： docker volume create dv_pgdata 启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面： docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=xxxxxx -p 5432:5432 -d postgres 这时候查看已存在的docker volume: docker volume ls 查看volume信息： cn2d6@navxin-desktop:~$ docker inspect dv_pgdata 在宿主机，也可以直接查看volume里的内容： cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data cn2d6@navxin-desktop:~$ ll 查看postgresql： cn2d6@navxin-desktop:~$docker exec -it 618 bash root@618f1a4128ee:/# psql -U postgres -d postgres -p 5432 -h 127.0.0.1 更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。 docker pull dpage/pgadmin4 docker run --name pgadmin -p 5080:80 \ -e 'PGADMIN_DEFAULT_EMAIL=hi@nav.
 <a href=https://blog.baicai.me/article/2021/docker_postgres/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
 5 of 8
-<a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2024 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
