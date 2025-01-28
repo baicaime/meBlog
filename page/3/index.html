@@ -1,9 +1,20 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1737949006"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1738035997"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/translations/>Telegram 界面自定义翻译</a></h1><b><time>2023.09.21 00:01</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></h1><b><time>2023.09.28 20:29</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/k3s>k3s</a>
+<a href=/tags/kubernetes>Kubernetes</a>
+<a href=/tags/kubectl>kubectl</a><div>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。
+不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。
+参考入门指南和多云解决方案，重新整理
+目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群
+Server安装 # 局域网方案 curl -sfL https://get.k3s.io | sh - # 多云安装方案 curl -sfL https://get.k3s.io | sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native 中国用户，可以使用以下方法加速安装：
+# 局域网方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh - # 多云安装方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native --flannel-external-ip 运行此安装后：
+K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。 将安装其他实用程序，包括 ```kubectl```、```crictl```、```ctr```、```k3s-killall.sh``` 和 ```k3s-uninstall.sh```。 kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装的 kubectl 将自动使用该文件。 安装其他 Agent 节点 安装其他 Agent 节点并将它们添加到集群，请使用 K3S_URL 和 K3S_TOKEN 环境变量运行安装脚本
+<a href=https://blog.baicai.me/article/2023/quick_start/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/translations/>Telegram 界面自定义翻译</a></h1><b><time>2023.09.21 00:01</time></b>
 <a href=/tags/telegram>telegram</a>
 <a href=/tags/%E6%B1%89%E5%8C%96>汉化</a>
 <a href=/tags/%E8%AF%AD%E8%A8%80%E5%8C%85>语言包</a><div>语言包的获取方法 进入官网翻译界面 https://translations.telegram.org
@@ -73,19 +84,8 @@ ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准
 Host X HostName 0.0.0.1 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_1 Host Y HostName 0.0.0.2 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_2 Host test HostName 0.
 <a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/urltest-urltest/>检查网络延时测试 URL 汇总，可用于软件测试延时</a></h1><b><time>2023.08.28 23:04</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a><div>服务提供者 链接 大陆体验 境外体验 http/https IP Version 备注 Google http://www.gstatic.com/generate_204 5 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google-analytics.com/generate_204 6 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google.com/generate_204 0 10 204/204 4+6 Google网络联通性测试地址 Google http://connectivitycheck.gstatic.com/generate_204 4 10 204/204 4+6 Google网络联通性测试地址 Apple http://captive.apple.com 3 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 Apple http://www.apple.com/library/test/success.html 7 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 MicroSoft http://www.msftconnecttest.com/connecttest.txt 5 10 200/error 4 微软的网络联通性测试地址 Cloudflare http://cp.cloudflare.com/generate_204 4 10 204/204 4+6 Cloudflare的联通性测试地址 Firefox http://detectportal.
-<a href=https://blog.baicai.me/article/2023/urltest-urltest/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Hugo + GitHub Action + Github Pages，搭建博客自动发布</a></h1><b><time>2023.08.13 11:31</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/hugo>hugo</a>
-<a href=/tags/github-action>github action</a>
-<a href=/tags/bash>bash</a>
-<a href=/tags/blog>blog</a><div>我的方案由以下两个核心部分：
-博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。 GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。 使用 Hugo 搭建博客 Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。
-安装 Hugo 我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。
-brew install hugo 完成后，使用以下命令进行验证(查看版本号)：
-hugo version 创建 Hugo 网站 hugo new site blog-demo 配置主题 创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。
-cd blog-demo git clone git@github.com:colorchestra/smol.git themes/smol cd themes/smol rm -rf .
-<a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
-3 of 8
+<a href=https://blog.baicai.me/article/2023/urltest-urltest/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
+3 of 9
 <a href=/page/4/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WifiCall on 白菜</title><link>https://blog.baicai.me/tags/wificall/</link><description>Recent content in WifiCall on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 28 Jan 2025 11:38:45 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/wificall/index.xml" rel="self" type="application/rss+xml"/><item><title>Giffgaff 打开 wificall 的操作步骤及分流规则</title><link>https://blog.baicai.me/article/2025/giffgaff_wificall/</link><pubDate>Tue, 28 Jan 2025 11:38:45 +0800</pubDate><guid>https://blog.baicai.me/article/2025/giffgaff_wificall/</guid><description>&lt;p>打开wificall的好处：可以使用英国本地资费，免费接电话。&lt;/p>
+&lt;h3 id="ios需要运营商刷到580版本或者ios174以上版本">ios:需要运营商刷到58.0版本，或者ios17.4以上版本&lt;/h3>
+&lt;ul>
+&lt;li>关闭wifi和wificall开关&lt;/li>
+&lt;li>打开飞行模式&lt;/li>
+&lt;li>关闭你的国内运营商&lt;/li>
+&lt;li>打开你的wifi&lt;/li>
+&lt;li>全局连接英国节点，或走规则&lt;/li>
+&lt;li>打开giffgaff的wificall开关，正常就可以连接上了，成功为运营商名字变成giffgaff&lt;/li>
+&lt;li>可以解除飞行模式和正常打开你的国内运营商了&lt;/li>
+&lt;/ul>
+&lt;h3 id="安卓origin-os系统">安卓:origin os系统&lt;/h3>
+&lt;ul>
+&lt;li>打开wificall开关&lt;/li>
+&lt;li>全局连接英国节点，或走规则&lt;/li>
+&lt;li>正常就可以直接连上wificall&lt;/li>
+&lt;/ul>
+&lt;h3 id="分流规则">分流规则&lt;/h3>
+&lt;pre tabindex="0">&lt;code># 地区检测
+DOMAIN-SUFFIX, gspe1-ssl.ls.apple.com
+# 沃达丰
+DOMAIN-SUFFIX, epdg.epc.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, entsrv-uk.vodafone.com
+DOMAIN-SUFFIX, vuk-gto.prod.ondemandconnectivity.com
+IP-CIDR,88.82.0.0/19
+# CMLinkUK EE
+IP-CIDR,46.68.0.0/17
+# Giffgaff
+IP-CIDR,87.194.0.0/16
+&lt;/code>&lt;/pre>&lt;p>或&lt;/p>
+&lt;pre tabindex="0">&lt;code> # 地区检测
+- &amp;#39;DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com,WifiCall&amp;#39;
+# 沃达丰
+- &amp;#39;DOMAIN-SUFFIX,epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&amp;#39;
+- &amp;#39;DOMAIN-SUFFIX,ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&amp;#39;
+- &amp;#39;DOMAIN-SUFFIX,ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&amp;#39;
+- &amp;#39;DOMAIN-SUFFIX,entsrv-uk.vodafone.com,WifiCall&amp;#39;
+- &amp;#39;DOMAIN-SUFFIX,vuk-gto.prod.ondemandconnectivity.com,WifiCall&amp;#39;
+- &amp;#39;IP-CIDR,88.82.0.0/19,WifiCall,no-resolve&amp;#39;
+# CMLinkUK EE
+- &amp;#39;IP-CIDR,46.68.0.0/17,WifiCall,no-resolve&amp;#39;
+# Giffgaff
+- &amp;#39;IP-CIDR,87.194.0.0/16,WifiCall,no-resolve&amp;#39;
+&lt;/code>&lt;/pre>&lt;p>节点需要支持UDP!!! wificall走的UDP的500和4500端口&lt;/p></description></item></channel></rss>

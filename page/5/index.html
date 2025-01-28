@@ -1,9 +1,15 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1737949006"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1738035997"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/nginx_autoindex_conf/>nginx 启用目录索引，显示文件列表</a></h1><b><time>2022.07.23 23:52</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_docker/>安装docker</a></h1><b><time>2022.09.30 00:38</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/debian>Debian</a><div>运行环境
+Operating System: Debian GNU/Linux 11 (bullseye) Kernel: Linux 5.10.0-18-amd64 Architecture: x86-64 通过Debian官方软件仓库安装 # 更新软件源 并 安装 docker及相关应用 sudo apt update && sudo apt install -y docker docker.io docker-compose # 查看docker运行状态 sudo systemctl status docker # 查看docker信息 sudo docker info # 验证是否安装成功 sudo docker run hello-world 镜像加速器 访问 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 获取自己的阿里云镜像加速器地址
+修改 /etc/docker/daemon.json
+sudo mkdir -p /etc/docker sudo tee /etc/docker/daemon.json &lt;&lt;-'EOF' { "max-concurrent-downloads": 3, "max-concurrent-uploads": 3, "max-download-attempts": 3, "registry-mirrors": ["https://修改为自己的.mirror.aliyuncs.com","https://hub-mirror.c.163.com","https://registry.aliyuncs.com"] } EOF sudo systemctl daemon-reload sudo systemctl restart docker 清理docker对象 prune 命令用来删除不再使用的 docker 对象。
+<a href=https://blog.baicai.me/article/2022/debian_install_docker/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/nginx_autoindex_conf/>nginx 启用目录索引，显示文件列表</a></h1><b><time>2022.07.23 23:52</time></b>
 <a href=/tags/nginx>nginx</a><div>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。
 但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。
 官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html server { listen 80; ... ... location /index_dir { autoindex on; } } 除了简单地使用自动索引打开或关闭之外，还可以对其做其他的配置，包括：
@@ -69,13 +75,8 @@ $ dmesg | grep amd > amd.txt $ cat amd.txt [ 0.897] amd_uncore: 4 amd_df counter
 <a href=/tags/weixin>weixin</a><div>介绍 由于微信官网 https://weixin.qq.com/ 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。
 安装方法 打开优麒麟应用商店官网，然后下载应用，就看到微信了 https://www.ubuntukylin.com/applications/106-cn.html 下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。 这是linux原生的，功能少点，但比wine的要轻巧不少。
 安装方法2 下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——> “复制链接” 终端下载Deb安装：
-wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb" sudo dpkg -i ~/weixin.deb</div></article><article><h1><a href=https://blog.baicai.me/article/2021/docker_postgres/>Docker 运行 postgreSQL</a></h1><b><time>2021.12.09 14:19</time></b>
-<a href=/tags/docker>Docker</a>
-<a href=/tags/postgres>postgres</a><div>简单步骤 安装docker，可参考 安装docker及简单的使用 或 百度解决；
-拉取postgreSQL的docker镜像文件：
-docker pull postgres 创建 docker volume，名字为“dv_pgdata"（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）： docker volume create dv_pgdata 启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面： docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=xxxxxx -p 5432:5432 -d postgres 这时候查看已存在的docker volume: docker volume ls 查看volume信息： cn2d6@navxin-desktop:~$ docker inspect dv_pgdata 在宿主机，也可以直接查看volume里的内容： cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data cn2d6@navxin-desktop:~$ ll 查看postgresql： cn2d6@navxin-desktop:~$docker exec -it 618 bash root@618f1a4128ee:/# psql -U postgres -d postgres -p 5432 -h 127.0.0.1 更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。 docker pull dpage/pgadmin4 docker run --name pgadmin -p 5080:80 \ -e 'PGADMIN_DEFAULT_EMAIL=hi@nav.
-<a href=https://blog.baicai.me/article/2021/docker_postgres/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
-5 of 8
+wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb" sudo dpkg -i ~/weixin.deb</div></article><div><a href=/page/4/>Previous Page</a>
+5 of 9
 <a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
