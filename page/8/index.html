@@ -1,9 +1,18 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740134344"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740152708"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/toml/>TOML 语言规范 1.0 正式版</a></h1><b><time>2021.06.05 02:59</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/awk-nginx-access_log/>awk 分析 nginx 运行日志常用指令</a></h1><b><time>2021.06.05 10:16</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/awk>awk</a><div>awk 分析 nginx 运行日志常用指令
+1.独立IP
+awk '{print $1}' access.log | sort -r |uniq -c | wc -l 2.统计PV
+awk '{print $6}' access.log | wc -l 3.查询访问最频繁的URL
+awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more 4.查询访问最频繁的IP
+awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more 5.UV统计：
+awk '{print $6}' access.log | sort -r |uniq -c |wc -l 6.按小时统计
+cat access.log |awk '{print $4}' | awk -F ':' '{print $1,$2}'|uniq -c | awk '{print $2" "$3" "$1}'</div></article><article><h1><a href=https://blog.baicai.me/article/2021/toml/>TOML 语言规范 1.0 正式版</a></h1><b><time>2021.06.05 02:59</time></b>
 <a href=/tags/toml>TOML</a>
 <a href=/tags/rust>Rust</a><div>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。
 👉 本文来自 toml-lang 的中文翻译版本，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。
@@ -78,22 +87,7 @@ let maximumNumberOfLoginAttempts = 10 var currentLoginAttempt = 0 // 类型注�
 我花了一个星期的时间在笔记本电脑上编写 Go 程序。我经常在我的 x86 服务器上测试程序，清除错误并使程序健壮起来，一切都很顺利。
 直到完全转换到 Go 程序前，我继续依赖自己的 shell 脚本。然后，我将二进制文件推送到中央文件服务器上，以便每次配置新服务器时，我要做的就是获取二进制文件，将可执行标志打开，然后运行二进制文件。我对早期的结果很满意：
 $ wget http://file.example.com/&lt;myuser>/bins/prepnode $ chmod +x ./prepnode $ ./prepnode 然后，出现了一个问题
-<a href=https://blog.baicai.me/article/2021/go_cross_compilling/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_screen/>Linux/Mac 使用 GNU Screen 的小技巧</a></h1><b><time>2021.05.13 12:50</time></b>
-<a href=/tags/screen>screen</a>
-<a href=/tags/linux>linux</a>
-<a href=/tags/mac>Mac</a>
-<a href=/tags/gnu-screen>GNU Screen</a><div>学习基本的 GNU Screen 终端复用技术，然后下载我们的终端命令备忘录，以便你能够熟悉常用的快捷方式。
-对于一般用户而言，命令行终端窗口可能是令人困惑和神秘的。但随着你对 Linux 终端的进一步了解，你很快就会意识到它的高效和强大。不过，也不需要很长时间，你就会想让终端变得更加高效，除了将更多的终端放到你的终端，还有什么高好的方法能够提升你的终端效率呢？
-终端复用 终端的许多优点之一是它是一个集中控制的界面。它是一个能让你访问数百个应用程序的窗口，而你与每一个应用程序进行交互所需要的只是一个键盘。但是，现代计算机几乎总是有多余的处理能力，而且现代计算机专家喜欢多任务处理，导致一个窗口处理数百个应用程序的能力是相当有限的。
-解决这一问题的常见答案是终端复用：即将虚拟终端叠放在一起，然后在它们之间移动的能力。通过终端复用器，你保持了集中控制，但是当你进行多任务时，你能够进行终端切换。更好的是，你能够在终端中拆分屏幕，使得在同一时间显示多个屏幕窗口。
-选择合适的复用器 一些终端提供类似的功能，有标签式界面和分割式视图，但也有细微的差别。首先，这些终端的功能依赖于图形化的桌面环境。其次，许多图形化的终端功能需要鼠标交互或使用不方便的键盘快捷键。终端复用器的功能在文本控制台上和在图形桌面上一样好用，而且键位绑定是针对常见的终端序列设计的，很方便。
-现有两种流行的复用器：tmux 和 GNU Screen。尽管你与它们互动的方式略有不同，但它们做同样的事情，而且大多具有相同的功能。这篇文章是 GNU Screen 的入门指南。关于 tmux 的相关介绍，请阅读 Kevin Sonney 的 tmux 介绍。
-使用 GNU Screen GNU Screen 的基本用法很简单，通过 screen 命令启动，你将进入 Screen 会话的第 0 个窗口。在你决定需要一个新的终端提示符前，你可能很难注意到有什么变化。
-当一个终端窗口被某项活动占用（比如，你启动了文本编辑器 Vim 或 Jove 或者你在处理音视频，或运行批处理任务），你可以新建一个窗口。要打开一个新的窗口，按 Ctrl+A，释放，然后按 c。这将在你现有窗口的基础上创建一个新的窗口。
-你会知道当前你是在一个新的窗口中，因为你的终端除了默认的提示符外，似乎没有任何东西。当然，你的另一个终端仍然存在，它只是躲在新窗口的后面。要遍历打开的窗口，按 Ctrl+A，释放，然后按 n（表示下一个）或按 p（表示上一个）。在只打开两个窗口的情况下， n 和 p 的功能是一样的，但你可以随时打开更多的窗口（Ctrl+A，然后 c ），并在它们之间切换。
-分屏 GNU Screen 的默认行为更像移动设备的屏幕，而不是桌面：你一次只能看到一个窗口。如果你因为喜欢多任务而使用 GNU Screen ，那么只关注一个窗口可能看起来是一种退步。幸运的是，GNU Screen 可以让你把终端分成窗口中的窗口。
-要创建一个水平分割窗口，按 Ctrl+A，然后按 s 。这将把一个窗口置于另一个窗口之上，就像窗格一样。然而，在你告诉它要显示什么之前，分割的空间是没有用途的。因此，在创建一个分割窗后，你可以用 Ctrl+A ，然后用 Tab 移动到分割窗中。一旦进入，使用 Ctrl+A 然后 n 浏览所有可用的窗口，直到你想显示的内容出现在分割窗格中。
-<a href=https://blog.baicai.me/article/2021/linux_screen/>Read more...</a></div></article><div><a href=/page/7/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2021/go_cross_compilling/>Read more...</a></div></article><div><a href=/page/7/>Previous Page</a>
 8 of 9
 <a href=/page/9/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

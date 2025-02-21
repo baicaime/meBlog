@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ifconfig on 白菜</title><link>https://blog.baicai.me/tags/ifconfig/</link><description>Recent content in ifconfig on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 23:31:24 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/ifconfig/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
+&lt;h3 id="编辑配置文件">编辑配置文件：&lt;/h3>
+&lt;p>&lt;code>sudo nano /etc/network/interfaces&lt;/code>&lt;/p>
+&lt;h3 id="添加多个ip地址">添加多个IP地址：&lt;/h3>
+&lt;p>在相应的网络接口下添加多个IP地址。例如：&lt;/p>
+&lt;pre tabindex="0">&lt;code>iface enp30 inet static
+address 192.168.0.250
+netmask 255.255.255.0
+gateway 192.168.0.1
+iface enp30 inet static
+address 192.168.0.251
+netmask 255.255.255.0
+&lt;/code>&lt;/pre>&lt;h3 id="重启网络服务">重启网络服务：&lt;/h3>
+&lt;p>保存文件并退出后，重启网络服务：&lt;/p>
+&lt;p>&lt;code>sudo systemctl restart networking&lt;/code>&lt;/p>
+&lt;h3 id="检查配置">检查配置&lt;/h3>
+&lt;p>通过以下命令验证多IP地址是否已成功添加：&lt;/p>
+&lt;p>&lt;code>ip addr show enp30&lt;/code>&lt;/p>
+&lt;p>这将显示 enp30 接口的所有IP地址。你应该能看到你配置的多个IP地址。&lt;/p>
+&lt;h2 id="临时配置多个ip地址">临时配置多个IP地址&lt;/h2>
+&lt;p>为 enp30 接口添加一个新的IP 192.168.0.251
+执行以下命令：
+&lt;code>ip addr add 192.168.0.251/24 dev enp30&lt;/code>
+这操作是临时的，重启后会丢失。&lt;/p></description></item></channel></rss>

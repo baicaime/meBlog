@@ -1,9 +1,22 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740134344"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740152708"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>跨域方案Nginx配置</a></h1><b><time>2021.07.01 18:58</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/qbittorrent/>Ubuntu安装 qbittorrent-nox并启动</a></h1><b><time>2021.07.02 21:01</time></b>
+<a href=/tags/qbittorrent>qBittorrent</a>
+<a href=/tags/ubuntu>Ubuntu</a>
+<a href=/tags/bt>bt</a><div>Qbittorrent-Nox 要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。
+注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用
+安装qbittorrent 安装add-apt-repository命令 sudo apt-get update && sudo apt-get install software-properties-common -y 添加qbittorrent-nox的PPA软件源 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable 安装qbittorrent-nox（webui版） sudo apt-get update && sudo apt-get install qbittorrent-nox 设置开机启动 通过rc.local完成 如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效
+Ubuntu-18.04设置开机启动脚本 起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&mldr;
+编辑rc.local脚本
+nano /etc/rc.local 在exit 0前面（前一行）添加以下内容并保存
+qbittorrent-nox -d 通过创建自定义服务实现 创建系统服务
+sudo apt-get install nano -y && nano /etc/systemd/system/qbittorrent-nox.service 粘贴以下内容，并保存。
+[Unit] Description=qBittorrent-nox After=network.target [Service] User=root Type=simple RemainAfterExit=yes ExecStart=/usr/bin/qbittorrent-nox -d [Install] WantedBy=multi-user.target 启动qbittorrent-nox并创建服务配置
+systemctl start qbittorrent-nox 设置开机自动启动qbittorrent-nox
+<a href=https://blog.baicai.me/article/2021/qbittorrent/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>跨域方案Nginx配置</a></h1><b><time>2021.07.01 18:58</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/%E8%B7%A8%E5%9F%9F>跨域</a>
 <a href=/tags/cors>CORS</a><div>什么是浏览器同源策略？ 同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
@@ -75,16 +88,7 @@ Deskreen 还为你提供了管理连接设备的能力。因此，如果你需�
 <a href=/tags/linux>linux</a><div>Linux 常用命令
 日期 $(date -d '1 day ago' '+%Y-%m-%d') 常用方法
 数字格式化 part=`printf "%03d" $i` # 左补0 删除旧文件 # 找出5天前修改的文件名以.tar结尾的文件进行删除 find /www/backup -mtime +5 -name "*.tar" |xargs rm for循环 for ((i=0;i&lt;10;i++)) do _date=$(date +%Y-%m-%d -d "${i} day") echo $_date done # for i in {1..10} do echo $i done 文件合并 find ./ -name "item*" | xargs sed 'a\' > all.txt find ./ -name "item*" | xargs cat > all.txt :s/old/new #替换当前行的第一个old为new :s/old/new/g #替换当前行的所有的old为new :.
-<a href=https://blog.baicai.me/article/2021/linux_cmd/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/awk-nginx-access_log/>awk 分析 nginx 运行日志常用指令</a></h1><b><time>2021.06.05 10:16</time></b>
-<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
-<a href=/tags/awk>awk</a><div>awk 分析 nginx 运行日志常用指令
-1.独立IP
-awk '{print $1}' access.log | sort -r |uniq -c | wc -l 2.统计PV
-awk '{print $6}' access.log | wc -l 3.查询访问最频繁的URL
-awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more 4.查询访问最频繁的IP
-awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more 5.UV统计：
-awk '{print $6}' access.log | sort -r |uniq -c |wc -l 6.按小时统计
-cat access.log |awk '{print $4}' | awk -F ':' '{print $1,$2}'|uniq -c | awk '{print $2" "$3" "$1}'</div></article><div><a href=/page/6/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2021/linux_cmd/>Read more...</a></div></article><div><a href=/page/6/>Previous Page</a>
 7 of 9
 <a href=/page/8/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
