@@ -1,9 +1,17 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1738035997"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740134344"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></h1><b><time>2025.01.28 11:38</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/linux_curl/>linux测试url的访问速度</a></h1><b><time>2025.02.21 18:34</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/linux>linux</a>
+<a href=/tags/curl>curl</a><div>使用curl命令来测试URL的访问速度。
+以下是使用curl测试URL访问速度的步骤：
+打开终端或命令行界面。 输入以下命令： curl -o /dev/null -s -w "time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n" &lt;URL> 请将替换为要测试的URL地址。
+执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：
+time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。 time_connect：建立TCP连接的耗时。 time_pretransfer：从开始到传输开始之前的耗时。 time_starttransfer：从开始到第一个字节接收完成的耗时。 time_total：总耗时，即从开始到请求完成的时间。 这些时间单位都以秒为单位。
+通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。</div></article><article><h1><a href=https://blog.baicai.me/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></h1><b><time>2025.01.28 11:38</time></b>
 <a href=/tags/wificall>WifiCall</a>
 <a href=/tags/giffgaff>Giffgaff</a><div>打开wificall的好处：可以使用英国本地资费，免费接电话。
 ios:需要运营商刷到58.0版本，或者ios17.4以上版本 关闭wifi和wificall开关 打开飞行模式 关闭你的国内运营商 打开你的wifi 全局连接英国节点，或走规则 打开giffgaff的wificall开关，正常就可以连接上了，成功为运营商名字变成giffgaff 可以解除飞行模式和正常打开你的国内运营商了 安卓:origin os系统 打开wificall开关 全局连接英国节点，或走规则 正常就可以直接连上wificall 分流规则 # 地区检测 DOMAIN-SUFFIX, gspe1-ssl.ls.apple.com # 沃达丰 DOMAIN-SUFFIX, epdg.epc.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, entsrv-uk.vodafone.com DOMAIN-SUFFIX, vuk-gto.prod.ondemandconnectivity.com IP-CIDR,88.82.0.0/19 # CMLinkUK EE IP-CIDR,46.68.0.0/17 # Giffgaff IP-CIDR,87.194.0.0/16 或
@@ -82,13 +90,7 @@ go install github.
 方案配置： 硬盘：20 GB SSD 内存：1 GB CPU：1 核 流量：1000 GB/月 带宽：2.5Gbps
 价格：$53.00 USD/年 优惠后：$49.41 USD/年
 优惠码：BWHCGLUKKB
-直达地址</div></article><article><h1><a href=https://blog.baicai.me/article/2024/racknerd_20241104/>RackNerd洛杉矶DC-02 VPS</a></h1><b><time>2024.01.16 15:08</time></b>
-<a href=/tags/aff>aff</a>
-<a href=/tags/vps>vps</a>
-<a href=/tags/aff_vps>aff_vps</a><div>1x vCPU 18 GB SSD 1.2 GB RAM 1Gbps@2T 月流量 $14.88/年 https://my.racknerd.com/aff.php?aff=12157&amp;pid=670
-1 vCPU 30 GB SSD 2 GB RAM 2500GB月流量@1Gbps $16.98/年 https://my.racknerd.com/aff.php?aff=12157&amp;pid=793
-3x vCPU 50G SSD 2.5G RAM 1Gbps@6.5T 月流量 $26.25/年 https://my.racknerd.com/aff.php?aff=12157&amp;pid=157
-更多套餐：https://my.racknerd.com/aff.php?aff=12157</div></article><div>1 of 9
+直达地址</div></article><div>1 of 9
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

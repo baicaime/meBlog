@@ -1,9 +1,19 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1738035997"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740134344"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_docker/>安装docker</a></h1><b><time>2022.09.30 00:38</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/debian_install/>Debian 安装慢的解决方案</a></h1><b><time>2022.10.18 14:37</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/linux>linux</a><div>解决 Debian 安装过程慢的可行方案： 如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。 安装时选择 expert，不要选择 安全更新。 安装过程修改软件源。 Debian DVD-1 镜像下载地址 通过 HTTP/FTP 下载 Debian CD/DVD 映像 https://www.debian.org/CD/http-ftp/
+amd64 DVD版 https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+Debian 安装过程中 修改软件源中的安全源地址 在Debian安装步骤进入到选择安装的桌面环境和软件时, 键入 Ctrl+Alt+F2 可以看到从图形界面转到了tty命令终端, 键入 Enter 这里修改软件源配置文件
+nano /target/etc/apt/sources.list 修改debian-security源地址 http://mirrors.ustc.edu.cn 目测最快
+#deb http://security.debian.org/debian-security bullseye-security main deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main 修改后 Ctrl+X 退出保存
+然后退出终端重新进入界面继续安装，键入 Ctrl+Alt+F5
+Debian 安装完成后更新硬件驱动 在设置——》关于——〉更新——》软件源，去掉cdrome的源，勾选合适的源 然后通过 dmesg 查看启动日志。 查找哪些固件加载异常，根据情况安装驱动（比如我的缺失显卡驱动和无线网卡驱动）。
+# 更新源 sudo apt-get update dmesg # demsg查看到 缺失显卡驱动 sudo apt-get install firmware-amd-graphics # demsg查看到 缺失 rtl8168e-3.
+<a href=https://blog.baicai.me/article/2022/debian_install/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_docker/>安装docker</a></h1><b><time>2022.09.30 00:38</time></b>
 <a href=/tags/docker>Docker</a>
 <a href=/tags/debian>Debian</a><div>运行环境
 Operating System: Debian GNU/Linux 11 (bullseye) Kernel: Linux 5.10.0-18-amd64 Architecture: x86-64 通过Debian官方软件仓库安装 # 更新软件源 并 安装 docker及相关应用 sudo apt update && sudo apt install -y docker docker.io docker-compose # 查看docker运行状态 sudo systemctl status docker # 查看docker信息 sudo docker info # 验证是否安装成功 sudo docker run hello-world 镜像加速器 访问 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 获取自己的阿里云镜像加速器地址
@@ -69,13 +79,7 @@ Linux 上的 Shell 元字符 你可以通过使用元字符来扩展这些命令
 管道符 | 假设我想知道我的系统上运行的 Firefox 的所有实例。我可以使用带有 -ef 参数的 ps 命令来列出我系统上运行的所有程序实例。现在我想只看那些涉及 Firefox 的实例。我使用了我最喜欢的元字符之一，管道符 |，将其结果送到 grep，用它来搜索模式：
 $ ps -ef | grep firefox 输出重定向 > 另一个我最喜欢的元字符是输出重定向 >。我用它来打印 dmesg 命令结果中所有 AMD 相关的结果。你可能会发现这在硬件故障排除中很有帮助：
 $ dmesg | grep amd > amd.txt $ cat amd.txt [ 0.897] amd_uncore: 4 amd_df counters detected [ 0.897] amd_uncore: 6 amd_l3 counters detected [ 0.898] perf/amd_iommu: Detected AMD IOMMU #0 (2 banks, 4 counters/bank).
-<a href=https://blog.baicai.me/article/2022/linux_metacharacters/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/ubuntu_wechat-install/>ubuntu上安装微信(wechat)</a></h1><b><time>2022.01.30 15:19</time></b>
-<a href=/tags/ubuntu>ubuntu</a>
-<a href=/tags/wechat>wechat</a>
-<a href=/tags/weixin>weixin</a><div>介绍 由于微信官网 https://weixin.qq.com/ 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。
-安装方法 打开优麒麟应用商店官网，然后下载应用，就看到微信了 https://www.ubuntukylin.com/applications/106-cn.html 下载deb包，用命令sudo dpkg -i ，就能安装上了，而且可以用。 这是linux原生的，功能少点，但比wine的要轻巧不少。
-安装方法2 下载链接在方法1中，优麒麟应用商店微信应用页面右键 “64位下载” ——> “复制链接” 终端下载Deb安装：
-wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb" sudo dpkg -i ~/weixin.deb</div></article><div><a href=/page/4/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2022/linux_metacharacters/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
 5 of 9
 <a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

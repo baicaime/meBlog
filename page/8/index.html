@@ -1,9 +1,19 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1738035997"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740134344"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/learn_rust/>Rust 学习指南</a></h1><b><time>2021.06.05 02:16</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/toml/>TOML 语言规范 1.0 正式版</a></h1><b><time>2021.06.05 02:59</time></b>
+<a href=/tags/toml>TOML</a>
+<a href=/tags/rust>Rust</a><div>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。
+👉 本文来自 toml-lang 的中文翻译版本，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。
+TOML v1.0.0 全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&rsquo;s Obvious, Minimal Language）
+作者：Tom Preston-Werner、Pradyun Gedam 等人。
+宗旨 TOML 旨在成为一个语义明显且易于阅读的最小化配置文件格式。
+TOML 被设计成可以无歧义地映射为哈希表。
+TOML 应该能很容易地被解析成各种语言中的数据结构。
+目录 规格 注释 键值对 键名 字符串 整数 浮点数 布尔值 坐标日期时刻 各地日期时刻 各地日期 各地时刻 数组 表 内联表 表数组 文件扩展名 MIME 类型 ABNF 语法 规格 TOML 是大小写敏感的。 TOML 文件必须是合法的 UTF-8 编码的 Unicode 文档。 空白是指制表符（0x09）或空格（0x20）。 换行是指 LF（0x0A）或 CRLF（0x0D0A）。 注释 井字符将该行余下的部分标记为注释，除非它在字符串中。
+<a href=https://blog.baicai.me/article/2021/toml/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/learn_rust/>Rust 学习指南</a></h1><b><time>2021.06.05 02:16</time></b>
 <a href=/tags/rust>Rust</a><div>了解 一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。 这时，建议看 Rust 官网 https://rust-lang.org
 Rust 官方文档 Rust 语言的学习或参考文档大都列在 Rust 学习指引页 和 Rust 官方文档主页 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：
 《Rust 程序设计语言》（The Rust Programming Language），对应 GitHub 仓库 《通过例子学 Rust》（Rust by Example），对应 GitHub 仓库 Rust 版本指南（The Edition Guide），对应 GitHub 仓库 Cargo 帮助文档，对应 GitHub 仓库源文件 rustdoc 帮助文档，对应 GitHub 仓库源文件 rustc 帮助文档，对应 GitHub 仓库源文件 Rust 编译错误索引，对应 GitHub 仓库源代码 《Rust 语言参考》（The Rust Reference），对应 GitHub 仓库 The Rustonomicon，对应 GitHub 仓库 还有其他更多官方或其他非官方相关的文档：
@@ -83,17 +93,7 @@ $ wget http://file.example.com/&lt;myuser>/bins/prepnode $ chmod +x ./prepnode $
 你会知道当前你是在一个新的窗口中，因为你的终端除了默认的提示符外，似乎没有任何东西。当然，你的另一个终端仍然存在，它只是躲在新窗口的后面。要遍历打开的窗口，按 Ctrl+A，释放，然后按 n（表示下一个）或按 p（表示上一个）。在只打开两个窗口的情况下， n 和 p 的功能是一样的，但你可以随时打开更多的窗口（Ctrl+A，然后 c ），并在它们之间切换。
 分屏 GNU Screen 的默认行为更像移动设备的屏幕，而不是桌面：你一次只能看到一个窗口。如果你因为喜欢多任务而使用 GNU Screen ，那么只关注一个窗口可能看起来是一种退步。幸运的是，GNU Screen 可以让你把终端分成窗口中的窗口。
 要创建一个水平分割窗口，按 Ctrl+A，然后按 s 。这将把一个窗口置于另一个窗口之上，就像窗格一样。然而，在你告诉它要显示什么之前，分割的空间是没有用途的。因此，在创建一个分割窗后，你可以用 Ctrl+A ，然后用 Tab 移动到分割窗中。一旦进入，使用 Ctrl+A 然后 n 浏览所有可用的窗口，直到你想显示的内容出现在分割窗格中。
-<a href=https://blog.baicai.me/article/2021/linux_screen/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_cron/>使用 cron 调度自动化任务</a></h1><b><time>2021.05.12 18:59</time></b>
-<a href=/tags/cron>cron</a>
-<a href=/tags/linux>linux</a>
-<a href=/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1>自动化任务</a><div>cron 是一个调度守护进程，它以指定的时间间隔执行任务，这些任务称为 corn 作业，主要用于自动执行系统维护或管理任务。例如，你可以设置一个 cron 作业来自动执行重复的任务，比如备份数据库或数据，使用最新的安全补丁更新系统，检查磁盘空间使用情况，发送电子邮件等等。 cron 作业可以按分钟、小时、日、月、星期或它们的任意组合运行。
-cron 的一些优点 以下是使用 cron 作业的一些优点：
-你可以更好地控制作业的运行时间。例如，你可以精确到分钟、小时、天等。 它消除了为循环任务逻辑而去写代码的需要，当你不再需要执行任务时，可以直接关闭它。 作业在不执行时不会占用内存，因此你可以节省内存分配。 如果一个作业执行失败并由于某种原因退出，它将在适当的时间再次运行。 安装 cron 守护进程 幸运的是，Fedora Linux 预先配置了运行重要的系统任务来保持系统更新，有几个实用程序可以运行任务例如 cron、anacron、at 和 batch 。本文只关注 cron 实用程序的安装。cron 和 cronie 包一起安装，cronie 包也提供 cron 服务。
-要确定软件包是否已经存在，使用 rpm 命令： $ rpm -q cronie Cronie-1.5.2-4.el8.x86_64
-如果安装了 cronie ，它将返回 cronie 包的全名。如果你的系统中没有安装，则会显示未安装。
-使用以下命令安装： $ dnf install cronie
-运行 cron 守护进程 cron 作业由 crond 服务来执行，它会读取配置文件中的信息。在将作业添加到配置文件之前，必须启动 crond 服务，或者安装它。什么是 crond 呢？crond 是 cron 守护程序的简称。要确定 crond 服务是否正在运行，输入以下命令：
-<a href=https://blog.baicai.me/article/2021/linux_cron/>Read more...</a></div></article><div><a href=/page/7/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2021/linux_screen/>Read more...</a></div></article><div><a href=/page/7/>Previous Page</a>
 8 of 9
 <a href=/page/9/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

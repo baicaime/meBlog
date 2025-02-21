@@ -1,4 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 11 Jul 2024 14:31:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
+&lt;p>以下是使用curl测试URL访问速度的步骤：&lt;/p>
+&lt;ul>
+&lt;li>打开终端或命令行界面。&lt;/li>
+&lt;li>输入以下命令：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -o /dev/null -s -w &lt;span style="color:#e6db74">&amp;#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&amp;#34;&lt;/span> &amp;lt;URL&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将&lt;!-- raw HTML omitted -->替换为要测试的URL地址。&lt;/p>
+&lt;p>执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：&lt;/p>
+&lt;ul>
+&lt;li>time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。&lt;/li>
+&lt;li>time_connect：建立TCP连接的耗时。&lt;/li>
+&lt;li>time_pretransfer：从开始到传输开始之前的耗时。&lt;/li>
+&lt;li>time_starttransfer：从开始到第一个字节接收完成的耗时。&lt;/li>
+&lt;li>time_total：总耗时，即从开始到请求完成的时间。&lt;/li>
+&lt;/ul>
+&lt;p>这些时间单位都以秒为单位。&lt;/p>
+&lt;p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。&lt;/p></description></item><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
 &lt;p>UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。&lt;/p>
 &lt;p>具体现象是：&lt;/p>
 &lt;ol>
