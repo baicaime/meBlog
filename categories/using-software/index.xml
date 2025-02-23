@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Using Software on 白菜</title><link>https://blog.baicai.me/categories/using-software/</link><description>Recent content in Using Software on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 23:31:24 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/using-software/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Using Software on 白菜</title><link>https://blog.baicai.me/categories/using-software/</link><description>Recent content in Using Software on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Sun, 23 Feb 2025 22:22:39 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/using-software/index.xml" rel="self" type="application/rss+xml"/><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
+&lt;p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。&lt;/p>
+&lt;h3 id="什么是ulimit">什么是ulimit?&lt;/h3>
+&lt;p>ulimit命令用来限制系统用户对shell资源的访问。&lt;/p>
+&lt;p>假设有这样一种情况，当一台 Linux 主机上同时登陆了 10 个人，在系统资源无限制的情况下，这 10 个用户同时打开了 500 个文档，而假设每个文档的大小有 10M，这时系统的内存资源就会受到巨大的挑战。&lt;/p>
+&lt;p>ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类型的限制：所创建的内核文件的大小、进程数据块的大小、Shell 进程创建文件的大小、内存锁住的大小、常驻内存集的大小、打开文件描述符的数量、分配堆栈的最大大小、CPU 时间、单个用户的最大线程数、Shell 进程所能使用的最大虚拟内存。同时，它支持硬资源和软资源的限制。&lt;/p>
+&lt;p>简单来说，ulimit描述符可以对用户打开的文件数量进行限制（不止限制打开文件数量），让单个用户不至于打开较多的文件，导致系统奔溃或者资源不足的情况。
+查看ulimit&lt;/p>
+&lt;p>既然知道了ulimit是做什么的，首先要先知道系统底层限制到底是多少，ulimit的参数如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>-a：显示目前资源限制的设定；
+-c &amp;lt;core文件上限&amp;gt;：设定core文件的最大值，单位为区块；
+-d &amp;lt;数据节区大小&amp;gt;：程序数据节区的最大值，单位为KB；
+-f &amp;lt;文件大小&amp;gt;：shell所能建立的最大文件，单位为区块；
+-H：设定资源的硬性限制，也就是管理员所设下的限制；
+-m &amp;lt;内存大小&amp;gt;：指定可使用内存的上限，单位为KB；
+-n &amp;lt;文件数目&amp;gt;：指定同一时间最多可开启的文件数；
+-p &amp;lt;缓冲区大小&amp;gt;：指定管道缓冲区的大小，单位512字节；
+-s &amp;lt;堆叠大小&amp;gt;：指定堆叠的上限，单位为KB；
+-S：设定资源的弹性限制；
+-t &amp;lt;CPU时间&amp;gt;：指定CPU使用时间的上限，单位为秒；
+-u &amp;lt;程序数目&amp;gt;：用户最多可开启的程序数目；
+-v &amp;lt;虚拟内存大小&amp;gt;：指定可使用的虚拟内存上限，单位为KB。
+&lt;/code>&lt;/pre>&lt;p>由于上述nginx错误是无法打开过多的文件，那么我们直接使用ulimit -n查看同一时间最多可开启的文件数。&lt;/p>
+&lt;p>&lt;code>ulimit -n&lt;/code>&lt;/p>
+&lt;p>可以看出限制的1024个文件，这就导致nginx尝试打开更多的文件（超出1024个）的时候出现错误“Too many open files”&lt;/p>
+&lt;h3 id="修复问题">修复问题&lt;/h3>
+&lt;h4 id="修改ulimit限制">修改ulimit限制&lt;/h4>
+&lt;p>直接执行命令ulimit -n 65535修改打开文件数，65535指的是需要同一时间最多打开多少个文件，请根据自身情况适当修改。&lt;/p>
+&lt;p>ulimit命令修改只对当前的shell有效，退出后失效，如果需要永久生效，需要修改&lt;code>/etc/security/limits.conf&lt;/code>这个文件，在底部加入下面的配置：&lt;/p>
+&lt;pre tabindex="0">&lt;code>* soft nproc 65535
+* hard nproc 65535
+* soft nofile 65535
+* hard nofile 65535
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code> *：代表全局
+soft：代表软件
+hard：代表硬件
+nproc：是代表最大进程数
+nofile：是代表最大文件打开数
+&lt;/code>&lt;/pre>&lt;p>修改完毕后，再次执行命令：&lt;code>ulimit -n&lt;/code>可以看到设置已经生效!&lt;/p>
+&lt;h4 id="修改nginx打开文件限制">修改nginx打开文件限制&lt;/h4>
+&lt;p>修改&lt;code>nginx.conf&lt;/code>在 http 和 events 外层加入一行:
+&lt;code>worker_rlimit_nofile 65535;&lt;/code>
+worker_rlimit_nofile这个参数的含义是：“为nginx工作进程改变打开最多文件描述符数目的限制。用来在不重启主进程的情况下增加限制。”&lt;/p>
+&lt;p>Debian系统 看起来像这样的&lt;/p>
+&lt;pre tabindex="0">&lt;code>user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+###############################################################################################################
+# Must be less than LimitNOFILE for systemd
+# or /etc/security/limits.conf (non-systemd)
+# E.g. if LimitNOFILE is 65535, I set to 30000 (systemd)
+# E.g. if &amp;#34;nginx hard nofile 30000&amp;#34; in the /etc/security/limits.conf, I set to 30000 (non-systemd)
+###############################################################################################################
+worker_rlimit_nofile 30000; #vg
+include /etc/nginx/modules-enabled/*.conf;
+events {
+worker_connections 65535; #vg
+multi_accept on; #vg
+}
+http {
+##
+# Basic Settings
+...
+.....
+&lt;/code>&lt;/pre>&lt;p>重载nginx配置:
+&lt;code>nginx -s reload&lt;/code>&lt;/p>
+&lt;h2 id="nginx的其他优化">Nginx的其他优化&lt;/h2>
+&lt;p>编辑 &lt;code>/etc/sysctl.conf&lt;/code> 文件，添加或修改
+&lt;code>fs.file-max = 70000&lt;/code>&lt;/p>
+&lt;p>查看是否生效
+&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
 &lt;h3 id="编辑配置文件">编辑配置文件：&lt;/h3>
 &lt;p>&lt;code>sudo nano /etc/network/interfaces&lt;/code>&lt;/p>
 &lt;h3 id="添加多个ip地址">添加多个IP地址：&lt;/h3>

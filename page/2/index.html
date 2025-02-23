@@ -1,9 +1,40 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740152708"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740324581"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/bandwagonhost_20240130/>搬瓦工方案上新！The DC6 Plan VPS 限量款</a></h1><b><time>2024.01.30 15:40</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></h1><b><time>2024.02.05 18:58</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/%E5%AD%90%E5%9F%9F%E5%90%8D>子域名</a>
+<a href=/tags/dns>DNS</a>
+<a href=/tags/subdomain>subdomain</a><div>子域名探测 通过收集子域名信息来进行渗透是目前常见的一种手法。 子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。 在挖SRC漏洞时，子域名信息的收集至关重要！
+为什么要进行子域名探测？ 子域名探测可以帮我们发现渗透测试中更多的服务，这将增加发现漏洞的可能性
+查找一些用户上较少，被人遗忘的子域名，其上运行的应用程序可能会使我们发现关键漏洞
+通常，同一组织的不同域名/应用程序中存在相同的漏洞
+子域名中的常见资产类型一般包括办公系统，邮箱系统，论坛，商城等，其他管理系统，网站管理后台等较少出现在子域名中
+子域名探测方法大全 在线接口
+暴力枚举
+搜索引擎
+Certificate Transparency（证书透明）
+Subject Alternate Name (SAN) - 主题备用名称
+Public datasets（公开数据集）
+信息泄露
+内容解析（HTML，JavaScript，文件）
+DNS解析
+区域传送
+DNS aggregators（DNS聚合器）
+DNS Cache Snooping（域名缓存侦测）
+Alterations & permutations（换置 & 排序）
+DNSSEC(Domain Name System Security Extensions)，DNS安全扩展，DNSSEC区域漫步
+CSP HTTP首部
+SPF记录
+虚拟主机爆破
+ASN发现
+爬虫 Scraping（抓取）
+在线接口 https://crt.sh/ https://censys.io/ https://transparencyreport.google.com/https/certificates https://dnsdumpster.com/ https://hackertarget.com/find-dns-host-records/ https://x.threatbook.cn/ https://www.virustotal.com/gui/home/search https://site.ip138.com/baidu.com/domain.htm https://www.t1h2ua.cn/tools/ http://tool.chinaz.com/subdomain/ 暴力枚举 Layer子域名爆破机 Layer是windows下的一款子域名探测工具，其工作原理是利用子域名字典进行爆破，使用简单容易上手。
+Amass 工具描述：爆破, google, VirusTotal, alt names
+go install github.
+<a href=https://blog.baicai.me/article/2024/find_subdomain/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/bandwagonhost_20240130/>搬瓦工方案上新！The DC6 Plan VPS 限量款</a></h1><b><time>2024.01.30 15:40</time></b>
 <a href=/tags/aff>aff</a>
 <a href=/tags/vps>vps</a>
 <a href=/tags/aff_vps>aff_vps</a><div>中国电信/联通 CN2 GIA 中国移动 CMIN2
@@ -110,11 +141,7 @@ kubectl delete all --all 命令中的第一个all指定正在删除所有资源�
 删除资源时，kubectl将打印它删除的每个资源的名称。
 注意 kubectl delete all --all 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。
 kubectl 命令演示 kubectl 展示搜索出的pod列表（含pod所在的namespace） kubectl get pod -A |grep &lt;podname> [root@node ~]# kubectl get pod -A |grep dashboard kubernetes-dashboard dashboard-metrics-scraper-5657497c4c-j5kr8 1/1 Running 0 113m kubernetes-dashboard kubernetes-dashboard-78f87ddfc-tlmjv 1/1 Running 0 113m kubectl 删除pod命令 kubectl delete pod &lt;podname> -n &lt;namespace> 在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。 故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。
-<a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></h1><b><time>2023.11.17 22:52</time></b>
-<a href=/tags/docker>Docker</a><div>Runtime privilege and Linux capabilities 参考官方文档：Docker run reference
-By default, Docker containers are &ldquo;unprivileged&rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &ldquo;privileged&rdquo; container is given access to all devices (see the documentation on cgroups devices).
-The &ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host.
-<a href=https://blog.baicai.me/article/2023/docker_privileged/>Read more...</a></div></article><div><a href=/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><div><a href=/>Previous Page</a>
 2 of 9
 <a href=/page/3/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

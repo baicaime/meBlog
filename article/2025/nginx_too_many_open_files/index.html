@@ -1,0 +1,60 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2025/nginx_too_many_open_files/"><link rel=canonical href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/><style type=text/css>body{font-family:monospace}</style><title>Nginx 出现 Too many open files 错误与修复</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740324581"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Nginx 出现 Too many open files 错误与修复</h1><b><time>2025.02.23 22:22</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/nginx>nginx</a><div><p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。</p><p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。</p><h3 id=什么是ulimit>什么是ulimit?</h3><p>ulimit命令用来限制系统用户对shell资源的访问。</p><p>假设有这样一种情况，当一台 Linux 主机上同时登陆了 10 个人，在系统资源无限制的情况下，这 10 个用户同时打开了 500 个文档，而假设每个文档的大小有 10M，这时系统的内存资源就会受到巨大的挑战。</p><p>ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类型的限制：所创建的内核文件的大小、进程数据块的大小、Shell 进程创建文件的大小、内存锁住的大小、常驻内存集的大小、打开文件描述符的数量、分配堆栈的最大大小、CPU 时间、单个用户的最大线程数、Shell 进程所能使用的最大虚拟内存。同时，它支持硬资源和软资源的限制。</p><p>简单来说，ulimit描述符可以对用户打开的文件数量进行限制（不止限制打开文件数量），让单个用户不至于打开较多的文件，导致系统奔溃或者资源不足的情况。
+查看ulimit</p><p>既然知道了ulimit是做什么的，首先要先知道系统底层限制到底是多少，ulimit的参数如下：</p><pre tabindex=0><code>-a：显示目前资源限制的设定；
+-c &lt;core文件上限&gt;：设定core文件的最大值，单位为区块；
+-d &lt;数据节区大小&gt;：程序数据节区的最大值，单位为KB；
+-f &lt;文件大小&gt;：shell所能建立的最大文件，单位为区块；
+-H：设定资源的硬性限制，也就是管理员所设下的限制；
+-m &lt;内存大小&gt;：指定可使用内存的上限，单位为KB；
+-n &lt;文件数目&gt;：指定同一时间最多可开启的文件数；
+-p &lt;缓冲区大小&gt;：指定管道缓冲区的大小，单位512字节；
+-s &lt;堆叠大小&gt;：指定堆叠的上限，单位为KB；
+-S：设定资源的弹性限制；
+-t &lt;CPU时间&gt;：指定CPU使用时间的上限，单位为秒；
+-u &lt;程序数目&gt;：用户最多可开启的程序数目；
+-v &lt;虚拟内存大小&gt;：指定可使用的虚拟内存上限，单位为KB。
+</code></pre><p>由于上述nginx错误是无法打开过多的文件，那么我们直接使用ulimit -n查看同一时间最多可开启的文件数。</p><p><code>ulimit -n</code></p><p>可以看出限制的1024个文件，这就导致nginx尝试打开更多的文件（超出1024个）的时候出现错误“Too many open files”</p><h3 id=修复问题>修复问题</h3><h4 id=修改ulimit限制>修改ulimit限制</h4><p>直接执行命令ulimit -n 65535修改打开文件数，65535指的是需要同一时间最多打开多少个文件，请根据自身情况适当修改。</p><p>ulimit命令修改只对当前的shell有效，退出后失效，如果需要永久生效，需要修改<code>/etc/security/limits.conf</code>这个文件，在底部加入下面的配置：</p><pre tabindex=0><code>* soft nproc 65535
+* hard nproc 65535
+* soft nofile 65535 
+* hard nofile 65535
+</code></pre><pre tabindex=0><code>    *：代表全局
+    soft：代表软件
+    hard：代表硬件
+    nproc：是代表最大进程数
+    nofile：是代表最大文件打开数
+</code></pre><p>修改完毕后，再次执行命令：<code>ulimit -n</code>可以看到设置已经生效!</p><h4 id=修改nginx打开文件限制>修改nginx打开文件限制</h4><p>修改<code>nginx.conf</code>在 http 和 events 外层加入一行:
+<code>worker_rlimit_nofile 65535;</code>
+worker_rlimit_nofile这个参数的含义是：“为nginx工作进程改变打开最多文件描述符数目的限制。用来在不重启主进程的情况下增加限制。”</p><p>Debian系统 看起来像这样的</p><pre tabindex=0><code>user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+###############################################################################################################
+# Must be less than LimitNOFILE for systemd 
+# or /etc/security/limits.conf (non-systemd)
+# E.g. if LimitNOFILE is 65535, I set to 30000 (systemd)
+# E.g. if &#34;nginx       hard    nofile  30000&#34; in the  /etc/security/limits.conf, I set to 30000 (non-systemd)
+###############################################################################################################
+worker_rlimit_nofile 30000; #vg
+include /etc/nginx/modules-enabled/*.conf;
+ 
+events {
+    worker_connections 65535; #vg
+    multi_accept on; #vg
+}
+ 
+http {
+    ##
+    # Basic Settings
+...
+.....
+</code></pre><p>重载nginx配置:
+<code>nginx -s reload</code></p><h2 id=nginx的其他优化>Nginx的其他优化</h2><p>编辑 <code>/etc/sysctl.conf</code> 文件，添加或修改
+<code>fs.file-max = 70000</code></p><p>查看是否生效
+<code>sysctl -p</code></p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></li><li><a href=/article/2025/ifconfig_interfaces/>Debian12 系统添加多个IP</a></li><li><a href=/article/2025/linux_curl/>linux测试url的访问速度</a></li><li><a href=/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></li><li><a href=/article/2024/docker_export_import_save_load/>Docker本地镜像的导出、导入 (export,import,save,load)</a></li></ul></div></div></aside><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
