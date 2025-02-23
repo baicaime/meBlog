@@ -1,9 +1,15 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740324581"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/blog_20230902/>网站迁移完成</a></h1><b><time>2023.09.02 16:46</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/>docker golang:alpine CGO 制作镜像的正确姿势</a></h1><b><time>2023.09.04 23:23</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/golang>Golang</a><div>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。
+这时就需要安装 build-base 配置编译环境。
+参考 Dockerfile 如下：
+FROM golang:alpine as builder ENV CGO_ENABLED=1 WORKDIR /app COPY . . RUN apk add --no-cache --update git build-base RUN go mod tidy \ && go build -o api_client_linux ./cmd/api_client/ FROM alpine:latest as runner ENV TZ=Asia/Shanghai RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++ WORKDIR /app COPY --from=builder /app/api_client_linux . VOLUME /app/conf EXPOSE 8080 ENTRYPOINT ["./api_client_linux" ,"-c","/app/conf/config.yaml"] 运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：
+包名 用途 ca-certificates: CA证书，使用TLS tzdata: 时区配置 libc6-compat: C 标准库 libgcc: GCC 相关库，CGO编译程序依赖 libstdc++: C++ 标准库</div></article><article><h1><a href=https://blog.baicai.me/article/2023/blog_20230902/>网站迁移完成</a></h1><b><time>2023.09.02 16:46</time></b>
 <a href=/tags/%E7%BD%91%E7%AB%99%E7%BB%B4%E6%8A%A4%E8%AE%B0%E5%BD%95>网站维护记录</a><div>实施：
 hugo + github action + git pages + cloudflare
 目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。
@@ -62,14 +68,7 @@ https://api.telegram.org/bot{my_bot_token}/getWebhookInfo</div></article><articl
 <a href=/tags/debian>debian</a>
 <a href=/tags/xdg-user-dirs-gtk-update>xdg-user-dirs-gtk-update</a><div>操作环境:
 Distributor ID: Debian Description: Debian GNU/Linux 11 (bullseye) Release: 11 Codename: bullseye 安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.
-#临时转换系统语言为英文，重启后会自动恢复原值的 export LANG=en_US #执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭 xdg-user-dirs-gtk-update #转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的 export LANG=zh_CN 下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</a></h1><b><time>2022.11.01 22:18</time></b>
-<a href=/tags/debian>debian</a>
-<a href=/tags/certbot>certbot</a>
-<a href=/tags/nginx>nginx</a><div>在Debian 11 Nginx配置Let&rsquo;s Encrypt SSL证书
-安装 Certbot 及 certbot nginx 插件 sudo apt update && sudo apt -y install certbot python3-certbot-nginx 为 nginx 网站生成证书并配置 certbot --nginx 如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。
-也可以为特定域名获取证书配置
-certbot --nginx -d baicai.me 使用Certbot自动更新SSL证书 Let&rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。 除非你更改配置，否则无需再次手动运行Certbot。 您可以通过运行以下命令来测试证书的自动续订。
-certbot renew --dry-run</div></article><div><a href=/page/3/>Previous Page</a>
+#临时转换系统语言为英文，重启后会自动恢复原值的 export LANG=en_US #执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭 xdg-user-dirs-gtk-update #转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的 export LANG=zh_CN 下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</div></article><div><a href=/page/3/>Previous Page</a>
 4 of 9
 <a href=/page/5/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

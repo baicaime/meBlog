@@ -1,9 +1,21 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740324581"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></h1><b><time>2025.02.23 22:22</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/test_25/>测试服务器能否正常收发邮件</a></h1><b><time>2025.02.24 00:40</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/mail>mail</a>
+<a href=/tags/telnet>telnet</a><div>需要收发邮件的话，要注意商家是否开放25端口
+发邮件 使用
+telnet smtp.qq.com 25 显示：
+telnet smtp.qq.com 25 Trying 43.129.255.54... 则无法使用。
+显示：
+telnet smtp.qq.com 25 Trying 43.129.255.54... Connected to smtp.qq.com. Escape character is '^]'. 220 newxmesmtplogicsvrszc5-0.qq.com XMail Esmtp QQ Mail Server. 则可以正常使用。
+使用gmail进行测试也是类似的： telnet smtp.gmail.com 25 Trying 172.253.117.109... Connected to smtp.gmail.com. Escape character is '^]'. 220 smtp.gmail.com ESMTP ca40-20020a056a0206a800b005897bfc2ed3sm7618602pgb.93 - gsmtp 当然，现在Gmail 推荐使用 TLS/SSL 连接，所以也要测试465：
+telnet smtp.gmail.com 465 显示：
+telnet smtp.gmail.com 465 Trying 173.194.174.108... Connected to smtp.gmail.com. Escape character is '^]'.
+<a href=https://blog.baicai.me/article/2025/test_25/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></h1><b><time>2025.02.23 22:22</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/nginx>nginx</a><div>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。
 出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。
@@ -73,11 +85,7 @@ docker save -o images.
 启用 Docker 的 iptables 功能，删除所有类似 --iptables=false 的修改，包括 /etc/docker/daemon.json 配置文件。 UFW 的默认 FORWARD 规则改回默认的 DROP，而非 ACCEPT。 删除 UFW 配置文件 /etc/ufw/after.rules 中与 Docker 网络相关的规则。 如果修改了 Docker 相关的配置文件，重启 Docker。稍后还要修改 UFW 的配置，可以一并重启。 目前新的解决方案只需要修改一个 UFW 配置文件即可，Docker 的所有配置和选项都保持默认。
 <a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></h1><b><time>2024.03.09 00:01</time></b>
 <a href=/tags/docker>Docker</a><div>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口
-docker-compose.yml version: '3.6' services: web: image: nginx:1.18 ports: # 将会映射8080到8090这个范围内的端口 - 8080-8090:8080-8090 volumes: - ./www:/www 命令行 docker run -p 8080-8090:8080-8090 nginx Dockerfile Dockerfile EXPOSE 8080-8090</div></article><article><h1><a href=https://blog.baicai.me/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></h1><b><time>2024.03.04 22:44</time></b>
-<a href=/tags/adb>adb</a>
-<a href=/tags/shell>shell</a><div>电脑传文件到手机 把当前目录下的test.tex文件传到手机 /sdcard/test目录中
-adb push test.txt /sdcard/test 手机文件传到电脑 把 /sdcard/test/ 目录下的test.txt文件传到本机当前目录test目录中
-adb pull /sdcard/test/test.txt ./test 查看手机文件目录 #进入到根目录 adb shell #查看所有目录 ls #进入到sdcard目录，安卓手机的文件管理一般都这这里 cd sdcard #然后查看要传输哪些文件到哪个文件夹</div></article><div>1 of 9
+docker-compose.yml version: '3.6' services: web: image: nginx:1.18 ports: # 将会映射8080到8090这个范围内的端口 - 8080-8090:8080-8090 volumes: - ./www:/www 命令行 docker run -p 8080-8090:8080-8090 nginx Dockerfile Dockerfile EXPOSE 8080-8090</div></article><div>1 of 9
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

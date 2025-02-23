@@ -1,9 +1,13 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740324581"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></h1><b><time>2024.02.05 18:58</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></h1><b><time>2024.03.04 22:44</time></b>
+<a href=/tags/adb>adb</a>
+<a href=/tags/shell>shell</a><div>电脑传文件到手机 把当前目录下的test.tex文件传到手机 /sdcard/test目录中
+adb push test.txt /sdcard/test 手机文件传到电脑 把 /sdcard/test/ 目录下的test.txt文件传到本机当前目录test目录中
+adb pull /sdcard/test/test.txt ./test 查看手机文件目录 #进入到根目录 adb shell #查看所有目录 ls #进入到sdcard目录，安卓手机的文件管理一般都这这里 cd sdcard #然后查看要传输哪些文件到哪个文件夹</div></article><article><h1><a href=https://blog.baicai.me/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></h1><b><time>2024.02.05 18:58</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/%E5%AD%90%E5%9F%9F%E5%90%8D>子域名</a>
 <a href=/tags/dns>DNS</a>
@@ -125,23 +129,7 @@ Just My Socks 是否支持ChatGPT访问？目前JMS已经可以支持ChatGPT访�
 使用 ADB 列出已经安装的应用程序 打开命令提示符（Windows）/终端（macOS、Linux）：
 在命令提示符/终端中输入以下命令来列出已安装的应用程序： adb shell pm list packages 如果你想筛选出包含特定关键词的应用程序，可以使用以下命令：
 adb shell pm list packages | grep keyword 将 &ldquo;keyword&rdquo; 替换为你想要搜索的关键词。 比如魅族的手机
-<a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></h1><b><time>2023.11.20 16:02</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/k3s>k3s</a>
-<a href=/tags/kubectl>kubectl</a><div>停止和移除pod 按名称删除pod 按名称删除kubia-gpu pod：
-kubectl delete po kubia-gpu 在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。
-提示 还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。
-使用标签选择器删除pod 停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 creation_method=manual ，因此可以通过使用一个标签选择器来删除它们：
-kubectl delete po -l creation_method=manual 通过删除整个命名空间来删除pod 以下命令删除custom-namespace：
-kubectl delete ns custom-namespace 删除命名空间中的所有pod，但保留命名空间 查看 pods
-kubectl get pods 通过使用&ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：
-kubectl delete po --all 删除命名空间中的（几乎）所有资源 通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：
-kubectl delete all --all 命令中的第一个all指定正在删除所有资源类型，而&ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。
-注意 使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。
-删除资源时，kubectl将打印它删除的每个资源的名称。
-注意 kubectl delete all --all 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。
-kubectl 命令演示 kubectl 展示搜索出的pod列表（含pod所在的namespace） kubectl get pod -A |grep &lt;podname> [root@node ~]# kubectl get pod -A |grep dashboard kubernetes-dashboard dashboard-metrics-scraper-5657497c4c-j5kr8 1/1 Running 0 113m kubernetes-dashboard kubernetes-dashboard-78f87ddfc-tlmjv 1/1 Running 0 113m kubectl 删除pod命令 kubectl delete pod &lt;podname> -n &lt;namespace> 在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。 故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。
-<a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><div><a href=/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>Read more...</a></div></article><div><a href=/>Previous Page</a>
 2 of 9
 <a href=/page/3/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
