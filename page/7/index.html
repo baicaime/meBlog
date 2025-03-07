@@ -1,79 +1,9 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/zlib/>Ubuntu安装 Zlib</a></h1><b><time>2021.07.12 21:01</time></b>
-<a href=/tags/zlib>Zlib</a>
-<a href=/tags/linux>linux</a>
-<a href=/tags/ubuntu>Ubuntu</a><div>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。
-Zlib 是一个用于数据压缩的开源库。
-作为使用者，你可能会遇到需要安装 zlib（或 zlib-devel 包）作为另一个应用程序的依赖项的情况。
-但问题来了，如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。
-sudo apt install zlib Reading package lists... Done Building dependency tree Reading state information... Done E: Unable to locate package zlib 为什么会看到这个 Ubable to locate package 错误呢？因为没有名为 zlib 的包。
-如果你 使用 apt search 命令，你会发现有几个包可以让你安装：zlib 1g 和 zlib 1g-dev。当你知道这些后，只需一个 apt 命令就可以安装它们。
-在基于 Ubuntu 的 Linux 发行版上安装 Zlib 打开终端，使用以下命令：
-<a href=https://blog.baicai.me/article/2021/zlib/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/jsdelivr_github/>免费CDN：jsDelivr+Github 使用方法</a></h1><b><time>2021.07.02 23:50</time></b>
-<a href=/tags/jsdelivr>jsDelivr</a>
-<a href=/tags/github>Github</a>
-<a href=/tags/cdn>CDN</a><div>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。
-用 jsDelivr 免费CDN托管静态资源 国内的免费 CDN 不少，但需要备案 国外的免费 CDN 也不少，但在国内速度慢 但 jsDelivr 是一个特殊的存在，虽然是一家国外 CDN 但是有国内节点
-jsDelivr官网： https://www.jsdelivr.com
-放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。
-使用步骤 1、新建Github仓库
-2、克隆Github仓库到本地
-执行以下命令：
-git clone 一键复制的仓库地址 3、上传资源
-复制需要上传的资源到本地git仓库（注：jsDelivr不支持加载超过20M的资源），在本地git仓库目录下，执行以下命令：
-git status #查看状态 git add . #添加所有文件到暂存区 git commit -m '第一次提交' #把文件提交到仓库 git push #推送至远程仓库 4、发布仓库
-点击release发布
-自定义发布版本号 5、通过jsDelivr引用资源
-使用方法：https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径 例如：
-https://cdn.jsdelivr.net/gh/baicaime/meBlog/index.html https://cdn.jsdelivr.net/gh/baicaime/meBlog/favicon-16x16.png https://cdn.jsdelivr.net/gh/clin003/cdn/v@3.1.3/css.css 注意：版本号不是必需的，是为了区分新旧资源，如果不使用版本号，将会直接引用最新资源，除此之外还可以使用某个范围内的版本，查看所有资源等，具体使用方法如下：
-// 加载任何Github发布、提交或分支 https://cdn.jsdelivr.net/gh/user/repo@version/file // 加载 jQuery v3.2.1 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js // 使用版本范围而不是特定版本 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js // 完全省略该版本以获取最新版本 https://cdn.
-<a href=https://blog.baicai.me/article/2021/jsdelivr_github/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/qbittorrent/>Ubuntu安装 qbittorrent-nox并启动</a></h1><b><time>2021.07.02 21:01</time></b>
-<a href=/tags/qbittorrent>qBittorrent</a>
-<a href=/tags/ubuntu>Ubuntu</a>
-<a href=/tags/bt>bt</a><div>Qbittorrent-Nox 要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。
-注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用
-安装qbittorrent 安装add-apt-repository命令 sudo apt-get update && sudo apt-get install software-properties-common -y 添加qbittorrent-nox的PPA软件源 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable 安装qbittorrent-nox（webui版） sudo apt-get update && sudo apt-get install qbittorrent-nox 设置开机启动 通过rc.local完成 如果是Ubuntu-16.10及其之后的版本需要先按下面的文章完成设置后，开机启动才会生效
-Ubuntu-18.04设置开机启动脚本 起因Ubuntu-16.10（不包括）之前的版本使用的是update-rc.d以及rc.local等方法设置开机启&mldr;
-编辑rc.local脚本
-nano /etc/rc.local 在exit 0前面（前一行）添加以下内容并保存
-qbittorrent-nox -d 通过创建自定义服务实现 创建系统服务
-sudo apt-get install nano -y && nano /etc/systemd/system/qbittorrent-nox.service 粘贴以下内容，并保存。
-[Unit] Description=qBittorrent-nox After=network.target [Service] User=root Type=simple RemainAfterExit=yes ExecStart=/usr/bin/qbittorrent-nox -d [Install] WantedBy=multi-user.target 启动qbittorrent-nox并创建服务配置
-systemctl start qbittorrent-nox 设置开机自动启动qbittorrent-nox
-<a href=https://blog.baicai.me/article/2021/qbittorrent/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>跨域方案Nginx配置</a></h1><b><time>2021.07.01 18:58</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/%E8%B7%A8%E5%9F%9F>跨域</a>
-<a href=/tags/cors>CORS</a><div>什么是浏览器同源策略？ 同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
-同源是指"协议+域名+端口"三者相同，即便两个不同的域名指向同一个ip地址，也非同源。
-如何实现跨域？ 跨域是个比较古老的命题了，历史上跨域的实现手段有很多，我们现在主要介绍Nginx的跨域方案，其余的方案我们就不深入讨论了。
-方便的跨域方案Nginx nginx是一款极其强大的web服务器，其优点就是轻量级、启动快、高并发。
-现在的新项目中nginx几乎是首选，我们用node或者go开发的服务通常都需要经过nginx的反向代理。
-反向代理的原理很简单，即所有客户端的请求都必须先经过nginx的处理，nginx作为代理服务器再讲请求转发给node或者go服务，这样就规避了同源策略。
-#进程, 可更具cpu数量调整 worker_processes 1; events { #连接数 worker_connections 1024; } http { include mime.types; default_type application/octet-stream; sendfile on; #连接超时时间，服务器会在这个时间过后关闭连接。 keepalive_timeout 10; # gizp压缩 gzip on; # 直接请求nginx也是会报跨域错误的这里设置允许跨域 # 如果代理地址已经允许跨域则不需要这些, 否则报错(虽然这样nginx跨域就没意义了) add_header Access-Control-Allow-Origin *; add_header Access-Control-Allow-Headers X-Requested-With; add_header Access-Control-Allow-Methods GET,POST,OPTIONS; # srever模块配置是http模块中的一个子模块，用来定义一个虚拟访问主机 server { listen 80; server_name localhost; # 根路径指到index.html location / { root html; index index.html index.htm; } # localhost/api 的请求会被转发到192.168.0.103:8080 location /api { rewrite ^/b/(.
-<a href=https://blog.baicai.me/article/2021/nginx_cors_server_conf/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/mac_find/>MAC命令快速模糊查找文件</a></h1><b><time>2021.06.27 10:04</time></b>
-<a href=/tags/mac%E5%91%BD%E4%BB%A4%E8%A1%8C>mac命令行</a>
-<a href=/tags/mac>mac</a>
-<a href=/tags/find>find</a><div>find命令 描述：通过 find命令查找 语法：find ~ -iname “文件名*”
-/** * 比如我要查找一个以‘vue-’开头的.zip文件, * 但是你忘了它的全名也忘了在那个文件夹， * 查找范围是‘～’节点以内 * 就可以用这种方式进行模糊搜索 */ find ~ -iname "vue-*.zip" /** * 然后它就把所有包含符合条件的文件和路径都打印出来了 */ find不但能查找文件，还能查找文件夹
-/** * 比如我要查找所有包含‘vue’的文件或文件夹 */ find ~ -iname "*vue*" /** * 结果它找到了所有包含‘vue’的文件或文件夹 */ find方式很简单但是需要一点专业知识，需要知道一些正则的基本常识，需要指定路径范围，搜索的名字需要加引号等等
-mdfind命令 描述：通过 mdfind命令查找 语法：mdfind -name 文件名
-/** * 比如我要查找所有包含‘vue’的文件或文件夹 */ mdfind -name vue /** * 看，我直接输入我要找的关键字‘vue’ * 就把所有文件和文件夹都输出出来了，是不是很方便 */ mdfind 简单粗暴，没缺点，但有个前提是你mac电脑要支持Spotlight功能，不过也不用担心，一般mac默认是支持的
-在 shell 中执行命令 你是找到这个文件或文件夹了，但是你想直接打开它，那么怎么打开呢，看下面
-若要运行当前用户个人文件夹中的命令，请在前面加上文件夹说明符。例如，若要运行 MyCommandLineProg，请使用以下命令：
-% ~/MyCommandLineProg 若要打开一个 App，请使用打开命令：
-<a href=https://blog.baicai.me/article/2021/mac_find/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/rustproxy/>Rust 镜像源</a></h1><b><time>2021.06.25 22:53</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/rust>Rust</a><div>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。
-crates.io 和 rustup 的国内镜像源 字节跳动提供的：https://rsproxy.cn/
-中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html
-清华大学的：https://mirrors.tuna.tsinghua.edu.cn/help/rustup/
-上海交通大学的：https://git.sjtu.edu.cn/sjtug/crates.io-index
-更换国内源 更换为国内源，否则安装太慢了。 新建文件：~/.cargo/config，内容替换为如下，replace-with 这行可自己 ping 文件中各个国内源头，看哪个源快用哪个：
-[source.crates-io] registry = "https://github.com/rust-lang/crates.io-index" # 替换成你偏好的镜像源 replace-with = 'sjtu' # 清华大学 [source.tuna] registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git" # 中国科学技术大学 [source.ustc] registry = "git://mirrors.ustc.edu.cn/crates.io-index" # 上海交通大学 [source.sjtu] registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index" # rustcc社区 [source.rustcc] registry = "git://crates.rustcc.cn/crates.io-index" # 字节跳动 [source.rsproxy] registry = "https://rsproxy.cn/crates.io-index"</div></article><article><h1><a href=https://blog.baicai.me/article/2021/sharkle/>给我来点酷炫玩意-Sharkle</a></h1><b><time>2021.06.23 12:23</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/sharkle/>给我来点酷炫玩意-Sharkle</a></h1><b><time>2021.06.23 12:23</time></b>
 <a href=/tags/web%E5%89%8D%E7%AB%AF>web前端</a>
 <a href=/tags/%E5%88%9B%E6%84%8F>创意</a>
 <a href=/tags/%E7%BD%91%E9%A1%B5%E7%89%B9%E6%95%88>网页特效</a><div>网页前端是一门技术活！出色的网站除了后台够快够可靠，也非常需要前端吸引眼球。在这个网站里，点击SHOW ME SOMETHING AWESOME就能随机跳转到一个新页面，往往是一些用了平时不太多见的网页设计元素制作出来的页面演示，有时候也会有独到设计的网页游戏，或许还有些别的内容。这个网站收录的内容都挺不错，有些网站的质量完全可以拿出来单独写一篇文章。
@@ -106,8 +36,48 @@ Deskreen 还为你提供了管理连接设备的能力。因此，如果你需�
 <a href=/tags/%E5%86%A5%E6%83%B3>冥想</a>
 <a href=/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F>小游戏</a><div>网站为你营造了专注冥想的时间，通过三个简单的小游戏，你可以进入一个精神集中的状态，从而让大脑思维平静下来！
 传送门 https://thezen.zone/
-方法 进入网站直接开始冥想吧！</div></article><div><a href=/page/6/>Previous Page</a>
-7 of 9
+方法 进入网站直接开始冥想吧！</div></article><article><h1><a href=https://blog.baicai.me/article/2021/skylinewebcams/>全球高清实况摄像头-Skylinewebcams</a></h1><b><time>2021.06.14 20:57</time></b>
+<a href=/tags/%E5%85%A8%E7%90%83>全球</a>
+<a href=/tags/%E6%91%84%E5%83%8F%E5%A4%B4>摄像头</a>
+<a href=/tags/%E9%A3%8E%E6%99%AF>风景</a><div>网站收录了全球范围内的公开实况摄像头，你可以看到世界各地的文化遗产、城市风光、人气景点！
+传送门 https://www.skylinewebcams.com/
+方法 网站支持中文，进入后直接观看！</div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_cmd/>Linux 常用命令</a></h1><b><time>2021.06.05 10:31</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/linux>linux</a><div>Linux 常用命令
+日期 $(date -d '1 day ago' '+%Y-%m-%d') 常用方法
+数字格式化 part=`printf "%03d" $i` # 左补0 删除旧文件 # 找出5天前修改的文件名以.tar结尾的文件进行删除 find /www/backup -mtime +5 -name "*.tar" |xargs rm for循环 for ((i=0;i&lt;10;i++)) do _date=$(date +%Y-%m-%d -d "${i} day") echo $_date done # for i in {1..10} do echo $i done 文件合并 find ./ -name "item*" | xargs sed 'a\' > all.txt find ./ -name "item*" | xargs cat > all.txt :s/old/new #替换当前行的第一个old为new :s/old/new/g #替换当前行的所有的old为new :.
+<a href=https://blog.baicai.me/article/2021/linux_cmd/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/awk-nginx-access_log/>awk 分析 nginx 运行日志常用指令</a></h1><b><time>2021.06.05 10:16</time></b>
+<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
+<a href=/tags/awk>awk</a><div>awk 分析 nginx 运行日志常用指令
+1.独立IP
+awk '{print $1}' access.log | sort -r |uniq -c | wc -l 2.统计PV
+awk '{print $6}' access.log | wc -l 3.查询访问最频繁的URL
+awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more 4.查询访问最频繁的IP
+awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more 5.UV统计：
+awk '{print $6}' access.log | sort -r |uniq -c |wc -l 6.按小时统计
+cat access.log |awk '{print $4}' | awk -F ':' '{print $1,$2}'|uniq -c | awk '{print $2" "$3" "$1}'</div></article><article><h1><a href=https://blog.baicai.me/article/2021/toml/>TOML 语言规范 1.0 正式版</a></h1><b><time>2021.06.05 02:59</time></b>
+<a href=/tags/toml>TOML</a>
+<a href=/tags/rust>Rust</a><div>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。
+👉 本文来自 toml-lang 的中文翻译版本，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。
+TOML v1.0.0 全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&rsquo;s Obvious, Minimal Language）
+作者：Tom Preston-Werner、Pradyun Gedam 等人。
+宗旨 TOML 旨在成为一个语义明显且易于阅读的最小化配置文件格式。
+TOML 被设计成可以无歧义地映射为哈希表。
+TOML 应该能很容易地被解析成各种语言中的数据结构。
+目录 规格 注释 键值对 键名 字符串 整数 浮点数 布尔值 坐标日期时刻 各地日期时刻 各地日期 各地时刻 数组 表 内联表 表数组 文件扩展名 MIME 类型 ABNF 语法 规格 TOML 是大小写敏感的。 TOML 文件必须是合法的 UTF-8 编码的 Unicode 文档。 空白是指制表符（0x09）或空格（0x20）。 换行是指 LF（0x0A）或 CRLF（0x0D0A）。 注释 井字符将该行余下的部分标记为注释，除非它在字符串中。
+<a href=https://blog.baicai.me/article/2021/toml/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/learn_rust/>Rust 学习指南</a></h1><b><time>2021.06.05 02:16</time></b>
+<a href=/tags/rust>Rust</a><div>了解 一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。 这时，建议看 Rust 官网 https://rust-lang.org
+Rust 官方文档 Rust 语言的学习或参考文档大都列在 Rust 学习指引页 和 Rust 官方文档主页 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：
+《Rust 程序设计语言》（The Rust Programming Language），对应 GitHub 仓库 《通过例子学 Rust》（Rust by Example），对应 GitHub 仓库 Rust 版本指南（The Edition Guide），对应 GitHub 仓库 Cargo 帮助文档，对应 GitHub 仓库源文件 rustdoc 帮助文档，对应 GitHub 仓库源文件 rustc 帮助文档，对应 GitHub 仓库源文件 Rust 编译错误索引，对应 GitHub 仓库源代码 《Rust 语言参考》（The Rust Reference），对应 GitHub 仓库 The Rustonomicon，对应 GitHub 仓库 还有其他更多官方或其他非官方相关的文档：
+使用 Rust 编写命令行应用，对应 GitHub 仓库地址 Rust 和 WebAssembly 教程（WebAssembly Book），对应 GitHub 仓库 嵌入式 Rust 教程，对应 GitHub 仓库 A Rust Cookbook，对应 GitHub 仓库 The Unstable Book，对应 GitHub 仓库源代码 rustc 指引——Rust 编译器的工作原理及如何参与贡献（rustc-guide），对应 GitHub 仓库 rustup 命令说明，本翻译项目会将 rustup 的相关说明翻译成中文 Rust RFC——Rust 发展相关制定的文稿，对应 GitHub 仓库 mdBook 使用手册，对应 GitHub 仓库 Rust API 指导原则，对应 GitHub 仓库 async-book，对应 GitHub 仓库 上述文档的源文件有些是放在 rust 和 cargo 的仓库的子目录中：Rust 文档 和 cargo 文档。
+<a href=https://blog.baicai.me/article/2021/learn_rust/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/tower-defense/>塔防游戏-YORG.io</a></h1><b><time>2021.06.02 19:52</time></b>
+<a href=/tags/%E5%A4%9A%E4%BA%BA%E8%81%94%E6%9C%BA>多人联机</a>
+<a href=/tags/%E5%A1%94%E9%98%B2>塔防</a>
+<a href=/tags/%E7%BD%91%E9%A1%B5%E6%B8%B8%E6%88%8F>网页游戏</a>
+<a href=/tags/tower-defense>Tower Defense</a><div>塔防游戏 可玩性很高的一款塔防游戏，需要各类元素合成，通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击，一玩就停不下来。
+传送门 https://yorg.io/
+玩法 通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击</div></article><div><a href=/page/6/>Previous Page</a>
+7 of 8
 <a href=/page/8/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

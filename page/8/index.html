@@ -1,49 +1,9 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/skylinewebcams/>全球高清实况摄像头-Skylinewebcams</a></h1><b><time>2021.06.14 20:57</time></b>
-<a href=/tags/%E5%85%A8%E7%90%83>全球</a>
-<a href=/tags/%E6%91%84%E5%83%8F%E5%A4%B4>摄像头</a>
-<a href=/tags/%E9%A3%8E%E6%99%AF>风景</a><div>网站收录了全球范围内的公开实况摄像头，你可以看到世界各地的文化遗产、城市风光、人气景点！
-传送门 https://www.skylinewebcams.com/
-方法 网站支持中文，进入后直接观看！</div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_cmd/>Linux 常用命令</a></h1><b><time>2021.06.05 10:31</time></b>
-<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
-<a href=/tags/linux>linux</a><div>Linux 常用命令
-日期 $(date -d '1 day ago' '+%Y-%m-%d') 常用方法
-数字格式化 part=`printf "%03d" $i` # 左补0 删除旧文件 # 找出5天前修改的文件名以.tar结尾的文件进行删除 find /www/backup -mtime +5 -name "*.tar" |xargs rm for循环 for ((i=0;i&lt;10;i++)) do _date=$(date +%Y-%m-%d -d "${i} day") echo $_date done # for i in {1..10} do echo $i done 文件合并 find ./ -name "item*" | xargs sed 'a\' > all.txt find ./ -name "item*" | xargs cat > all.txt :s/old/new #替换当前行的第一个old为new :s/old/new/g #替换当前行的所有的old为new :.
-<a href=https://blog.baicai.me/article/2021/linux_cmd/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/awk-nginx-access_log/>awk 分析 nginx 运行日志常用指令</a></h1><b><time>2021.06.05 10:16</time></b>
-<a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
-<a href=/tags/awk>awk</a><div>awk 分析 nginx 运行日志常用指令
-1.独立IP
-awk '{print $1}' access.log | sort -r |uniq -c | wc -l 2.统计PV
-awk '{print $6}' access.log | wc -l 3.查询访问最频繁的URL
-awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more 4.查询访问最频繁的IP
-awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more 5.UV统计：
-awk '{print $6}' access.log | sort -r |uniq -c |wc -l 6.按小时统计
-cat access.log |awk '{print $4}' | awk -F ':' '{print $1,$2}'|uniq -c | awk '{print $2" "$3" "$1}'</div></article><article><h1><a href=https://blog.baicai.me/article/2021/toml/>TOML 语言规范 1.0 正式版</a></h1><b><time>2021.06.05 02:59</time></b>
-<a href=/tags/toml>TOML</a>
-<a href=/tags/rust>Rust</a><div>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。
-👉 本文来自 toml-lang 的中文翻译版本，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。
-TOML v1.0.0 全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&rsquo;s Obvious, Minimal Language）
-作者：Tom Preston-Werner、Pradyun Gedam 等人。
-宗旨 TOML 旨在成为一个语义明显且易于阅读的最小化配置文件格式。
-TOML 被设计成可以无歧义地映射为哈希表。
-TOML 应该能很容易地被解析成各种语言中的数据结构。
-目录 规格 注释 键值对 键名 字符串 整数 浮点数 布尔值 坐标日期时刻 各地日期时刻 各地日期 各地时刻 数组 表 内联表 表数组 文件扩展名 MIME 类型 ABNF 语法 规格 TOML 是大小写敏感的。 TOML 文件必须是合法的 UTF-8 编码的 Unicode 文档。 空白是指制表符（0x09）或空格（0x20）。 换行是指 LF（0x0A）或 CRLF（0x0D0A）。 注释 井字符将该行余下的部分标记为注释，除非它在字符串中。
-<a href=https://blog.baicai.me/article/2021/toml/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/learn_rust/>Rust 学习指南</a></h1><b><time>2021.06.05 02:16</time></b>
-<a href=/tags/rust>Rust</a><div>了解 一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。 这时，建议看 Rust 官网 https://rust-lang.org
-Rust 官方文档 Rust 语言的学习或参考文档大都列在 Rust 学习指引页 和 Rust 官方文档主页 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：
-《Rust 程序设计语言》（The Rust Programming Language），对应 GitHub 仓库 《通过例子学 Rust》（Rust by Example），对应 GitHub 仓库 Rust 版本指南（The Edition Guide），对应 GitHub 仓库 Cargo 帮助文档，对应 GitHub 仓库源文件 rustdoc 帮助文档，对应 GitHub 仓库源文件 rustc 帮助文档，对应 GitHub 仓库源文件 Rust 编译错误索引，对应 GitHub 仓库源代码 《Rust 语言参考》（The Rust Reference），对应 GitHub 仓库 The Rustonomicon，对应 GitHub 仓库 还有其他更多官方或其他非官方相关的文档：
-使用 Rust 编写命令行应用，对应 GitHub 仓库地址 Rust 和 WebAssembly 教程（WebAssembly Book），对应 GitHub 仓库 嵌入式 Rust 教程，对应 GitHub 仓库 A Rust Cookbook，对应 GitHub 仓库 The Unstable Book，对应 GitHub 仓库源代码 rustc 指引——Rust 编译器的工作原理及如何参与贡献（rustc-guide），对应 GitHub 仓库 rustup 命令说明，本翻译项目会将 rustup 的相关说明翻译成中文 Rust RFC——Rust 发展相关制定的文稿，对应 GitHub 仓库 mdBook 使用手册，对应 GitHub 仓库 Rust API 指导原则，对应 GitHub 仓库 async-book，对应 GitHub 仓库 上述文档的源文件有些是放在 rust 和 cargo 的仓库的子目录中：Rust 文档 和 cargo 文档。
-<a href=https://blog.baicai.me/article/2021/learn_rust/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/tower-defense/>塔防游戏-YORG.io</a></h1><b><time>2021.06.02 19:52</time></b>
-<a href=/tags/%E5%A4%9A%E4%BA%BA%E8%81%94%E6%9C%BA>多人联机</a>
-<a href=/tags/%E5%A1%94%E9%98%B2>塔防</a>
-<a href=/tags/%E7%BD%91%E9%A1%B5%E6%B8%B8%E6%88%8F>网页游戏</a>
-<a href=/tags/tower-defense>Tower Defense</a><div>塔防游戏 可玩性很高的一款塔防游戏，需要各类元素合成，通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击，一玩就停不下来。
-传送门 https://yorg.io/
-玩法 通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击</div></article><article><h1><a href=https://blog.baicai.me/article/2021/red-alert-2-chronodivide/>网页版红色警戒2-Red Alert 2: Chrono Divide</a></h1><b><time>2021.06.02 19:22</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2021/red-alert-2-chronodivide/>网页版红色警戒2-Red Alert 2: Chrono Divide</a></h1><b><time>2021.06.02 19:22</time></b>
 <a href=/tags/%E5%A4%9A%E4%BA%BA%E8%81%94%E6%9C%BA>多人联机</a>
 <a href=/tags/%E7%BA%A2%E8%AD%A62>红警2</a>
 <a href=/tags/%E7%BD%91%E9%A1%B5%E6%B8%B8%E6%88%8F>网页游戏</a><div>在线红警 又是一波人的集体回忆。。。网站高度还原了经典游戏——红色警戒2，原汁原味的画面和音效，仿佛又回到了那个电脑房的年代！
@@ -80,8 +40,50 @@ Linux 内存提取器（LiME）是一个在 Linux 系统上获取内存很常用
 GNU sed 通常被认为是功能最丰富的 sed，因此无论你是否运行 Linux，你可能都想要尝试一下。如果在 Ports 树中找不到 GNU sed（在非 Linux 系统上通常称为 gsed），你可以从 GNU 网站 下载源代码。 安装 GNU sed 的好处是，你可以使用它的额外功能，但是如果需要可移植性，还可以限制它以遵守 sed 的 POSIX 规范。
 MacOS 用户可以在 MacPorts 或 Homebrew 上找到 GNU sed。
 在 Windows 上，你可以通过 Chocolatey 来 安装 GNU sed。
-<a href=https://blog.baicai.me/article/2021/linux_sed/>Read more...</a></div></article><div><a href=/page/7/>Previous Page</a>
-8 of 9
-<a href=/page/9/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=https://blog.baicai.me/article/2021/linux_sed/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/swift-basic-syntax/>Swift语法全面解析</a></h1><b><time>2021.05.13 21:31</time></b>
+<a href=/tags/swift>swift</a>
+<a href=/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80>语法基础</a>
+<a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a>
+<a href=/tags/ios>ios</a><div>Swift介绍 Swift 是一门开发 iOS, macOS, watchOS 和 tvOS 应用的新语言。 swift 是一种安全，快速和互动的编程语言。 swift 支持代码预览（playgrounds），这个特性可以允许程序员在不编译和运行应用程序的前提下运行 Swift 代码并实时查看结果。
+Swift 通过采用现代编程模式来避免大量常见编程错误：
+变量始终在使用前初始化。 检查数组索引超出范围的错误。 检查整数是否溢出。 可选值确保明确处理 nil 值。 内存被自动管理。 错误处理允许从意外故障控制恢复。 基础部分 常量和变量 声明常量和变量， 常量和变量必须在使用前声明，使用 let 来声明常量，使用 var 来声明变量。 示例：
+let maximumNumberOfLoginAttempts = 10 var currentLoginAttempt = 0 // 类型注解 var welcomeMessage: String 注释 单行注释双正斜杠（//）， 多行注释（/* 多行的 */）。Swift 的多行注释可以嵌套在其它的多行注释之中。 示例：
+// 这是一个注释 /* 这也是一个注释， 但是是多行的 */ /* 这是第一个多行注释的开头 /* 这是第二个被嵌套的多行注释 */ 这是第一个多行注释的结尾 */ 分号 Swift 并不强制要求你在每条语句的结尾处使用分号（;）。 同一行内写多条独立的语句必须用分号分隔。
+<a href=https://blog.baicai.me/article/2021/swift-basic-syntax/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/go_cross_compilling/>使用 Golang 的交叉编译</a></h1><b><time>2021.05.13 14:35</time></b>
+<a href=/tags/golang>Golang</a>
+<a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a><div>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：
+下载并安装必备软件 验证构建服务器上是否有新的测试软件包 获取并设置依赖软件包所需的 yum 仓库 下载并安装新的测试软件包（基于步骤 2） 获取并设置必需的 SSL 证书 设置测试环境，获取所需的 Git 仓库，更改配置，重新启动守护进程等 做其他需要做的事情 用脚本自动化 这些步骤非常常规，以至于有必要对其进行自动化并将脚本保存到中央位置（例如文件服务器），在需要时可以在此处下载脚本。为此，我编写了 100-120 行的 Bash shell 脚本，它为我完成了所有配置（包括错误检查）。这个脚本通过以下方式简化了我的工作流程：
+配置新的 Linux 系统（支持测试的架构） 登录系统并从中央位置下载自动化 shell 脚本 运行它来配置系统 开始测试 学习 Go 语言 我想学习 Go 语言 有一段时间了，将我心爱的 Shell 脚本转换为 Go 程序似乎是一个很好的项目，可以帮助我入门。它的语法看起来很简单，在尝试了一些测试程序后，我开始着手提高自己的知识并熟悉 Go 标准库。
+我花了一个星期的时间在笔记本电脑上编写 Go 程序。我经常在我的 x86 服务器上测试程序，清除错误并使程序健壮起来，一切都很顺利。
+直到完全转换到 Go 程序前，我继续依赖自己的 shell 脚本。然后，我将二进制文件推送到中央文件服务器上，以便每次配置新服务器时，我要做的就是获取二进制文件，将可执行标志打开，然后运行二进制文件。我对早期的结果很满意：
+$ wget http://file.example.com/&lt;myuser>/bins/prepnode $ chmod +x ./prepnode $ ./prepnode 然后，出现了一个问题
+<a href=https://blog.baicai.me/article/2021/go_cross_compilling/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_screen/>Linux/Mac 使用 GNU Screen 的小技巧</a></h1><b><time>2021.05.13 12:50</time></b>
+<a href=/tags/screen>screen</a>
+<a href=/tags/linux>linux</a>
+<a href=/tags/mac>Mac</a>
+<a href=/tags/gnu-screen>GNU Screen</a><div>学习基本的 GNU Screen 终端复用技术，然后下载我们的终端命令备忘录，以便你能够熟悉常用的快捷方式。
+对于一般用户而言，命令行终端窗口可能是令人困惑和神秘的。但随着你对 Linux 终端的进一步了解，你很快就会意识到它的高效和强大。不过，也不需要很长时间，你就会想让终端变得更加高效，除了将更多的终端放到你的终端，还有什么高好的方法能够提升你的终端效率呢？
+终端复用 终端的许多优点之一是它是一个集中控制的界面。它是一个能让你访问数百个应用程序的窗口，而你与每一个应用程序进行交互所需要的只是一个键盘。但是，现代计算机几乎总是有多余的处理能力，而且现代计算机专家喜欢多任务处理，导致一个窗口处理数百个应用程序的能力是相当有限的。
+解决这一问题的常见答案是终端复用：即将虚拟终端叠放在一起，然后在它们之间移动的能力。通过终端复用器，你保持了集中控制，但是当你进行多任务时，你能够进行终端切换。更好的是，你能够在终端中拆分屏幕，使得在同一时间显示多个屏幕窗口。
+选择合适的复用器 一些终端提供类似的功能，有标签式界面和分割式视图，但也有细微的差别。首先，这些终端的功能依赖于图形化的桌面环境。其次，许多图形化的终端功能需要鼠标交互或使用不方便的键盘快捷键。终端复用器的功能在文本控制台上和在图形桌面上一样好用，而且键位绑定是针对常见的终端序列设计的，很方便。
+现有两种流行的复用器：tmux 和 GNU Screen。尽管你与它们互动的方式略有不同，但它们做同样的事情，而且大多具有相同的功能。这篇文章是 GNU Screen 的入门指南。关于 tmux 的相关介绍，请阅读 Kevin Sonney 的 tmux 介绍。
+使用 GNU Screen GNU Screen 的基本用法很简单，通过 screen 命令启动，你将进入 Screen 会话的第 0 个窗口。在你决定需要一个新的终端提示符前，你可能很难注意到有什么变化。
+当一个终端窗口被某项活动占用（比如，你启动了文本编辑器 Vim 或 Jove 或者你在处理音视频，或运行批处理任务），你可以新建一个窗口。要打开一个新的窗口，按 Ctrl+A，释放，然后按 c。这将在你现有窗口的基础上创建一个新的窗口。
+你会知道当前你是在一个新的窗口中，因为你的终端除了默认的提示符外，似乎没有任何东西。当然，你的另一个终端仍然存在，它只是躲在新窗口的后面。要遍历打开的窗口，按 Ctrl+A，释放，然后按 n（表示下一个）或按 p（表示上一个）。在只打开两个窗口的情况下， n 和 p 的功能是一样的，但你可以随时打开更多的窗口（Ctrl+A，然后 c ），并在它们之间切换。
+分屏 GNU Screen 的默认行为更像移动设备的屏幕，而不是桌面：你一次只能看到一个窗口。如果你因为喜欢多任务而使用 GNU Screen ，那么只关注一个窗口可能看起来是一种退步。幸运的是，GNU Screen 可以让你把终端分成窗口中的窗口。
+要创建一个水平分割窗口，按 Ctrl+A，然后按 s 。这将把一个窗口置于另一个窗口之上，就像窗格一样。然而，在你告诉它要显示什么之前，分割的空间是没有用途的。因此，在创建一个分割窗后，你可以用 Ctrl+A ，然后用 Tab 移动到分割窗中。一旦进入，使用 Ctrl+A 然后 n 浏览所有可用的窗口，直到你想显示的内容出现在分割窗格中。
+<a href=https://blog.baicai.me/article/2021/linux_screen/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/linux_cron/>使用 cron 调度自动化任务</a></h1><b><time>2021.05.12 18:59</time></b>
+<a href=/tags/cron>cron</a>
+<a href=/tags/linux>linux</a>
+<a href=/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1>自动化任务</a><div>cron 是一个调度守护进程，它以指定的时间间隔执行任务，这些任务称为 corn 作业，主要用于自动执行系统维护或管理任务。例如，你可以设置一个 cron 作业来自动执行重复的任务，比如备份数据库或数据，使用最新的安全补丁更新系统，检查磁盘空间使用情况，发送电子邮件等等。 cron 作业可以按分钟、小时、日、月、星期或它们的任意组合运行。
+cron 的一些优点 以下是使用 cron 作业的一些优点：
+你可以更好地控制作业的运行时间。例如，你可以精确到分钟、小时、天等。 它消除了为循环任务逻辑而去写代码的需要，当你不再需要执行任务时，可以直接关闭它。 作业在不执行时不会占用内存，因此你可以节省内存分配。 如果一个作业执行失败并由于某种原因退出，它将在适当的时间再次运行。 安装 cron 守护进程 幸运的是，Fedora Linux 预先配置了运行重要的系统任务来保持系统更新，有几个实用程序可以运行任务例如 cron、anacron、at 和 batch 。本文只关注 cron 实用程序的安装。cron 和 cronie 包一起安装，cronie 包也提供 cron 服务。
+要确定软件包是否已经存在，使用 rpm 命令： $ rpm -q cronie Cronie-1.5.2-4.el8.x86_64
+如果安装了 cronie ，它将返回 cronie 包的全名。如果你的系统中没有安装，则会显示未安装。
+使用以下命令安装： $ dnf install cronie
+运行 cron 守护进程 cron 作业由 crond 服务来执行，它会读取配置文件中的信息。在将作业添加到配置文件之前，必须启动 crond 服务，或者安装它。什么是 crond 呢？crond 是 cron 守护程序的简称。要确定 crond 服务是否正在运行，输入以下命令：
+<a href=https://blog.baicai.me/article/2021/linux_cron/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/hello_world/>Hello world</a></h1><b><time>2021.05.11 14:00</time></b>
+<a href=/tags/about>about</a><div>Hello World! ^_^</div></article><div><a href=/page/7/>Previous Page</a>
+8 of 8</div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,55 +1,9 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1740329182"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/>docker golang:alpine CGO 制作镜像的正确姿势</a></h1><b><time>2023.09.04 23:23</time></b>
-<a href=/tags/docker>Docker</a>
-<a href=/tags/golang>Golang</a><div>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。
-这时就需要安装 build-base 配置编译环境。
-参考 Dockerfile 如下：
-FROM golang:alpine as builder ENV CGO_ENABLED=1 WORKDIR /app COPY . . RUN apk add --no-cache --update git build-base RUN go mod tidy \ && go build -o api_client_linux ./cmd/api_client/ FROM alpine:latest as runner ENV TZ=Asia/Shanghai RUN apk --no-cache add ca-certificates tzdata libc6-compat libgcc libstdc++ WORKDIR /app COPY --from=builder /app/api_client_linux . VOLUME /app/conf EXPOSE 8080 ENTRYPOINT ["./api_client_linux" ,"-c","/app/conf/config.yaml"] 运行镜像我们也使用 Alpine ，由于 Alpine 极为精简，并没有常用的时区、证书等，会导致不可预料的错误。所以我们需要安装这些东西：
-包名 用途 ca-certificates: CA证书，使用TLS tzdata: 时区配置 libc6-compat: C 标准库 libgcc: GCC 相关库，CGO编译程序依赖 libstdc++: C++ 标准库</div></article><article><h1><a href=https://blog.baicai.me/article/2023/blog_20230902/>网站迁移完成</a></h1><b><time>2023.09.02 16:46</time></b>
-<a href=/tags/%E7%BD%91%E7%AB%99%E7%BB%B4%E6%8A%A4%E8%AE%B0%E5%BD%95>网站维护记录</a><div>实施：
-hugo + github action + git pages + cloudflare
-目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。
-静态内容存放： github pages
-域名解析使用： cloudflare
-附注：
-github pages 自定义域名 解析设置（支持A记录）
-https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site</div></article><article><h1><a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</a></h1><b><time>2023.08.31 12:12</time></b>
-<a href=/tags/proxycommand>ProxyCommand</a>
-<a href=/tags/ssh>ssh</a>
-<a href=/tags/linux>linux</a><div>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。
-SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。
-ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。
-环境说明
-远程服务器的IP地址为 0.0.0.1，代号为X； 另一个远程服务器的IP为 0.0.0.2，代号为Y； 目前本机的IP地址为 0.0.0.3，代号为A，本地可以利用SSH客户端通过密钥或密码连接X和Y； 这里全部使用密钥的方式进行访问，本机 A 与 Y 之间无法进行访问。
-本地的 ～/.ssh/config 的配置文件信息如下，通过X连接到Y；
-Host X HostName 0.0.0.1 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_1 Host Y HostName 0.0.0.2 User root Port 22 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa_2 Host test HostName 0.
-<a href=https://blog.baicai.me/article/2023/ssh_proxycommand/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/urltest-urltest/>检查网络延时测试 URL 汇总，可用于软件测试延时</a></h1><b><time>2023.08.28 23:04</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a><div>服务提供者 链接 大陆体验 境外体验 http/https IP Version 备注 Google http://www.gstatic.com/generate_204 5 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google-analytics.com/generate_204 6 10 204/204 4+6 Google网络联通性测试地址 Google http://www.google.com/generate_204 0 10 204/204 4+6 Google网络联通性测试地址 Google http://connectivitycheck.gstatic.com/generate_204 4 10 204/204 4+6 Google网络联通性测试地址 Apple http://captive.apple.com 3 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 Apple http://www.apple.com/library/test/success.html 7 10 200/200 4+6 苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接 MicroSoft http://www.msftconnecttest.com/connecttest.txt 5 10 200/error 4 微软的网络联通性测试地址 Cloudflare http://cp.cloudflare.com/generate_204 4 10 204/204 4+6 Cloudflare的联通性测试地址 Firefox http://detectportal.
-<a href=https://blog.baicai.me/article/2023/urltest-urltest/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Hugo + GitHub Action + Github Pages，搭建博客自动发布</a></h1><b><time>2023.08.13 11:31</time></b>
-<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/hugo>hugo</a>
-<a href=/tags/github-action>github action</a>
-<a href=/tags/bash>bash</a>
-<a href=/tags/blog>blog</a><div>我的方案由以下两个核心部分：
-博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。 GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。 使用 Hugo 搭建博客 Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。
-安装 Hugo 我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。
-brew install hugo 完成后，使用以下命令进行验证(查看版本号)：
-hugo version 创建 Hugo 网站 hugo new site blog-demo 配置主题 创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。
-cd blog-demo git clone git@github.com:colorchestra/smol.git themes/smol cd themes/smol rm -rf .
-<a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
-<a href=/tags/debian>debian</a><div>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。
-准备工作 一定要备份重要数据！
-以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作
-Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。
-检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye
-cat /etc/apt/sources.list | grep stable 更新 apt 源，替换 bullseye 为 bookworm：
-sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list.d/*.list 对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：
-sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：
-<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Linux 命令</a></h1><b><time>2023.04.10 17:53</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/linux>linux</a><div>基本命令 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作系统信息 arch 显示机器的处理器架构 uname -m 显示机器的处理器架构 uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /proc/meminfo 校验内存使用 cat /proc/swaps 显示哪些swap被使用 cat /proc/version 显示内核的版本 cat /proc/net/dev 显示网络适配器及统计 cat /proc/mounts 显示已加载的文件系统 lspci -tv 罗列 PCI 设备 lsusb -tv 显示 USB 设备 date 显示系统日期 cal 2007 显示2007年的日历表 date 041217002007.
 <a href=https://blog.baicai.me/article/2023/linux_cmd_list/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/mac_cmd/>Mac 常用命令</a></h1><b><time>2023.03.31 22:54</time></b>
@@ -68,8 +22,53 @@ https://api.telegram.org/bot{my_bot_token}/getWebhookInfo</div></article><articl
 <a href=/tags/debian>debian</a>
 <a href=/tags/xdg-user-dirs-gtk-update>xdg-user-dirs-gtk-update</a><div>操作环境:
 Distributor ID: Debian Description: Debian GNU/Linux 11 (bullseye) Release: 11 Codename: bullseye 安装 debian 后，中文环境下home目录下文件夹显示的是中文，不方便使用cd命令，用到的软件xdg-user-dirs-gtk(Gnome 环境已默认安装),可以方便更改为英文.
-#临时转换系统语言为英文，重启后会自动恢复原值的 export LANG=en_US #执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭 xdg-user-dirs-gtk-update #转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的 export LANG=zh_CN 下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</div></article><div><a href=/page/3/>Previous Page</a>
-4 of 9
+#临时转换系统语言为英文，重启后会自动恢复原值的 export LANG=en_US #执行转换命令，弹出的窗口中会询问是否将目录转化为英文路径，同意并关闭 xdg-user-dirs-gtk-update #转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的 export LANG=zh_CN 下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。</div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</a></h1><b><time>2022.11.01 22:18</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/certbot>certbot</a>
+<a href=/tags/nginx>nginx</a><div>在Debian 11 Nginx配置Let&rsquo;s Encrypt SSL证书
+安装 Certbot 及 certbot nginx 插件 sudo apt update && sudo apt -y install certbot python3-certbot-nginx 为 nginx 网站生成证书并配置 certbot --nginx 如果是首次运行CertBot获取SSL证书，它将会询问你的电子邮件，输入一个你常用的邮件地址，它会在到期之前通知你。
+也可以为特定域名获取证书配置
+certbot --nginx -d baicai.me 使用Certbot自动更新SSL证书 Let&rsquo;s Encrypt的SSL证书会在3个月到期即90天，因此你可能需要手动续订，但Certbot软件包附带了一个cron任务和systemd计时器，它将在证书过期之前进行自动续订。 除非你更改配置，否则无需再次手动运行Certbot。 您可以通过运行以下命令来测试证书的自动续订。
+certbot renew --dry-run</div></article><article><h1><a href=https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/>在 Mac 系统中制作 Debian U盘启动盘</a></h1><b><time>2022.10.20 13:18</time></b>
+<a href=/tags/bootable>bootable</a>
+<a href=/tags/u%E7%9B%98%E5%90%AF%E5%8A%A8>u盘启动</a>
+<a href=/tags/debian>debian</a>
+<a href=/tags/macos>MacOS</a><div>在Mac系统中制作U盘启动盘 Create a Bootable USB Flash Drive
+在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下
+下载 Debian DVD 镜像文件 通过 HTTP/FTP 下载 Debian CD/DVD 映像 https://www.debian.org/CD/http-ftp/
+amd64 DVD版 https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+格式化USB盘 打开系统自带的磁盘管理工具，插上U盘，格式化U盘，选择格式如下： 格式：Mac OS 扩展（日志式） 方案：GUID 分区图
+取消Usb磁盘挂载 # 终端执行以下命令 # 列出磁盘，找到你usb硬盘的盘符 diskutil list # 输出如下：可以看到usb硬盘为/dev/disk2 /dev/disk2 (external, physical): #: TYPE NAME SIZE IDENTIFIER 0: FDisk_partition_scheme *32.0 GB disk2 1: 0xEF 6.4 MB disk2s2 # 取消usb硬盘的挂载 diskutil unmountDisk /dev/disk2 导入镜像 # 执行如下命令 # if是镜像文件路径 # of是导入的目的磁盘 # bs是读写快的大小，太小会增大io，降低效率，一般1m～2m即可。 sudo dd if=~/Downloads/debian-11.
+<a href=https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/>Debian 安装 Transmission 并实现远程访问</a></h1><b><time>2022.10.18 17:05</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/transmission>transmission</a>
+<a href=/tags/bt>bt</a><div>Debian 安装完成后的桌面环境带有 transmission-gtk 这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。
+那么安装Transmission后台守护程序
+$ sudo apt install -y transmission-daemon #停止Transmisson后台服务 systemctl stop transmission-daemon.service #修改配置文件 nano /etc/transmission-daemon/settings.json 启动Transmission后台服务 #启动transmission服务 systemctl start transmission-daemon.service #停止transmission服务 systemctl stop transmission-daemon.service #查询transmission运行状态 systemctl status transmission-daemon.service #将transmission设置为开机自启动 systemctl enable transmission-daemon.service #关闭transmission开机自启 systemctl disable transmission-daemon.service</div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install/>Debian 安装慢的解决方案</a></h1><b><time>2022.10.18 14:37</time></b>
+<a href=/tags/debian>debian</a>
+<a href=/tags/linux>linux</a><div>解决 Debian 安装过程慢的可行方案： 如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。 安装时选择 expert，不要选择 安全更新。 安装过程修改软件源。 Debian DVD-1 镜像下载地址 通过 HTTP/FTP 下载 Debian CD/DVD 映像 https://www.debian.org/CD/http-ftp/
+amd64 DVD版 https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+Debian 安装过程中 修改软件源中的安全源地址 在Debian安装步骤进入到选择安装的桌面环境和软件时, 键入 Ctrl+Alt+F2 可以看到从图形界面转到了tty命令终端, 键入 Enter 这里修改软件源配置文件
+nano /target/etc/apt/sources.list 修改debian-security源地址 http://mirrors.ustc.edu.cn 目测最快
+#deb http://security.debian.org/debian-security bullseye-security main deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main 修改后 Ctrl+X 退出保存
+然后退出终端重新进入界面继续安装，键入 Ctrl+Alt+F5
+Debian 安装完成后更新硬件驱动 在设置——》关于——〉更新——》软件源，去掉cdrome的源，勾选合适的源 然后通过 dmesg 查看启动日志。 查找哪些固件加载异常，根据情况安装驱动（比如我的缺失显卡驱动和无线网卡驱动）。
+# 更新源 sudo apt-get update dmesg # demsg查看到 缺失显卡驱动 sudo apt-get install firmware-amd-graphics # demsg查看到 缺失 rtl8168e-3.
+<a href=https://blog.baicai.me/article/2022/debian_install/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_docker/>安装docker</a></h1><b><time>2022.09.30 00:38</time></b>
+<a href=/tags/docker>Docker</a>
+<a href=/tags/debian>Debian</a><div>运行环境
+Operating System: Debian GNU/Linux 11 (bullseye) Kernel: Linux 5.10.0-18-amd64 Architecture: x86-64 通过Debian官方软件仓库安装 # 更新软件源 并 安装 docker及相关应用 sudo apt update && sudo apt install -y docker docker.io docker-compose # 查看docker运行状态 sudo systemctl status docker # 查看docker信息 sudo docker info # 验证是否安装成功 sudo docker run hello-world 镜像加速器 访问 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 获取自己的阿里云镜像加速器地址
+修改 /etc/docker/daemon.json
+sudo mkdir -p /etc/docker sudo tee /etc/docker/daemon.json &lt;&lt;-'EOF' { "max-concurrent-downloads": 3, "max-concurrent-uploads": 3, "max-download-attempts": 3, "registry-mirrors": ["https://修改为自己的.mirror.aliyuncs.com","https://hub-mirror.c.163.com","https://registry.aliyuncs.com"] } EOF sudo systemctl daemon-reload sudo systemctl restart docker 清理docker对象 prune 命令用来删除不再使用的 docker 对象。
+<a href=https://blog.baicai.me/article/2022/debian_install_docker/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2022/nginx_autoindex_conf/>nginx 启用目录索引，显示文件列表</a></h1><b><time>2022.07.23 23:52</time></b>
+<a href=/tags/nginx>nginx</a><div>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。
+但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。
+官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html server { listen 80; ... ... location /index_dir { autoindex on; } } 除了简单地使用自动索引打开或关闭之外，还可以对其做其他的配置，包括：
+autoindex_exact_size; 显示输出的确切文件大小，还是最接近的KB，MB或GB。默认为on，显示出文件的确切大小，单位是bytes。改为off后，显示出文件的大概大小，单位是kB或者MB或者GB。 autoindex_format; 该指令指定Nginx索引列表应以什么格式输出。该指令有4个选项：html/xml/json/jsonp。 autoindex_localtime; 显示的文件时间为GMT时间。 注意:改为on后，显示的文件时间为文件的服务器时间。 使用这几个配置后配置内容类似于如下内容：
+location /index_dir/ { root /data/index_dir/; autoindex on; autoindex_exact_size off; autoindex_format html; autoindex_localtime on; } 如果有中文目录的话会出现乱码问题，所以还需要在下面添加这一句：
+charset utf-8; 或
+charset utf-8,gbk;</div></article><div><a href=/page/3/>Previous Page</a>
+4 of 8
 <a href=/page/5/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
