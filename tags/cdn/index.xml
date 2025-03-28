@@ -5,8 +5,7 @@
 但 jsDelivr 是一个特殊的存在，虽然是一家国外 CDN 但是有国内节点&lt;/p>
 &lt;p>jsDelivr官网： &lt;a href="https://www.jsdelivr.com">https://www.jsdelivr.com&lt;/a>&lt;/p>
 &lt;blockquote>
-&lt;p>放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。&lt;/p>
-&lt;/blockquote>
+&lt;p>放在Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，jsDelivr + Github便是免费且好用的CDN，非常适合博客网站使用。&lt;/p>&lt;/blockquote>
 &lt;h3 id="使用步骤">使用步骤&lt;/h3>
 &lt;p>1、新建Github仓库&lt;/p>
 &lt;p>2、克隆Github仓库到本地&lt;/p>

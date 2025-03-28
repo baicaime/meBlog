@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>find on 白菜</title><link>https://blog.baicai.me/tags/find/</link><description>Recent content in find on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Sun, 27 Jun 2021 10:04:44 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/find/index.xml" rel="self" type="application/rss+xml"/><item><title>MAC命令快速模糊查找文件</title><link>https://blog.baicai.me/article/2021/mac_find/</link><pubDate>Sun, 27 Jun 2021 10:04:44 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/mac_find/</guid><description>&lt;h3 id="find命令">find命令&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Find on 白菜</title><link>https://blog.baicai.me/tags/find/</link><description>Recent content in Find on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Sun, 27 Jun 2021 10:04:44 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/find/index.xml" rel="self" type="application/rss+xml"/><item><title>MAC命令快速模糊查找文件</title><link>https://blog.baicai.me/article/2021/mac_find/</link><pubDate>Sun, 27 Jun 2021 10:04:44 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/mac_find/</guid><description>&lt;h3 id="find命令">find命令&lt;/h3>
 &lt;p>描述：通过 find命令查找
 语法：find ~ -iname “文件名*”&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/**
@@ -38,8 +38,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>mdfind 简单粗暴，没缺点，但有个前提是你mac电脑要支持Spotlight功能，不过也不用担心，一般mac默认是支持的&lt;/p>
 &lt;h3 id="在-shell-中执行命令">在 shell 中执行命令&lt;/h3>
 &lt;blockquote>
-&lt;p>你是找到这个文件或文件夹了，但是你想直接打开它，那么怎么打开呢，看下面&lt;/p>
-&lt;/blockquote>
+&lt;p>你是找到这个文件或文件夹了，但是你想直接打开它，那么怎么打开呢，看下面&lt;/p>&lt;/blockquote>
 &lt;p>若要运行当前用户个人文件夹中的命令，请在前面加上文件夹说明符。例如，若要运行 MyCommandLineProg，请使用以下命令：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>% ~/MyCommandLineProg
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>若要打开一个 App，请使用打开命令：&lt;/p>

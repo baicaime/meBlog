@@ -744,55 +744,55 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">协议&lt;/th>
-&lt;th style="text-align:center">端口&lt;/th>
-&lt;th style="text-align:center">源&lt;/th>
-&lt;th style="text-align:center">目标&lt;/th>
-&lt;th style="text-align:left">描述&lt;/th>
+&lt;th style="text-align: left">协议&lt;/th>
+&lt;th style="text-align: center">端口&lt;/th>
+&lt;th style="text-align: center">源&lt;/th>
+&lt;th style="text-align: center">目标&lt;/th>
+&lt;th style="text-align: left">描述&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">2379-2380&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:left">只有具有嵌入式 etcd 的 HA 需要&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">2379-2380&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: left">只有具有嵌入式 etcd 的 HA 需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">6443&lt;/td>
-&lt;td style="text-align:center">Agents&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:left">K3s supervisor 和 Kubernetes API Server&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">6443&lt;/td>
+&lt;td style="text-align: center">Agents&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: left">K3s supervisor 和 Kubernetes API Server&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">8472&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有 Flannel VXLAN 需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">8472&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有 Flannel VXLAN 需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">10250&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">Kubelet 指标&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">10250&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">Kubelet 指标&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">51820&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有使用 IPv4 的 Flannel Wireguard 才需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">51820&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有使用 IPv4 的 Flannel Wireguard 才需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">51821&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有使用 IPv6 的 Flannel Wireguard 才需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">51821&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有使用 IPv6 的 Flannel Wireguard 才需要&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -1070,132 +1070,132 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">服务提供者&lt;/th>
-&lt;th style="text-align:left">链接&lt;/th>
-&lt;th style="text-align:center">大陆体验&lt;/th>
-&lt;th style="text-align:center">境外体验&lt;/th>
-&lt;th style="text-align:center">http/https&lt;/th>
-&lt;th style="text-align:center">IP Version&lt;/th>
-&lt;th style="text-align:left">备注&lt;/th>
+&lt;th style="text-align: left">服务提供者&lt;/th>
+&lt;th style="text-align: left">链接&lt;/th>
+&lt;th style="text-align: center">大陆体验&lt;/th>
+&lt;th style="text-align: center">境外体验&lt;/th>
+&lt;th style="text-align: center">http/https&lt;/th>
+&lt;th style="text-align: center">IP Version&lt;/th>
+&lt;th style="text-align: left">备注&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">Google&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.gstatic.com/generate_204">http://www.gstatic.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">5&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Google&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.gstatic.com/generate_204">http://www.gstatic.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">Google网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Google&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.google-analytics.com/generate_204">http://www.google-analytics.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">6&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Google&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.google-analytics.com/generate_204">http://www.google-analytics.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">6&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">Google网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Google&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.google.com/generate_204">http://www.google.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">0&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Google&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.google.com/generate_204">http://www.google.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">Google网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Google&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://connectivitycheck.gstatic.com/generate_204">http://connectivitycheck.gstatic.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">Google网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Google&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://connectivitycheck.gstatic.com/generate_204">http://connectivitycheck.gstatic.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">Google网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Apple&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://captive.apple.com">http://captive.apple.com&lt;/a>&lt;/td>
-&lt;td style="text-align:center">3&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">200/200&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
+&lt;td style="text-align: left">Apple&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://captive.apple.com">http://captive.apple.com&lt;/a>&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">200/200&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Apple&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.apple.com/library/test/success.html">http://www.apple.com/library/test/success.html&lt;/a>&lt;/td>
-&lt;td style="text-align:center">7&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">200/200&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
+&lt;td style="text-align: left">Apple&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.apple.com/library/test/success.html">http://www.apple.com/library/test/success.html&lt;/a>&lt;/td>
+&lt;td style="text-align: center">7&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">200/200&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">苹果设备用于检测 Wi-Fi 是否需要认证登陆的链接&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">MicroSoft&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.msftconnecttest.com/connecttest.txt">http://www.msftconnecttest.com/connecttest.txt&lt;/a>&lt;/td>
-&lt;td style="text-align:center">5&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">200/error&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:left">微软的网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">MicroSoft&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.msftconnecttest.com/connecttest.txt">http://www.msftconnecttest.com/connecttest.txt&lt;/a>&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">200/error&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: left">微软的网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Cloudflare&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://cp.cloudflare.com/generate_204">http://cp.cloudflare.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">Cloudflare的联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Cloudflare&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://cp.cloudflare.com/generate_204">http://cp.cloudflare.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">Cloudflare的联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Firefox&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://detectportal.firefox.com/success.txt">http://detectportal.firefox.com/success.txt&lt;/a>&lt;/td>
-&lt;td style="text-align:center">5&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">200/200&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">火狐的网络联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Firefox&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://detectportal.firefox.com/success.txt">http://detectportal.firefox.com/success.txt&lt;/a>&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">200/200&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">火狐的网络联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">V2ex&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://www.v2ex.com/generate_204">http://www.v2ex.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">0&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">204/301&lt;/td>
-&lt;td style="text-align:center">4+6&lt;/td>
-&lt;td style="text-align:left">v2ex 的联通性测试地址&lt;/td>
+&lt;td style="text-align: left">V2ex&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://www.v2ex.com/generate_204">http://www.v2ex.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">204/301&lt;/td>
+&lt;td style="text-align: center">4+6&lt;/td>
+&lt;td style="text-align: left">v2ex 的联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">小米&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://connect.rom.miui.com/generate_204">http://connect.rom.miui.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:left">小米的联通性测试地址&lt;/td>
+&lt;td style="text-align: left">小米&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://connect.rom.miui.com/generate_204">http://connect.rom.miui.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: left">小米的联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">华为&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://connectivitycheck.platform.hicloud.com/generate_204">http://connectivitycheck.platform.hicloud.com/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">5&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:left">华为的联通性测试地址&lt;/td>
+&lt;td style="text-align: left">华为&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://connectivitycheck.platform.hicloud.com/generate_204">http://connectivitycheck.platform.hicloud.com/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: left">华为的联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">Vivo&lt;/td>
-&lt;td style="text-align:left">&lt;a href="http://wifi.vivo.com.cn/generate_204">http://wifi.vivo.com.cn/generate_204&lt;/a>&lt;/td>
-&lt;td style="text-align:center">10&lt;/td>
-&lt;td style="text-align:center">5&lt;/td>
-&lt;td style="text-align:center">204/204&lt;/td>
-&lt;td style="text-align:center">4&lt;/td>
-&lt;td style="text-align:left">vivo 的联通性测试地址&lt;/td>
+&lt;td style="text-align: left">Vivo&lt;/td>
+&lt;td style="text-align: left">&lt;a href="http://wifi.vivo.com.cn/generate_204">http://wifi.vivo.com.cn/generate_204&lt;/a>&lt;/td>
+&lt;td style="text-align: center">10&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">204/204&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: left">vivo 的联通性测试地址&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

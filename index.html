@@ -1,92 +1,177 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743157893"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
 <a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/the_degree_confluence_project/>访问世界上每一个经纬度为整数的交叉点</a></h1><b><time>2025.03.28 17:12</time></b>
 <a href=/tags/%E6%8B%8D%E7%85%A7>拍照</a>
-<a href=/tags/%E7%BB%8F%E7%BA%AC%E5%BA%A6>经纬度</a><div>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。 目前中国的进度是 429/978，平原地区的交叉点基本上被记录完毕了，剩下的都是难啃的骨头。
-the Degree Confluence Project: https://confluence.org</div></article><article><h1><a href=https://blog.baicai.me/article/2025/test_25/>测试服务器能否正常收发邮件</a></h1><b><time>2025.02.24 00:40</time></b>
+<a href=/tags/%E7%BB%8F%E7%BA%AC%E5%BA%A6>经纬度</a><div><p>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。
+目前<a href="https://confluence.org/country.php?id=28">中国的进度</a>是 429/978，平原地区的交叉点基本上被记录完毕了，剩下的都是难啃的骨头。</p><p>the Degree Confluence Project: <a href=https://confluence.org>https://confluence.org</a></p></div></article><article><h1><a href=https://blog.baicai.me/article/2025/test_25/>测试服务器能否正常收发邮件</a></h1><b><time>2025.02.24 00:40</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/mail>mail</a>
-<a href=/tags/telnet>telnet</a><div>需要收发邮件的话，要注意商家是否开放25端口
-发邮件 使用
-telnet smtp.qq.com 25 显示：
-telnet smtp.qq.com 25 Trying 43.129.255.54... 则无法使用。
-显示：
-telnet smtp.qq.com 25 Trying 43.129.255.54... Connected to smtp.qq.com. Escape character is '^]'. 220 newxmesmtplogicsvrszc5-0.qq.com XMail Esmtp QQ Mail Server. 则可以正常使用。
-使用gmail进行测试也是类似的： telnet smtp.gmail.com 25 Trying 172.253.117.109... Connected to smtp.gmail.com. Escape character is '^]'. 220 smtp.gmail.com ESMTP ca40-20020a056a0206a800b005897bfc2ed3sm7618602pgb.93 - gsmtp 当然，现在Gmail 推荐使用 TLS/SSL 连接，所以也要测试465：
-telnet smtp.gmail.com 465 显示：
-telnet smtp.gmail.com 465 Trying 173.194.174.108... Connected to smtp.gmail.com. Escape character is '^]'.
-<a href=https://blog.baicai.me/article/2025/test_25/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></h1><b><time>2025.02.23 22:22</time></b>
+<a href=/tags/telnet>telnet</a><div><p>需要收发邮件的话，要注意商家是否开放25端口</p><h3 id=发邮件>发邮件</h3><p>使用</p><pre tabindex=0><code>telnet smtp.qq.com 25
+</code></pre><p>显示：</p><pre tabindex=0><code>telnet smtp.qq.com 25
+Trying 43.129.255.54...
+</code></pre><p>则无法使用。</p><p>显示：</p><pre tabindex=0><code>telnet smtp.qq.com 25
+Trying 43.129.255.54...
+Connected to smtp.qq.com.
+Escape character is &#39;^]&#39;.
+220 newxmesmtplogicsvrszc5-0.qq.com XMail Esmtp QQ Mail Server.
+</code></pre><p>则可以正常使用。</p><h3 id=使用gmail进行测试也是类似的>使用gmail进行测试也是类似的：</h3><pre tabindex=0><code>telnet smtp.gmail.com 25           
+Trying 172.253.117.109...
+Connected to smtp.gmail.com.
+Escape character is &#39;^]&#39;.
+220 smtp.gmail.com ESMTP ca40-20020a056a0206a800b005897bfc2ed3sm7618602pgb.93 - gsmtp
+</code></pre><p>当然，现在Gmail 推荐使用 TLS/SSL 连接，所以也要测试465：</p><pre tabindex=0><code>telnet smtp.gmail.com 465
+</code></pre><p>显示：</p><pre tabindex=0><code>telnet smtp.gmail.com 465
+
+Trying 173.194.174.108...
+Connected to smtp.gmail.com.
+Escape character is &#39;^]&#39;.
+</code></pre><p>正常，超时则无法发送。</p><h3 id=收邮件>收邮件</h3><pre tabindex=0><code>telnet pop.gmail.com 995
+</code></pre><p>显示：</p><a href=https://blog.baicai.me/article/2025/test_25/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></h1><b><time>2025.02.23 22:22</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/nginx>nginx</a><div>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。
-出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。
-什么是ulimit? ulimit命令用来限制系统用户对shell资源的访问。
-假设有这样一种情况，当一台 Linux 主机上同时登陆了 10 个人，在系统资源无限制的情况下，这 10 个用户同时打开了 500 个文档，而假设每个文档的大小有 10M，这时系统的内存资源就会受到巨大的挑战。
-ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类型的限制：所创建的内核文件的大小、进程数据块的大小、Shell 进程创建文件的大小、内存锁住的大小、常驻内存集的大小、打开文件描述符的数量、分配堆栈的最大大小、CPU 时间、单个用户的最大线程数、Shell 进程所能使用的最大虚拟内存。同时，它支持硬资源和软资源的限制。
-简单来说，ulimit描述符可以对用户打开的文件数量进行限制（不止限制打开文件数量），让单个用户不至于打开较多的文件，导致系统奔溃或者资源不足的情况。 查看ulimit
-既然知道了ulimit是做什么的，首先要先知道系统底层限制到底是多少，ulimit的参数如下：
--a：显示目前资源限制的设定； -c &lt;core文件上限>：设定core文件的最大值，单位为区块； -d &lt;数据节区大小>：程序数据节区的最大值，单位为KB； -f &lt;文件大小>：shell所能建立的最大文件，单位为区块； -H：设定资源的硬性限制，也就是管理员所设下的限制； -m &lt;内存大小>：指定可使用内存的上限，单位为KB； -n &lt;文件数目>：指定同一时间最多可开启的文件数； -p &lt;缓冲区大小>：指定管道缓冲区的大小，单位512字节； -s &lt;堆叠大小>：指定堆叠的上限，单位为KB； -S：设定资源的弹性限制； -t &lt;CPU时间>：指定CPU使用时间的上限，单位为秒； -u &lt;程序数目>：用户最多可开启的程序数目； -v &lt;虚拟内存大小>：指定可使用的虚拟内存上限，单位为KB。 由于上述nginx错误是无法打开过多的文件，那么我们直接使用ulimit -n查看同一时间最多可开启的文件数。
-ulimit -n
-可以看出限制的1024个文件，这就导致nginx尝试打开更多的文件（超出1024个）的时候出现错误“Too many open files”
-修复问题 修改ulimit限制 直接执行命令ulimit -n 65535修改打开文件数，65535指的是需要同一时间最多打开多少个文件，请根据自身情况适当修改。
-ulimit命令修改只对当前的shell有效，退出后失效，如果需要永久生效，需要修改/etc/security/limits.conf这个文件，在底部加入下面的配置：
-* soft nproc 65535 * hard nproc 65535 * soft nofile 65535 * hard nofile 65535 *：代表全局 soft：代表软件 hard：代表硬件 nproc：是代表最大进程数 nofile：是代表最大文件打开数 修改完毕后，再次执行命令：ulimit -n可以看到设置已经生效!
-<a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/ifconfig_interfaces/>Debian12 系统添加多个IP</a></h1><b><time>2025.02.21 23:31</time></b>
+<a href=/tags/nginx>nginx</a><div><p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。</p><p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。</p><h3 id=什么是ulimit>什么是ulimit?</h3><p>ulimit命令用来限制系统用户对shell资源的访问。</p><p>假设有这样一种情况，当一台 Linux 主机上同时登陆了 10 个人，在系统资源无限制的情况下，这 10 个用户同时打开了 500 个文档，而假设每个文档的大小有 10M，这时系统的内存资源就会受到巨大的挑战。</p><p>ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类型的限制：所创建的内核文件的大小、进程数据块的大小、Shell 进程创建文件的大小、内存锁住的大小、常驻内存集的大小、打开文件描述符的数量、分配堆栈的最大大小、CPU 时间、单个用户的最大线程数、Shell 进程所能使用的最大虚拟内存。同时，它支持硬资源和软资源的限制。</p><p>简单来说，ulimit描述符可以对用户打开的文件数量进行限制（不止限制打开文件数量），让单个用户不至于打开较多的文件，导致系统奔溃或者资源不足的情况。
+查看ulimit</p><p>既然知道了ulimit是做什么的，首先要先知道系统底层限制到底是多少，ulimit的参数如下：</p><pre tabindex=0><code>-a：显示目前资源限制的设定；
+-c &lt;core文件上限&gt;：设定core文件的最大值，单位为区块；
+-d &lt;数据节区大小&gt;：程序数据节区的最大值，单位为KB；
+-f &lt;文件大小&gt;：shell所能建立的最大文件，单位为区块；
+-H：设定资源的硬性限制，也就是管理员所设下的限制；
+-m &lt;内存大小&gt;：指定可使用内存的上限，单位为KB；
+-n &lt;文件数目&gt;：指定同一时间最多可开启的文件数；
+-p &lt;缓冲区大小&gt;：指定管道缓冲区的大小，单位512字节；
+-s &lt;堆叠大小&gt;：指定堆叠的上限，单位为KB；
+-S：设定资源的弹性限制；
+-t &lt;CPU时间&gt;：指定CPU使用时间的上限，单位为秒；
+-u &lt;程序数目&gt;：用户最多可开启的程序数目；
+-v &lt;虚拟内存大小&gt;：指定可使用的虚拟内存上限，单位为KB。
+</code></pre><p>由于上述nginx错误是无法打开过多的文件，那么我们直接使用ulimit -n查看同一时间最多可开启的文件数。</p><p><code>ulimit -n</code></p><p>可以看出限制的1024个文件，这就导致nginx尝试打开更多的文件（超出1024个）的时候出现错误“Too many open files”</p><h3 id=修复问题>修复问题</h3><h4 id=修改ulimit限制>修改ulimit限制</h4><p>直接执行命令ulimit -n 65535修改打开文件数，65535指的是需要同一时间最多打开多少个文件，请根据自身情况适当修改。</p><p>ulimit命令修改只对当前的shell有效，退出后失效，如果需要永久生效，需要修改<code>/etc/security/limits.conf</code>这个文件，在底部加入下面的配置：</p><pre tabindex=0><code>* soft nproc 65535
+* hard nproc 65535
+* soft nofile 65535 
+* hard nofile 65535
+</code></pre><pre tabindex=0><code>    *：代表全局
+    soft：代表软件
+    hard：代表硬件
+    nproc：是代表最大进程数
+    nofile：是代表最大文件打开数
+</code></pre><p>修改完毕后，再次执行命令：<code>ulimit -n</code>可以看到设置已经生效!</p><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/ifconfig_interfaces/>Debian12 系统添加多个IP</a></h1><b><time>2025.02.21 23:31</time></b>
 <a href=/tags/ifconfig>ifconfig</a>
-<a href=/tags/networking>networking</a><div>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 /etc/network/interfaces 文件。
-编辑配置文件： sudo nano /etc/network/interfaces
-添加多个IP地址： 在相应的网络接口下添加多个IP地址。例如：
-iface enp30 inet static address 192.168.0.250 netmask 255.255.255.0 gateway 192.168.0.1 iface enp30 inet static address 192.168.0.251 netmask 255.255.255.0 重启网络服务： 保存文件并退出后，重启网络服务：
-sudo systemctl restart networking
-检查配置 通过以下命令验证多IP地址是否已成功添加：
-ip addr show enp30
-这将显示 enp30 接口的所有IP地址。你应该能看到你配置的多个IP地址。
-临时配置多个IP地址 为 enp30 接口添加一个新的IP 192.168.0.251 执行以下命令： ip addr add 192.168.0.251/24 dev enp30 这操作是临时的，重启后会丢失。</div></article><article><h1><a href=https://blog.baicai.me/article/2025/linux_curl/>linux测试url的访问速度</a></h1><b><time>2025.02.21 18:34</time></b>
+<a href=/tags/networking>networking</a><div><p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 <code>/etc/network/interfaces</code> 文件。</p><h3 id=编辑配置文件>编辑配置文件：</h3><p><code>sudo nano /etc/network/interfaces</code></p><h3 id=添加多个ip地址>添加多个IP地址：</h3><p>在相应的网络接口下添加多个IP地址。例如：</p><pre tabindex=0><code>iface enp30 inet static
+    address 192.168.0.250
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+
+iface enp30 inet static
+    address 192.168.0.251
+    netmask 255.255.255.0
+</code></pre><h3 id=重启网络服务>重启网络服务：</h3><p>保存文件并退出后，重启网络服务：</p><p><code>sudo systemctl restart networking</code></p><h3 id=检查配置>检查配置</h3><p>通过以下命令验证多IP地址是否已成功添加：</p><p><code>ip addr show enp30</code></p><p>这将显示 enp30 接口的所有IP地址。你应该能看到你配置的多个IP地址。</p><h2 id=临时配置多个ip地址>临时配置多个IP地址</h2><p>为 enp30 接口添加一个新的IP 192.168.0.251
+执行以下命令：
+<code>ip addr add 192.168.0.251/24 dev enp30</code>
+这操作是临时的，重启后会丢失。</p></div></article><article><h1><a href=https://blog.baicai.me/article/2025/linux_curl/>linux测试url的访问速度</a></h1><b><time>2025.02.21 18:34</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/linux>linux</a>
-<a href=/tags/curl>curl</a><div>使用curl命令来测试URL的访问速度。
-以下是使用curl测试URL访问速度的步骤：
-打开终端或命令行界面。 输入以下命令： curl -o /dev/null -s -w "time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n" &lt;URL> 请将&lt;URL>替换为要测试的URL地址。
-执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：
-time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。 time_connect：建立TCP连接的耗时。 time_pretransfer：从开始到传输开始之前的耗时。 time_starttransfer：从开始到第一个字节接收完成的耗时。 time_total：总耗时，即从开始到请求完成的时间。 这些时间单位都以秒为单位。
-通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。</div></article><article><h1><a href=https://blog.baicai.me/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></h1><b><time>2025.01.28 11:38</time></b>
+<a href=/tags/curl>curl</a><div><p>使用curl命令来测试URL的访问速度。</p><p>以下是使用curl测试URL访问速度的步骤：</p><ul><li>打开终端或命令行界面。</li><li>输入以下命令：</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>	curl -o /dev/null -s -w <span style=color:#e6db74>&#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&#34;</span> &lt;URL&gt;
+</span></span></code></pre></div><p>请将<code>&lt;URL></code>替换为要测试的URL地址。</p><p>执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：</p><ul><li>time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。</li><li>time_connect：建立TCP连接的耗时。</li><li>time_pretransfer：从开始到传输开始之前的耗时。</li><li>time_starttransfer：从开始到第一个字节接收完成的耗时。</li><li>time_total：总耗时，即从开始到请求完成的时间。</li></ul><p>这些时间单位都以秒为单位。</p><p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。</p></div></article><article><h1><a href=https://blog.baicai.me/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></h1><b><time>2025.01.28 11:38</time></b>
 <a href=/tags/wificall>WifiCall</a>
-<a href=/tags/giffgaff>Giffgaff</a><div>打开wificall的好处：可以使用英国本地资费，免费接电话。
-ios:需要运营商刷到58.0版本，或者ios17.4以上版本 关闭wifi和wificall开关 打开飞行模式 关闭你的国内运营商 打开你的wifi 全局连接英国节点，或走规则 打开giffgaff的wificall开关，正常就可以连接上了，成功为运营商名字变成giffgaff 可以解除飞行模式和正常打开你的国内运营商了 安卓:origin os系统 打开wificall开关 全局连接英国节点，或走规则 正常就可以直接连上wificall 分流规则 # 地区检测 DOMAIN-SUFFIX, gspe1-ssl.ls.apple.com # 沃达丰 DOMAIN-SUFFIX, epdg.epc.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org DOMAIN-SUFFIX, entsrv-uk.vodafone.com DOMAIN-SUFFIX, vuk-gto.prod.ondemandconnectivity.com IP-CIDR,88.82.0.0/19 # CMLinkUK EE IP-CIDR,46.68.0.0/17 # Giffgaff IP-CIDR,87.194.0.0/16 或
-# 地区检测 - 'DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com,WifiCall' # 沃达丰 - 'DOMAIN-SUFFIX,epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall' - 'DOMAIN-SUFFIX,ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall' - 'DOMAIN-SUFFIX,ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org,WifiCall' - 'DOMAIN-SUFFIX,entsrv-uk.vodafone.com,WifiCall' - 'DOMAIN-SUFFIX,vuk-gto.prod.ondemandconnectivity.com,WifiCall' - 'IP-CIDR,88.82.0.0/19,WifiCall,no-resolve' # CMLinkUK EE - 'IP-CIDR,46.68.0.0/17,WifiCall,no-resolve' # Giffgaff - 'IP-CIDR,87.194.0.0/16,WifiCall,no-resolve' 节点需要支持UDP!!! wificall走的UDP的500和4500端口</div></article><article><h1><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Docker本地镜像的导出、导入 (export,import,save,load)</a></h1><b><time>2024.10.11 14:53</time></b>
-<a href=/tags/docker>Docker</a><div>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。
-一、使用 export 和 import 1，查看本机的容器 使用 docker ps -a 命令查看本机所有的容器。
-2，导出镜像 （1）使用 docker export 命令根据容器 ID 将镜像导出成一个文件。
-docker export 镜像ID > server.tar
-（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。
-3，导入镜像 （1）使用 docker import 命令则可将这个镜像文件导入进来。
-docker import - new_server &lt; server.tar
-（2）执行 docker images 命令可以看到镜像确实已经导入进来了。
-二、使用 save 和 load 1，查看本机的容器 这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 docker images 命令查看本机所有的镜像。
-2，保存镜像 （1）下面使用 docker save 命令根据 ID 将镜像保存成一个文件。
-docker save 镜像ID > server.tar
-（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：
-docker save -o images.
-<a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
+<a href=/tags/giffgaff>Giffgaff</a><div><p>打开wificall的好处：可以使用英国本地资费，免费接电话。</p><h3 id=ios需要运营商刷到580版本或者ios174以上版本>ios:需要运营商刷到58.0版本，或者ios17.4以上版本</h3><ul><li>关闭wifi和wificall开关</li><li>打开飞行模式</li><li>关闭你的国内运营商</li><li>打开你的wifi</li><li>全局连接英国节点，或走规则</li><li>打开giffgaff的wificall开关，正常就可以连接上了，成功为运营商名字变成giffgaff</li><li>可以解除飞行模式和正常打开你的国内运营商了</li></ul><h3 id=安卓origin-os系统>安卓:origin os系统</h3><ul><li>打开wificall开关</li><li>全局连接英国节点，或走规则</li><li>正常就可以直接连上wificall</li></ul><h3 id=分流规则>分流规则</h3><pre tabindex=0><code># 地区检测
+DOMAIN-SUFFIX, gspe1-ssl.ls.apple.com
+# 沃达丰
+DOMAIN-SUFFIX, epdg.epc.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org
+DOMAIN-SUFFIX, entsrv-uk.vodafone.com
+DOMAIN-SUFFIX, vuk-gto.prod.ondemandconnectivity.com
+IP-CIDR,88.82.0.0/19
+# CMLinkUK EE
+IP-CIDR,46.68.0.0/17
+# Giffgaff
+IP-CIDR,87.194.0.0/16
+</code></pre><p>或</p><pre tabindex=0><code>  # 地区检测
+  - &#39;DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com,WifiCall&#39;
+  # 沃达丰
+  - &#39;DOMAIN-SUFFIX,epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&#39;
+  - &#39;DOMAIN-SUFFIX,ss.epdg.epc.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&#39;
+  - &#39;DOMAIN-SUFFIX,ss.epdg.epc.geo.mnc015.mcc234.pub.3gppnetwork.org,WifiCall&#39;
+  - &#39;DOMAIN-SUFFIX,entsrv-uk.vodafone.com,WifiCall&#39;
+  - &#39;DOMAIN-SUFFIX,vuk-gto.prod.ondemandconnectivity.com,WifiCall&#39;
+  - &#39;IP-CIDR,88.82.0.0/19,WifiCall,no-resolve&#39;
+  # CMLinkUK EE
+  - &#39;IP-CIDR,46.68.0.0/17,WifiCall,no-resolve&#39;
+  # Giffgaff
+  - &#39;IP-CIDR,87.194.0.0/16,WifiCall,no-resolve&#39;  
+</code></pre><p>节点需要支持UDP!!! wificall走的UDP的500和4500端口</p></div></article><article><h1><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Docker本地镜像的导出、导入 (export,import,save,load)</a></h1><b><time>2024.10.11 14:53</time></b>
+<a href=/tags/docker>Docker</a><div><p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。</p><h2 id=一使用-export-和-import>一、使用 export 和 import</h2><h3 id=1查看本机的容器>1，查看本机的容器</h3><p>使用 <code>docker ps -a</code> 命令查看本机所有的容器。</p><h3 id=2导出镜像>2，导出镜像</h3><p>（1）使用 <code>docker export</code> 命令根据容器 ID 将镜像导出成一个文件。</p><p><code>docker export 镜像ID > server.tar</code></p><p>（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。</p><h3 id=3导入镜像>3，导入镜像</h3><p>（1）使用 <code>docker import</code> 命令则可将这个镜像文件导入进来。</p><p><code>docker import - new_server &lt; server.tar</code></p><p>（2）执行 <code>docker images</code> 命令可以看到镜像确实已经导入进来了。</p><h2 id=二使用-save-和-load>二、使用 save 和 load</h2><h3 id=1查看本机的容器-1>1，查看本机的容器</h3><p>这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 <code>docker images</code> 命令查看本机所有的镜像。</p><h3 id=2保存镜像>2，保存镜像</h3><p>（1）下面使用 <code>docker save</code> 命令根据 ID 将镜像保存成一个文件。</p><p><code>docker save 镜像ID > server.tar</code></p><p>（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：</p><p><code>docker save -o images.tar postgres mongo</code></p><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
 <a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a>
-<a href=/tags/golang>Golang</a><div>二进制 0B或者0b 表示 var bin1 = 0b1101 package main import "fmt" func main(){ var num01 int = 0b1100 fmt.Printf("%b的十进制为%d", num01,num01) } 八进制 0O或者0o 表示 var oct = 0o1234567 package main import "fmt" func main(){ var num01 int = 0o10 fmt.Printf("%o的十进制为%d", num01,num01) } 十六进制 0X或者0x 表示 var hex = 0x1234 package main import "fmt" func main(){ var num01 int = 0xf fmt.Printf("%x的十进制为%d", num01,num01) } 进制转换 1. 二进制转八进制 %b -> %o 2. 二进制转十进制 %b -> %d 3.
-<a href=https://blog.baicai.me/article/2024/fmt_int/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/cmd_sqlite/>Mac终端查看sqlite3数据库</a></h1><b><time>2024.09.24 14:23</time></b>
+<a href=/tags/golang>Golang</a><div><h3 id=二进制-0b或者0b-表示>二进制 0B或者0b 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>bin1</span> = <span style=color:#ae81ff>0b1101</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0b1100</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%b的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=八进制-0o或者0o-表示>八进制 0O或者0o 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>oct</span> = <span style=color:#ae81ff>0</span><span style=color:#a6e22e>o1234567</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0</span><span style=color:#a6e22e>o10</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%o的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=十六进制-0x或者0x-表示>十六进制 0X或者0x 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>hex</span> = <span style=color:#ae81ff>0x1234</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0xf</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%x的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=进制转换>进制转换</h3><pre tabindex=0><code>1. 二进制转八进制  %b -&gt; %o
+2. 二进制转十进制  %b -&gt;  %d
+3. 二进制转十六进制 %b -&gt; %x
+4. 八进制转二进制 %o -&gt; %b
+5. 八进制转十进制 %o -&gt; %d
+6. 八进制转十六进制 %o -&gt; %x
+7. 十进制转二进制 %d -&gt; %b
+8. 十进制转八进制 %d -&gt; %o
+9. 十进制转十六进制 %d -&gt; %x
+10. 十六进制转二进制 %x -&gt; %b
+11. 十六进制转八进制 %x -&gt; %o
+12. 十六进制转十进制 %x -&gt; %d
+
+// 例
+fmt.Printf(&#34;十进制%d转成八进制%o&#34;,num1,num2)
+</code></pre><pre tabindex=0><code>%b    表示为二进制
+%c    该值对应的unicode码值
+%d    表示为十进制
+%o    表示为八进制
+%q    该值对应的单引号括起来的go语法字符字面值，必要时会采用安全的转义表示
+%x    表示为十六进制，使用a-f
+%X    表示为十六进制，使用A-F
+%U    表示为Unicode格式：U+1234，等价于&#34;U+%04X&#34;
+%E    用科学计数法表示
+%f    用浮点数表示
+</code></pre><p>快速测试
+<a href=https://go.dev/play/>go.dev/play</a></p><a href=https://blog.baicai.me/article/2024/fmt_int/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/cmd_sqlite/>Mac终端查看sqlite3数据库</a></h1><b><time>2024.09.24 14:23</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/mac>mac</a>
-<a href=/tags/sqlite>sqlite</a><div>用sqlite命令打开数据库文件 sqlite3 db.file 这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。
-我们可以输入 .help 先查看下大概的命令：
-.help 常用的几种简单命令： 退出sqlite .quit 查看所有表 .tables 配置情况 .show 设置查询数据排列格式 .mode list .mode line .mode column 是否显示头 .headers on</div></article><article><h1><a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></h1><b><time>2024.07.11 14:31</time></b>
+<a href=/tags/sqlite>sqlite</a><div><h3 id=用sqlite命令打开数据库文件>用sqlite命令打开数据库文件</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 db.file
+</span></span></code></pre></div><p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。</p><p>我们可以输入 .help 先查看下大概的命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.help
+</span></span></code></pre></div><h3 id=常用的几种简单命令>常用的几种简单命令：</h3><ol><li>退出sqlite</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.quit
+</span></span></code></pre></div><ol start=2><li>查看所有表</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.tables
+</span></span></code></pre></div><ol start=3><li>配置情况</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.show
+</span></span></code></pre></div><ol start=4><li>设置查询数据排列格式</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.mode list
+</span></span><span style=display:flex><span>.mode line 
+</span></span><span style=display:flex><span>.mode column
+</span></span></code></pre></div><ol start=5><li>是否显示头</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.headers on
+</span></span></code></pre></div></div></article><article><h1><a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>解决 UFW 和 Docker 的问题</a></h1><b><time>2024.07.11 14:31</time></b>
 <a href=/tags/debian>debian</a>
 <a href=/tags/linux>linux</a>
 <a href=/tags/ufw>ufw</a>
-<a href=/tags/docker>docker</a><div>问题 UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。
-具体现象是：
-在一个对外提供服务的服务器上启用了 UFW，并且默认阻止所有未被允许的传入连接。 运行了一个 Docker 容器，并且使用 -p 选项来把该容器的某个端口发布到服务器的所有 IP 地址上。比如：docker run -d --name httpd -p 0.0.0.0:8080:80 httpd:alpine 将会运行一个 httpd 服务，并且将容器的 80 端口发布到服务器的 8080 端口上。 UFW 将不会阻止所有对 8080 端口访问的请求，用命令 ufw deny 8080 也无法阻止外部访问这个端口。 这个问题其实挺严重的，这意味着本来只是为了在内部提供服务的一个端口被暴露在公共网络上。
-解决 UFW 和 Docker 的问题 撤销原先的修改 如果已经按照目前网络上搜索到解决方案修改过了，请先修改回来，包括：
-启用 Docker 的 iptables 功能，删除所有类似 --iptables=false 的修改，包括 /etc/docker/daemon.json 配置文件。 UFW 的默认 FORWARD 规则改回默认的 DROP，而非 ACCEPT。 删除 UFW 配置文件 /etc/ufw/after.rules 中与 Docker 网络相关的规则。 如果修改了 Docker 相关的配置文件，重启 Docker。稍后还要修改 UFW 的配置，可以一并重启。 目前新的解决方案只需要修改一个 UFW 配置文件即可，Docker 的所有配置和选项都保持默认。
-<a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>Read more...</a></div></article><div>1 of 8
+<a href=/tags/docker>docker</a><div><h2 id=问题>问题</h2><p>UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。</p><p>具体现象是：</p><ol><li>在一个对外提供服务的服务器上启用了 UFW，并且默认阻止所有未被允许的传入连接。</li><li>运行了一个 Docker 容器，并且使用 <code>-p</code> 选项来把该容器的某个端口发布到服务器的所有 IP 地址上。比如：<code>docker run -d --name httpd -p 0.0.0.0:8080:80 httpd:alpine</code> 将会运行一个 httpd 服务，并且将容器的 <code>80</code> 端口发布到服务器的 <code>8080</code> 端口上。</li><li>UFW 将不会阻止所有对 <code>8080</code> 端口访问的请求，用命令 <code>ufw deny 8080</code> 也无法阻止外部访问这个端口。</li></ol><p>这个问题其实挺严重的，这意味着本来只是为了在内部提供服务的一个端口被暴露在公共网络上。</p><h2 id=解决-ufw-和-docker-的问题>解决 UFW 和 Docker 的问题</h2><h3 id=撤销原先的修改>撤销原先的修改</h3><p>如果已经按照目前网络上搜索到解决方案修改过了，请先修改回来，包括：</p><ol><li>启用 Docker 的 iptables 功能，删除所有类似 <code>--iptables=false</code> 的修改，包括 <code>/etc/docker/daemon.json</code> 配置文件。</li><li>UFW 的默认 <code>FORWARD</code> 规则改回默认的 <code>DROP</code>，而非 <code>ACCEPT</code>。</li><li>删除 UFW 配置文件 <code>/etc/ufw/after.rules</code> 中与 Docker 网络相关的规则。</li><li>如果修改了 Docker 相关的配置文件，重启 Docker。稍后还要修改 UFW 的配置，可以一并重启。</li></ol><p>目前新的解决方案只需要修改一个 UFW 配置文件即可，Docker 的所有配置和选项都保持默认。</p><a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>Read more...</a></div></article><div>1 of 8
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

@@ -1,5 +1,5 @@
-<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/article/2023/hugo_github_action_blog/"><link rel=canonical href=https://blog.baicai.me/article/2023/hugo_github_action_blog/><style type=text/css>body{font-family:monospace}</style><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2023/hugo_github_action_blog/"><link rel=canonical href=https://blog.baicai.me/article/2023/hugo_github_action_blog/><style type=text/css>body{font-family:monospace}</style><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title>
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743157893"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
@@ -65,7 +65,7 @@ GitHub Action 是一个持续集成和持续交付(CI/CD) 平台，可用于自�
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install Hugo CLI</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>          &amp;&amp; sudo dpkg -i ${{ runner.temp }}/hugo.deb</span>          
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          &amp;&amp; sudo dpkg -i ${{ runner.temp }}/hugo.deb</span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build with Hugo</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>env</span>:
@@ -76,19 +76,19 @@ GitHub Action 是一个持续集成和持续交付(CI/CD) 平台，可用于自�
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo \
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>            --minify \
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>            --baseURL &#34;${{ steps.pages.outputs.base_url }}/&#34; \
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>            -d ${{ env.BUILD_DIR }}</span>          
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            -d ${{ env.BUILD_DIR }}</span>
 </span></span><span style=display:flex><span>      
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git Config</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config --global user.email &#34;actions-push-noreply@baicai.me&#34;
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config --global user.name &#34;${{ env.GIT_USERNAME }}&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;配置git完成&#34;</span>          
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;配置git完成&#34;</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git clone</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;同步目标仓库(开始)&#34;
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git clone --depth 1 https://github.com/${{ env.TARGET_REPOSITORY_NAME }}.git ${{ env.CLONE_DIR }} &amp;&gt; /dev/null
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;同步目标仓库(完成)&#34;</span>          
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;同步目标仓库(完成)&#34;</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Git push</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
@@ -98,7 +98,7 @@ GitHub Action 是一个持续集成和持续交付(CI/CD) 平台，可用于自�
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git add .
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git commit --message &#34;Update ${{ env.NAME }} from ${{ env.TARGET_REPOSITORY_NAME }} ${{ github.event.head_commit.message }}&#34;
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          git push -f -q https://oauth2:${{ secrets.GIT_TOKEN }}@github.com/${{ env.TARGET_REPOSITORY_NAME }}.git main
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo  &#34;git push  ${{ env.TARGET_REPOSITORY_NAME }} (完成)&#34;</span>          
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo  &#34;git push  ${{ env.TARGET_REPOSITORY_NAME }} (完成)&#34;</span>
 </span></span></code></pre></div><p>on 表示 GitHub Action 触发条件，我设置了 push 和 workflow_dispatch 两个条件：</p><ul><li>push，当这个项目仓库发生推送动作后，执行 GitHub Action</li><li>workflow_dispatch，可以在 GitHub 项目仓库的 Action 工具栏进行手动调用</li></ul><p>jobs 表示 GitHub Action 中的任务，我们设置了一个 build 任务，
 runs-on 表示 GitHub Action 运行环境，我们选择了 ubuntu-latest。
 build 任务包含了 Install Hugo CLI 、Checkout、Build with Hugo、Git Config、Git clone 和 Git push 六个主要步骤，

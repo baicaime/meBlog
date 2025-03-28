@@ -76,30 +76,30 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">包名&lt;/th>
-&lt;th style="text-align:left">用途&lt;/th>
+&lt;th style="text-align: left">包名&lt;/th>
+&lt;th style="text-align: left">用途&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">ca-certificates:&lt;/td>
-&lt;td style="text-align:left">CA证书，使用TLS&lt;/td>
+&lt;td style="text-align: left">ca-certificates:&lt;/td>
+&lt;td style="text-align: left">CA证书，使用TLS&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">tzdata:&lt;/td>
-&lt;td style="text-align:left">时区配置&lt;/td>
+&lt;td style="text-align: left">tzdata:&lt;/td>
+&lt;td style="text-align: left">时区配置&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libc6-compat:&lt;/td>
-&lt;td style="text-align:left">C 标准库&lt;/td>
+&lt;td style="text-align: left">libc6-compat:&lt;/td>
+&lt;td style="text-align: left">C 标准库&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libgcc:&lt;/td>
-&lt;td style="text-align:left">GCC 相关库，CGO编译程序依赖&lt;/td>
+&lt;td style="text-align: left">libgcc:&lt;/td>
+&lt;td style="text-align: left">GCC 相关库，CGO编译程序依赖&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libstdc++:&lt;/td>
-&lt;td style="text-align:left">C++ 标准库&lt;/td>
+&lt;td style="text-align: left">libstdc++:&lt;/td>
+&lt;td style="text-align: left">C++ 标准库&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
@@ -112,8 +112,7 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;p>下载 Go 镜像：https://golang.google.cn/&lt;/p>
 &lt;p>下载 Go 镜像：https://gomirrors.org/&lt;/p>
 &lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
-&lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>
-&lt;/blockquote>
+&lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>下载并安装必备软件&lt;/li>
 &lt;li>验证构建服务器上是否有新的测试软件包&lt;/li>

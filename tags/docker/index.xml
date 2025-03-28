@@ -165,7 +165,7 @@ Capabilities：Linux capabilities允许将传统的root权限分割成多个不�
 具体来说，这个选项做了以下两件事情：&lt;/p>
 &lt;pre tabindex="0">&lt;code> 给容器添加了所有的capabilities
 允许容器访问主机的所有设备
-&lt;/code>&lt;/pre>&lt;h4 id="--privilegedtrue的风险">&amp;ndash;privileged=true的风险&lt;/h4>
+&lt;/code>&lt;/pre>&lt;h4 id="privilegedtrue的风险">&amp;ndash;privileged=true的风险&lt;/h4>
 &lt;p>尽管 &lt;code>--privileged=true&lt;/code> 选项为容器提供了强大的功能，但它也带来了一些严重的安全隐患。由于privileged容器具有几乎与主机相同的权限，所以如果容器被恶意代码控制，那么攻击者就可以轻易地突破容器的边界，对主机进行任意操作。&lt;/p>
 &lt;p>因此，我们需要谨慎地使用 &lt;code>--privileged=true&lt;/code> 选项，只在真正需要的情况下才启用它。在可能的情况下，我们应该尽量使用其他更细粒度的权限控制手段，例如通过&lt;code>--cap-add&lt;/code>或&lt;code>--device&lt;/code>参数来分别添加必要的capabilities或设备访问权限。&lt;/p>
 &lt;h4 id="细粒度的权限控制手段">细粒度的权限控制手段&lt;/h4>
@@ -294,30 +294,30 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">包名&lt;/th>
-&lt;th style="text-align:left">用途&lt;/th>
+&lt;th style="text-align: left">包名&lt;/th>
+&lt;th style="text-align: left">用途&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">ca-certificates:&lt;/td>
-&lt;td style="text-align:left">CA证书，使用TLS&lt;/td>
+&lt;td style="text-align: left">ca-certificates:&lt;/td>
+&lt;td style="text-align: left">CA证书，使用TLS&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">tzdata:&lt;/td>
-&lt;td style="text-align:left">时区配置&lt;/td>
+&lt;td style="text-align: left">tzdata:&lt;/td>
+&lt;td style="text-align: left">时区配置&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libc6-compat:&lt;/td>
-&lt;td style="text-align:left">C 标准库&lt;/td>
+&lt;td style="text-align: left">libc6-compat:&lt;/td>
+&lt;td style="text-align: left">C 标准库&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libgcc:&lt;/td>
-&lt;td style="text-align:left">GCC 相关库，CGO编译程序依赖&lt;/td>
+&lt;td style="text-align: left">libgcc:&lt;/td>
+&lt;td style="text-align: left">GCC 相关库，CGO编译程序依赖&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">libstdc++:&lt;/td>
-&lt;td style="text-align:left">C++ 标准库&lt;/td>
+&lt;td style="text-align: left">libstdc++:&lt;/td>
+&lt;td style="text-align: left">C++ 标准库&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table></description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>&lt;p>运行环境&lt;/p>

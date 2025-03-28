@@ -192,8 +192,7 @@ StartupNotify=true
 &lt;pre>&lt;code>sudo rm -rf /opt/firefox
 sudo rm /usr/share/applications/firefox.desktop
 &lt;/code>&lt;/pre></description></item><item><title>如何知道谁在ping我？</title><link>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</link><pubDate>Sat, 28 Aug 2021 21:14:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</guid><description>&lt;blockquote>
-&lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>
-&lt;/blockquote>
+&lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>&lt;/blockquote>
 &lt;p>在您要监控的计算机的终端应用程序中：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo tcpdump -i ethX icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>选项：&lt;/p>
@@ -206,10 +205,8 @@ sudo rm /usr/share/applications/firefox.desktop
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ping 192.168.0.57
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 Ubuntu 上：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>tcpdump -i eth0 icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo -n
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;!-- raw HTML omitted -->
-&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
-&lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
-&lt;/blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
+&lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>&lt;/blockquote>
 &lt;p>Zlib 是一个用于数据压缩的开源库。&lt;/p>
 &lt;p>作为使用者，你可能会遇到需要安装 zlib（或 zlib-devel 包）作为另一个应用程序的依赖项的情况。&lt;/p>
 &lt;p>但问题来了，如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>

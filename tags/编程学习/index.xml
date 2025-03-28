@@ -1323,8 +1323,7 @@ open 只能作用于类和类的成员，它和 public 的区别主要在于 ope
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> combinedVector = vector &lt;span style="color:#f92672">+&lt;/span> anotherVector
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// combinedVector 是一个新的 Vector2D 实例，值为 (5.0, 5.0)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
-&lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>
-&lt;/blockquote>
+&lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>下载并安装必备软件&lt;/li>
 &lt;li>验证构建服务器上是否有新的测试软件包&lt;/li>

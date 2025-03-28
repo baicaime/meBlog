@@ -71,55 +71,55 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">协议&lt;/th>
-&lt;th style="text-align:center">端口&lt;/th>
-&lt;th style="text-align:center">源&lt;/th>
-&lt;th style="text-align:center">目标&lt;/th>
-&lt;th style="text-align:left">描述&lt;/th>
+&lt;th style="text-align: left">协议&lt;/th>
+&lt;th style="text-align: center">端口&lt;/th>
+&lt;th style="text-align: center">源&lt;/th>
+&lt;th style="text-align: center">目标&lt;/th>
+&lt;th style="text-align: left">描述&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">2379-2380&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:left">只有具有嵌入式 etcd 的 HA 需要&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">2379-2380&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: left">只有具有嵌入式 etcd 的 HA 需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">6443&lt;/td>
-&lt;td style="text-align:center">Agents&lt;/td>
-&lt;td style="text-align:center">Servers&lt;/td>
-&lt;td style="text-align:left">K3s supervisor 和 Kubernetes API Server&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">6443&lt;/td>
+&lt;td style="text-align: center">Agents&lt;/td>
+&lt;td style="text-align: center">Servers&lt;/td>
+&lt;td style="text-align: left">K3s supervisor 和 Kubernetes API Server&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">8472&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有 Flannel VXLAN 需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">8472&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有 Flannel VXLAN 需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">TCP&lt;/td>
-&lt;td style="text-align:center">10250&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">Kubelet 指标&lt;/td>
+&lt;td style="text-align: left">TCP&lt;/td>
+&lt;td style="text-align: center">10250&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">Kubelet 指标&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">51820&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有使用 IPv4 的 Flannel Wireguard 才需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">51820&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有使用 IPv4 的 Flannel Wireguard 才需要&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">UDP&lt;/td>
-&lt;td style="text-align:center">51821&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:center">所有节点&lt;/td>
-&lt;td style="text-align:left">只有使用 IPv6 的 Flannel Wireguard 才需要&lt;/td>
+&lt;td style="text-align: left">UDP&lt;/td>
+&lt;td style="text-align: center">51821&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: center">所有节点&lt;/td>
+&lt;td style="text-align: left">只有使用 IPv6 的 Flannel Wireguard 才需要&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

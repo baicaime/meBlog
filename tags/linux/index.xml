@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 白菜</title><link>https://blog.baicai.me/tags/linux/</link><description>Recent content in linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 白菜</title><link>https://blog.baicai.me/tags/linux/</link><description>Recent content in Linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
 &lt;p>以下是使用curl测试URL访问速度的步骤：&lt;/p>
 &lt;ul>
 &lt;li>打开终端或命令行界面。&lt;/li>
@@ -821,8 +821,7 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 &lt;p>直接使用ssh直接连接服务器，无需输入密码&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh root@192.168.0.1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>如何知道谁在ping我？</title><link>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</link><pubDate>Sat, 28 Aug 2021 21:14:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</guid><description>&lt;blockquote>
-&lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>
-&lt;/blockquote>
+&lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>&lt;/blockquote>
 &lt;p>在您要监控的计算机的终端应用程序中：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo tcpdump -i ethX icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>选项：&lt;/p>
@@ -835,10 +834,8 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ping 192.168.0.57
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 Ubuntu 上：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>tcpdump -i eth0 icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo -n
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;!-- raw HTML omitted -->
-&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
-&lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
-&lt;/blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
+&lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>&lt;/blockquote>
 &lt;p>Zlib 是一个用于数据压缩的开源库。&lt;/p>
 &lt;p>作为使用者，你可能会遇到需要安装 zlib（或 zlib-devel 包）作为另一个应用程序的依赖项的情况。&lt;/p>
 &lt;p>但问题来了，如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
@@ -859,8 +856,7 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 &lt;p>有趣的是，像安装 zlib 这样看似很小的东西可能会变得很麻烦，有两个原因：一个是不同的包名；另一个是包含“隐藏”数字 1，它与小写 L 混淆了。&lt;/p>
 &lt;h2 id="参考">参考&lt;/h2>
 &lt;p>Zlib &lt;a href="https://zlib.net/">[1]&lt;/a>&lt;/p></description></item><item><title>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上</title><link>https://blog.baicai.me/article/2021/linux_deskreen/</link><pubDate>Mon, 21 Jun 2021 19:50:25 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_deskreen/</guid><description>&lt;blockquote>
-&lt;p>如果你有多显示器设置，你会意识到拥有多个屏幕的好处。而且，有了 Deskreen，你可以把任何设备变成你的副屏。&lt;/p>
-&lt;/blockquote>
+&lt;p>如果你有多显示器设置，你会意识到拥有多个屏幕的好处。而且，有了 Deskreen，你可以把任何设备变成你的副屏。&lt;/p>&lt;/blockquote>
 &lt;h3 id="deskreen将任何设备变成你的-linux-系统的副屏">Deskreen：将任何设备变成你的 Linux 系统的副屏&lt;/h3>
 &lt;p>Deskreen 是一个自由开源的应用，可以让你使用任何带有 Web 浏览器的设备来作为电脑的副屏。&lt;/p>
 &lt;p>如果你愿意，它还支持多个设备连接。&lt;/p>
@@ -1027,8 +1023,7 @@ Deskreen 的功能&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /var/log/.myhistory
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod /var/log/.myhistory
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用开源工具进行 Linux 内存取证</title><link>https://blog.baicai.me/article/2021/linux-memory-forensics/</link><pubDate>Wed, 26 May 2021 12:57:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux-memory-forensics/</guid><description>&lt;blockquote>
-&lt;p>利用 Volatility 找出应用程序、网络连接、内核模块、文件等方面的情况。&lt;/p>
-&lt;/blockquote>
+&lt;p>利用 Volatility 找出应用程序、网络连接、内核模块、文件等方面的情况。&lt;/p>&lt;/blockquote>
 &lt;p>计算机的操作系统和应用使用主内存（RAM）来执行不同的任务。这种易失性内存包含大量关于运行应用、网络连接、内核模块、打开的文件以及几乎所有其他的内容信息，但这些信息每次计算机重启的时候都会被清除。&lt;/p>
 &lt;p>内存取证是一种从内存中找到和抽取这些有价值的信息的方式。Volatility 是一种使用插件来处理这类信息的开源工具。但是，存在一个问题：在你处理这些信息前，必须将物理内存转储到一个文件中，而 Volatility 没有这种能力。&lt;/p>
 &lt;p>因此，这篇文章分为两部分：&lt;/p>
@@ -1362,8 +1357,7 @@ linux_truecrypt_passphrase - Recovers cached Truecrypt passphrases
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>使用开源工具进行 Linux 内存取证 &lt;a href="https://linux.cn/article-13425-1.html">[1]&lt;/a>&lt;/p>
 &lt;p>Perform Linux memory forensics with this open source tool &lt;a href="https://opensource.com/article/21/4/linux-memory-forensics">[2]&lt;/a>&lt;/p></description></item><item><title>使用 sed 命令进行复制、剪切和粘贴</title><link>https://blog.baicai.me/article/2021/linux_sed/</link><pubDate>Mon, 24 May 2021 00:39:20 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_sed/</guid><description>&lt;blockquote>
-&lt;p>很少有 Unix 命令像 sed、grep 和 awk 一样出名，它们经常组合在一起，可能是因为它们具有奇怪的名称和强大的文本解析能力。它们还在一些语法和逻辑上有相似之处。虽然它们都能用于文本解析，但都有其特殊性。本文研究 sed 命令，它是一个 流编辑器。&lt;/p>
-&lt;/blockquote>
+&lt;p>很少有 Unix 命令像 sed、grep 和 awk 一样出名，它们经常组合在一起，可能是因为它们具有奇怪的名称和强大的文本解析能力。它们还在一些语法和逻辑上有相似之处。虽然它们都能用于文本解析，但都有其特殊性。本文研究 sed 命令，它是一个 流编辑器。&lt;/p>&lt;/blockquote>
 &lt;h3 id="安装-sed">安装 sed&lt;/h3>
 &lt;p>如果你使用的是 Linux、BSD 或 macOS，那么它们已经安装了 GNU 的或 BSD 的 sed。这些是原始 sed 命令的独特重新实现。虽然它们很相似，但也有一些细微的差别。本文已经在 Linux 和 NetBSD 版本上进行了测试，所以你可以使用你的计算机上找到的任何 sed，但是对于 BSD sed，你必须使用短选项（例如 -n 而不是 &amp;ndash;quiet）。&lt;/p>
 &lt;p>GNU sed 通常被认为是功能最丰富的 sed，因此无论你是否运行 Linux，你可能都想要尝试一下。如果在 Ports 树中找不到 GNU sed（在非 Linux 系统上通常称为 gsed），你可以从 GNU 网站 下载源代码。 安装 GNU sed 的好处是，你可以使用它的额外功能，但是如果需要可移植性，还可以限制它以遵守 sed 的 POSIX 规范。&lt;/p>
@@ -1445,8 +1439,7 @@ Line two
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>How to use the Linux sed command &lt;a href="https://opensource.com/article/21/3/sed-cheat-sheet">[1]&lt;/a>&lt;/p>
 &lt;p>使用 sed 命令进行复制、剪切和粘贴 &lt;a href="https://linux.cn/article-13417-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Linux/Mac 使用 GNU Screen 的小技巧</title><link>https://blog.baicai.me/article/2021/linux_screen/</link><pubDate>Thu, 13 May 2021 12:50:05 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_screen/</guid><description>&lt;blockquote>
-&lt;p>学习基本的 GNU Screen 终端复用技术，然后下载我们的终端命令备忘录，以便你能够熟悉常用的快捷方式。&lt;/p>
-&lt;/blockquote>
+&lt;p>学习基本的 GNU Screen 终端复用技术，然后下载我们的终端命令备忘录，以便你能够熟悉常用的快捷方式。&lt;/p>&lt;/blockquote>
 &lt;p>对于一般用户而言，命令行终端窗口可能是令人困惑和神秘的。但随着你对 Linux 终端的进一步了解，你很快就会意识到它的高效和强大。不过，也不需要很长时间，你就会想让终端变得更加高效，除了将更多的终端放到你的终端，还有什么高好的方法能够提升你的终端效率呢？&lt;/p>
 &lt;h3 id="终端复用">终端复用&lt;/h3>
 &lt;p>终端的许多优点之一是它是一个集中控制的界面。它是一个能让你访问数百个应用程序的窗口，而你与每一个应用程序进行交互所需要的只是一个键盘。但是，现代计算机几乎总是有多余的处理能力，而且现代计算机专家喜欢多任务处理，导致一个窗口处理数百个应用程序的能力是相当有限的。&lt;/p>
@@ -1483,8 +1476,7 @@ Line two
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>Linux tips for using GNU Screen &lt;a href="https://opensource.com/article/21/4/gnu-screen-cheat-sheet">[1]&lt;/a>&lt;/p>
 &lt;p>使用 GNU Screen 的小技巧 &lt;a href="https://linux.cn/article-13387-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>使用 cron 调度自动化任务</title><link>https://blog.baicai.me/article/2021/linux_cron/</link><pubDate>Wed, 12 May 2021 18:59:21 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_cron/</guid><description>&lt;blockquote>
-&lt;p>cron 是一个调度守护进程，它以指定的时间间隔执行任务，这些任务称为 corn 作业，主要用于自动执行系统维护或管理任务。例如，你可以设置一个 cron 作业来自动执行重复的任务，比如备份数据库或数据，使用最新的安全补丁更新系统，检查磁盘空间使用情况，发送电子邮件等等。 cron 作业可以按分钟、小时、日、月、星期或它们的任意组合运行。&lt;/p>
-&lt;/blockquote>
+&lt;p>cron 是一个调度守护进程，它以指定的时间间隔执行任务，这些任务称为 corn 作业，主要用于自动执行系统维护或管理任务。例如，你可以设置一个 cron 作业来自动执行重复的任务，比如备份数据库或数据，使用最新的安全补丁更新系统，检查磁盘空间使用情况，发送电子邮件等等。 cron 作业可以按分钟、小时、日、月、星期或它们的任意组合运行。&lt;/p>&lt;/blockquote>
 &lt;h1 id="cron-的一些优点">cron 的一些优点&lt;/h1>
 &lt;p>以下是使用 cron 作业的一些优点：&lt;/p>
 &lt;pre>&lt;code>你可以更好地控制作业的运行时间。例如，你可以精确到分钟、小时、天等。

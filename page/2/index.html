@@ -1,121 +1,119 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743157893"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
 <a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></h1><b><time>2024.03.09 00:01</time></b>
-<a href=/tags/docker>Docker</a><div>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口
-docker-compose.yml version: '3.6' services: web: image: nginx:1.18 ports: # 将会映射8080到8090这个范围内的端口 - 8080-8090:8080-8090 volumes: - ./www:/www 命令行 docker run -p 8080-8090:8080-8090 nginx Dockerfile Dockerfile EXPOSE 8080-8090</div></article><article><h1><a href=https://blog.baicai.me/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></h1><b><time>2024.03.04 22:44</time></b>
+<a href=/tags/docker>Docker</a><div><p>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口</p><h3 id=docker-composeyml>docker-compose.yml</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#39;3.6&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>web</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.18</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      <span style=color:#75715e># 将会映射8080到8090这个范围内的端口</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>8080-8090</span>:<span style=color:#ae81ff>8080-8090</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>./www:/www</span>
+</span></span></code></pre></div><h3 id=命令行>命令行</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker run -p 8080-8090:8080-8090 nginx
+</span></span></code></pre></div><h3 id=dockerfile>Dockerfile</h3><pre tabindex=0><code>Dockerfile
+
+EXPOSE 8080-8090
+</code></pre></div></article><article><h1><a href=https://blog.baicai.me/article/2024/adb_push_pull/>使用adb命令和电脑互传文件</a></h1><b><time>2024.03.04 22:44</time></b>
 <a href=/tags/adb>adb</a>
-<a href=/tags/shell>shell</a><div>电脑传文件到手机 把当前目录下的test.tex文件传到手机 /sdcard/test目录中
-adb push test.txt /sdcard/test 手机文件传到电脑 把 /sdcard/test/ 目录下的test.txt文件传到本机当前目录test目录中
-adb pull /sdcard/test/test.txt ./test 查看手机文件目录 #进入到根目录 adb shell #查看所有目录 ls #进入到sdcard目录，安卓手机的文件管理一般都这这里 cd sdcard #然后查看要传输哪些文件到哪个文件夹</div></article><article><h1><a href=https://blog.baicai.me/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></h1><b><time>2024.02.05 18:58</time></b>
+<a href=/tags/shell>shell</a><div><h3 id=电脑传文件到手机>电脑传文件到手机</h3><p>把当前目录下的<code>test.tex</code>文件传到手机 <code>/sdcard/test</code>目录中</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb push test.txt /sdcard/test
+</span></span></code></pre></div><h3 id=手机文件传到电脑>手机文件传到电脑</h3><p>把 <code>/sdcard/test/</code> 目录下的<code>test.txt</code>文件传到本机当前目录<code>test</code>目录中</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb pull /sdcard/test/test.txt ./test
+</span></span></code></pre></div><h3 id=查看手机文件目录>查看手机文件目录</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#进入到根目录</span>
+</span></span><span style=display:flex><span>adb shell 
+</span></span><span style=display:flex><span><span style=color:#75715e>#查看所有目录</span>
+</span></span><span style=display:flex><span>ls
+</span></span><span style=display:flex><span><span style=color:#75715e>#进入到sdcard目录，安卓手机的文件管理一般都这这里</span>
+</span></span><span style=display:flex><span>cd sdcard 
+</span></span><span style=display:flex><span><span style=color:#75715e>#然后查看要传输哪些文件到哪个文件夹</span>
+</span></span></code></pre></div></div></article><article><h1><a href=https://blog.baicai.me/article/2024/find_subdomain/>查找子域名解析: 子域名探测方法大全</a></h1><b><time>2024.02.05 18:58</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/%E5%AD%90%E5%9F%9F%E5%90%8D>子域名</a>
 <a href=/tags/dns>DNS</a>
-<a href=/tags/subdomain>subdomain</a><div>子域名探测 通过收集子域名信息来进行渗透是目前常见的一种手法。 子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。 在挖SRC漏洞时，子域名信息的收集至关重要！
-为什么要进行子域名探测？ 子域名探测可以帮我们发现渗透测试中更多的服务，这将增加发现漏洞的可能性
-查找一些用户上较少，被人遗忘的子域名，其上运行的应用程序可能会使我们发现关键漏洞
-通常，同一组织的不同域名/应用程序中存在相同的漏洞
-子域名中的常见资产类型一般包括办公系统，邮箱系统，论坛，商城等，其他管理系统，网站管理后台等较少出现在子域名中
-子域名探测方法大全 在线接口
-暴力枚举
-搜索引擎
-Certificate Transparency（证书透明）
-Subject Alternate Name (SAN) - 主题备用名称
-Public datasets（公开数据集）
-信息泄露
-内容解析（HTML，JavaScript，文件）
-DNS解析
-区域传送
-DNS aggregators（DNS聚合器）
-DNS Cache Snooping（域名缓存侦测）
-Alterations & permutations（换置 & 排序）
-DNSSEC(Domain Name System Security Extensions)，DNS安全扩展，DNSSEC区域漫步
-CSP HTTP首部
-SPF记录
-虚拟主机爆破
-ASN发现
-爬虫 Scraping（抓取）
-在线接口 https://crt.sh/ https://censys.io/ https://transparencyreport.google.com/https/certificates https://dnsdumpster.com/ https://hackertarget.com/find-dns-host-records/ https://x.threatbook.cn/ https://www.virustotal.com/gui/home/search https://site.ip138.com/baidu.com/domain.htm https://www.t1h2ua.cn/tools/ http://tool.chinaz.com/subdomain/ 暴力枚举 Layer子域名爆破机 Layer是windows下的一款子域名探测工具，其工作原理是利用子域名字典进行爆破，使用简单容易上手。
-Amass 工具描述：爆破, google, VirusTotal, alt names
-go install github.
-<a href=https://blog.baicai.me/article/2024/find_subdomain/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/telegram_email_login/>开启 Telegram 的邮箱登录</a></h1><b><time>2023.12.26 15:00</time></b>
+<a href=/tags/subdomain>subdomain</a><div><h2 id=子域名探测>子域名探测</h2><p>通过收集子域名信息来进行渗透是目前常见的一种手法。
+子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。
+在挖SRC漏洞时，子域名信息的收集至关重要！</p><h2 id=为什么要进行子域名探测>为什么要进行子域名探测？</h2><p>子域名探测可以帮我们发现渗透测试中更多的服务，这将增加发现漏洞的可能性<br>查找一些用户上较少，被人遗忘的子域名，其上运行的应用程序可能会使我们发现关键漏洞<br>通常，同一组织的不同域名/应用程序中存在相同的漏洞<br>子域名中的常见资产类型一般包括办公系统，邮箱系统，论坛，商城等，其他管理系统，网站管理后台等较少出现在子域名中</p><h2 id=子域名探测方法大全>子域名探测方法大全</h2><p>在线接口<br>暴力枚举<br>搜索引擎<br>Certificate Transparency（证书透明）<br>Subject Alternate Name (SAN) - 主题备用名称<br>Public datasets（公开数据集）<br>信息泄露<br>内容解析（HTML，JavaScript，文件）<br>DNS解析<br>区域传送<br>DNS aggregators（DNS聚合器）<br>DNS Cache Snooping（域名缓存侦测）<br>Alterations & permutations（换置 & 排序）<br>DNSSEC(Domain Name System Security Extensions)，DNS安全扩展，DNSSEC区域漫步<br>CSP HTTP首部<br>SPF记录<br>虚拟主机爆破<br>ASN发现<br>爬虫 Scraping（抓取）</p><h3 id=在线接口>在线接口</h3><pre tabindex=0><code>https://crt.sh/
+https://censys.io/
+https://transparencyreport.google.com/https/certificates
+https://dnsdumpster.com/
+https://hackertarget.com/find-dns-host-records/
+https://x.threatbook.cn/
+https://www.virustotal.com/gui/home/search
+https://site.ip138.com/baidu.com/domain.htm
+https://www.t1h2ua.cn/tools/
+http://tool.chinaz.com/subdomain/
+</code></pre><h3 id=暴力枚举>暴力枚举</h3><p>Layer子域名爆破机 Layer是windows下的一款子域名探测工具，其工作原理是利用子域名字典进行爆破，使用简单容易上手。</p><p>Amass 工具描述：爆破, google, VirusTotal, alt names</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go install github.com/OWASP/Amass/...
+</span></span><span style=display:flex><span>amass -d target.com -o $outfile
+</span></span></code></pre></div><p>Knock 工具描述：AXFR, virustotal, 爆破</p><a href=https://blog.baicai.me/article/2024/find_subdomain/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/telegram_email_login/>开启 Telegram 的邮箱登录</a></h1><b><time>2023.12.26 15:00</time></b>
 <a href=/tags/telegram>telegram</a>
-<a href=/tags/email>Email</a><div>Telegram的邮箱登录是什么? 有什么用? 邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!
-如何开启Telegram邮箱登录? 注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录
-根据官方文档来看,
-auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram will ask the user to verify an email that will be used to send the login code. 当你的登录频率足够高时, Telegram服务器会要求客户端设置邮箱登录 具体方法 使用Telegram官方移动客户端登录, 登录时选择 Tap to get a code via SMS 短信验证码和Telegram客户端验证码一致, 任选其一输入即可, 不需要输入2FA密码, 直接返回重新刷 如果过程中出现 Too many attemps, please try again later 则需要休息一段时间再刷
-直到出现让你选择登录邮箱的提示界面
-根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)
-如何判断有没有开启邮箱登录? 在设置-隐私与安全界面，可看到已设置的“登录邮箱”
-参考： Telegram的邮箱登录
-<a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>通过 ADB 卸载系统自带应用(无需Root),精简系统app</a></h1><b><time>2023.12.05 13:31</time></b>
+<a href=/tags/email>Email</a><div><h2 id=telegram的邮箱登录是什么-有什么用>Telegram的邮箱登录是什么? 有什么用?</h2><p>邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!</p><h2 id=如何开启telegram邮箱登录>如何开启Telegram邮箱登录?</h2><p><code>注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录</code></p><p>根据<a href=https://core.telegram.org/api/auth>官方文档</a>来看,</p><ul><li>auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram will ask the user to verify an email that will be used to send the login code.</li><li>当你的登录频率足够高时, Telegram服务器会要求客户端设置邮箱登录</li></ul><h3 id=具体方法>具体方法</h3><ul><li>使用Telegram官方移动客户端登录, 登录时选择 Tap to get a code via SMS</li><li>短信验证码和Telegram客户端验证码一致, 任选其一输入即可, 不需要输入2FA密码, 直接返回重新刷</li></ul><p>如果过程中出现 <code>Too many attemps, please try again later</code> 则需要休息一段时间再刷</p><p>直到出现让你选择登录邮箱的提示界面</p><p>根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)</p><h2 id=如何判断有没有开启邮箱登录>如何判断有没有开启邮箱登录?</h2><p>在设置-隐私与安全界面，可看到已设置的“登录邮箱”</p><h2 id=参考>参考：</h2><p><a href=https://telegra.ph/Telegram%E7%9A%84%E9%82%AE%E7%AE%B1%E7%99%BB%E5%BD%95-12-26>Telegram的邮箱登录</a><br><a href=https://core.telegram.org/api/auth#email-verification>User Authorization</a></p><a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>通过 ADB 卸载系统自带应用(无需Root),精简系统app</a></h1><b><time>2023.12.05 13:31</time></b>
 <a href=/tags/adb>adb</a>
-<a href=/tags/shell>shell</a><div>准备 ADB 使用条件 要使用 ADB（Android 调试桥），你需要按照以下步骤操作：
-下载并安装 ADB 工具：
-在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。 如果你使用 macOS 或 Linux，你可以通过终端使用系统包管理器或 Homebrew 安装 ADB。 如果你使用 Windows，你可以下载 Android Studio，它包含了 ADB 工具。 连接 Android 设备：
-使用 USB 线将 Android 设备连接到计算机上。 在 Android 设备上打开开发者选项。这通常需要在设备设置中多次点击“关于手机” -> “版本号”或者类似的选项。一旦开启，返回设置菜单并找到“开发者选项”。 在“开发者选项”中，启用“USB 调试”。 打开命令提示符（Windows）/终端（macOS、Linux）：
-运行以下命令以确保 ADB 正确识别设备： adb devices 这应该显示已连接设备的列表。
-使用 ADB 列出已经安装的应用程序 打开命令提示符（Windows）/终端（macOS、Linux）：
-在命令提示符/终端中输入以下命令来列出已安装的应用程序： adb shell pm list packages 如果你想筛选出包含特定关键词的应用程序，可以使用以下命令：
-adb shell pm list packages | grep keyword 将 &ldquo;keyword&rdquo; 替换为你想要搜索的关键词。 比如魅族的手机
-<a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></h1><b><time>2023.11.20 16:02</time></b>
+<a href=/tags/shell>shell</a><div><h3 id=准备-adb-使用条件>准备 ADB 使用条件</h3><p>要使用 ADB（Android 调试桥），你需要按照以下步骤操作：</p><p>下载并安装 ADB 工具：</p><pre><code>在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。
+如果你使用 macOS 或 Linux，你可以通过终端使用系统包管理器或 Homebrew 安装 ADB。
+如果你使用 Windows，你可以下载 Android Studio，它包含了 ADB 工具。
+</code></pre><p>连接 Android 设备：</p><pre><code>使用 USB 线将 Android 设备连接到计算机上。
+在 Android 设备上打开开发者选项。这通常需要在设备设置中多次点击“关于手机” -&gt; “版本号”或者类似的选项。一旦开启，返回设置菜单并找到“开发者选项”。
+在“开发者选项”中，启用“USB 调试”。
+</code></pre><p>打开命令提示符（Windows）/终端（macOS、Linux）：</p><pre><code>运行以下命令以确保 ADB 正确识别设备：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb devices
+</span></span></code></pre></div><p>这应该显示已连接设备的列表。</p><h3 id=使用-adb-列出已经安装的应用程序>使用 ADB 列出已经安装的应用程序</h3><p>打开命令提示符（Windows）/终端（macOS、Linux）：</p><pre><code>在命令提示符/终端中输入以下命令来列出已安装的应用程序：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb shell pm list packages
+</span></span></code></pre></div><p>如果你想筛选出包含特定关键词的应用程序，可以使用以下命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>adb shell pm list packages | grep keyword
+</span></span></code></pre></div><p>将 &ldquo;keyword&rdquo; 替换为你想要搜索的关键词。
+比如魅族的手机</p><a href=https://blog.baicai.me/article/2023/adb_pm_uninstall/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/delete_pod/>Kubernetes 停止和移除 pod</a></h1><b><time>2023.11.20 16:02</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/k3s>k3s</a>
-<a href=/tags/kubectl>kubectl</a><div>停止和移除pod 按名称删除pod 按名称删除kubia-gpu pod：
-kubectl delete po kubia-gpu 在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。
-提示 还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。
-使用标签选择器删除pod 停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 creation_method=manual ，因此可以通过使用一个标签选择器来删除它们：
-kubectl delete po -l creation_method=manual 通过删除整个命名空间来删除pod 以下命令删除custom-namespace：
-kubectl delete ns custom-namespace 删除命名空间中的所有pod，但保留命名空间 查看 pods
-kubectl get pods 通过使用&ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：
-kubectl delete po --all 删除命名空间中的（几乎）所有资源 通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：
-kubectl delete all --all 命令中的第一个all指定正在删除所有资源类型，而&ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。
-注意 使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。
-删除资源时，kubectl将打印它删除的每个资源的名称。
-注意 kubectl delete all --all 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。
-kubectl 命令演示 kubectl 展示搜索出的pod列表（含pod所在的namespace） kubectl get pod -A |grep &lt;podname> [root@node ~]# kubectl get pod -A |grep dashboard kubernetes-dashboard dashboard-metrics-scraper-5657497c4c-j5kr8 1/1 Running 0 113m kubernetes-dashboard kubernetes-dashboard-78f87ddfc-tlmjv 1/1 Running 0 113m kubectl 删除pod命令 kubectl delete pod &lt;podname> -n &lt;namespace> 在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。 故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。
-<a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></h1><b><time>2023.11.17 22:52</time></b>
-<a href=/tags/docker>Docker</a><div>Runtime privilege and Linux capabilities 参考官方文档：Docker run reference
-By default, Docker containers are &ldquo;unprivileged&rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &ldquo;privileged&rdquo; container is given access to all devices (see the documentation on cgroups devices).
-The &ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host.
-<a href=https://blog.baicai.me/article/2023/docker_privileged/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></h1><b><time>2023.10.09 10:15</time></b>
+<a href=/tags/kubectl>kubectl</a><div><h2 id=停止和移除pod>停止和移除pod</h2><h3 id=按名称删除pod>按名称删除pod</h3><p>按名称删除kubia-gpu pod：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete po kubia-gpu
+</span></span></code></pre></div><p>在删除pod的过程中，实际上我们在指示Kubernetes终止该pod中的所有容器。Kubernetes向进程发送一个SIGTERM信号并等待一定的秒数（默认为30），使其正常关闭。如果它没有及时关闭，则通过SIGKILL终止该进程。因此，为了确保你的进程总是正常关闭，进程需要正确处理SIGTERM信号。</p><h4 id=提示>提示</h4><p>还可以通过指定多个空格分隔的名称来删除多个pod（例如：kubectl delete po pod1 pod2）。</p><h3 id=使用标签选择器删除pod>使用标签选择器删除pod</h3><p>停止 kubia-manual 和 kubia-manual-v2 pod 。这两个pod都包含标签 <code>creation_method=manual</code> ，因此可以通过使用一个标签选择器来删除它们：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete po -l creation_method<span style=color:#f92672>=</span>manual
+</span></span></code></pre></div><h3 id=通过删除整个命名空间来删除pod>通过删除整个命名空间来删除pod</h3><p>以下命令删除custom-namespace：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete ns custom-namespace
+</span></span></code></pre></div><h3 id=删除命名空间中的所有pod但保留命名空间>删除命名空间中的所有pod，但保留命名空间</h3><p>查看 pods</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>通过使用&ndash;all选项告诉Kubernetes删除当前命名空间中的所有pod：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete po --all
+</span></span></code></pre></div><h3 id=删除命名空间中的几乎所有资源>删除命名空间中的（几乎）所有资源</h3><p>通过使用单个命令删除当前命名空间中的所有资源，可以删除ReplicationCcontroller和pod，以及我们创建的所有service：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete all --all
+</span></span></code></pre></div><p>命令中的第一个all指定正在删除所有资源类型，而&ndash;all选项指定将删除所有资源实例，而不是按名称指定它们（我们在运行前一个删除命令时已经使用过此选项）。</p><h4 id=注意>注意</h4><p>使用all关键字删除所有内容并不是真的完全删除所有内容。一些资源会被保留下来，并且需要被明确指定删除。</p><p>删除资源时，kubectl将打印它删除的每个资源的名称。</p><h4 id=注意-1>注意</h4><p><code>kubectl delete all --all</code> 命令也会删除名为kubernetes的Service，但它应该会在几分钟后自动重新创建。</p><h2 id=kubectl-命令演示>kubectl 命令演示</h2><h3 id=kubectl-展示搜索出的pod列表含pod所在的namespace>kubectl 展示搜索出的pod列表（含pod所在的namespace）</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl get pod -A |grep &lt;podname&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>root@node ~<span style=color:#f92672>]</span><span style=color:#75715e># kubectl get pod -A |grep dashboard</span>
+</span></span><span style=display:flex><span>kubernetes-dashboard   dashboard-metrics-scraper-5657497c4c-j5kr8   1/1     Running   <span style=color:#ae81ff>0</span>              113m
+</span></span><span style=display:flex><span>kubernetes-dashboard   kubernetes-dashboard-78f87ddfc-tlmjv         1/1     Running   <span style=color:#ae81ff>0</span>              113m
+</span></span></code></pre></div><h3 id=kubectl-删除pod命令>kubectl 删除pod命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl delete pod &lt;podname&gt; -n &lt;namespace&gt;
+</span></span></code></pre></div><p>在进行删除pod命令时，会发现pod并未被真正删除，原因是k8s误认为我们要删除的pod异常挂了，会启用容灾机制，导致重新在拉起一个新的pod。
+故，我们想要正常且彻底的删除一个pod，必须要先破坏掉他的容灾机制，即删除deployment机制。</p><a href=https://blog.baicai.me/article/2023/delete_pod/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/docker_privileged/>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</a></h1><b><time>2023.11.17 22:52</time></b>
+<a href=/tags/docker>Docker</a><div><h3 id=runtime-privilege-and-linux-capabilities>Runtime privilege and Linux capabilities</h3><p>参考官方文档：<a href=https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities>Docker run reference</a></p><p>By default, Docker containers are &ldquo;unprivileged&rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &ldquo;privileged&rdquo; container is given access to all devices (see the documentation on cgroups devices).</p><p>The &ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host. Additional information about running with &ndash;privileged is available on the <a href=https://www.docker.com/blog/docker-can-now-run-within-docker/>Docker Blog</a>.</p><a href=https://blog.baicai.me/article/2023/docker_privileged/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Debian 彻底卸载 LibreOffice</a></h1><b><time>2023.10.09 10:15</time></b>
 <a href=/tags/debian>debian</a>
 <a href=/tags/linux>linux</a>
-<a href=/tags/libreoffice>LibreOffice</a><div>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。
-下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。
-彻底卸载 LibreOffice 终端中输入命令：
-#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get purge libreoffice? 或
-#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包 sudo aptitude purge libreoffice? 或
-#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包 sudo apt-get remove --purge libreoffice* 然后清理残留：
-sudo apt-get clean sudo apt-get autoremove 附注（不完全卸载）： 卸载libreoffice表格
-sudo apt remove libreoffice-calc 卸载libreoffice绘图
-sudo apt remove libreoffice-draw 卸载libreoffice幻灯片
-sudo apt remove libreoffice-impress 卸载libreoffice word文档工具
-sudo apt remove libreoffice-writer 清理残留
-<a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/using_wireguard/>通过 WireGuard 搭建 VPN 访问家里内网</a></h1><b><time>2023.10.08 15:19</time></b>
+<a href=/tags/libreoffice>LibreOffice</a><div><p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。</p><p>下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。</p><h3 id=彻底卸载-libreoffice>彻底卸载 LibreOffice</h3><p>终端中输入命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包</span>
+</span></span><span style=display:flex><span>sudo apt-get purge libreoffice?
+</span></span></code></pre></div><p>或</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#不要漏掉通配符“?”，否则无法清除/卸载全部 LibreOffice 软件包</span>
+</span></span><span style=display:flex><span>sudo aptitude purge libreoffice? 
+</span></span></code></pre></div><p>或</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#不要漏掉通配符“*”，否则无法清除/卸载全部 LibreOffice 软件包</span>
+</span></span><span style=display:flex><span>sudo apt-get remove --purge libreoffice*
+</span></span></code></pre></div><p>然后清理残留：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt-get clean
+</span></span><span style=display:flex><span>sudo apt-get autoremove
+</span></span></code></pre></div><h3 id=附注不完全卸载>附注（不完全卸载）：</h3><p>卸载libreoffice表格</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt remove libreoffice-calc
+</span></span></code></pre></div><p>卸载libreoffice绘图</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt remove libreoffice-draw
+</span></span></code></pre></div><p>卸载libreoffice幻灯片</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt remove libreoffice-impress
+</span></span></code></pre></div><p>卸载libreoffice word文档工具</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo apt remove libreoffice-writer
+</span></span></code></pre></div><p>清理残留</p><a href=https://blog.baicai.me/article/2023/debian_remove_libreoffice/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/using_wireguard/>通过 WireGuard 搭建 VPN 访问家里内网</a></h1><b><time>2023.10.08 15:19</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
-<a href=/tags/wireguard>WireGuard</a><div>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。
-IP 段选择 WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。
-在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。
-在服务器上配置 WireGuard 要使用 WireGuard，首先需要确保 Linux 内核支持。可使用 modinfo wireguard 命令检查是否内置了 WireGuard。也可用过 uname -r 检查内核版本是否为 5.6 以上。
-安装 wireguard Debian
-apt install wireguard 其他系统参考：install
-完成服务器端的配置 在正确安装 wireguard 后，你可以通过如下命令快速创建一组公钥和私钥。
-$ wg genkey | tee peer_A.key | wg pubkey > peer_A.pub && cat peer_A.key && cat peer_A.
-<a href=https://blog.baicai.me/article/2023/using_wireguard/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></h1><b><time>2023.09.28 20:29</time></b>
+<a href=/tags/wireguard>WireGuard</a><div><p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。</p><h2 id=ip-段选择>IP 段选择</h2><p>WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。</p><p>在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。</p><h2 id=在服务器上配置-wireguard>在服务器上配置 WireGuard</h2><p>要使用 WireGuard，首先需要确保 Linux 内核支持。可使用 <code>modinfo wireguard</code> 命令检查是否内置了 WireGuard。也可用过 <code>uname -r</code> 检查内核版本是否为 5.6 以上。</p><h3 id=安装-wireguard>安装 wireguard</h3><p>Debian</p><pre tabindex=0><code>apt install wireguard
+</code></pre><p>其他系统参考：<a href=https://www.wireguard.com/install/>install</a></p><h3 id=完成服务器端的配置>完成服务器端的配置</h3><p>在正确安装 wireguard 后，你可以通过如下命令快速创建一组公钥和私钥。</p><pre tabindex=0><code>$ wg genkey | tee peer_A.key | wg pubkey &gt; peer_A.pub &amp;&amp; cat peer_A.key &amp;&amp; cat peer_A.pub
+</code></pre><p>创建 <code>/etc/wireguard/wg0.conf</code> 并填配置</p><a href=https://blog.baicai.me/article/2023/using_wireguard/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/quick_start/>K3s 快速入门指南:构建多云环境下的K3S集群</a></h1><b><time>2023.09.28 20:29</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/k3s>k3s</a>
 <a href=/tags/kubernetes>Kubernetes</a>
-<a href=/tags/kubectl>kubectl</a><div>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。
-不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。
-参考入门指南和多云解决方案，重新整理
-目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群
-Server安装 # 局域网方案 curl -sfL https://get.k3s.io | sh - # 多云安装方案 curl -sfL https://get.k3s.io | sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native 中国用户，可以使用以下方法加速安装：
-# 局域网方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh - # 多云安装方案 curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -s - --node-external-ip=Server公网地址 --flannel-backend=wireguard-native --flannel-external-ip 运行此安装后：
-K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。 将安装其他实用程序，包括 ```kubectl```、```crictl```、```ctr```、```k3s-killall.sh``` 和 ```k3s-uninstall.sh```。 kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装的 kubectl 将自动使用该文件。 安装其他 Agent 节点 安装其他 Agent 节点并将它们添加到集群，请使用 K3S_URL 和 K3S_TOKEN 环境变量运行安装脚本
-<a href=https://blog.baicai.me/article/2023/quick_start/>Read more...</a></div></article><div><a href=/>Previous Page</a>
+<a href=/tags/kubectl>kubectl</a><div><p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。</p><p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。</p><p>参考入门指南和多云解决方案，重新整理</p><p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群</p><h3 id=server安装>Server安装</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 局域网方案</span>
+</span></span><span style=display:flex><span>curl -sfL https://get.k3s.io | sh -
+</span></span><span style=display:flex><span><span style=color:#75715e># 多云安装方案</span>
+</span></span><span style=display:flex><span>curl -sfL https://get.k3s.io | sh -s - --node-external-ip<span style=color:#f92672>=</span>Server公网地址 --flannel-backend<span style=color:#f92672>=</span>wireguard-native 
+</span></span></code></pre></div><p>中国用户，可以使用以下方法加速安装：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 局域网方案</span>
+</span></span><span style=display:flex><span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR<span style=color:#f92672>=</span>cn sh -
+</span></span><span style=display:flex><span><span style=color:#75715e># 多云安装方案</span>
+</span></span><span style=display:flex><span>curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR<span style=color:#f92672>=</span>cn  sh -s - --node-external-ip<span style=color:#f92672>=</span>Server公网地址 --flannel-backend<span style=color:#f92672>=</span>wireguard-native --flannel-external-ip
+</span></span></code></pre></div><p>运行此安装后：</p><pre tabindex=0><code>K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。
+将安装其他实用程序，包括 ```kubectl```、```crictl```、```ctr```、```k3s-killall.sh``` 和 ```k3s-uninstall.sh```。
+kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装的 kubectl 将自动使用该文件。
+</code></pre><h3 id=安装其他-agent-节点>安装其他 Agent 节点</h3><p>安装其他 Agent 节点并将它们添加到集群，请使用 K3S_URL 和 K3S_TOKEN 环境变量运行安装脚本</p><a href=https://blog.baicai.me/article/2023/quick_start/>Read more...</a></div></article><div><a href=/>Previous Page</a>
 2 of 8
 <a href=/page/3/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
