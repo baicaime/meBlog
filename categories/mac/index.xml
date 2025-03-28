@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mac on 白菜</title><link>https://blog.baicai.me/categories/mac/</link><description>Recent content in Mac on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 14:23:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/mac/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mac on 白菜</title><link>https://blog.baicai.me/categories/mac/</link><description>Recent content in Mac on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 14:23:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/mac/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 db.file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。&lt;/p>
 &lt;p>我们可以输入 .help 先查看下大概的命令：&lt;/p>
@@ -26,7 +26,7 @@
 &lt;li>是否显示头&lt;/li>
 &lt;/ol>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.headers on
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
 &lt;p>sudo lsof -i :5353&lt;/p>
 &lt;p>COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
 mDNSRespo 185 _mdnsresponder 6u IPv4 0x1111111111111 0t0 UDP *:mdns
@@ -37,7 +37,7 @@ mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns&lt;/p>
 0 223 1 0 8:08上午 ?? 0:02.16 /usr/sbin/mDNSResponderHelper
 501 66848 66623 0 11:00下午 ttys000 0:00.00 grep mDNSRespo&lt;/p>
 &lt;h2 id="根据pid杀进程">根据PID杀进程：&lt;/h2>
-&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
+&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
 Create a Bootable USB Flash Drive&lt;/p>
 &lt;p>在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下&lt;/p>
 &lt;h3 id="下载-debian-dvd-镜像文件">下载 Debian DVD 镜像文件&lt;/h3>

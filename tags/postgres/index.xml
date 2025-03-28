@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>postgres on 白菜</title><link>https://blog.baicai.me/tags/postgres/</link><description>Recent content in postgres on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 22 Jul 2022 14:26:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/postgres/index.xml" rel="self" type="application/rss+xml"/><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>postgres on 白菜</title><link>https://blog.baicai.me/tags/postgres/</link><description>Recent content in postgres on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 22 Jul 2022 14:26:40 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/postgres/index.xml" rel="self" type="application/rss+xml"/><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
 Debian 11&lt;/p>
 &lt;h3 id="切换到超级用户">切换到超级用户：&lt;/h3>
 &lt;pre tabindex="0">&lt;code> sudo su postgres
@@ -27,7 +27,7 @@ Debian 11&lt;/p>
 &lt;pre tabindex="0">&lt;code> pg_dump dbname &amp;gt; dbname.dump
 &lt;/code>&lt;/pre>&lt;h3 id="恢复数据库">恢复数据库&lt;/h3>
 &lt;pre tabindex="0">&lt;code> psql -f dbname.dump -d dbname
-&lt;/code>&lt;/pre></description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>&lt;h3 id="简单步骤">简单步骤&lt;/h3>
+&lt;/code>&lt;/pre></description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>&lt;h3 id="简单步骤">简单步骤&lt;/h3>
 &lt;ol>
 &lt;li>
 &lt;p>安装docker，可参考 &lt;a href="https://blog.baicai.me/article/2021/docker_start/">安装docker及简单的使用&lt;/a> 或 百度解决；&lt;/p>

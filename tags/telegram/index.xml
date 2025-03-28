@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>telegram on 白菜</title><link>https://blog.baicai.me/tags/telegram/</link><description>Recent content in telegram on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 26 Dec 2023 15:00:23 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/telegram/index.xml" rel="self" type="application/rss+xml"/><item><title>开启 Telegram 的邮箱登录</title><link>https://blog.baicai.me/article/2023/telegram_email_login/</link><pubDate>Tue, 26 Dec 2023 15:00:23 +0800</pubDate><guid>https://blog.baicai.me/article/2023/telegram_email_login/</guid><description>&lt;h2 id="telegram的邮箱登录是什么-有什么用">Telegram的邮箱登录是什么? 有什么用?&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>telegram on 白菜</title><link>https://blog.baicai.me/tags/telegram/</link><description>Recent content in telegram on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 26 Dec 2023 15:00:23 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/telegram/index.xml" rel="self" type="application/rss+xml"/><item><title>开启 Telegram 的邮箱登录</title><link>https://blog.baicai.me/article/2023/telegram_email_login/</link><pubDate>Tue, 26 Dec 2023 15:00:23 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/telegram_email_login/</guid><description>&lt;h2 id="telegram的邮箱登录是什么-有什么用">Telegram的邮箱登录是什么? 有什么用?&lt;/h2>
 &lt;p>邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!&lt;/p>
 &lt;h2 id="如何开启telegram邮箱登录">如何开启Telegram邮箱登录?&lt;/h2>
 &lt;p>&lt;code>注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录&lt;/code>&lt;/p>
@@ -19,7 +19,7 @@
 &lt;p>在设置-隐私与安全界面，可看到已设置的“登录邮箱”&lt;/p>
 &lt;h2 id="参考">参考：&lt;/h2>
 &lt;p>&lt;a href="https://telegra.ph/Telegram%E7%9A%84%E9%82%AE%E7%AE%B1%E7%99%BB%E5%BD%95-12-26">Telegram的邮箱登录&lt;/a>&lt;br>
-&lt;a href="https://core.telegram.org/api/auth#email-verification">User Authorization&lt;/a>&lt;/p></description></item><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
+&lt;a href="https://core.telegram.org/api/auth#email-verification">User Authorization&lt;/a>&lt;/p></description></item><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
 &lt;p>进入官网翻译界面 &lt;a href="https://translations.telegram.org">https://translations.telegram.org&lt;/a>&lt;/p>
 &lt;p>点击 &amp;ldquo;Start Translating&amp;rdquo;&lt;/p>
 &lt;p>选择 对应语言 比如 简体中文 进入网址&lt;/p>
@@ -27,7 +27,7 @@
 &lt;p>底部有 &amp;ldquo;Sharing Link&amp;rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。&lt;/p>
 &lt;p>自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。&lt;/p>
 &lt;h3 id="telegram-中文语言包">Telegram 中文语言包&lt;/h3>
-&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
 &lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
 &lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
 &lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
@@ -89,7 +89,7 @@ proxy_buffering off;
 proxy_pass https://example.domain$request_uri;
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -295,7 +295,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;p>回到管理后台首页，点击左侧的&lt;code>网站&lt;/code>，在右侧点击&lt;code>你已托管在Cloudflare的域名&lt;/code>&lt;/p>
 &lt;p>选择该域名下的 &lt;code>Workers 路由&lt;/code>&lt;/p>
 &lt;p>选择&lt;code>添加路由&lt;/code>&lt;/p>
-&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
+&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
 &lt;/code>&lt;/pre>&lt;p>例如：&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me

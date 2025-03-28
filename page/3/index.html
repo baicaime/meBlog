@@ -1,9 +1,18 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/reverse-proxy/>搭建反向代理服务：Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.20 12:06</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/translations/>Telegram 界面自定义翻译</a></h1><b><time>2023.09.21 00:01</time></b>
+<a href=/tags/telegram>telegram</a>
+<a href=/tags/%E6%B1%89%E5%8C%96>汉化</a>
+<a href=/tags/%E8%AF%AD%E8%A8%80%E5%8C%85>语言包</a><div>语言包的获取方法 进入官网翻译界面 https://translations.telegram.org
+点击 &ldquo;Start Translating&rdquo;
+选择 对应语言 比如 简体中文 进入网址
+https://translations.telegram.org/zh-hans/
+底部有 &ldquo;Sharing Link&rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。
+自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。
+Telegram 中文语言包 https://t.me/setlanguage/zh-hans-beta</div></article><article><h1><a href=https://blog.baicai.me/article/2023/reverse-proxy/>搭建反向代理服务：Telegram Bot Api 反向代理搭建</a></h1><b><time>2023.09.20 12:06</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/nginx>nginx</a>
 <a href=/tags/proxy>proxy</a>
@@ -75,16 +84,7 @@ Host X HostName 0.0.0.1 User root Port 22 PreferredAuthentications publickey Ide
 brew install hugo 完成后，使用以下命令进行验证(查看版本号)：
 hugo version 创建 Hugo 网站 hugo new site blog-demo 配置主题 创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。
 cd blog-demo git clone git@github.com:colorchestra/smol.git themes/smol cd themes/smol rm -rf .
-<a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
-<a href=/tags/debian>debian</a><div>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。
-准备工作 一定要备份重要数据！
-以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作
-Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。
-检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye
-cat /etc/apt/sources.list | grep stable 更新 apt 源，替换 bullseye 为 bookworm：
-sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list.d/*.list 对于 Debian 12 以后的版本，所有 Debian 可以分发的打包的非自由固件二进制文件（non-free），比如某些驱动，都被转移到 Debian Archive 中的一个新组件，称为非自由固件（non-free-firmware）。如果您从旧版的 Debian 升级，并且需要这些固件二进制文件，您应该更新您系统上的 /etc/apt/sources.list，以使用这个新组件（来源）：
-sed -i 's/non-free/non-free non-free-firmware/g' /etc/apt/sources.list 默认的系统 apt 源文件 /etc/apt/sources.list 应该是类似这样的：
-<a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><div><a href=/page/2/>Previous Page</a>
 3 of 8
 <a href=/page/4/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

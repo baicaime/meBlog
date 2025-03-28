@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nginx on 白菜</title><link>https://blog.baicai.me/tags/nginx/</link><description>Recent content in nginx on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Sun, 23 Feb 2025 22:22:39 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nginx on 白菜</title><link>https://blog.baicai.me/tags/nginx/</link><description>Recent content in nginx on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Sun, 23 Feb 2025 22:22:39 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
 &lt;p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。&lt;/p>
 &lt;h3 id="什么是ulimit">什么是ulimit?&lt;/h3>
 &lt;p>ulimit命令用来限制系统用户对shell资源的访问。&lt;/p>
@@ -68,7 +68,7 @@ http {
 &lt;p>编辑 &lt;code>/etc/sysctl.conf&lt;/code> 文件，添加或修改
 &lt;code>fs.file-max = 70000&lt;/code>&lt;/p>
 &lt;p>查看是否生效
-&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
 &lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
 &lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
 &lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
@@ -130,7 +130,7 @@ proxy_buffering off;
 proxy_pass https://example.domain$request_uri;
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -336,7 +336,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;p>回到管理后台首页，点击左侧的&lt;code>网站&lt;/code>，在右侧点击&lt;code>你已托管在Cloudflare的域名&lt;/code>&lt;/p>
 &lt;p>选择该域名下的 &lt;code>Workers 路由&lt;/code>&lt;/p>
 &lt;p>选择&lt;code>添加路由&lt;/code>&lt;/p>
-&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
+&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
 &lt;h3 id="安装-certbot-及-certbot-nginx-插件">安装 Certbot 及 certbot nginx 插件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt -y install certbot python3-certbot-nginx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为-nginx-网站生成证书并配置">为 nginx 网站生成证书并配置&lt;/h3>
@@ -349,7 +349,7 @@ proxy_pass https://api.telegram.org$request_uri;
 除非你更改配置，否则无需再次手动运行Certbot。
 您可以通过运行以下命令来测试证书的自动续订。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot renew --dry-run
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>nginx 启用目录索引，显示文件列表</title><link>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</link><pubDate>Sat, 23 Jul 2022 23:52:39 +0800</pubDate><guid>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</guid><description>&lt;p>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>nginx 启用目录索引，显示文件列表</title><link>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</link><pubDate>Sat, 23 Jul 2022 23:52:39 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</guid><description>&lt;p>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。&lt;/p>
 &lt;p>但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。&lt;/p>
 &lt;pre>&lt;code>官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html
 &lt;/code>&lt;/pre>

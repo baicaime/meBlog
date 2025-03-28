@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>应用程序 on 白菜</title><link>https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/</link><description>Recent content in 应用程序 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 24 Feb 2025 00:40:55 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>应用程序 on 白菜</title><link>https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/</link><description>Recent content in 应用程序 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Mon, 24 Feb 2025 00:40:55 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
 &lt;h3 id="发邮件">发邮件&lt;/h3>
 &lt;p>使用&lt;/p>
 &lt;pre tabindex="0">&lt;code>telnet smtp.qq.com 25
@@ -40,7 +40,7 @@ Escape character is &amp;#39;^]&amp;#39;.
 &lt;pre tabindex="0">&lt;code>Trying 142.251.8.108...
 Connected to imap.gmail.com.
 Escape character is &amp;#39;^]&amp;#39;.
-&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
 &lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -74,7 +74,7 @@ Escape character is &amp;#39;^]&amp;#39;.
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
 &lt;p>SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。&lt;/p>
 &lt;p>ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。&lt;/p>
 &lt;p>环境说明&lt;/p>
@@ -113,7 +113,7 @@ Escape character is &amp;#39;^]&amp;#39;.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-W：该参数在OpenSSH 5.4及之后的版本才支持，参考官方的Release信息；
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>在使用-W之前，通常都是使用nc选项，nc允许你转发TCP/UDP数据包到指定（备用）位置并且基本上与ssh -W相同；
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：
-&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
+&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
 &lt;ul>
 &lt;li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。&lt;/li>
 &lt;li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。&lt;/li>
@@ -267,13 +267,13 @@ GIT_USERNAME 改为自己 GitHub Pages 仓库的用户名
 &lt;p>完成上述配置后，推送代码至仓库，即可触发 GitHub Action，自动生成博客页面并推送至 GitHub Pages 仓库。&lt;/p>
 &lt;p>GitHub Pages 仓库更新后，又会自动触发官方页面部署 CI，实现网站发布。&lt;/p>
 &lt;p>现在每当我们本地通过熟悉的 Markdown 语法完成博客内容编辑后，只需要推送代码，等待几分钟，即可通过我们的自定义域名访问更新后的网站。&lt;/p>
-&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
+&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
 &lt;/code>&lt;/pre>&lt;p>例如：&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me
 &lt;/code>&lt;/pre>&lt;p>获取Webhook&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/getWebhookInfo
-&lt;/code>&lt;/pre></description></item><item><title>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</title><link>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</link><pubDate>Fri, 06 May 2022 20:57:36 +0800</pubDate><guid>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</guid><description>&lt;p>应用版本：firefox 开发者版 v101
+&lt;/code>&lt;/pre></description></item><item><title>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</title><link>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</link><pubDate>Fri, 06 May 2022 20:57:36 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</guid><description>&lt;p>应用版本：firefox 开发者版 v101
 问题描述：微博主页可以正常访问，但点击搜索或热搜链接，都提示：&lt;/p>
 &lt;pre tabindex="0">&lt;code> 建立安全连接失败
 连接到 s.weibo.com 时发生错误。

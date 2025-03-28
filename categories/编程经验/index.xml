@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程经验 on 白菜</title><link>https://blog.baicai.me/categories/%E7%BC%96%E7%A8%8B%E7%BB%8F%E9%AA%8C/</link><description>Recent content in 编程经验 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 19:52:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%BC%96%E7%A8%8B%E7%BB%8F%E9%AA%8C/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程经验 on 白菜</title><link>https://blog.baicai.me/categories/%E7%BC%96%E7%A8%8B%E7%BB%8F%E9%AA%8C/</link><description>Recent content in 编程经验 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 19:52:33 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/%E7%BC%96%E7%A8%8B%E7%BB%8F%E9%AA%8C/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0b1101&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -54,7 +54,7 @@ fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
 %E 用科学计数法表示
 %f 用浮点数表示
 &lt;/code>&lt;/pre>&lt;p>快速测试
-&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
+&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
 &lt;h3 id="cratesio-和-rustup-的国内镜像源">crates.io 和 rustup 的国内镜像源&lt;/h3>
 &lt;p>字节跳动提供的：https://rsproxy.cn/&lt;/p>
 &lt;p>中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html&lt;/p>
@@ -82,7 +82,7 @@ registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
 # 字节跳动
 [source.rsproxy]
 registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
-&lt;/code>&lt;/pre></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
 &lt;p>👉 本文来自 &lt;a href="https://github.com/toml-lang/toml.io">toml-lang 的中文翻译版本&lt;/a>，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。&lt;/p>
 &lt;h1 id="toml-v100">TOML v1.0.0&lt;/h1>
 &lt;p>全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&amp;rsquo;s Obvious, Minimal Language）&lt;br>
@@ -690,7 +690,7 @@ color = &amp;#34;green&amp;#34;
 &lt;h3 id="mime-类型">MIME 类型&lt;/h3>
 &lt;p>在互联网上传输 TOML 文件时，恰当的 MIME 类型是 &lt;code>application/toml&lt;/code>。&lt;/p>
 &lt;h3 id="abnf-语法">ABNF 语法&lt;/h3>
-&lt;p>TOML 语法的严谨说明，由一个 &lt;a href="https://github.com/toml-lang/toml/blob/1.0.0/toml.abnf">ABNF 文件&lt;/a>另行提供。&lt;/p></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
+&lt;p>TOML 语法的严谨说明，由一个 &lt;a href="https://github.com/toml-lang/toml/blob/1.0.0/toml.abnf">ABNF 文件&lt;/a>另行提供。&lt;/p></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
 &lt;p>七牛云提供的：https://goproxy.cn&lt;/p>
 &lt;p>goproxy.io：https://goproxy.io 或 &lt;a href="https://proxy.golang.com.cn">https://proxy.golang.com.cn&lt;/a>&lt;/p>
 &lt;p>百度云BOS提供的：https://goproxy.bj.bcebos.com/&lt;/p>
@@ -699,7 +699,7 @@ color = &amp;#34;green&amp;#34;
 &lt;p>官网：https://go.dev/&lt;/p>
 &lt;p>下载 Go 镜像：https://golang.google.cn/&lt;/p>
 &lt;p>下载 Go 镜像：https://gomirrors.org/&lt;/p>
-&lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>Swift语法全面解析</title><link>https://blog.baicai.me/article/2021/swift-basic-syntax/</link><pubDate>Thu, 13 May 2021 21:31:19 +0800</pubDate><guid>https://blog.baicai.me/article/2021/swift-basic-syntax/</guid><description>&lt;h3 id="swift介绍">Swift介绍&lt;/h3>
+&lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>Swift语法全面解析</title><link>https://blog.baicai.me/article/2021/swift-basic-syntax/</link><pubDate>Thu, 13 May 2021 21:31:19 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/swift-basic-syntax/</guid><description>&lt;h3 id="swift介绍">Swift介绍&lt;/h3>
 &lt;p>Swift 是一门开发 iOS, macOS, watchOS 和 tvOS 应用的新语言。
 swift 是一种安全，快速和互动的编程语言。
 swift 支持代码预览（playgrounds），这个特性可以允许程序员在不编译和运行应用程序的前提下运行 Swift 代码并实时查看结果。&lt;/p>
@@ -1967,7 +1967,7 @@ open 只能作用于类和类的成员，它和 public 的区别主要在于 ope
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> anotherVector = Vector2D(x: &lt;span style="color:#ae81ff">2.0&lt;/span>, y: &lt;span style="color:#ae81ff">4.0&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> combinedVector = vector &lt;span style="color:#f92672">+&lt;/span> anotherVector
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// combinedVector 是一个新的 Vector2D 实例，值为 (5.0, 5.0)&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
 &lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>
 &lt;/blockquote>
 &lt;ul>

@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 24 Feb 2025 00:40:55 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 28 Mar 2025 17:12:15 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>访问世界上每一个经纬度为整数的交叉点</title><link>https://blog.baicai.me/article/2025/the_degree_confluence_project/</link><pubDate>Fri, 28 Mar 2025 17:12:15 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/the_degree_confluence_project/</guid><description>&lt;p>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。
+目前&lt;a href="https://confluence.org/country.php?id=28">中国的进度&lt;/a>是 429/978，平原地区的交叉点基本上被记录完毕了，剩下的都是难啃的骨头。&lt;/p>
+&lt;p>the Degree Confluence Project: &lt;a href="https://confluence.org">https://confluence.org&lt;/a>&lt;/p></description></item><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
 &lt;h3 id="发邮件">发邮件&lt;/h3>
 &lt;p>使用&lt;/p>
 &lt;pre tabindex="0">&lt;code>telnet smtp.qq.com 25
@@ -40,7 +42,7 @@ Escape character is &amp;#39;^]&amp;#39;.
 &lt;pre tabindex="0">&lt;code>Trying 142.251.8.108...
 Connected to imap.gmail.com.
 Escape character is &amp;#39;^]&amp;#39;.
-&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
 &lt;p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。&lt;/p>
 &lt;h3 id="什么是ulimit">什么是ulimit?&lt;/h3>
 &lt;p>ulimit命令用来限制系统用户对shell资源的访问。&lt;/p>
@@ -110,7 +112,7 @@ http {
 &lt;p>编辑 &lt;code>/etc/sysctl.conf&lt;/code> 文件，添加或修改
 &lt;code>fs.file-max = 70000&lt;/code>&lt;/p>
 &lt;p>查看是否生效
-&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
+&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
 &lt;h3 id="编辑配置文件">编辑配置文件：&lt;/h3>
 &lt;p>&lt;code>sudo nano /etc/network/interfaces&lt;/code>&lt;/p>
 &lt;h3 id="添加多个ip地址">添加多个IP地址：&lt;/h3>
@@ -133,14 +135,14 @@ netmask 255.255.255.0
 &lt;p>为 enp30 接口添加一个新的IP 192.168.0.251
 执行以下命令：
 &lt;code>ip addr add 192.168.0.251/24 dev enp30&lt;/code>
-这操作是临时的，重启后会丢失。&lt;/p></description></item><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
+这操作是临时的，重启后会丢失。&lt;/p></description></item><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
 &lt;p>以下是使用curl测试URL访问速度的步骤：&lt;/p>
 &lt;ul>
 &lt;li>打开终端或命令行界面。&lt;/li>
 &lt;li>输入以下命令：&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -o /dev/null -s -w &lt;span style="color:#e6db74">&amp;#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&amp;#34;&lt;/span> &amp;lt;URL&amp;gt;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将&lt;!-- raw HTML omitted -->替换为要测试的URL地址。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> curl -o /dev/null -s -w &lt;span style="color:#e6db74">&amp;#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&amp;#34;&lt;/span> &amp;lt;URL&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将&lt;code>&amp;lt;URL&amp;gt;&lt;/code>替换为要测试的URL地址。&lt;/p>
 &lt;p>执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：&lt;/p>
 &lt;ul>
 &lt;li>time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。&lt;/li>
@@ -150,7 +152,7 @@ netmask 255.255.255.0
 &lt;li>time_total：总耗时，即从开始到请求完成的时间。&lt;/li>
 &lt;/ul>
 &lt;p>这些时间单位都以秒为单位。&lt;/p>
-&lt;p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。&lt;/p></description></item><item><title>Giffgaff 打开 wificall 的操作步骤及分流规则</title><link>https://blog.baicai.me/article/2025/giffgaff_wificall/</link><pubDate>Tue, 28 Jan 2025 11:38:45 +0800</pubDate><guid>https://blog.baicai.me/article/2025/giffgaff_wificall/</guid><description>&lt;p>打开wificall的好处：可以使用英国本地资费，免费接电话。&lt;/p>
+&lt;p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。&lt;/p></description></item><item><title>Giffgaff 打开 wificall 的操作步骤及分流规则</title><link>https://blog.baicai.me/article/2025/giffgaff_wificall/</link><pubDate>Tue, 28 Jan 2025 11:38:45 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/giffgaff_wificall/</guid><description>&lt;p>打开wificall的好处：可以使用英国本地资费，免费接电话。&lt;/p>
 &lt;h3 id="ios需要运营商刷到580版本或者ios174以上版本">ios:需要运营商刷到58.0版本，或者ios17.4以上版本&lt;/h3>
 &lt;ul>
 &lt;li>关闭wifi和wificall开关&lt;/li>
@@ -195,7 +197,7 @@ IP-CIDR,87.194.0.0/16
 - &amp;#39;IP-CIDR,46.68.0.0/17,WifiCall,no-resolve&amp;#39;
 # Giffgaff
 - &amp;#39;IP-CIDR,87.194.0.0/16,WifiCall,no-resolve&amp;#39;
-&lt;/code>&lt;/pre>&lt;p>节点需要支持UDP!!! wificall走的UDP的500和4500端口&lt;/p></description></item><item><title>Docker本地镜像的导出、导入 (export,import,save,load)</title><link>https://blog.baicai.me/article/2024/docker_export_import_save_load/</link><pubDate>Fri, 11 Oct 2024 14:53:59 +0800</pubDate><guid>https://blog.baicai.me/article/2024/docker_export_import_save_load/</guid><description>&lt;p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>节点需要支持UDP!!! wificall走的UDP的500和4500端口&lt;/p></description></item><item><title>Docker本地镜像的导出、导入 (export,import,save,load)</title><link>https://blog.baicai.me/article/2024/docker_export_import_save_load/</link><pubDate>Fri, 11 Oct 2024 14:53:59 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/docker_export_import_save_load/</guid><description>&lt;p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。&lt;/p>
 &lt;h2 id="一使用-export-和-import">一、使用 export 和 import&lt;/h2>
 &lt;h3 id="1查看本机的容器">1，查看本机的容器&lt;/h3>
 &lt;p>使用 &lt;code>docker ps -a&lt;/code> 命令查看本机所有的容器。&lt;/p>
@@ -234,7 +236,7 @@ docker save 支持&lt;/p>
 &lt;p>save 保存（load 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。&lt;/p>
 &lt;h3 id="5应用场景不同">5，应用场景不同&lt;/h3>
 &lt;p>docker export 的应用场景：主要用来制作基础镜像，比如我们从一个 ubuntu 镜像启动一个容器，然后安装一些软件和进行一些设置后，使用 docker export 保存为一个基础镜像。然后，把这个镜像分发给其他人使用，比如作为基础的开发环境。&lt;/p>
-&lt;p>docker save 的应用场景：如果我们的应用是使用 docker-compose.yml 编排的多个镜像组合，但我们要部署的客户服务器并不能连外网。这时就可以使用 docker save 将用到的镜像打个包，然后拷贝到客户服务器上使用 docker load 载入。&lt;/p></description></item><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
+&lt;p>docker save 的应用场景：如果我们的应用是使用 docker-compose.yml 编排的多个镜像组合，但我们要部署的客户服务器并不能连外网。这时就可以使用 docker save 将用到的镜像打个包，然后拷贝到客户服务器上使用 docker load 载入。&lt;/p></description></item><item><title>Go语言进制以及进制转换</title><link>https://blog.baicai.me/article/2024/fmt_int/</link><pubDate>Tue, 24 Sep 2024 19:52:33 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/fmt_int/</guid><description>&lt;h3 id="二进制-0b或者0b-表示">二进制 0B或者0b 表示&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">bin1&lt;/span> = &lt;span style="color:#ae81ff">0b1101&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-golang" data-lang="golang">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -290,7 +292,7 @@ fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
 %E 用科学计数法表示
 %f 用浮点数表示
 &lt;/code>&lt;/pre>&lt;p>快速测试
-&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
+&lt;a href="https://go.dev/play/">go.dev/play&lt;/a>&lt;/p></description></item><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 db.file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。&lt;/p>
 &lt;p>我们可以输入 .help 先查看下大概的命令：&lt;/p>
@@ -318,7 +320,7 @@ fmt.Printf(&amp;#34;十进制%d转成八进制%o&amp;#34;,num1,num2)
 &lt;li>是否显示头&lt;/li>
 &lt;/ol>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.headers on
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
 &lt;p>UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。&lt;/p>
 &lt;p>具体现象是：&lt;/p>
 &lt;ol>
@@ -409,7 +411,7 @@ COMMIT
 &lt;pre tabindex="0">&lt;code> ufw allow 8080
 &lt;/code>&lt;/pre>&lt;h4 id="结论">结论&lt;/h4>
 &lt;p>如果我们正在使用老版本，我们可以使用 &lt;code>ufw-user-input&lt;/code>。但是要小心避免把不该暴露的服务暴露出去。&lt;/p>
-&lt;p>如果正在使用支持 &lt;code>ufw route&lt;/code> 命令的新版本，我们最好使用 &lt;code>ufw-user-forward&lt;/code>，并且使用 &lt;code>ufw route&lt;/code> 来管理与容器相关的防火墙规则。&lt;/p></description></item><item><title>docker 映射某个范围内的端口列表</title><link>https://blog.baicai.me/article/2024/docker_ports/</link><pubDate>Sat, 09 Mar 2024 00:01:19 +0800</pubDate><guid>https://blog.baicai.me/article/2024/docker_ports/</guid><description>&lt;p>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口&lt;/p>
+&lt;p>如果正在使用支持 &lt;code>ufw route&lt;/code> 命令的新版本，我们最好使用 &lt;code>ufw-user-forward&lt;/code>，并且使用 &lt;code>ufw route&lt;/code> 来管理与容器相关的防火墙规则。&lt;/p></description></item><item><title>docker 映射某个范围内的端口列表</title><link>https://blog.baicai.me/article/2024/docker_ports/</link><pubDate>Sat, 09 Mar 2024 00:01:19 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/docker_ports/</guid><description>&lt;p>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口&lt;/p>
 &lt;h3 id="docker-composeyml">docker-compose.yml&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;3.6&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
@@ -425,7 +427,7 @@ COMMIT
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dockerfile">Dockerfile&lt;/h3>
 &lt;pre tabindex="0">&lt;code>Dockerfile
 EXPOSE 8080-8090
-&lt;/code>&lt;/pre></description></item><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
+&lt;/code>&lt;/pre></description></item><item><title>使用adb命令和电脑互传文件</title><link>https://blog.baicai.me/article/2024/adb_push_pull/</link><pubDate>Mon, 04 Mar 2024 22:44:37 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/adb_push_pull/</guid><description>&lt;h3 id="电脑传文件到手机">电脑传文件到手机&lt;/h3>
 &lt;p>把当前目录下的&lt;code>test.tex&lt;/code>文件传到手机 &lt;code>/sdcard/test&lt;/code>目录中&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>adb push test.txt /sdcard/test
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="手机文件传到电脑">手机文件传到电脑&lt;/h3>
@@ -439,7 +441,7 @@ EXPOSE 8080-8090
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#进入到sdcard目录，安卓手机的文件管理一般都这这里&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd sdcard
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#然后查看要传输哪些文件到哪个文件夹&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
 &lt;p>通过收集子域名信息来进行渗透是目前常见的一种手法。
 子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。
 在挖SRC漏洞时，子域名信息的收集至关重要！&lt;/p>
@@ -706,7 +708,7 @@ Dig&lt;br>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/m8ucI1bDxILM8wLU6pLmoQ">1&lt;/a>
 &lt;a href="https://xz.aliyun.com/t/3478">2&lt;/a>
 &lt;a href="https://blog.csdn.net/qq_39293438/article/details/104829825">3&lt;/a>
-&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>开启 Telegram 的邮箱登录</title><link>https://blog.baicai.me/article/2023/telegram_email_login/</link><pubDate>Tue, 26 Dec 2023 15:00:23 +0800</pubDate><guid>https://blog.baicai.me/article/2023/telegram_email_login/</guid><description>&lt;h2 id="telegram的邮箱登录是什么-有什么用">Telegram的邮箱登录是什么? 有什么用?&lt;/h2>
+&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>开启 Telegram 的邮箱登录</title><link>https://blog.baicai.me/article/2023/telegram_email_login/</link><pubDate>Tue, 26 Dec 2023 15:00:23 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/telegram_email_login/</guid><description>&lt;h2 id="telegram的邮箱登录是什么-有什么用">Telegram的邮箱登录是什么? 有什么用?&lt;/h2>
 &lt;p>邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!&lt;/p>
 &lt;h2 id="如何开启telegram邮箱登录">如何开启Telegram邮箱登录?&lt;/h2>
 &lt;p>&lt;code>注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录&lt;/code>&lt;/p>
@@ -727,7 +729,7 @@ Dig&lt;br>
 &lt;p>在设置-隐私与安全界面，可看到已设置的“登录邮箱”&lt;/p>
 &lt;h2 id="参考">参考：&lt;/h2>
 &lt;p>&lt;a href="https://telegra.ph/Telegram%E7%9A%84%E9%82%AE%E7%AE%B1%E7%99%BB%E5%BD%95-12-26">Telegram的邮箱登录&lt;/a>&lt;br>
-&lt;a href="https://core.telegram.org/api/auth#email-verification">User Authorization&lt;/a>&lt;/p></description></item><item><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title><link>https://blog.baicai.me/article/2023/adb_pm_uninstall/</link><pubDate>Tue, 05 Dec 2023 13:31:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/adb_pm_uninstall/</guid><description>&lt;h3 id="准备-adb-使用条件">准备 ADB 使用条件&lt;/h3>
+&lt;a href="https://core.telegram.org/api/auth#email-verification">User Authorization&lt;/a>&lt;/p></description></item><item><title>通过 ADB 卸载系统自带应用(无需Root),精简系统app</title><link>https://blog.baicai.me/article/2023/adb_pm_uninstall/</link><pubDate>Tue, 05 Dec 2023 13:31:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/adb_pm_uninstall/</guid><description>&lt;h3 id="准备-adb-使用条件">准备 ADB 使用条件&lt;/h3>
 &lt;p>要使用 ADB（Android 调试桥），你需要按照以下步骤操作：&lt;/p>
 &lt;p>下载并安装 ADB 工具：&lt;/p>
 &lt;pre>&lt;code>在计算机上安装 Android SDK 或者仅安装 ADB 工具。你可以从 Android 官方网站或者其他可信赖的来源获取它们。
@@ -1143,7 +1145,7 @@ html查看程序 com.android.htmlviewer
 虚拟sim卡用的com.qualcomm.uimremoteclient
 自带黑色主题com.android.systemui.theme.dark
 无线电服务com.dsi.ant.server
-&lt;/code>&lt;/pre></description></item><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
 &lt;h3 id="按名称删除pod">按名称删除pod&lt;/h3>
 &lt;p>按名称删除kubia-gpu pod：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po kubia-gpu
@@ -1205,7 +1207,7 @@ html查看程序 com.android.htmlviewer
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 附一个我这边删除deployment后pod自行删除的情况&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A|grep dashboard&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</title><link>https://blog.baicai.me/article/2023/docker_privileged/</link><pubDate>Fri, 17 Nov 2023 22:52:38 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_privileged/</guid><description>&lt;h3 id="runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker的 privileged 选项解析（特权模式：赋予容器几乎与主机相同的权限）</title><link>https://blog.baicai.me/article/2023/docker_privileged/</link><pubDate>Fri, 17 Nov 2023 22:52:38 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/docker_privileged/</guid><description>&lt;h3 id="runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities&lt;/h3>
 &lt;p>参考官方文档：&lt;a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Docker run reference&lt;/a>&lt;/p>
 &lt;p>By default, Docker containers are &amp;ldquo;unprivileged&amp;rdquo; and cannot, for example, run a Docker daemon inside a Docker container. This is because by default a container is not allowed to access any devices, but a &amp;ldquo;privileged&amp;rdquo; container is given access to all devices (see the documentation on cgroups devices).&lt;/p>
 &lt;p>The &amp;ndash;privileged flag gives all capabilities to the container. When the operator executes docker run &amp;ndash;privileged, Docker will enable access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host. Additional information about running with &amp;ndash;privileged is available on the &lt;a href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker Blog&lt;/a>.&lt;/p>
@@ -1261,7 +1263,7 @@ Capabilities：Linux capabilities允许将传统的root权限分割成多个不�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附注-在docker-debian容器中安装pstop等命令">附注: 在Docker Debian容器中安装ps、top等命令&lt;/h3>
 &lt;p>debian镜像默认没有包括进程管理相关工具，在实际使用时可能有些麻烦，如果需要也可以自己安装，使用如下命令。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> apt install -y procps
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
 &lt;p>下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。&lt;/p>
 &lt;h3 id="彻底卸载-libreoffice">彻底卸载 LibreOffice&lt;/h3>
 &lt;p>终端中输入命令：&lt;/p>
@@ -1290,7 +1292,7 @@ Capabilities：Linux capabilities允许将传统的root权限分割成多个不�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="libreoffice简介来自官网">LibreOffice简介（来自官网）：&lt;/h3>
 &lt;p>LibreOffice 是一款功能强大的办公软件，默认使用开放文档格式 (OpenDocument Format , ODF), 并支持 *.docx, *.xlsx, *.pptx 等其他格式。&lt;/p>
 &lt;p>它包含了 Writer, Calc, Impress, Draw, Base 以及 Math 等组件，可用于处理文本文档、电子表格、演示文稿、绘图以及公式编辑。&lt;/p>
-&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item><item><title>通过 WireGuard 搭建 VPN 访问家里内网</title><link>https://blog.baicai.me/article/2023/using_wireguard/</link><pubDate>Sun, 08 Oct 2023 15:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2023/using_wireguard/</guid><description>&lt;p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。&lt;/p>
+&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item><item><title>通过 WireGuard 搭建 VPN 访问家里内网</title><link>https://blog.baicai.me/article/2023/using_wireguard/</link><pubDate>Sun, 08 Oct 2023 15:19:08 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/using_wireguard/</guid><description>&lt;p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。&lt;/p>
 &lt;h2 id="ip-段选择">IP 段选择&lt;/h2>
 &lt;p>WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。&lt;/p>
 &lt;p>在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。&lt;/p>
@@ -1522,7 +1524,7 @@ net.ipv6.conf.all.forwarding=1
 &lt;p>每个对等节点（peer）共用同一个 &lt;code>/etc/wireguard/peers.conf&lt;/code> 文件，其中包含了所有的 peer。&lt;/p>
 &lt;p>Wg0.conf 文件中需要配置一个 PostUp 钩子，内容为&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">wg addconf /etc/wireguard/peers.conf&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
 &lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
 &lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
 &lt;p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群&lt;/p>
@@ -1650,7 +1652,7 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;p>所有出站流量通常都是允许的。&lt;/p>
 &lt;h3 id="参考">参考：&lt;/h3>
 &lt;p>&lt;a href="https://docs.k3s.io/zh/quick-start">快速入门指南&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://docs.k3s.io/zh/installation/network-options#%E5%B5%8C%E5%85%A5%E5%BC%8F-k3s-%E5%A4%9A%E4%BA%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">嵌入式 k3s 多云解决方案&lt;/a>&lt;/p></description></item><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
+&lt;p>&lt;a href="https://docs.k3s.io/zh/installation/network-options#%E5%B5%8C%E5%85%A5%E5%BC%8F-k3s-%E5%A4%9A%E4%BA%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">嵌入式 k3s 多云解决方案&lt;/a>&lt;/p></description></item><item><title>Telegram 界面自定义翻译</title><link>https://blog.baicai.me/article/2023/translations/</link><pubDate>Thu, 21 Sep 2023 00:01:03 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/translations/</guid><description>&lt;h3 id="语言包的获取方法">语言包的获取方法&lt;/h3>
 &lt;p>进入官网翻译界面 &lt;a href="https://translations.telegram.org">https://translations.telegram.org&lt;/a>&lt;/p>
 &lt;p>点击 &amp;ldquo;Start Translating&amp;rdquo;&lt;/p>
 &lt;p>选择 对应语言 比如 简体中文 进入网址&lt;/p>
@@ -1658,7 +1660,7 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;p>底部有 &amp;ldquo;Sharing Link&amp;rdquo; 在 telegram 中打开这个网址 就可以换界面语言了。&lt;/p>
 &lt;p>自定义界面语言的话，选择上面的 客户端类型，根据提示 编辑对应翻译内容 即可。&lt;/p>
 &lt;h3 id="telegram-中文语言包">Telegram 中文语言包&lt;/h3>
-&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;p>&lt;a href="https://t.me/setlanguage/zh-hans-beta">https://t.me/setlanguage/zh-hans-beta&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
 &lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
 &lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
 &lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
@@ -1720,7 +1722,7 @@ proxy_buffering off;
 proxy_pass https://example.domain$request_uri;
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -1926,7 +1928,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;p>回到管理后台首页，点击左侧的&lt;code>网站&lt;/code>，在右侧点击&lt;code>你已托管在Cloudflare的域名&lt;/code>&lt;/p>
 &lt;p>选择该域名下的 &lt;code>Workers 路由&lt;/code>&lt;/p>
 &lt;p>选择&lt;code>添加路由&lt;/code>&lt;/p>
-&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
 &lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -1960,7 +1962,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker 搭建MTProto协议上网</title><link>https://blog.baicai.me/article/2023/docker_mtg/</link><pubDate>Thu, 07 Sep 2023 18:00:43 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_mtg/</guid><description>&lt;p>系统环境：
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker 搭建MTProto协议上网</title><link>https://blog.baicai.me/article/2023/docker_mtg/</link><pubDate>Thu, 07 Sep 2023 18:00:43 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/docker_mtg/</guid><description>&lt;p>系统环境：
 Debian系（其他系只需要更换apt为对应系统的软件包管理工具名称即可）&lt;/p>
 &lt;h2 id="安装docker">安装Docker&lt;/h2>
 &lt;h3 id="安装docker相关工具">安装Docker相关工具&lt;/h3>
@@ -2032,7 +2034,7 @@ Debian系（其他系只需要更换apt为对应系统的软件包管理工具�
 &lt;h3 id="查看mtproto协议服务配置">查看MTProto协议服务配置&lt;/h3>
 &lt;p>在mtg v1 docker-compose.yml文件目录下运行&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker-compose logs
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>docker golang:alpine CGO 制作镜像的正确姿势</title><link>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</link><pubDate>Mon, 04 Sep 2023 23:23:09 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/docker_golang_alpine_cgo_build/</guid><description>&lt;p>当程序需要引入C/C++库（比如支持Sqlite数据库）的时候，编译环境需要打开CGO，否则打包完成后的程序就不能顺利运行（数据库初始化失败）。&lt;/p>
 &lt;p>这时就需要安装 build-base 配置编译环境。&lt;/p>
 &lt;p>参考 Dockerfile 如下：&lt;/p>
 &lt;pre tabindex="0">&lt;code>FROM golang:alpine as builder
@@ -2080,14 +2082,14 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;td style="text-align:left">C++ 标准库&lt;/td>
 &lt;/tr>
 &lt;/tbody>
-&lt;/table></description></item><item><title>网站迁移完成</title><link>https://blog.baicai.me/article/2023/blog_20230902/</link><pubDate>Sat, 02 Sep 2023 16:46:04 +0800</pubDate><guid>https://blog.baicai.me/article/2023/blog_20230902/</guid><description>&lt;p>实施：&lt;/p>
+&lt;/table></description></item><item><title>网站迁移完成</title><link>https://blog.baicai.me/article/2023/blog_20230902/</link><pubDate>Sat, 02 Sep 2023 16:46:04 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/blog_20230902/</guid><description>&lt;p>实施：&lt;/p>
 &lt;p>hugo + github action + git pages + cloudflare&lt;/p>
 &lt;p>目前通过本地 vscode 写完日志后，直接推送到 github 私有仓库，通过 github action 生成静态内容自动推送到 github pages 仓库，完成部署。&lt;/p>
 &lt;p>静态内容存放： github pages&lt;/p>
 &lt;p>域名解析使用： cloudflare&lt;/p>
 &lt;p>附注：&lt;/p>
 &lt;p>github pages 自定义域名 解析设置（支持A记录）&lt;/p>
-&lt;p>&lt;a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site&lt;/a>&lt;/p></description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
+&lt;p>&lt;a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site&lt;/a>&lt;/p></description></item><item><title>SSH使用ProxyCommand通过代理服务器远程连接其他服务器</title><link>https://blog.baicai.me/article/2023/ssh_proxycommand/</link><pubDate>Thu, 31 Aug 2023 12:12:33 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/ssh_proxycommand/</guid><description>&lt;p>OpenSSH的客户端有一个 ProxyCommand 的选项，用于 SSH 客户端与服务器之间的隧道通信(tunneling)。所谓的隧道技术，也称代理技术，是网络通信技术的一个普遍概念，就是把一条信道建立于另外一条信道之上。&lt;/p>
 &lt;p>SSH 会话基于一个 TCP 连接，如果我们把连接的两个端口各自的出口（也即入口）进行截获，就可以用其它的信道来传输。而且 SSH 仍然认为它用的是和另一端连接一条 TCP 连接。&lt;/p>
 &lt;p>ProxyCommand 指定一个命令（称为 Proxy），SSH 客户端将通过标准输入输出和这个命令启动后的进程进行正常的 SSH 通信，而 Proxy 连接着 SSH 服务器（一般是一个 Server Proxy，再由该 Server Proxy 连接服务器）。&lt;/p>
 &lt;p>环境说明&lt;/p>
@@ -2126,7 +2128,7 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-W：该参数在OpenSSH 5.4及之后的版本才支持，参考官方的Release信息；
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>在使用-W之前，通常都是使用nc选项，nc允许你转发TCP/UDP数据包到指定（备用）位置并且基本上与ssh -W相同；
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：
-&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
+&lt;a href="http://www.openssh.com/txt/release-5.4">openssh&lt;/a>&lt;/p></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
 &lt;thead>
 &lt;tr>
 &lt;th style="text-align:left">服务提供者&lt;/th>
@@ -2260,7 +2262,7 @@ ENTRYPOINT [&amp;#34;./api_client_linux&amp;#34; ,&amp;#34;-c&amp;#34;,&amp;#34;
 &lt;/table>
 &lt;p>以上大陆指中国大陆，境外指非中国大陆。&lt;/p>
 &lt;p>体验目前仅进行粗略测试延迟，大概率实际不符，仅作参考。&lt;/p>
-&lt;p>http/https一列表示使用指定协议进行请求，返回的状态码。部分场合对状态码要求较严格。&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
+&lt;p>http/https一列表示使用指定协议进行请求，返回的状态码。部分场合对状态码要求较严格。&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
 &lt;ul>
 &lt;li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。&lt;/li>
 &lt;li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。&lt;/li>
@@ -2414,7 +2416,7 @@ GIT_USERNAME 改为自己 GitHub Pages 仓库的用户名
 &lt;p>完成上述配置后，推送代码至仓库，即可触发 GitHub Action，自动生成博客页面并推送至 GitHub Pages 仓库。&lt;/p>
 &lt;p>GitHub Pages 仓库更新后，又会自动触发官方页面部署 CI，实现网站发布。&lt;/p>
 &lt;p>现在每当我们本地通过熟悉的 Markdown 语法完成博客内容编辑后，只需要推送代码，等待几分钟，即可通过我们的自定义域名访问更新后的网站。&lt;/p>
-&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
+&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
 &lt;h2 id="准备工作">准备工作&lt;/h2>
 &lt;p>一定要备份重要数据！&lt;/p>
 &lt;p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作&lt;/p>
@@ -2457,7 +2459,7 @@ deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt list &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理已删除的软件包&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt purge &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 命令</title><link>https://blog.baicai.me/article/2023/linux_cmd_list/</link><pubDate>Mon, 10 Apr 2023 17:53:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/linux_cmd_list/</guid><description>&lt;h2 id="基本命令">基本命令&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 命令</title><link>https://blog.baicai.me/article/2023/linux_cmd_list/</link><pubDate>Mon, 10 Apr 2023 17:53:52 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/linux_cmd_list/</guid><description>&lt;h2 id="基本命令">基本命令&lt;/h2>
 &lt;pre>&lt;code>uname -m 显示机器的处理器架构
 uname -r 显示正在使用的内核版本
 dmidecode -q 显示硬件系统部件
@@ -3024,7 +3026,7 @@ rpm –Fvhwu-ftpd-2.6.2-8.i386.rpm -Fvh：更新参数
 rpm –q wu-ftpd
 查询软件包所安装的位置：rpm –ql package-name
 rpm –ql xv (l参数：显示文件列表)
-&lt;/code>&lt;/pre></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
 &lt;p>sudo lsof -i :5353&lt;/p>
 &lt;p>COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
 mDNSRespo 185 _mdnsresponder 6u IPv4 0x1111111111111 0t0 UDP *:mdns
@@ -3035,13 +3037,13 @@ mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns&lt;/p>
 0 223 1 0 8:08上午 ?? 0:02.16 /usr/sbin/mDNSResponderHelper
 501 66848 66623 0 11:00下午 ttys000 0:00.00 grep mDNSRespo&lt;/p>
 &lt;h2 id="根据pid杀进程">根据PID杀进程：&lt;/h2>
-&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
+&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>设置Telegram机器人的webhook</title><link>https://blog.baicai.me/article/2023/setting-telegram-webhook/</link><pubDate>Fri, 10 Feb 2023 23:04:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/setting-telegram-webhook/</guid><description>&lt;p>设置Webhook&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
 &lt;/code>&lt;/pre>&lt;p>例如：&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/setWebhook?url=https://baicai.me
 &lt;/code>&lt;/pre>&lt;p>获取Webhook&lt;/p>
 &lt;pre tabindex="0">&lt;code>https://api.telegram.org/bot{my_bot_token}/getWebhookInfo
-&lt;/code>&lt;/pre></description></item><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
 &lt;pre tabindex="0">&lt;code> Distributor ID: Debian
 Description: Debian GNU/Linux 11 (bullseye)
 Release: 11
@@ -3053,7 +3055,7 @@ Codename: bullseye
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xdg-user-dirs-gtk-update
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>zh_CN
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
 &lt;h3 id="安装-certbot-及-certbot-nginx-插件">安装 Certbot 及 certbot nginx 插件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt -y install certbot python3-certbot-nginx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为-nginx-网站生成证书并配置">为 nginx 网站生成证书并配置&lt;/h3>
@@ -3066,7 +3068,7 @@ Codename: bullseye
 除非你更改配置，否则无需再次手动运行Certbot。
 您可以通过运行以下命令来测试证书的自动续订。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot renew --dry-run
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
 Create a Bootable USB Flash Drive&lt;/p>
 &lt;p>在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下&lt;/p>
 &lt;h3 id="下载-debian-dvd-镜像文件">下载 Debian DVD 镜像文件&lt;/h3>
@@ -3108,7 +3110,7 @@ Create a Bootable USB Flash Drive&lt;/p>
 &lt;h3 id="弹出u盘">弹出U盘&lt;/h3>
 &lt;p>在快要完成的时候，系统会出现“磁盘无法识别”的提示，先不要做任何操作，等待终端dd命令执行完成后，执行下面命令弹出U盘。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eject /dev/disk2
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
 这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。&lt;/p>
 &lt;p>那么安装Transmission后台守护程序&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ sudo apt install -y transmission-daemon
@@ -3133,7 +3135,7 @@ Create a Bootable USB Flash Drive&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#关闭transmission开机自启&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl disable transmission-daemon.service
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>&lt;h3 id="解决-debian-安装过程慢的可行方案">解决 Debian 安装过程慢的可行方案：&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>&lt;h3 id="解决-debian-安装过程慢的可行方案">解决 Debian 安装过程慢的可行方案：&lt;/h3>
 &lt;ul>
 &lt;li>如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。&lt;/li>
 &lt;li>安装时选择 expert，不要选择 安全更新。&lt;/li>
@@ -3169,7 +3171,7 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Binary firmware for Realtek wired/wifi/BT adapters&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 根据上面查到的信息 安装驱动包 firmware-realtek&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get install firmware-realtek
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>&lt;p>运行环境&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>&lt;p>运行环境&lt;/p>
 &lt;pre tabindex="0">&lt;code> Operating System: Debian GNU/Linux 11 (bullseye)
 Kernel: Linux 5.10.0-18-amd64
 Architecture: x86-64
@@ -3324,7 +3326,7 @@ Architecture: x86-64
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}, &lt;span style="color:#75715e">//————————容器默认日志驱动程序选项
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#f92672">&amp;#34;iptables&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span> &lt;span style="color:#75715e">//————————启用iptables规则添加（默认为true）
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>nginx 启用目录索引，显示文件列表</title><link>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</link><pubDate>Sat, 23 Jul 2022 23:52:39 +0800</pubDate><guid>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</guid><description>&lt;p>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>nginx 启用目录索引，显示文件列表</title><link>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</link><pubDate>Sat, 23 Jul 2022 23:52:39 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/nginx_autoindex_conf/</guid><description>&lt;p>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。&lt;/p>
 &lt;p>但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。&lt;/p>
 &lt;pre>&lt;code>官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html
 &lt;/code>&lt;/pre>
@@ -3351,7 +3353,7 @@ autoindex_localtime on;
 &lt;pre tabindex="0">&lt;code>charset utf-8;
 &lt;/code>&lt;/pre>&lt;p>或&lt;/p>
 &lt;pre tabindex="0">&lt;code>charset utf-8,gbk;
-&lt;/code>&lt;/pre></description></item><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
+&lt;/code>&lt;/pre></description></item><item><title>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</title><link>https://blog.baicai.me/article/2022/create_use1/</link><pubDate>Fri, 22 Jul 2022 14:26:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/create_use1/</guid><description>&lt;p>系统环境：
 Debian 11&lt;/p>
 &lt;h3 id="切换到超级用户">切换到超级用户：&lt;/h3>
 &lt;pre tabindex="0">&lt;code> sudo su postgres
@@ -3380,7 +3382,7 @@ Debian 11&lt;/p>
 &lt;pre tabindex="0">&lt;code> pg_dump dbname &amp;gt; dbname.dump
 &lt;/code>&lt;/pre>&lt;h3 id="恢复数据库">恢复数据库&lt;/h3>
 &lt;pre tabindex="0">&lt;code> psql -f dbname.dump -d dbname
-&lt;/code>&lt;/pre></description></item><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
 &lt;h3 id="1-使用-lsb_release-命令">1. 使用 lsb_release 命令&lt;/h3>
 &lt;p>lsb_release 命令可用于查看 Linux 发行版操作系统的具体版本。它可能尚未安装在你的操作系统中，因此你需要先安装它。运行以下命令来安装 lsb_release：&lt;/p>
 &lt;pre tabindex="0">&lt;code> apt-get install lsb-release
@@ -3432,9 +3434,9 @@ Boot ID: xxx
 Operating System: Debian GNU/Linux 11 (bullseye)
 Kernel: Linux 5.10.0-16-amd64
 Architecture: x86-64
-&lt;/code>&lt;/pre></description></item><item><title>删除 Debian Gnome 所有默认安装的游戏</title><link>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</link><pubDate>Fri, 22 Jul 2022 10:35:22 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</guid><description>&lt;p>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>删除 Debian Gnome 所有默认安装的游戏</title><link>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</link><pubDate>Fri, 22 Jul 2022 10:35:22 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</guid><description>&lt;p>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt purge aisleriot gnome-sudoku gnome-nibbles ace-of-penguins gnomine gbrainy gnome-sushi gnome-taquin gnome-tetravex gnome-robots gnome-chess lightsoff swell-foop quadrapassel tali gnome-mahjongg gnome-2048 iagno gnome-klotski five-or-more gnome-mines four-in-a-row hitori &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt autoremove
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>如何关闭 Ubuntu 中的开放端口？</title><link>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</link><pubDate>Sun, 19 Jun 2022 22:53:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</guid><description>&lt;p>如何关闭 Ubuntu 中的开放端口？&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>如何关闭 Ubuntu 中的开放端口？</title><link>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</link><pubDate>Sun, 19 Jun 2022 22:53:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/ubuntu_kill_port_porc/</guid><description>&lt;p>如何关闭 Ubuntu 中的开放端口？&lt;/p>
 &lt;h3 id="问题描述">问题描述&lt;/h3>
 &lt;p>列出所有打开的端口，以关闭一些应用程序的端口。&lt;/p>
 &lt;h3 id="最佳办法">最佳办法&lt;/h3>
@@ -3466,7 +3468,7 @@ sudo ufw deny 22
 &lt;h3 id="附注">附注&lt;/h3>
 &lt;p>关闭特定进程&lt;/p>
 &lt;pre>&lt;code>kill $(ps -e|grep firefox|awk '{print $1}')
-&lt;/code>&lt;/pre></description></item><item><title>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</title><link>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</link><pubDate>Fri, 06 May 2022 20:57:36 +0800</pubDate><guid>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</guid><description>&lt;p>应用版本：firefox 开发者版 v101
+&lt;/code>&lt;/pre></description></item><item><title>解决 Firefox 访问weibo搜索或热搜提示 建立安全连接失败</title><link>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</link><pubDate>Fri, 06 May 2022 20:57:36 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/firefox_weibo_alpn/</guid><description>&lt;p>应用版本：firefox 开发者版 v101
 问题描述：微博主页可以正常访问，但点击搜索或热搜链接，都提示：&lt;/p>
 &lt;pre tabindex="0">&lt;code> 建立安全连接失败
 连接到 s.weibo.com 时发生错误。
@@ -3511,7 +3513,7 @@ ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商�
 &lt;pre tabindex="0">&lt;code> security.ssl.enable_alpn
 &lt;/code>&lt;/pre>&lt;p>的值切换为false&lt;/p>
 &lt;p>参考：
-&lt;a href="https://developer.mozilla.org/zh-CN/docs/Glossary/ALPN">ALPN&lt;/a>&lt;/p></description></item><item><title>上传公钥实现ssh登录</title><link>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</link><pubDate>Sat, 12 Mar 2022 20:22:55 +0800</pubDate><guid>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</guid><description>&lt;h3 id="生成密钥和公钥">生成密钥和公钥&lt;/h3>
+&lt;a href="https://developer.mozilla.org/zh-CN/docs/Glossary/ALPN">ALPN&lt;/a>&lt;/p></description></item><item><title>上传公钥实现ssh登录</title><link>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</link><pubDate>Sat, 12 Mar 2022 20:22:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/linux_ssh_copy_id/</guid><description>&lt;h3 id="生成密钥和公钥">生成密钥和公钥&lt;/h3>
 &lt;p>如果之前已经存在就不用重新生成了&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh-keygen -t rsa
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="上传公钥">上传公钥&lt;/h3>
@@ -3520,7 +3522,7 @@ ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商�
 &lt;h3 id="连接到服务器">连接到服务器&lt;/h3>
 &lt;p>直接使用ssh直接连接服务器，无需输入密码&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ ssh root@192.168.0.1
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Linux 命令行中使用的 6 个元字符</title><link>https://blog.baicai.me/article/2022/linux_metacharacters/</link><pubDate>Mon, 14 Feb 2022 17:37:24 +0800</pubDate><guid>https://blog.baicai.me/article/2022/linux_metacharacters/</guid><description>&lt;pre>&lt;code>在 Linux 命令行上使用元字符是提高生产力的一个好方法。
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Linux 命令行中使用的 6 个元字符</title><link>https://blog.baicai.me/article/2022/linux_metacharacters/</link><pubDate>Mon, 14 Feb 2022 17:37:24 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/linux_metacharacters/</guid><description>&lt;pre>&lt;code>在 Linux 命令行上使用元字符是提高生产力的一个好方法。
 &lt;/code>&lt;/pre>
 &lt;p>许多 Linux 电脑是无头运行的，你可以在命令行上完成所有的管理任务。它使用许多所有人都熟悉的基本命令，如 ls、ls-l、ls-l、cd、pwd、top 等等。&lt;/p>
 &lt;pre>&lt;code>Linux 上的 Shell 元字符
@@ -3564,7 +3566,7 @@ ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这些元字符中有许多是通往 正则表达式 的大门，所以还有很多东西可以探索。你最喜欢的 Linux 元字符是什么，它们是如何节省你的工作的？&lt;/p>
 &lt;p>via:
 &lt;a href="https://opensource.com/article/22/2/metacharacters-linux">1&lt;/a>
-&lt;a href="https://linux.cn/article-14270-1.html">2&lt;/a>&lt;/p></description></item><item><title>ubuntu上安装微信(wechat)</title><link>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</link><pubDate>Sun, 30 Jan 2022 15:19:12 +0800</pubDate><guid>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</guid><description>&lt;h2 id="介绍">介绍&lt;/h2>
+&lt;a href="https://linux.cn/article-14270-1.html">2&lt;/a>&lt;/p></description></item><item><title>ubuntu上安装微信(wechat)</title><link>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</link><pubDate>Sun, 30 Jan 2022 15:19:12 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/ubuntu_wechat-install/</guid><description>&lt;h2 id="介绍">介绍&lt;/h2>
 &lt;p>由于微信官网 &lt;a href="https://weixin.qq.com/">https://weixin.qq.com/&lt;/a> 没有linux版本的下载和安装方法，但微信确实提供了优麒麟发行版的官方版本，所以就有了下面的安装方法。&lt;/p>
 &lt;h2 id="安装方法">安装方法&lt;/h2>
 &lt;p>打开优麒麟应用商店官网，然后下载应用，就看到微信了
@@ -3577,7 +3579,7 @@ ALPN支持任意应用层协议的协商，目前应用最多是HTTP2的协商�
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> wget -O ~/weixin.deb &lt;span style="color:#e6db74">&amp;#34;http://archive.ubuntukylin.com/software/pool/partner/weixin_2.1.1_amd64.deb&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo dpkg -i ~/weixin.deb
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>&lt;h3 id="简单步骤">简单步骤&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docker 运行 postgreSQL</title><link>https://blog.baicai.me/article/2021/docker_postgres/</link><pubDate>Thu, 09 Dec 2021 14:19:08 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/docker_postgres/</guid><description>&lt;h3 id="简单步骤">简单步骤&lt;/h3>
 &lt;ol>
 &lt;li>
 &lt;p>安装docker，可参考 &lt;a href="https://blog.baicai.me/article/2021/docker_start/">安装docker及简单的使用&lt;/a> 或 百度解决；&lt;/p>
@@ -3685,7 +3687,7 @@ docker路由地址查看方法&lt;/p>
 &lt;h3 id="更多参考">更多参考：&lt;/h3>
 &lt;p>&lt;a href="https://blog.baicai.me/article/2021/docker_start/">安装docker及简单的使用&lt;/a>
 &lt;a href="https://hub.docker.com/_/postgres?tab=description">postgres&lt;/a>
-&lt;a href="https://hub.docker.com/r/dpage/pgadmin4">dpage/pgadmin4&lt;/a>&lt;/p></description></item><item><title>Ubuntu使用systemd配置开机运行service</title><link>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</link><pubDate>Wed, 01 Dec 2021 22:44:28 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</guid><description>&lt;h2 id="systemd">systemd&lt;/h2>
+&lt;a href="https://hub.docker.com/r/dpage/pgadmin4">dpage/pgadmin4&lt;/a>&lt;/p></description></item><item><title>Ubuntu使用systemd配置开机运行service</title><link>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</link><pubDate>Wed, 01 Dec 2021 22:44:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/ubuntu_systemd_service/</guid><description>&lt;h2 id="systemd">systemd&lt;/h2>
 &lt;p>Systemd 是 Linux 系统工具，用来启动守护进程，已成为大多数发行版的标准配置。&lt;/p>
 &lt;h2 id="由来">由来&lt;/h2>
 &lt;p>历史上，Linux 的启动一直采用init进程。&lt;/p>
@@ -3793,7 +3795,7 @@ ExecStart=/baicai/systemdStart/my_admin/my_admin -c /baicai/systemdStart/my_admi
 ExecStop=/bin/kill -s TERM ${MAINPID}
 [Install]
 WantedBy=multi-user.target
-&lt;/code>&lt;/pre></description></item><item><title>安装docker及简单的使用</title><link>https://blog.baicai.me/article/2021/docker_start/</link><pubDate>Tue, 05 Oct 2021 17:21:06 +0800</pubDate><guid>https://blog.baicai.me/article/2021/docker_start/</guid><description>&lt;h2 id="docker的介绍里面包括了3个基本概念">docker的介绍，里面包括了3个基本概念&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>安装docker及简单的使用</title><link>https://blog.baicai.me/article/2021/docker_start/</link><pubDate>Tue, 05 Oct 2021 17:21:06 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/docker_start/</guid><description>&lt;h2 id="docker的介绍里面包括了3个基本概念">docker的介绍，里面包括了3个基本概念&lt;/h2>
 &lt;h3 id="11-docker主要由镜像和容器构成">1.1 docker主要由镜像和容器构成&lt;/h3>
 &lt;p>镜像（Image）:docker镜像好比一个模板，相当于一个文件系统&lt;/p>
 &lt;p>容器（Container）:容器需要通过镜像来创建。镜像和容器就像是面向对象中的类和实例一样。容器可以被创建/启动/停止/删除等&lt;/p>
@@ -3934,7 +3936,7 @@ ENTRYPOINT 指定这个容器启动要运行的命令，可以追加命令
 ONBUILD 当构建一个被继承的Dockerfile时会运行
 COPY 类似ADD将我们文件拷贝到镜像中
 ENV 构建的时候设置环境变量
-&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>ubuntu上安装firefox</title><link>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</link><pubDate>Wed, 29 Sep 2021 16:19:42 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/ubuntu_firefox-install/</guid><description>&lt;h2 id="卸载原来firefox">卸载原来Firefox&lt;/h2>
 &lt;pre>&lt;code>sudo apt-get purge firefox
 &lt;/code>&lt;/pre>
 &lt;p>或
@@ -3974,7 +3976,7 @@ StartupNotify=true
 &lt;p>通过上面方法安装的Firefox，如果想删除，可以在终端种输入以下命令：&lt;/p>
 &lt;pre>&lt;code>sudo rm -rf /opt/firefox
 sudo rm /usr/share/applications/firefox.desktop
-&lt;/code>&lt;/pre></description></item><item><title>如何知道谁在ping我？</title><link>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</link><pubDate>Sat, 28 Aug 2021 21:14:41 +0800</pubDate><guid>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</guid><description>&lt;blockquote>
+&lt;/code>&lt;/pre></description></item><item><title>如何知道谁在ping我？</title><link>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</link><pubDate>Sat, 28 Aug 2021 21:14:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/tcpdump_icmp-echo/</guid><description>&lt;blockquote>
 &lt;p>tcpdump 是 Linux 上可用的最强大和使用最广泛的 命令行 数据包嗅探器(包分析器)工具。&lt;/p>
 &lt;/blockquote>
 &lt;p>在您要监控的计算机的终端应用程序中：&lt;/p>
@@ -3990,7 +3992,7 @@ sudo rm /usr/share/applications/firefox.desktop
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 Ubuntu 上：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>tcpdump -i eth0 icmp and icmp&lt;span style="color:#f92672">[&lt;/span>icmptype&lt;span style="color:#f92672">]=&lt;/span>icmp-echo -n
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;!-- raw HTML omitted -->
-&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>使用 df 命令查看 Linux 上的可用磁盘空间</title><link>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</link><pubDate>Wed, 04 Aug 2021 16:12:56 +0800</pubDate><guid>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</guid><description>&lt;p>磁盘空间已经不像计算机早期那样珍贵，但无论你有多少磁盘空间，总有耗尽的可能。计算机需要一些磁盘空间才能启动运行，所以为了确保你没有在无意间用尽了所有的硬盘空间，偶尔检查一下是非常必要的。在 Linux 终端，你可以用 df 命令来做这件事。&lt;/p>
+&lt;p>参考：nixCraft&lt;a href="http://www.cyberciti.biz/howto/question/man/tcpdump-man-page-with-examples.php">[1]&lt;/a>&lt;/p></description></item><item><title>使用 df 命令查看 Linux 上的可用磁盘空间</title><link>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</link><pubDate>Wed, 04 Aug 2021 16:12:56 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/check-disk-space-linux-df/</guid><description>&lt;p>磁盘空间已经不像计算机早期那样珍贵，但无论你有多少磁盘空间，总有耗尽的可能。计算机需要一些磁盘空间才能启动运行，所以为了确保你没有在无意间用尽了所有的硬盘空间，偶尔检查一下是非常必要的。在 Linux 终端，你可以用 df 命令来做这件事。&lt;/p>
 &lt;p>df 命令可以显示文件系统中可用的磁盘空间。&lt;/p>
 &lt;p>要想使输出结果易于阅读，你可以加上 &amp;ndash;human-readable（或其简写 -h）选项：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ df --human-readable
@@ -4025,7 +4027,7 @@ sudo rm /usr/share/applications/firefox.desktop
 &lt;p>如果你想大概了解哪些文件占用了磁盘空间，请阅读我们关于 du 命令[1] 的文章。&lt;/p>
 &lt;p>via:
 &lt;a href="https://opensource.com/article/21/7/check-disk-space-linux-df">https://opensource.com/article/21/7/check-disk-space-linux-df&lt;/a>
-&lt;a href="https://linux.cn/article-13646-1.html">https://linux.cn/article-13646-1.html&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
+&lt;a href="https://linux.cn/article-13646-1.html">https://linux.cn/article-13646-1.html&lt;/a>&lt;/p></description></item><item><title>Ubuntu安装 Zlib</title><link>https://blog.baicai.me/article/2021/zlib/</link><pubDate>Mon, 12 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/zlib/</guid><description>&lt;blockquote>
 &lt;p>如果你尝试在 Ubuntu 上安装 zlib，它会抛出 “unable to locate package zlib” 错误。&lt;/p>
 &lt;/blockquote>
 &lt;p>Zlib 是一个用于数据压缩的开源库。&lt;/p>
@@ -4047,7 +4049,7 @@ sudo rm /usr/share/applications/firefox.desktop
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>你也可以 Zlib 网站 下载源代码并安装它。但是，除非你有充分的理由，否则我不推荐使用源代码方式来安装 zlib。例如，如果你需要最新或特定版本的 zlib，但该版本在发行版的仓库中不可用。&lt;/p>
 &lt;p>有趣的是，像安装 zlib 这样看似很小的东西可能会变得很麻烦，有两个原因：一个是不同的包名；另一个是包含“隐藏”数字 1，它与小写 L 混淆了。&lt;/p>
 &lt;h2 id="参考">参考&lt;/h2>
-&lt;p>Zlib &lt;a href="https://zlib.net/">[1]&lt;/a>&lt;/p></description></item><item><title>免费CDN：jsDelivr+Github 使用方法</title><link>https://blog.baicai.me/article/2021/jsdelivr_github/</link><pubDate>Fri, 02 Jul 2021 23:50:06 +0800</pubDate><guid>https://blog.baicai.me/article/2021/jsdelivr_github/</guid><description>&lt;p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。&lt;/p>
+&lt;p>Zlib &lt;a href="https://zlib.net/">[1]&lt;/a>&lt;/p></description></item><item><title>免费CDN：jsDelivr+Github 使用方法</title><link>https://blog.baicai.me/article/2021/jsdelivr_github/</link><pubDate>Fri, 02 Jul 2021 23:50:06 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/jsdelivr_github/</guid><description>&lt;p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。&lt;/p>
 &lt;h3 id="用-jsdelivr-免费cdn托管静态资源">用 jsDelivr 免费CDN托管静态资源&lt;/h3>
 &lt;p>国内的免费 CDN 不少，但需要备案
 国外的免费 CDN 也不少，但在国内速度慢
@@ -4095,7 +4097,7 @@ https://cdn.jsdelivr.net/gh/jquery/jquery/
 https://purge.jsdelivr.net/gh/baicaime/meBlog/index.html
 // 使用最新版本资源
 https://purge.jsdelivr.net/gh/baicaime/meBlog@latest/index.html
-&lt;/code>&lt;/pre></description></item><item><title>Ubuntu安装 qbittorrent-nox并启动</title><link>https://blog.baicai.me/article/2021/qbittorrent/</link><pubDate>Fri, 02 Jul 2021 21:01:31 +0800</pubDate><guid>https://blog.baicai.me/article/2021/qbittorrent/</guid><description>&lt;h3 id="qbittorrent-nox">Qbittorrent-Nox&lt;/h3>
+&lt;/code>&lt;/pre></description></item><item><title>Ubuntu安装 qbittorrent-nox并启动</title><link>https://blog.baicai.me/article/2021/qbittorrent/</link><pubDate>Fri, 02 Jul 2021 21:01:31 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/qbittorrent/</guid><description>&lt;h3 id="qbittorrent-nox">Qbittorrent-Nox&lt;/h3>
 &lt;p>要在Linux上使用Qbittorrent Web UI，你无需安装完整的Qbittorent桌面应用程序，有一个基于终端的Qbittorrent应用程序可用，它被称为Qbittorrent-Nox。&lt;/p>
 &lt;p>注意：Web UI功能不仅限于Qbittorrent-Nox应用程序，此功能还可以与传统的Qbittorent Linux桌面应用程序一起使用&lt;/p>
 &lt;h3 id="安装qbittorrent">安装qbittorrent&lt;/h3>
@@ -4135,7 +4137,7 @@ WantedBy=multi-user.target
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看qbittorrent-nox状态&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo systemctl status qbittorrent-nox
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>默认账号：admin 密码： adminadmin
-默认登陆网址：ip:8080&lt;/p></description></item><item><title>跨域方案Nginx配置</title><link>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</link><pubDate>Thu, 01 Jul 2021 18:58:23 +0800</pubDate><guid>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</guid><description>&lt;h3 id="什么是浏览器同源策略">什么是浏览器同源策略？&lt;/h3>
+默认登陆网址：ip:8080&lt;/p></description></item><item><title>跨域方案Nginx配置</title><link>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</link><pubDate>Thu, 01 Jul 2021 18:58:23 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</guid><description>&lt;h3 id="什么是浏览器同源策略">什么是浏览器同源策略？&lt;/h3>
 &lt;p>同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。&lt;/p>
 &lt;p>同源是指&amp;quot;协议+域名+端口&amp;quot;三者相同，即便两个不同的域名指向同一个ip地址，也非同源。&lt;/p>
 &lt;h3 id="如何实现跨域">如何实现跨域？&lt;/h3>
@@ -4187,7 +4189,7 @@ root html;
 }
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>MAC命令快速模糊查找文件</title><link>https://blog.baicai.me/article/2021/mac_find/</link><pubDate>Sun, 27 Jun 2021 10:04:44 +0800</pubDate><guid>https://blog.baicai.me/article/2021/mac_find/</guid><description>&lt;h3 id="find命令">find命令&lt;/h3>
+&lt;/code>&lt;/pre></description></item><item><title>MAC命令快速模糊查找文件</title><link>https://blog.baicai.me/article/2021/mac_find/</link><pubDate>Sun, 27 Jun 2021 10:04:44 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/mac_find/</guid><description>&lt;h3 id="find命令">find命令&lt;/h3>
 &lt;p>描述：通过 find命令查找
 语法：find ~ -iname “文件名*”&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/**
@@ -4247,7 +4249,7 @@ root html;
 &lt;/ul>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>在 Mac 上的“终端”中执行命令和运行工具 &lt;a href="https://support.apple.com/zh-cn/guide/terminal/apdb66b5242-0d18-49fc-9c47-a2498b7c91d5/mac">[1]&lt;/a>&lt;/p>
-&lt;p>MAC命令快速全局查找文件或文件夹，支持模糊搜索 &lt;a href="https://blog.csdn.net/weixin_34403976/article/details/88844651">[2]&lt;/a>&lt;/p></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
+&lt;p>MAC命令快速全局查找文件或文件夹，支持模糊搜索 &lt;a href="https://blog.csdn.net/weixin_34403976/article/details/88844651">[2]&lt;/a>&lt;/p></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
 &lt;h3 id="cratesio-和-rustup-的国内镜像源">crates.io 和 rustup 的国内镜像源&lt;/h3>
 &lt;p>字节跳动提供的：https://rsproxy.cn/&lt;/p>
 &lt;p>中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html&lt;/p>
@@ -4275,12 +4277,12 @@ registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
 # 字节跳动
 [source.rsproxy]
 registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
-&lt;/code>&lt;/pre></description></item><item><title>给我来点酷炫玩意-Sharkle</title><link>https://blog.baicai.me/article/2021/sharkle/</link><pubDate>Wed, 23 Jun 2021 12:23:58 +0800</pubDate><guid>https://blog.baicai.me/article/2021/sharkle/</guid><description>&lt;blockquote>
+&lt;/code>&lt;/pre></description></item><item><title>给我来点酷炫玩意-Sharkle</title><link>https://blog.baicai.me/article/2021/sharkle/</link><pubDate>Wed, 23 Jun 2021 12:23:58 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/sharkle/</guid><description>&lt;blockquote>
 &lt;p>网页前端是一门技术活！出色的网站除了后台够快够可靠，也非常需要前端吸引眼球。在这个网站里，点击SHOW ME SOMETHING AWESOME就能随机跳转到一个新页面，往往是一些用了平时不太多见的网页设计元素制作出来的页面演示，有时候也会有独到设计的网页游戏，或许还有些别的内容。这个网站收录的内容都挺不错，有些网站的质量完全可以拿出来单独写一篇文章。&lt;/p>
 &lt;/blockquote>
 &lt;p>传送门 &lt;a href="https://sharkle.com/">https://sharkle.com/&lt;/a>&lt;/p>
 &lt;h3 id="方法">方法&lt;/h3>
-&lt;p>进入网站直接点击SHOW ME SOMETHING AWESOME即可欣赏！&lt;/p></description></item><item><title>Cargo Wix 创建Windows安装程序的cargo子命令</title><link>https://blog.baicai.me/article/2021/cargo-wix/</link><pubDate>Tue, 22 Jun 2021 22:48:53 +0800</pubDate><guid>https://blog.baicai.me/article/2021/cargo-wix/</guid><description>&lt;p>cargo-wix：创建Windows安装程序的cargo子命令
+&lt;p>进入网站直接点击SHOW ME SOMETHING AWESOME即可欣赏！&lt;/p></description></item><item><title>Cargo Wix 创建Windows安装程序的cargo子命令</title><link>https://blog.baicai.me/article/2021/cargo-wix/</link><pubDate>Tue, 22 Jun 2021 22:48:53 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/cargo-wix/</guid><description>&lt;p>cargo-wix：创建Windows安装程序的cargo子命令
 它使用二进制项目的发行版中的构建Windows安装程序（msi）。 如果可以使用提供的应用程序提供代码签名证书，则它还支持对Windows安装程序进行签名。&lt;/p>
 &lt;h3 id="快速开始">快速开始&lt;/h3>
 &lt;p>启动命令提示符（cmd.exe），然后执行以下命令：&lt;/p>
@@ -4290,7 +4292,7 @@ C:\Path\To\Project\&amp;gt;cargo wix init
 C:\Path\To\Project\&amp;gt;cargo wix
 &lt;/code>&lt;/pre>&lt;p>该项目的Windows安装程序（msi）将位于C:\Path\To\Project\target\wix文件夹中。&lt;/p>
 &lt;h3 id="官方文档">官方文档&lt;/h3>
-&lt;p>&lt;a href="https://crates.io/crates/cargo-wix">https://crates.io/crates/cargo-wix&lt;/a>&lt;/p></description></item><item><title>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上</title><link>https://blog.baicai.me/article/2021/linux_deskreen/</link><pubDate>Mon, 21 Jun 2021 19:50:25 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_deskreen/</guid><description>&lt;blockquote>
+&lt;p>&lt;a href="https://crates.io/crates/cargo-wix">https://crates.io/crates/cargo-wix&lt;/a>&lt;/p></description></item><item><title>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上</title><link>https://blog.baicai.me/article/2021/linux_deskreen/</link><pubDate>Mon, 21 Jun 2021 19:50:25 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_deskreen/</guid><description>&lt;blockquote>
 &lt;p>如果你有多显示器设置，你会意识到拥有多个屏幕的好处。而且，有了 Deskreen，你可以把任何设备变成你的副屏。&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="deskreen将任何设备变成你的-linux-系统的副屏">Deskreen：将任何设备变成你的 Linux 系统的副屏&lt;/h3>
@@ -4328,18 +4330,18 @@ Deskreen 的功能&lt;/p>
 &lt;p>当然，它不能取代你的电脑的第二个显示器的优势，但在一些使用情况下，你可能不需要第二个屏幕。&lt;/p>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>With Deskreen, You Can Mirror or Stream Your Linux Computer Screen to Any Device &lt;a href="https://itsfoss.com/deskreen/">[1]&lt;/a>&lt;/p>
-&lt;p>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上 &lt;a href="https://linux.cn/article-13507-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>为你营造专注冥想的时间-The Zen Zone</title><link>https://blog.baicai.me/article/2021/the-zen-zone/</link><pubDate>Mon, 21 Jun 2021 16:57:16 +0800</pubDate><guid>https://blog.baicai.me/article/2021/the-zen-zone/</guid><description>&lt;blockquote>
+&lt;p>用 Deskreen 将你的 Linux 屏幕镜像或串流到任何设备上 &lt;a href="https://linux.cn/article-13507-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>为你营造专注冥想的时间-The Zen Zone</title><link>https://blog.baicai.me/article/2021/the-zen-zone/</link><pubDate>Mon, 21 Jun 2021 16:57:16 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/the-zen-zone/</guid><description>&lt;blockquote>
 &lt;p>网站为你营造了专注冥想的时间，通过三个简单的小游戏，你可以进入一个精神集中的状态，从而让大脑思维平静下来！&lt;/p>
 &lt;/blockquote>
 &lt;p>传送门 &lt;a href="https://thezen.zone/">https://thezen.zone/&lt;/a>&lt;/p>
 &lt;h3 id="方法">方法&lt;/h3>
-&lt;p>进入网站直接开始冥想吧！&lt;/p></description></item><item><title>全球高清实况摄像头-Skylinewebcams</title><link>https://blog.baicai.me/article/2021/skylinewebcams/</link><pubDate>Mon, 14 Jun 2021 20:57:41 +0800</pubDate><guid>https://blog.baicai.me/article/2021/skylinewebcams/</guid><description>&lt;blockquote>
+&lt;p>进入网站直接开始冥想吧！&lt;/p></description></item><item><title>全球高清实况摄像头-Skylinewebcams</title><link>https://blog.baicai.me/article/2021/skylinewebcams/</link><pubDate>Mon, 14 Jun 2021 20:57:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/skylinewebcams/</guid><description>&lt;blockquote>
 &lt;p>网站收录了全球范围内的公开实况摄像头，你可以看到世界各地的文化遗产、城市风光、人气景点！&lt;/p>
 &lt;/blockquote>
 &lt;!-- raw HTML omitted -->
 &lt;p>传送门 &lt;a href="https://www.skylinewebcams.com/">https://www.skylinewebcams.com/&lt;/a>&lt;/p>
 &lt;h3 id="方法">方法&lt;/h3>
-&lt;p>网站支持中文，进入后直接观看！&lt;/p></description></item><item><title>Linux 常用命令</title><link>https://blog.baicai.me/article/2021/linux_cmd/</link><pubDate>Sat, 05 Jun 2021 10:31:29 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_cmd/</guid><description>&lt;p>Linux 常用命令&lt;/p>
+&lt;p>网站支持中文，进入后直接观看！&lt;/p></description></item><item><title>Linux 常用命令</title><link>https://blog.baicai.me/article/2021/linux_cmd/</link><pubDate>Sat, 05 Jun 2021 10:31:29 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_cmd/</guid><description>&lt;p>Linux 常用命令&lt;/p>
 &lt;h3 id="日期">日期&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">$(&lt;/span>date -d &lt;span style="color:#e6db74">&amp;#39;1 day ago&amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;+%Y-%m-%d&amp;#39;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>常用方法&lt;/p>
@@ -4469,7 +4471,7 @@ Deskreen 的功能&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>export PROMPT_COMMAND&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;history 1 &amp;gt;&amp;gt; /var/log/.myhistory&amp;#34;&lt;/span> &lt;span style="color:#75715e">#将命令记录输出到文本中&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /var/log/.myhistory
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod /var/log/.myhistory
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>awk 分析 nginx 运行日志常用指令</title><link>https://blog.baicai.me/article/2021/awk-nginx-access_log/</link><pubDate>Sat, 05 Jun 2021 10:16:16 +0800</pubDate><guid>https://blog.baicai.me/article/2021/awk-nginx-access_log/</guid><description>&lt;p>awk 分析 nginx 运行日志常用指令&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>awk 分析 nginx 运行日志常用指令</title><link>https://blog.baicai.me/article/2021/awk-nginx-access_log/</link><pubDate>Sat, 05 Jun 2021 10:16:16 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/awk-nginx-access_log/</guid><description>&lt;p>awk 分析 nginx 运行日志常用指令&lt;/p>
 &lt;p>1.独立IP&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>awk &lt;span style="color:#e6db74">&amp;#39;{print $1}&amp;#39;&lt;/span> access.log | sort -r |uniq -c | wc -l
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>2.统计PV&lt;/p>
@@ -4482,7 +4484,7 @@ Deskreen 的功能&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>awk &lt;span style="color:#e6db74">&amp;#39;{print $6}&amp;#39;&lt;/span> access.log | sort -r |uniq -c |wc -l
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>6.按小时统计&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat access.log |awk &lt;span style="color:#e6db74">&amp;#39;{print $4}&amp;#39;&lt;/span> | awk -F &lt;span style="color:#e6db74">&amp;#39;:&amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;{print $1,$2}&amp;#39;&lt;/span>|uniq -c | awk &lt;span style="color:#e6db74">&amp;#39;{print $2&amp;#34; &amp;#34;$3&amp;#34; &amp;#34;$1}&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>TOML 语言规范 1.0 正式版</title><link>https://blog.baicai.me/article/2021/toml/</link><pubDate>Sat, 05 Jun 2021 02:59:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/toml/</guid><description>&lt;p>👉 TOML 语言广泛用于 Rust 项目当中，cargo new 一个新项目时都会新建一个 toml 的配置文件，所以学习 Rust 过程中也有必要熟悉 TOML 语言的相关语法，从而熟练在 Rust 项目中编辑配置文件。&lt;/p>
 &lt;p>👉 本文来自 &lt;a href="https://github.com/toml-lang/toml.io">toml-lang 的中文翻译版本&lt;/a>，本文收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在 toml.io 原项目仓库指出或修改错误。&lt;/p>
 &lt;h1 id="toml-v100">TOML v1.0.0&lt;/h1>
 &lt;p>全称：Tom 的（语义）明显、（配置）最小化的语言。（Tom&amp;rsquo;s Obvious, Minimal Language）&lt;br>
@@ -5090,2031 +5092,20 @@ color = &amp;#34;green&amp;#34;
 &lt;h3 id="mime-类型">MIME 类型&lt;/h3>
 &lt;p>在互联网上传输 TOML 文件时，恰当的 MIME 类型是 &lt;code>application/toml&lt;/code>。&lt;/p>
 &lt;h3 id="abnf-语法">ABNF 语法&lt;/h3>
-&lt;p>TOML 语法的严谨说明，由一个 &lt;a href="https://github.com/toml-lang/toml/blob/1.0.0/toml.abnf">ABNF 文件&lt;/a>另行提供。&lt;/p></description></item><item><title>Rust 学习指南</title><link>https://blog.baicai.me/article/2021/learn_rust/</link><pubDate>Sat, 05 Jun 2021 02:16:24 +0800</pubDate><guid>https://blog.baicai.me/article/2021/learn_rust/</guid><description>&lt;h2 id="了解">了解&lt;/h2>
-&lt;p>一般来说，要决定学习一门新语言之前，会先大体了解下这门语言的特点和目前的发展情况。
-这时，建议看 Rust 官网 &lt;a href="https://rust-lang.org">https://rust-lang.org&lt;/a>&lt;/p>
-&lt;h2 id="rust-官方文档">Rust 官方文档&lt;/h2>
-&lt;p>Rust 语言的学习或参考文档大都列在 &lt;a href="https://www.rust-lang.org/learn">&lt;strong>Rust 学习指引页&lt;/strong>&lt;/a> 和 &lt;a href="https://doc.rust-lang.org/">&lt;strong>Rust 官方文档主页&lt;/strong>&lt;/a> 上，目前 Rust 官方团队已经将相关文档拆分到不同的仓库上：&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://doc.rust-lang.org/book/">《Rust 程序设计语言》（The Rust Programming Language）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/book">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/stable/rust-by-example/">《通过例子学 Rust》（Rust by Example）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust-by-example">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/edition-guide/index.html">Rust 版本指南（The Edition Guide）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/edition-guide">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/cargo/index.html">Cargo 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/cargo/tree/master/src/doc/src">GitHub 仓库源文件&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/rustdoc/index.html">rustdoc 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/rustdoc">GitHub 仓库源文件&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/rustc/index.html">rustc 帮助文档&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/rustc">GitHub 仓库源文件&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/error-index.html">Rust 编译错误索引&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/blob/master/src/librustc_mir/error_codes.rs">GitHub 仓库源代码&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/reference/index.html">《Rust 语言参考》（The Rust Reference）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/reference">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/nomicon/">The Rustonomicon&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/nomicon">GitHub 仓库&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>还有其他更多官方或其他非官方相关的文档：&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://rust-lang-nursery.github.io/cli-wg/">使用 Rust 编写命令行应用&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/cli-wg">GitHub 仓库地址&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rustwasm.github.io/docs/book/">Rust 和 WebAssembly 教程（WebAssembly Book）&lt;/a>，对应 &lt;a href="https://github.com/rustwasm/book">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-embedded.github.io/book/">嵌入式 Rust 教程&lt;/a>，对应 &lt;a href="https://github.com/rust-embedded/book">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-lang-nursery.github.io/rust-cookbook/">A Rust Cookbook&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/rust-cookbook">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://doc.rust-lang.org/nightly/unstable-book/">The Unstable Book&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc/unstable-book">GitHub 仓库源代码&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-lang.github.io/rustc-guide/">rustc 指引——Rust 编译器的工作原理及如何参与贡献（rustc-guide）&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rustc-guide">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/rust-lang/rustup.rs">rustup 命令说明&lt;/a>，本翻译项目会将 &lt;code>rustup&lt;/code> 的相关说明翻译成中文&lt;/li>
-&lt;li>&lt;a href="https://rust-lang.github.io/rfcs/">Rust RFC——Rust 发展相关制定的文稿&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/rfcs">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-lang-nursery.github.io/mdBook/">mdBook 使用手册&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/mdBook">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-lang-nursery.github.io/api-guidelines/">Rust API 指导原则&lt;/a>，对应 &lt;a href="https://github.com/rust-lang-nursery/api-guidelines">GitHub 仓库&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rust-lang.github.io/async-book/">async-book&lt;/a>，对应 &lt;a href="https://github.com/rust-lang/async-book">GitHub 仓库&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>上述文档的源文件有些是放在 &lt;a href="https://github.com/rust-lang/rust">rust&lt;/a> 和 &lt;a href="https://github.com/rust-lang/cargo">cargo&lt;/a> 的仓库的子目录中：&lt;a href="https://github.com/rust-lang/rust/tree/master/src/doc">Rust 文档&lt;/a> 和 &lt;a href="https://github.com/rust-lang/cargo/tree/master/src/doc">cargo 文档&lt;/a>。&lt;/p>
-&lt;h2 id="rust-资源">Rust 资源&lt;/h2>
-&lt;p>Rust 相关的中文资源，包括网站，或者国内的 Rust 的文章或书籍。&lt;/p>
-&lt;h3 id="rust-相关的中文网站">Rust 相关的中文网站&lt;/h3>
-&lt;blockquote>
-&lt;p>以下列出目前搜集到的 Rust 中文网站：&lt;/p>
-&lt;/blockquote>
-&lt;p>Rust 语言中文社区：https://rust.cc/&lt;/p>
-&lt;p>Rust Wiki 网：https://rustwiki.org/&lt;/p>
-&lt;h2 id="rust-语言术语中英文对照表">Rust 语言术语中英文对照表&lt;/h2>
-&lt;p>👉 部分来自 &lt;a href="https://github.com/rust-lang-cn/english-chinese-glossary-of-rust">Rust 语言术语中英文对照表&lt;/a>仓库，收录在此处，只是方便 Rust 学习者统一查阅，若是发现有任何错误或需要完善地方，请在原仓库指出或修改错误。&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>English 英文&lt;/th>
-&lt;th>Chinese 中文&lt;/th>
-&lt;th>Note 备注&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;strong>A&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Abstract Syntax Tree&lt;/td>
-&lt;td>抽象语法树&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ABI&lt;/td>
-&lt;td>应用程序二进制接口&lt;/td>
-&lt;td>Application Binary Interface 缩写&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>accumulator&lt;/td>
-&lt;td>累加器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>accumulator variable&lt;/td>
-&lt;td>累加器变量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ahead-of-time compiled&lt;/td>
-&lt;td>预编译&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ahead-of-time compiled language&lt;/td>
-&lt;td>预编译语言&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>alias&lt;/td>
-&lt;td>别名&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>aliasing&lt;/td>
-&lt;td>别名使用&lt;/td>
-&lt;td>参见 &lt;a href="https://en.wikipedia.org/wiki/Pointer_aliasing">Wikipedia&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>angle brackets&lt;/td>
-&lt;td>尖括号，“&amp;lt;”和“&amp;gt;”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>annotate&lt;/td>
-&lt;td>标注，注明（动词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>annotation&lt;/td>
-&lt;td>标注，注明（名词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ARC&lt;/td>
-&lt;td>原子引用计数器&lt;/td>
-&lt;td>Atomic Referecne Counter&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>anonymity&lt;/td>
-&lt;td>匿名&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>argument&lt;/td>
-&lt;td>参数，实参，实际参数&lt;/td>
-&lt;td>不严格区分的话， argument（参数）和 &lt;!-- raw HTML omitted --> parameter（参量）可以互换地使用&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>argument type&lt;/td>
-&lt;td>参数类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>assignment&lt;/td>
-&lt;td>赋值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>associated functions&lt;/td>
-&lt;td>关联函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>associated items&lt;/td>
-&lt;td>关联项&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>associated types&lt;/td>
-&lt;td>关联类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>asterisk&lt;/td>
-&lt;td>星号（*)&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>atomic&lt;/td>
-&lt;td>原子的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>attribute&lt;/td>
-&lt;td>属性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>automated building&lt;/td>
-&lt;td>自动构建&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>automated test&lt;/td>
-&lt;td>自动测试，自动化测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>B&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>baroque macro&lt;/td>
-&lt;td>巴洛克宏&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>benchmark&lt;/td>
-&lt;td>基准&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>binary&lt;/td>
-&lt;td>二进制的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>binary executable&lt;/td>
-&lt;td>二进制的可执行文件&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>bind&lt;/td>
-&lt;td>绑定&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>block&lt;/td>
-&lt;td>语句块，代码块&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>boolean&lt;/td>
-&lt;td>布尔型，布尔值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>borrow check&lt;/td>
-&lt;td>借用检查&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>borrower&lt;/td>
-&lt;td>借用者，借入者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>borrowing&lt;/td>
-&lt;td>借用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>bound&lt;/td>
-&lt;td>约束，限定，限制&lt;/td>
-&lt;td>此词和 constraint 意思相近，&lt;!-- raw HTML omitted -->constraint 在 C# 语言中翻译成“约束”&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>box&lt;/td>
-&lt;td>箱子，盒子，装箱类型&lt;/td>
-&lt;td>一般不译，作动词时翻译成“装箱”，&lt;!-- raw HTML omitted -->具有所有权的智能指针&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>boxed&lt;/td>
-&lt;td>装箱，装包&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>boxing&lt;/td>
-&lt;td>装箱，装包&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>brace&lt;/td>
-&lt;td>大括号，“{”或“}”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>buffer&lt;/td>
-&lt;td>缓冲，缓冲区，缓冲器，缓存&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>build&lt;/td>
-&lt;td>构建&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>builder pattern&lt;/td>
-&lt;td>创建者模式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>C&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>call&lt;/td>
-&lt;td>调用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>caller&lt;/td>
-&lt;td>调用者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>capacity&lt;/td>
-&lt;td>容器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>capture&lt;/td>
-&lt;td>捕获&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>cargo&lt;/td>
-&lt;td>(Rust 包管理器，不译)&lt;/td>
-&lt;td>该词作名词时意思是“货物”，&lt;!-- raw HTML omitted -->作动词时意思是“装载货物”&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>cargo-fy&lt;/td>
-&lt;td>Cargo 化，使用 Cargo 创建项目&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>case analysis&lt;/td>
-&lt;td>事例分析&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>cast&lt;/td>
-&lt;td>类型转换，转型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>casting&lt;/td>
-&lt;td>类型转换&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>chaining method call&lt;/td>
-&lt;td>链式方法调用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>channel&lt;/td>
-&lt;td>信道，通道&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>closure&lt;/td>
-&lt;td>闭包&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>coercion&lt;/td>
-&lt;td>强制类型转换，强制转换&lt;/td>
-&lt;td>coercion 原意是“强制，胁迫”&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>collection&lt;/td>
-&lt;td>集合&lt;/td>
-&lt;td>参见 &lt;a href="https://zh.wikipedia.org/wiki/%E9%9B%86%E5%90%88_(%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6)">Wikipedia&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>combinator&lt;/td>
-&lt;td>组合算子，组合器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>comma&lt;/td>
-&lt;td>逗号，“,”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>command&lt;/td>
-&lt;td>命令&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>command line&lt;/td>
-&lt;td>命令行&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>comment&lt;/td>
-&lt;td>注释&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compile&lt;/td>
-&lt;td>编译（动词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compile time&lt;/td>
-&lt;td>编译期，编译期间，编译时&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compilation&lt;/td>
-&lt;td>编译（名词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compilation unit&lt;/td>
-&lt;td>编译单元&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compiler&lt;/td>
-&lt;td>编译器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compiler intrinsics&lt;/td>
-&lt;td>编译器固有功能&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>compound&lt;/td>
-&lt;td>复合（类型，数据）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>concurrency&lt;/td>
-&lt;td>并发&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>conditional compilation&lt;/td>
-&lt;td>条件编译&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>configuration&lt;/td>
-&lt;td>配置&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>constructor&lt;/td>
-&lt;td>构造器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>consumer&lt;/td>
-&lt;td>消费者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>container&lt;/td>
-&lt;td>容器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>container type&lt;/td>
-&lt;td>容器类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>convert&lt;/td>
-&lt;td>转换，转化，转&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>copy&lt;/td>
-&lt;td>复制，拷贝&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>crate&lt;/td>
-&lt;td>包，包装箱，装包&lt;/td>
-&lt;td>一般不译，crate 是 Rust 的基本编译单元&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>curly braces&lt;/td>
-&lt;td>大括号，包含“{”和“}”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>custom type&lt;/td>
-&lt;td>自定义类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>D&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dangling pointer&lt;/td>
-&lt;td>悬垂指针&lt;/td>
-&lt;td>use after free 在释放后使用&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>data race&lt;/td>
-&lt;td>数据竞争&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dead code&lt;/td>
-&lt;td>死代码，无效代码，不可达代码&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>deallocate&lt;/td>
-&lt;td>释放，重新分配&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>declare&lt;/td>
-&lt;td>声明&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>deep copy&lt;/td>
-&lt;td>深拷贝，深复制&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dependency&lt;/td>
-&lt;td>依赖&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>deref coercions&lt;/td>
-&lt;td>强制多态&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dereference&lt;/td>
-&lt;td>解引用&lt;/td>
-&lt;td>Rust 文章中有时简写为 Deref&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>derive&lt;/td>
-&lt;td>派生&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>designator&lt;/td>
-&lt;td>指示符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>destruction&lt;/td>
-&lt;td>销毁，毁灭&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>destructor&lt;/td>
-&lt;td>析构器，析构函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>destructure&lt;/td>
-&lt;td>解构&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>destructuring&lt;/td>
-&lt;td>解构，解构赋值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>desugar&lt;/td>
-&lt;td>脱糖&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>diverge function&lt;/td>
-&lt;td>发散函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>device drive&lt;/td>
-&lt;td>设备驱动&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>directory&lt;/td>
-&lt;td>目录&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dispatch&lt;/td>
-&lt;td>分发&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>diverging functions&lt;/td>
-&lt;td>发散函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>documentation&lt;/td>
-&lt;td>文档&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dot operator&lt;/td>
-&lt;td>点运算符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>DST&lt;/td>
-&lt;td>动态大小类型&lt;/td>
-&lt;td>dynamic sized type，一般不译，&lt;!-- raw HTML omitted -->使用英文缩写形式&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dynamic language&lt;/td>
-&lt;td>动态类型语言&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>dynamic trait type&lt;/td>
-&lt;td>动态特质类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>E&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>enumeration&lt;/td>
-&lt;td>枚举&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>encapsulation&lt;/td>
-&lt;td>封装&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>equality test&lt;/td>
-&lt;td>相等测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>elision&lt;/td>
-&lt;td>省略&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>exhaustiveness checking&lt;/td>
-&lt;td>穷尽性检查，无遗漏检查&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>expression&lt;/td>
-&lt;td>表达式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>expression-oriented language&lt;/td>
-&lt;td>面向表达式的语言&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>explicit&lt;/td>
-&lt;td>显式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>explicit discriminator&lt;/td>
-&lt;td>显式的辨别值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>explicit type conversion&lt;/td>
-&lt;td>显式类型转换&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>extension&lt;/td>
-&lt;td>扩展名&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>extern&lt;/td>
-&lt;td>外，外部&lt;/td>
-&lt;td>作关键字时不译&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>F&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>fat pointer&lt;/td>
-&lt;td>胖指针&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>feature gate&lt;/td>
-&lt;td>功能开关&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>field&lt;/td>
-&lt;td>字段&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>field-level mutability&lt;/td>
-&lt;td>字段级别可变性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>file&lt;/td>
-&lt;td>文件&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>fmt&lt;/td>
-&lt;td>格式化，是 format 的缩写&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>formatter&lt;/td>
-&lt;td>格式化程序，格式化工具，格式器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>floating-point number&lt;/td>
-&lt;td>浮点数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>flow control&lt;/td>
-&lt;td>流程控制&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Foreign Function Interface（FFI）&lt;/td>
-&lt;td>外部语言函数接口&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>fragment specifier&lt;/td>
-&lt;td>片段分类符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>free variables&lt;/td>
-&lt;td>自由变量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>freeze&lt;/td>
-&lt;td>冻结&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>function&lt;/td>
-&lt;td>函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>function declaration&lt;/td>
-&lt;td>函数声明&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>functional&lt;/td>
-&lt;td>函数式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>G&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>garbage collector&lt;/td>
-&lt;td>垃圾回收&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>generalize&lt;/td>
-&lt;td>泛化，泛型化&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>generator&lt;/td>
-&lt;td>生成器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>generic&lt;/td>
-&lt;td>泛型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>generic type&lt;/td>
-&lt;td>泛型类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>growable&lt;/td>
-&lt;td>可增长的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>guard&lt;/td>
-&lt;td>守卫&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>H&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>handle error&lt;/td>
-&lt;td>句柄错误&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>hash&lt;/td>
-&lt;td>哈希，哈希值，散列&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>hash map&lt;/td>
-&lt;td>散列映射，哈希表&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>heap&lt;/td>
-&lt;td>堆&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>hierarchy&lt;/td>
-&lt;td>层次，分层，层次结构&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>higher rank lifetime&lt;/td>
-&lt;td>高阶生命周期&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>higher rank trait bound&lt;/td>
-&lt;td>高阶特质约束&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>higher tank type&lt;/td>
-&lt;td>高阶类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>hygiene&lt;/td>
-&lt;td>卫生&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>hygienic macro system&lt;/td>
-&lt;td>卫生宏系统&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>I&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ICE&lt;/td>
-&lt;td>编译内部错误&lt;/td>
-&lt;td>internal comppiler error 的缩写&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>immutable&lt;/td>
-&lt;td>不可变的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>implement&lt;/td>
-&lt;td>实现&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>implementor&lt;/td>
-&lt;td>实现者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>implicit&lt;/td>
-&lt;td>隐式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>implicit discriminator&lt;/td>
-&lt;td>隐式的辨别值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>implicit type conversion&lt;/td>
-&lt;td>隐式类型转换&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>import&lt;/td>
-&lt;td>导入&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>in assignment&lt;/td>
-&lt;td>在赋值（语句）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>index&lt;/td>
-&lt;td>索引&lt;/td>
-&lt;td>英语复数形式：indices&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>infer&lt;/td>
-&lt;td>推导（动词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>inference&lt;/td>
-&lt;td>推导（名词）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>inherited mutability&lt;/td>
-&lt;td>承袭可变性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>inheritance&lt;/td>
-&lt;td>继承&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>integrated development &lt;!-- raw HTML omitted -->environment(IDE)&lt;/td>
-&lt;td>集成开发环境&lt;/td>
-&lt;td>中文著作中通常直接写成 IDE&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>integration-style test&lt;/td>
-&lt;td>集成测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>interior mutability&lt;/td>
-&lt;td>内部可变性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>installer&lt;/td>
-&lt;td>安装程序，安装器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>instance&lt;/td>
-&lt;td>实例&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>instance method&lt;/td>
-&lt;td>实例方法&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>integer&lt;/td>
-&lt;td>整型，整数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>interact&lt;/td>
-&lt;td>相互作用，相互影响&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>interior mutability&lt;/td>
-&lt;td>内部可变性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>intrinsic&lt;/td>
-&lt;td>固有的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>invoke&lt;/td>
-&lt;td>调用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>item&lt;/td>
-&lt;td>项，条目，项目&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>iterate&lt;/td>
-&lt;td>重复&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>iteration&lt;/td>
-&lt;td>迭代&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>iterator&lt;/td>
-&lt;td>迭代器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>iterator adaptors&lt;/td>
-&lt;td>迭代器适配器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>iterator invalidation&lt;/td>
-&lt;td>迭代器失效&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>L&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>LHS&lt;/td>
-&lt;td>左操作数&lt;/td>
-&lt;td>left-hand side 的非正式缩写，&lt;!-- raw HTML omitted -->与 RHS 相对&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>lender&lt;/td>
-&lt;td>借出者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>library&lt;/td>
-&lt;td>库&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>lifetime&lt;/td>
-&lt;td>生存时间，寿命，生命周期&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>lifetime elision&lt;/td>
-&lt;td>生命周期省略&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>link&lt;/td>
-&lt;td>链接&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>linked-list&lt;/td>
-&lt;td>链表&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>lint&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>lint 英文本义是“纱布，绒毛”，此词在&lt;!-- raw HTML omitted -->计算机领域中表示程序代码中可疑和&lt;!-- raw HTML omitted -->不具结构性的片段，参见 &lt;a href="https://en.wikipedia.org/wiki/Lint_%28software%29">Wikipedia&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>list&lt;/td>
-&lt;td>列表&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>listener&lt;/td>
-&lt;td>监听器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>literal&lt;/td>
-&lt;td>数据，常量数据，字面值，字面量，&lt;!-- raw HTML omitted -->字面常量，字面上的&lt;/td>
-&lt;td>英文意思：字面意义的（内容）&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>LLVM&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>Low Level Virtual Machine 的缩写，&lt;!-- raw HTML omitted -->是构建编译器的系统&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>loop&lt;/td>
-&lt;td>循环&lt;/td>
-&lt;td>作关键字时不译&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>low-level code&lt;/td>
-&lt;td>底层代码&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>low-level language&lt;/td>
-&lt;td>底层语言&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>l-value&lt;/td>
-&lt;td>左值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>M&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>main function&lt;/td>
-&lt;td>main 函数，主函数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>macro&lt;/td>
-&lt;td>宏&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>map&lt;/td>
-&lt;td>映射&lt;/td>
-&lt;td>一般不译&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>match guard&lt;/td>
-&lt;td>匹配守卫&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>memory&lt;/td>
-&lt;td>内存&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>memory leak&lt;/td>
-&lt;td>内存泄露&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>memory safe&lt;/td>
-&lt;td>内存安全&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>meta&lt;/td>
-&lt;td>原则，元&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>metadata&lt;/td>
-&lt;td>元数据&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>metaprogramming&lt;/td>
-&lt;td>元编程&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>metavariable&lt;/td>
-&lt;td>元变量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>method call syntax&lt;/td>
-&lt;td>方法调用语法&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>method chaining&lt;/td>
-&lt;td>方法链&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>method definition&lt;/td>
-&lt;td>方法定义&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>modifier&lt;/td>
-&lt;td>修饰符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>module&lt;/td>
-&lt;td>模块&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>monomorphization&lt;/td>
-&lt;td>单态&lt;/td>
-&lt;td>mono: one, morph: form&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>move&lt;/td>
-&lt;td>移动，转移&lt;/td>
-&lt;td>按照 Rust 所规定的内容，&lt;!-- raw HTML omitted -->英语单词 transfer 的意思&lt;!-- raw HTML omitted -->比 move 更贴合实际描述&lt;!-- raw HTML omitted -->参考：&lt;a href="http://rustwiki.org/rust-by-example/scope/move.html">Rust by Example&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>move semantics&lt;/td>
-&lt;td>移动语义&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>mutability&lt;/td>
-&lt;td>可变性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>mutable&lt;/td>
-&lt;td>可变&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>mutable reference&lt;/td>
-&lt;td>可变引用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>multiple bounds&lt;/td>
-&lt;td>多重约束&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>mutiple patterns&lt;/td>
-&lt;td>多重模式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>N&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>nest&lt;/td>
-&lt;td>嵌套&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Nightly Rust&lt;/td>
-&lt;td>Rust 开发版&lt;/td>
-&lt;td>nightly本意是“每夜，每天晚上”，&lt;!-- raw HTML omitted -->指代码每天都更新&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>NLL&lt;/td>
-&lt;td>非词法生命周期&lt;/td>
-&lt;td>non lexical lifetime 的缩写，&lt;!-- raw HTML omitted -->一般不译&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>non-copy type&lt;/td>
-&lt;td>非复制类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>non-generic&lt;/td>
-&lt;td>非泛型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>no-op&lt;/td>
-&lt;td>空操作，空运算&lt;/td>
-&lt;td>(此词出现在类型转换章节中）&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>non-commutative&lt;/td>
-&lt;td>非交换的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>non-scalar cast&lt;/td>
-&lt;td>非标量转换&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>notation&lt;/td>
-&lt;td>符号，记号&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>numeric&lt;/td>
-&lt;td>数值，数字&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>O&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>optimization&lt;/td>
-&lt;td>优化&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>out-of-bounds accessing&lt;/td>
-&lt;td>越界访问&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>orphan rule&lt;/td>
-&lt;td>孤儿规则&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>overflow&lt;/td>
-&lt;td>溢出，越界&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>own&lt;/td>
-&lt;td>占有，拥有&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>owner&lt;/td>
-&lt;td>所有者，拥有者&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>ownership&lt;/td>
-&lt;td>所有权&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>P&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>package manager&lt;/td>
-&lt;td>包管理器，软件包管理器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>panic&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>此单词直接翻译是“恐慌”，&lt;!-- raw HTML omitted -->在 Rust 中用于不可恢复的错误处理&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parameter&lt;/td>
-&lt;td>参量，形参，形式参量&lt;/td>
-&lt;td>不严格区分的话， argument（参数）和 &lt;!-- raw HTML omitted --> parameter（参量）可以互换地使用&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parametric polymorphism&lt;/td>
-&lt;td>参数多态&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parent scope&lt;/td>
-&lt;td>父级作用域&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parentheses&lt;/td>
-&lt;td>小括号，包括“(”和“)”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parse&lt;/td>
-&lt;td>分析，解析&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>parser&lt;/td>
-&lt;td>（语法）分析器，解析器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>pattern&lt;/td>
-&lt;td>模式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>pattern match&lt;/td>
-&lt;td>模式匹配&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>phantom type&lt;/td>
-&lt;td>虚类型，虚位类型&lt;/td>
-&lt;td>phantom 相关的专有名词：&lt;!-- raw HTML omitted -->phantom bug 幻影指令&lt;!-- raw HTML omitted -->phantom power 幻象电源&lt;!-- raw HTML omitted -->参见：&lt;a href="https://wiki.haskell.org/Phantom_type">Haskell&lt;/a>、&lt;a href="https://en.wikibooks.org/wiki/Haskell/Phantom_types">Haskell/Phantom_type&lt;/a>、&lt;!-- raw HTML omitted -->&lt;a href="http://rustwiki.org/rust-by-example/generics/phantom.html">Rust/Phantom&lt;/a>、&lt;a href="https://doc.rust-lang.org/std/marker/struct.PhantomData.html">stdlib/PhantomData&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>platform&lt;/td>
-&lt;td>平台&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>polymorphism&lt;/td>
-&lt;td>多态&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>powershell&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>Windows 系统的一种命令行外壳程序&lt;!-- raw HTML omitted -->和脚本环境&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>possibility of absence&lt;/td>
-&lt;td>不存在的可能性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>precede&lt;/td>
-&lt;td>预先？，在&amp;hellip;发生（或出现）&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>prelude&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>预先导入模块，英文本意：序曲，前奏&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>primitive types&lt;/td>
-&lt;td>原生类型，基本类型，简单类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>print&lt;/td>
-&lt;td>打印&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>process&lt;/td>
-&lt;td>进程&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>procedural macros&lt;/td>
-&lt;td>过程宏，程序宏&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>project&lt;/td>
-&lt;td>项目，工程&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>prototype&lt;/td>
-&lt;td>原型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>R&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>race condition&lt;/td>
-&lt;td>竞态条件&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>RAII&lt;/td>
-&lt;td>资源获取即初始化（一般不译）&lt;/td>
-&lt;td>resource acquisition is initialization 的缩写&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>range&lt;/td>
-&lt;td>区间，范围&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>range expression&lt;/td>
-&lt;td>区间表达式&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>raw identifier&lt;/td>
-&lt;td>原始标识符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>raw pointer&lt;/td>
-&lt;td>原始指针，裸指针&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>RC&lt;/td>
-&lt;td>引用计数&lt;/td>
-&lt;td>reference counted&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Reader&lt;/td>
-&lt;td>读取器&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>recursive macro&lt;/td>
-&lt;td>递归宏&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>reference&lt;/td>
-&lt;td>引用&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>reference cycle&lt;/td>
-&lt;td>引用循环&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>release&lt;/td>
-&lt;td>发布&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>resource&lt;/td>
-&lt;td>资源&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>resource leak&lt;/td>
-&lt;td>资源泄露&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>RHS&lt;/td>
-&lt;td>右操作数&lt;/td>
-&lt;td>right-hand side 的非正式缩写，&lt;!-- raw HTML omitted -->与 LHS 相对&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>root directory&lt;/td>
-&lt;td>根目录&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>runtime&lt;/td>
-&lt;td>运行时&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>runtime behavior&lt;/td>
-&lt;td>运行时行为&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>runtime overhead&lt;/td>
-&lt;td>运行时开销&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Rust&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>一种编程语言&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Rustacean&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>编写 Rust 的程序员或爱好者的通称&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>rustc&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>Rust 语言编译器&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>r-value&lt;/td>
-&lt;td>右值&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>S&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>scalar&lt;/td>
-&lt;td>标量，数量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>schedule&lt;/td>
-&lt;td>调度&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>scope&lt;/td>
-&lt;td>作用域&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>screen&lt;/td>
-&lt;td>屏幕&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>script&lt;/td>
-&lt;td>脚本&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>semicolon&lt;/td>
-&lt;td>分号，“;”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>self&lt;/td>
-&lt;td>自身，作关键字时不译&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>shadow&lt;/td>
-&lt;td>遮蔽，隐蔽，隐藏，覆盖&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>shallow copy&lt;/td>
-&lt;td>浅拷贝，浅复制&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>signature&lt;/td>
-&lt;td>标记&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>slice&lt;/td>
-&lt;td>切片&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>snake case&lt;/td>
-&lt;td>蛇形命名&lt;/td>
-&lt;td>参见：&lt;a href="https://en.wikipedia.org/wiki/Snake_case">Snake case&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>source file&lt;/td>
-&lt;td>源文件&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>source code&lt;/td>
-&lt;td>源代码&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>specialization&lt;/td>
-&lt;td>泛型特化&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>square&lt;/td>
-&lt;td>平方，二次方，二次幂&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>square brackets&lt;/td>
-&lt;td>中括号，“[”和“]”&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>src&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>source 的缩写，指源代码&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>stack&lt;/td>
-&lt;td>栈&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>stack unwind&lt;/td>
-&lt;td>栈解开、栈展开&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>statement&lt;/td>
-&lt;td>语句&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>statically allocated&lt;/td>
-&lt;td>静态分配&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>statically allocated string&lt;/td>
-&lt;td>静态分配的字符串&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>statically dispatch&lt;/td>
-&lt;td>静态分发&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>static method&lt;/td>
-&lt;td>静态方法&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>string&lt;/td>
-&lt;td>字符串&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>string literal&lt;/td>
-&lt;td>字符串常量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>string slices&lt;/td>
-&lt;td>字符串片段&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>stringify&lt;/td>
-&lt;td>字符串化&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>subscript notation&lt;/td>
-&lt;td>下标&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>sugar&lt;/td>
-&lt;td>糖&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>super&lt;/td>
-&lt;td>父级，作关键字时不译&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>syntax context&lt;/td>
-&lt;td>语法上下文&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>systems programming language&lt;/td>
-&lt;td>系统级编程语言&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>T&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>tagged union&lt;/td>
-&lt;td>标记联合&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>target triple&lt;/td>
-&lt;td>多层次指标，三层/重 指标/目标&lt;/td>
-&lt;td>triple 本义是“三”，但此处虚指“多”，&lt;!-- raw HTML omitted -->此词翻译需要更多讨论&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>terminal&lt;/td>
-&lt;td>终端&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>testing&lt;/td>
-&lt;td>测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>testsuit&lt;/td>
-&lt;td>测试套件&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>the least significant bit (LSB)&lt;/td>
-&lt;td>最低数字位&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>the most significant bit (MSB)&lt;/td>
-&lt;td>最高数字位&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>thread&lt;/td>
-&lt;td>线程&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>TOML&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>Tom&amp;rsquo;s Obvious, Minimal Language &lt;!-- raw HTML omitted -->的缩写，一种配置语言&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>token tree&lt;/td>
-&lt;td>令牌树？&lt;/td>
-&lt;td>待进一步斟酌&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>trait&lt;/td>
-&lt;td>特质&lt;/td>
-&lt;td>其字面上有“特性，特征”之意&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>trait bound&lt;/td>
-&lt;td>特质约束&lt;/td>
-&lt;td>bound 有“约束，限制，限定”之意&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>trait object&lt;/td>
-&lt;td>特质对象&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>transmute&lt;/td>
-&lt;td>（不译）&lt;/td>
-&lt;td>其字面上有“变化，变形，变异”之意，&lt;!-- raw HTML omitted -->不作翻译&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>trivial&lt;/td>
-&lt;td>平凡的&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>troubleshooting&lt;/td>
-&lt;td>疑难解答，故障诊断，&lt;!-- raw HTML omitted -->故障排除，故障分析&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>tuple&lt;/td>
-&lt;td>元组&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>two&amp;rsquo;s complement&lt;/td>
-&lt;td>补码，二补数&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>two-word object&lt;/td>
-&lt;td>双字对象&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type annotation&lt;/td>
-&lt;td>类型标注&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type erasure&lt;/td>
-&lt;td>类型擦除&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type inference&lt;/td>
-&lt;td>类型推导&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type inference engine&lt;/td>
-&lt;td>类型推导引擎&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type parameter&lt;/td>
-&lt;td>类型参量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type placeholder&lt;/td>
-&lt;td>类型占位符&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>type signature&lt;/td>
-&lt;td>类型标记&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>U&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>undefined behavior&lt;/td>
-&lt;td>未定义行为&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>uninstall&lt;/td>
-&lt;td>卸载&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unit-like struct&lt;/td>
-&lt;td>类单元结构体&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unit struct&lt;/td>
-&lt;td>单元结构体&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&amp;ldquo;unit-style&amp;rdquo; tests&lt;/td>
-&lt;td>单元测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unit test&lt;/td>
-&lt;td>单元测试&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unit type&lt;/td>
-&lt;td>单元类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>universal function call syntax &lt;!-- raw HTML omitted -->(UFCS)&lt;/td>
-&lt;td>通用函数调用语法&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unsized types&lt;/td>
-&lt;td>不定长类型&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unwind&lt;/td>
-&lt;td>展开&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>unwrap&lt;/td>
-&lt;td>解包&lt;/td>
-&lt;td>暂译！&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>V&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>variable binding&lt;/td>
-&lt;td>变量绑定&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>variable shadowing&lt;/td>
-&lt;td>变量遮蔽，变量隐蔽,&lt;!-- raw HTML omitted -->变量隐藏，变量覆盖&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>variable capture&lt;/td>
-&lt;td>变量捕获&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>variant&lt;/td>
-&lt;td>变量&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>vector&lt;/td>
-&lt;td>（动态数组，一般不译）&lt;/td>
-&lt;td>vector 本义是“向量”&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>visibility&lt;/td>
-&lt;td>可见性&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>vtable&lt;/td>
-&lt;td>虚表&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>W&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>where clause&lt;/td>
-&lt;td>where 子句，where 从句，where 分句&lt;/td>
-&lt;td>在数据库的官方手册中多翻译成“子句”，英语语法中翻译成“从句”&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>wrap&lt;/td>
-&lt;td>包裹&lt;/td>
-&lt;td>暂译！&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>wrapped&lt;/td>
-&lt;td>装包&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>wrapper&lt;/td>
-&lt;td>装包&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Y&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>yield&lt;/td>
-&lt;td>产生(收益、效益等)，产出，提供&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Z&lt;/strong>&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>zero-cost abstractions&lt;/td>
-&lt;td>零开销抽象&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>zero-width space(ZWSP)&lt;/td>
-&lt;td>零宽空格&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table></description></item><item><title>塔防游戏-YORG.io</title><link>https://blog.baicai.me/article/2021/tower-defense/</link><pubDate>Wed, 02 Jun 2021 19:52:08 +0800</pubDate><guid>https://blog.baicai.me/article/2021/tower-defense/</guid><description>&lt;h3 id="塔防游戏">塔防游戏&lt;/h3>
+&lt;p>TOML 语法的严谨说明，由一个 &lt;a href="https://github.com/toml-lang/toml/blob/1.0.0/toml.abnf">ABNF 文件&lt;/a>另行提供。&lt;/p></description></item><item><title>塔防游戏-YORG.io</title><link>https://blog.baicai.me/article/2021/tower-defense/</link><pubDate>Wed, 02 Jun 2021 19:52:08 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/tower-defense/</guid><description>&lt;h3 id="塔防游戏">塔防游戏&lt;/h3>
 &lt;blockquote>
 &lt;p>可玩性很高的一款塔防游戏，需要各类元素合成，通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击，一玩就停不下来。&lt;/p>
 &lt;/blockquote>
 &lt;p>传送门 &lt;a href="https://yorg.io/">https://yorg.io/&lt;/a>&lt;/p>
 &lt;h3 id="玩法">玩法&lt;/h3>
-&lt;p>通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击&lt;/p></description></item><item><title>网页版红色警戒2-Red Alert 2: Chrono Divide</title><link>https://blog.baicai.me/article/2021/red-alert-2-chronodivide/</link><pubDate>Wed, 02 Jun 2021 19:22:30 +0800</pubDate><guid>https://blog.baicai.me/article/2021/red-alert-2-chronodivide/</guid><description>&lt;h3 id="在线红警">在线红警&lt;/h3>
+&lt;p>通过传送带传送宝石、木材、铁等元素，最后合成弓箭、大炮、闪电塔等来抵御怪兽的袭击&lt;/p></description></item><item><title>网页版红色警戒2-Red Alert 2: Chrono Divide</title><link>https://blog.baicai.me/article/2021/red-alert-2-chronodivide/</link><pubDate>Wed, 02 Jun 2021 19:22:30 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/red-alert-2-chronodivide/</guid><description>&lt;h3 id="在线红警">在线红警&lt;/h3>
 &lt;blockquote>
 &lt;p>又是一波人的集体回忆。。。网站高度还原了经典游戏——红色警戒2，原汁原味的画面和音效，仿佛又回到了那个电脑房的年代！&lt;/p>
 &lt;/blockquote>
 &lt;!-- raw HTML omitted -->
 &lt;p>传送门 &lt;a href="https://game.chronodivide.com/">https://game.chronodivide.com/&lt;/a>&lt;/p>
 &lt;h3 id="玩法">玩法&lt;/h3>
-&lt;p>网站支持多人在线对战，注册登陆后即可开始！&lt;/p></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
+&lt;p>网站支持多人在线对战，注册登陆后即可开始！&lt;/p></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
 &lt;p>七牛云提供的：https://goproxy.cn&lt;/p>
 &lt;p>goproxy.io：https://goproxy.io 或 &lt;a href="https://proxy.golang.com.cn">https://proxy.golang.com.cn&lt;/a>&lt;/p>
 &lt;p>百度云BOS提供的：https://goproxy.bj.bcebos.com/&lt;/p>
@@ -7123,7 +5114,7 @@ color = &amp;#34;green&amp;#34;
 &lt;p>官网：https://go.dev/&lt;/p>
 &lt;p>下载 Go 镜像：https://golang.google.cn/&lt;/p>
 &lt;p>下载 Go 镜像：https://gomirrors.org/&lt;/p>
-&lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>使用开源工具进行 Linux 内存取证</title><link>https://blog.baicai.me/article/2021/linux-memory-forensics/</link><pubDate>Wed, 26 May 2021 12:57:28 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux-memory-forensics/</guid><description>&lt;blockquote>
+&lt;p>下载 Go 镜像：https://studygolang.com/dl&lt;/p></description></item><item><title>使用开源工具进行 Linux 内存取证</title><link>https://blog.baicai.me/article/2021/linux-memory-forensics/</link><pubDate>Wed, 26 May 2021 12:57:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux-memory-forensics/</guid><description>&lt;blockquote>
 &lt;p>利用 Volatility 找出应用程序、网络连接、内核模块、文件等方面的情况。&lt;/p>
 &lt;/blockquote>
 &lt;p>计算机的操作系统和应用使用主内存（RAM）来执行不同的任务。这种易失性内存包含大量关于运行应用、网络连接、内核模块、打开的文件以及几乎所有其他的内容信息，但这些信息每次计算机重启的时候都会被清除。&lt;/p>
@@ -7160,7 +5151,7 @@ color = &amp;#34;green&amp;#34;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>deflate.c disk.c hash.c lime.h main.c Makefile Makefile.sample tcp.c
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="构建-lime-内核模块">构建 LiME 内核模块&lt;/h3>
-&lt;p>在 src 文件夹下运行 make 命令。这会创建一个以 .ko 为扩展名的内核模块。理想情况下，在 make 结束时，lime.ko 文件会使用格式 lime-&lt;!-- raw HTML omitted -->.ko 被重命名。&lt;/p>
+&lt;p>在 src 文件夹下运行 make 命令。这会创建一个以 .ko 为扩展名的内核模块。理想情况下，在 make 结束时，lime.ko 文件会使用格式 &lt;code>lime-&amp;lt;your-kernel-version&amp;gt;.ko&lt;/code> 被重命名。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ make
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make -C /lib/modules/4.18.0-240.el8.x86_64/build M&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/root/LiME/src&amp;#34;&lt;/span> modules
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: Entering directory &lt;span style="color:#e6db74">&amp;#39;/usr/src/kernels/4.18.0-240.el8.x86_64&amp;#39;&lt;/span>
@@ -7458,7 +5449,7 @@ linux_truecrypt_passphrase - Recovers cached Truecrypt passphrases
 &lt;p>内存转储是了解 Linux 内部情况的好方法。试一试 Volatility 的所有插件，并详细研究它们的输出。然后思考这些信息如何能够帮助你识别入侵或安全问题。深入了解这些插件的工作原理，甚至尝试改进它们。如果你没有找到你想做的事情的插件，那就写一个并提交给 Volatility，这样其他人也可以使用它。&lt;/p>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>使用开源工具进行 Linux 内存取证 &lt;a href="https://linux.cn/article-13425-1.html">[1]&lt;/a>&lt;/p>
-&lt;p>Perform Linux memory forensics with this open source tool &lt;a href="https://opensource.com/article/21/4/linux-memory-forensics">[2]&lt;/a>&lt;/p></description></item><item><title>使用 sed 命令进行复制、剪切和粘贴</title><link>https://blog.baicai.me/article/2021/linux_sed/</link><pubDate>Mon, 24 May 2021 00:39:20 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_sed/</guid><description>&lt;blockquote>
+&lt;p>Perform Linux memory forensics with this open source tool &lt;a href="https://opensource.com/article/21/4/linux-memory-forensics">[2]&lt;/a>&lt;/p></description></item><item><title>使用 sed 命令进行复制、剪切和粘贴</title><link>https://blog.baicai.me/article/2021/linux_sed/</link><pubDate>Mon, 24 May 2021 00:39:20 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_sed/</guid><description>&lt;blockquote>
 &lt;p>很少有 Unix 命令像 sed、grep 和 awk 一样出名，它们经常组合在一起，可能是因为它们具有奇怪的名称和强大的文本解析能力。它们还在一些语法和逻辑上有相似之处。虽然它们都能用于文本解析，但都有其特殊性。本文研究 sed 命令，它是一个 流编辑器。&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="安装-sed">安装 sed&lt;/h3>
@@ -7541,7 +5532,7 @@ Line two
 &lt;p>sed 很复杂。虽然它只有十几个命令，但它灵活的语法和原生功能意味着它充满了无限的潜力。&lt;/p>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>How to use the Linux sed command &lt;a href="https://opensource.com/article/21/3/sed-cheat-sheet">[1]&lt;/a>&lt;/p>
-&lt;p>使用 sed 命令进行复制、剪切和粘贴 &lt;a href="https://linux.cn/article-13417-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Swift语法全面解析</title><link>https://blog.baicai.me/article/2021/swift-basic-syntax/</link><pubDate>Thu, 13 May 2021 21:31:19 +0800</pubDate><guid>https://blog.baicai.me/article/2021/swift-basic-syntax/</guid><description>&lt;h3 id="swift介绍">Swift介绍&lt;/h3>
+&lt;p>使用 sed 命令进行复制、剪切和粘贴 &lt;a href="https://linux.cn/article-13417-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Swift语法全面解析</title><link>https://blog.baicai.me/article/2021/swift-basic-syntax/</link><pubDate>Thu, 13 May 2021 21:31:19 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/swift-basic-syntax/</guid><description>&lt;h3 id="swift介绍">Swift介绍&lt;/h3>
 &lt;p>Swift 是一门开发 iOS, macOS, watchOS 和 tvOS 应用的新语言。
 swift 是一种安全，快速和互动的编程语言。
 swift 支持代码预览（playgrounds），这个特性可以允许程序员在不编译和运行应用程序的前提下运行 Swift 代码并实时查看结果。&lt;/p>
@@ -8809,7 +6800,7 @@ open 只能作用于类和类的成员，它和 public 的区别主要在于 ope
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> anotherVector = Vector2D(x: &lt;span style="color:#ae81ff">2.0&lt;/span>, y: &lt;span style="color:#ae81ff">4.0&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> combinedVector = vector &lt;span style="color:#f92672">+&lt;/span> anotherVector
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// combinedVector 是一个新的 Vector2D 实例，值为 (5.0, 5.0)&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用 Golang 的交叉编译</title><link>https://blog.baicai.me/article/2021/go_cross_compilling/</link><pubDate>Thu, 13 May 2021 14:35:47 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/go_cross_compilling/</guid><description>&lt;blockquote>
 &lt;p>在 Linux 上测试软件时，我使用各种架构的服务器，例如 Intel、AMD、Arm 等。当我 分配了一台满足我的测试需求的 Linux 机器[1]，我仍然需要执行许多步骤：&lt;/p>
 &lt;/blockquote>
 &lt;ul>
@@ -8928,7 +6919,7 @@ Windows
 &lt;p>你可能想知道，为什么我没有坚持使用 shell 脚本或将程序移植到 Python 而不是编译语言上来避免这些麻烦。所以有舍有得，那样的话我不会了解 Go 的交叉编译功能，以及程序在 CPU 上执行时的底层工作原理。在计算机中，总要考虑取舍，但绝不要让它们阻碍你的学习。&lt;/p>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>Cross-compiling made easy with Golang &lt;a href="https://opensource.com/article/21/1/go-cross-compiling">[1]&lt;/a>&lt;/p>
-&lt;p>使用 Golang 的交叉编译 &lt;a href="https://linux.cn/article-13385-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Linux/Mac 使用 GNU Screen 的小技巧</title><link>https://blog.baicai.me/article/2021/linux_screen/</link><pubDate>Thu, 13 May 2021 12:50:05 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_screen/</guid><description>&lt;blockquote>
+&lt;p>使用 Golang 的交叉编译 &lt;a href="https://linux.cn/article-13385-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Linux/Mac 使用 GNU Screen 的小技巧</title><link>https://blog.baicai.me/article/2021/linux_screen/</link><pubDate>Thu, 13 May 2021 12:50:05 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_screen/</guid><description>&lt;blockquote>
 &lt;p>学习基本的 GNU Screen 终端复用技术，然后下载我们的终端命令备忘录，以便你能够熟悉常用的快捷方式。&lt;/p>
 &lt;/blockquote>
 &lt;p>对于一般用户而言，命令行终端窗口可能是令人困惑和神秘的。但随着你对 Linux 终端的进一步了解，你很快就会意识到它的高效和强大。不过，也不需要很长时间，你就会想让终端变得更加高效，除了将更多的终端放到你的终端，还有什么高好的方法能够提升你的终端效率呢？&lt;/p>
@@ -8966,7 +6957,7 @@ Windows
 &lt;p>学习 GNU Screen 是提高你使用你最喜欢的 终端模拟器 的效率和敏捷性的一个好方法。请试一试吧！&lt;/p>
 &lt;h3 id="参考">参考&lt;/h3>
 &lt;p>Linux tips for using GNU Screen &lt;a href="https://opensource.com/article/21/4/gnu-screen-cheat-sheet">[1]&lt;/a>&lt;/p>
-&lt;p>使用 GNU Screen 的小技巧 &lt;a href="https://linux.cn/article-13387-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>使用 cron 调度自动化任务</title><link>https://blog.baicai.me/article/2021/linux_cron/</link><pubDate>Wed, 12 May 2021 18:59:21 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_cron/</guid><description>&lt;blockquote>
+&lt;p>使用 GNU Screen 的小技巧 &lt;a href="https://linux.cn/article-13387-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>使用 cron 调度自动化任务</title><link>https://blog.baicai.me/article/2021/linux_cron/</link><pubDate>Wed, 12 May 2021 18:59:21 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_cron/</guid><description>&lt;blockquote>
 &lt;p>cron 是一个调度守护进程，它以指定的时间间隔执行任务，这些任务称为 corn 作业，主要用于自动执行系统维护或管理任务。例如，你可以设置一个 cron 作业来自动执行重复的任务，比如备份数据库或数据，使用最新的安全补丁更新系统，检查磁盘空间使用情况，发送电子邮件等等。 cron 作业可以按分钟、小时、日、月、星期或它们的任意组合运行。&lt;/p>
 &lt;/blockquote>
 &lt;h1 id="cron-的一些优点">cron 的一些优点&lt;/h1>
@@ -9054,6 +7045,6 @@ Main PID: 1110 (crond)
 &lt;p>cron 作业看起来可能只是系统管理员的工具，但它实际上与许多 Web 应用程序和用户任务有关。&lt;/p>
 &lt;h1 id="参考">参考&lt;/h1>
 &lt;p>Fedora Linux 文档的 &lt;a href="https://docs.fedoraproject.org/en-US/Fedora/12/html/Deployment_Guide/ch-autotasks.html">[1]&lt;/a>&lt;/p>
-&lt;p>使用 cron 调度任务 &lt;a href="https://linux.cn/article-13383-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Hello world</title><link>https://blog.baicai.me/article/2021/hello_world/</link><pubDate>Tue, 11 May 2021 14:00:54 +0800</pubDate><guid>https://blog.baicai.me/article/2021/hello_world/</guid><description>&lt;h1 id="hello-world">Hello World!&lt;/h1>
+&lt;p>使用 cron 调度任务 &lt;a href="https://linux.cn/article-13383-1.html">[2]&lt;/a>&lt;/p></description></item><item><title>Hello world</title><link>https://blog.baicai.me/article/2021/hello_world/</link><pubDate>Tue, 11 May 2021 14:00:54 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/hello_world/</guid><description>&lt;h1 id="hello-world">Hello World!&lt;/h1>
 &lt;pre>&lt;code>^_^
 &lt;/code>&lt;/pre></description></item></channel></rss>

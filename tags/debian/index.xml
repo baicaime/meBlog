@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debian on 白菜</title><link>https://blog.baicai.me/tags/debian/</link><description>Recent content in Debian on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Thu, 11 Jul 2024 14:31:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/debian/index.xml" rel="self" type="application/rss+xml"/><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debian on 白菜</title><link>https://blog.baicai.me/tags/debian/</link><description>Recent content in Debian on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Thu, 11 Jul 2024 14:31:38 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/debian/index.xml" rel="self" type="application/rss+xml"/><item><title>解决 UFW 和 Docker 的问题</title><link>https://blog.baicai.me/article/2024/debian_ufw_docker/</link><pubDate>Thu, 11 Jul 2024 14:31:38 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/debian_ufw_docker/</guid><description>&lt;h2 id="问题">问题&lt;/h2>
 &lt;p>UFW 是一个 iptables 前端，可以非常方便的管理防火墙的规则。但是当安装了 Docker，UFW 无法管理 Docker 发布出来的端口了。&lt;/p>
 &lt;p>具体现象是：&lt;/p>
 &lt;ol>
@@ -89,7 +89,7 @@ COMMIT
 &lt;pre tabindex="0">&lt;code> ufw allow 8080
 &lt;/code>&lt;/pre>&lt;h4 id="结论">结论&lt;/h4>
 &lt;p>如果我们正在使用老版本，我们可以使用 &lt;code>ufw-user-input&lt;/code>。但是要小心避免把不该暴露的服务暴露出去。&lt;/p>
-&lt;p>如果正在使用支持 &lt;code>ufw route&lt;/code> 命令的新版本，我们最好使用 &lt;code>ufw-user-forward&lt;/code>，并且使用 &lt;code>ufw route&lt;/code> 来管理与容器相关的防火墙规则。&lt;/p></description></item><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
+&lt;p>如果正在使用支持 &lt;code>ufw route&lt;/code> 命令的新版本，我们最好使用 &lt;code>ufw-user-forward&lt;/code>，并且使用 &lt;code>ufw route&lt;/code> 来管理与容器相关的防火墙规则。&lt;/p></description></item><item><title>Debian 彻底卸载 LibreOffice</title><link>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</link><pubDate>Mon, 09 Oct 2023 10:15:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/debian_remove_libreoffice/</guid><description>&lt;p>LibreOffice是一款非常优秀的开源且免费的办公软件。但我用不到，为了优化更新系统的速度，所以这就卸载了，这不就几条命令的事。&lt;/p>
 &lt;p>下面的指令对所有基于 Debian 发行版（Debian, Ubuntu, Kubuntu, Xubuntu, buntu, Sidux, Knoppix, Linux Mint, Damn Small Linux, Crunchbag 等）都适用。&lt;/p>
 &lt;h3 id="彻底卸载-libreoffice">彻底卸载 LibreOffice&lt;/h3>
 &lt;p>终端中输入命令：&lt;/p>
@@ -118,7 +118,7 @@ COMMIT
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="libreoffice简介来自官网">LibreOffice简介（来自官网）：&lt;/h3>
 &lt;p>LibreOffice 是一款功能强大的办公软件，默认使用开放文档格式 (OpenDocument Format , ODF), 并支持 *.docx, *.xlsx, *.pptx 等其他格式。&lt;/p>
 &lt;p>它包含了 Writer, Calc, Impress, Draw, Base 以及 Math 等组件，可用于处理文本文档、电子表格、演示文稿、绘图以及公式编辑。&lt;/p>
-&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
+&lt;p>它可以运行于 Windows, GNU/Linux 以及 macOS 等操作系统上，并具有一致的用户体验。&lt;/p></description></item><item><title>从 Debian 11 升级到 Debian 12</title><link>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</link><pubDate>Tue, 13 Jun 2023 21:27:52 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/</guid><description>&lt;p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。&lt;/p>
 &lt;h2 id="准备工作">准备工作&lt;/h2>
 &lt;p>一定要备份重要数据！&lt;/p>
 &lt;p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作&lt;/p>
@@ -161,7 +161,7 @@ deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt list &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>清理已删除的软件包&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt purge &lt;span style="color:#e6db74">&amp;#39;~c&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装 debian 后，中文环境下将home目录下文件夹更改为对应的英文</title><link>https://blog.baicai.me/article/2023/home_dirs_update/</link><pubDate>Mon, 02 Jan 2023 12:41:04 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/home_dirs_update/</guid><description>&lt;p>操作环境:&lt;/p>
 &lt;pre tabindex="0">&lt;code> Distributor ID: Debian
 Description: Debian GNU/Linux 11 (bullseye)
 Release: 11
@@ -173,7 +173,7 @@ Codename: bullseye
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xdg-user-dirs-gtk-update
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#转换回系统语言为中文，也可以不执行下面的命令，直接重启也一样的&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#f92672">=&lt;/span>zh_CN
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下次进入系统后，会提示是否把目录转化为中文，选择不，并选择不再提示，并取消修改。&lt;/p></description></item><item><title>在 Debian 11 为 nginx 配置 Let's Encrypt SSL证书</title><link>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</link><pubDate>Tue, 01 Nov 2022 22:18:02 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_certbot-debian_install_certbot/</guid><description>&lt;p>在Debian 11 Nginx配置Let&amp;rsquo;s Encrypt SSL证书&lt;/p>
 &lt;h3 id="安装-certbot-及-certbot-nginx-插件">安装 Certbot 及 certbot nginx 插件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt update &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt -y install certbot python3-certbot-nginx
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="为-nginx-网站生成证书并配置">为 nginx 网站生成证书并配置&lt;/h3>
@@ -186,7 +186,7 @@ Codename: bullseye
 除非你更改配置，否则无需再次手动运行Certbot。
 您可以通过运行以下命令来测试证书的自动续订。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>certbot renew --dry-run
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>在 Mac 系统中制作 Debian U盘启动盘</title><link>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</link><pubDate>Thu, 20 Oct 2022 13:18:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/mac_create_debian_bootable_usb_flash_drive/</guid><description>&lt;p>在Mac系统中制作U盘启动盘
 Create a Bootable USB Flash Drive&lt;/p>
 &lt;p>在Mac系统中，制作Linux启动盘不需要额外下载任何的工具，办法如下&lt;/p>
 &lt;h3 id="下载-debian-dvd-镜像文件">下载 Debian DVD 镜像文件&lt;/h3>
@@ -228,7 +228,7 @@ Create a Bootable USB Flash Drive&lt;/p>
 &lt;h3 id="弹出u盘">弹出U盘&lt;/h3>
 &lt;p>在快要完成的时候，系统会出现“磁盘无法识别”的提示，先不要做任何操作，等待终端dd命令执行完成后，执行下面命令弹出U盘。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eject /dev/disk2
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
 这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。&lt;/p>
 &lt;p>那么安装Transmission后台守护程序&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ sudo apt install -y transmission-daemon
@@ -253,7 +253,7 @@ Create a Bootable USB Flash Drive&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#关闭transmission开机自启&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl disable transmission-daemon.service
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>&lt;h3 id="解决-debian-安装过程慢的可行方案">解决 Debian 安装过程慢的可行方案：&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Debian 安装慢的解决方案</title><link>https://blog.baicai.me/article/2022/debian_install/</link><pubDate>Tue, 18 Oct 2022 14:37:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install/</guid><description>&lt;h3 id="解决-debian-安装过程慢的可行方案">解决 Debian 安装过程慢的可行方案：&lt;/h3>
 &lt;ul>
 &lt;li>如果使用的是Dvd版的iso镜像，可以在安装前拔掉网线，通过离线安装，会非常快。&lt;/li>
 &lt;li>安装时选择 expert，不要选择 安全更新。&lt;/li>
@@ -289,7 +289,7 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Binary firmware for Realtek wired/wifi/BT adapters&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 根据上面查到的信息 安装驱动包 firmware-realtek&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-get install firmware-realtek
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>&lt;p>运行环境&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>安装docker</title><link>https://blog.baicai.me/article/2022/debian_install_docker/</link><pubDate>Fri, 30 Sep 2022 00:38:13 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_install_docker/</guid><description>&lt;p>运行环境&lt;/p>
 &lt;pre tabindex="0">&lt;code> Operating System: Debian GNU/Linux 11 (bullseye)
 Kernel: Linux 5.10.0-18-amd64
 Architecture: x86-64
@@ -444,7 +444,7 @@ Architecture: x86-64
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}, &lt;span style="color:#75715e">//————————容器默认日志驱动程序选项
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#f92672">&amp;#34;iptables&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span> &lt;span style="color:#75715e">//————————启用iptables规则添加（默认为true）
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>查看 Debian 系统版本的方式</title><link>https://blog.baicai.me/article/2022/debian_version_check/</link><pubDate>Fri, 22 Jul 2022 11:04:30 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_version_check/</guid><description>&lt;p>查看 Dibian 系统发行版本号的方式&lt;/p>
 &lt;h3 id="1-使用-lsb_release-命令">1. 使用 lsb_release 命令&lt;/h3>
 &lt;p>lsb_release 命令可用于查看 Linux 发行版操作系统的具体版本。它可能尚未安装在你的操作系统中，因此你需要先安装它。运行以下命令来安装 lsb_release：&lt;/p>
 &lt;pre tabindex="0">&lt;code> apt-get install lsb-release
@@ -496,6 +496,6 @@ Boot ID: xxx
 Operating System: Debian GNU/Linux 11 (bullseye)
 Kernel: Linux 5.10.0-16-amd64
 Architecture: x86-64
-&lt;/code>&lt;/pre></description></item><item><title>删除 Debian Gnome 所有默认安装的游戏</title><link>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</link><pubDate>Fri, 22 Jul 2022 10:35:22 +0800</pubDate><guid>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</guid><description>&lt;p>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>删除 Debian Gnome 所有默认安装的游戏</title><link>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</link><pubDate>Fri, 22 Jul 2022 10:35:22 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian_gnome_remove_game/</guid><description>&lt;p>我用以下命令删除Debian 11.5（带有gnome）中的所有预装游戏：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo apt purge aisleriot gnome-sudoku gnome-nibbles ace-of-penguins gnomine gbrainy gnome-sushi gnome-taquin gnome-tetravex gnome-robots gnome-chess lightsoff swell-foop quadrapassel tali gnome-mahjongg gnome-2048 iagno gnome-klotski five-or-more gnome-mines four-in-a-row hitori &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> sudo apt autoremove
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

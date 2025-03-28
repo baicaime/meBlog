@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shell on 白菜</title><link>https://blog.baicai.me/categories/shell/</link><description>Recent content in Shell on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shell on 白菜</title><link>https://blog.baicai.me/categories/shell/</link><description>Recent content in Shell on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
 &lt;p>以下是使用curl测试URL访问速度的步骤：&lt;/p>
 &lt;ul>
 &lt;li>打开终端或命令行界面。&lt;/li>
 &lt;li>输入以下命令：&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -o /dev/null -s -w &lt;span style="color:#e6db74">&amp;#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&amp;#34;&lt;/span> &amp;lt;URL&amp;gt;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将&lt;!-- raw HTML omitted -->替换为要测试的URL地址。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> curl -o /dev/null -s -w &lt;span style="color:#e6db74">&amp;#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&amp;#34;&lt;/span> &amp;lt;URL&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请将&lt;code>&amp;lt;URL&amp;gt;&lt;/code>替换为要测试的URL地址。&lt;/p>
 &lt;p>执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：&lt;/p>
 &lt;ul>
 &lt;li>time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。&lt;/li>
@@ -15,7 +15,7 @@
 &lt;li>time_total：总耗时，即从开始到请求完成的时间。&lt;/li>
 &lt;/ul>
 &lt;p>这些时间单位都以秒为单位。&lt;/p>
-&lt;p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。&lt;/p></description></item><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
+&lt;p>通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。&lt;/p></description></item><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 db.file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。&lt;/p>
 &lt;p>我们可以输入 .help 先查看下大概的命令：&lt;/p>
@@ -43,7 +43,7 @@
 &lt;li>是否显示头&lt;/li>
 &lt;/ol>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.headers on
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>甲骨文Vps iptables 开放端口设置</title><link>https://blog.baicai.me/article/2023/oracle_vps_iptables/</link><pubDate>Mon, 18 Sep 2023 10:20:17 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/oracle_vps_iptables/</guid><description>&lt;p>在甲骨文的网页后台先开放端口&lt;/p>
 &lt;h2 id="iptables-开放所有端口">iptables 开放所有端口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo iptables -P INPUT ACCEPT
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -77,7 +77,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="持久化规则">持久化规则&lt;/h4>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent save
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo netfilter-persistent reload
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 命令</title><link>https://blog.baicai.me/article/2023/linux_cmd_list/</link><pubDate>Mon, 10 Apr 2023 17:53:52 +0800</pubDate><guid>https://blog.baicai.me/article/2023/linux_cmd_list/</guid><description>&lt;h2 id="基本命令">基本命令&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 命令</title><link>https://blog.baicai.me/article/2023/linux_cmd_list/</link><pubDate>Mon, 10 Apr 2023 17:53:52 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/linux_cmd_list/</guid><description>&lt;h2 id="基本命令">基本命令&lt;/h2>
 &lt;pre>&lt;code>uname -m 显示机器的处理器架构
 uname -r 显示正在使用的内核版本
 dmidecode -q 显示硬件系统部件
@@ -644,7 +644,7 @@ rpm –Fvhwu-ftpd-2.6.2-8.i386.rpm -Fvh：更新参数
 rpm –q wu-ftpd
 查询软件包所安装的位置：rpm –ql package-name
 rpm –ql xv (l参数：显示文件列表)
-&lt;/code>&lt;/pre></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
 &lt;p>sudo lsof -i :5353&lt;/p>
 &lt;p>COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
 mDNSRespo 185 _mdnsresponder 6u IPv4 0x1111111111111 0t0 UDP *:mdns
@@ -655,7 +655,7 @@ mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns&lt;/p>
 0 223 1 0 8:08上午 ?? 0:02.16 /usr/sbin/mDNSResponderHelper
 501 66848 66623 0 11:00下午 ttys000 0:00.00 grep mDNSRespo&lt;/p>
 &lt;h2 id="根据pid杀进程">根据PID杀进程：&lt;/h2>
-&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>在 Linux 命令行中使用的 6 个元字符</title><link>https://blog.baicai.me/article/2022/linux_metacharacters/</link><pubDate>Mon, 14 Feb 2022 17:37:24 +0800</pubDate><guid>https://blog.baicai.me/article/2022/linux_metacharacters/</guid><description>&lt;pre>&lt;code>在 Linux 命令行上使用元字符是提高生产力的一个好方法。
+&lt;p>sudo kill -9 185&lt;/p></description></item><item><title>在 Linux 命令行中使用的 6 个元字符</title><link>https://blog.baicai.me/article/2022/linux_metacharacters/</link><pubDate>Mon, 14 Feb 2022 17:37:24 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/linux_metacharacters/</guid><description>&lt;pre>&lt;code>在 Linux 命令行上使用元字符是提高生产力的一个好方法。
 &lt;/code>&lt;/pre>
 &lt;p>许多 Linux 电脑是无头运行的，你可以在命令行上完成所有的管理任务。它使用许多所有人都熟悉的基本命令，如 ls、ls-l、ls-l、cd、pwd、top 等等。&lt;/p>
 &lt;pre>&lt;code>Linux 上的 Shell 元字符
@@ -699,7 +699,7 @@ mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns&lt;/p>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这些元字符中有许多是通往 正则表达式 的大门，所以还有很多东西可以探索。你最喜欢的 Linux 元字符是什么，它们是如何节省你的工作的？&lt;/p>
 &lt;p>via:
 &lt;a href="https://opensource.com/article/22/2/metacharacters-linux">1&lt;/a>
-&lt;a href="https://linux.cn/article-14270-1.html">2&lt;/a>&lt;/p></description></item><item><title>Linux 常用命令</title><link>https://blog.baicai.me/article/2021/linux_cmd/</link><pubDate>Sat, 05 Jun 2021 10:31:29 +0800</pubDate><guid>https://blog.baicai.me/article/2021/linux_cmd/</guid><description>&lt;p>Linux 常用命令&lt;/p>
+&lt;a href="https://linux.cn/article-14270-1.html">2&lt;/a>&lt;/p></description></item><item><title>Linux 常用命令</title><link>https://blog.baicai.me/article/2021/linux_cmd/</link><pubDate>Sat, 05 Jun 2021 10:31:29 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/linux_cmd/</guid><description>&lt;p>Linux 常用命令&lt;/p>
 &lt;h3 id="日期">日期&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">$(&lt;/span>date -d &lt;span style="color:#e6db74">&amp;#39;1 day ago&amp;#39;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;+%Y-%m-%d&amp;#39;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>常用方法&lt;/p>
@@ -829,7 +829,7 @@ mDNSRespo 185 _mdnsresponder 7u IPv6 0x1111111111111 0t0 UDP *:mdns&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>export PROMPT_COMMAND&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;history 1 &amp;gt;&amp;gt; /var/log/.myhistory&amp;#34;&lt;/span> &lt;span style="color:#75715e">#将命令记录输出到文本中&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>touch /var/log/.myhistory
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod /var/log/.myhistory
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>awk 分析 nginx 运行日志常用指令</title><link>https://blog.baicai.me/article/2021/awk-nginx-access_log/</link><pubDate>Sat, 05 Jun 2021 10:16:16 +0800</pubDate><guid>https://blog.baicai.me/article/2021/awk-nginx-access_log/</guid><description>&lt;p>awk 分析 nginx 运行日志常用指令&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>awk 分析 nginx 运行日志常用指令</title><link>https://blog.baicai.me/article/2021/awk-nginx-access_log/</link><pubDate>Sat, 05 Jun 2021 10:16:16 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/awk-nginx-access_log/</guid><description>&lt;p>awk 分析 nginx 运行日志常用指令&lt;/p>
 &lt;p>1.独立IP&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>awk &lt;span style="color:#e6db74">&amp;#39;{print $1}&amp;#39;&lt;/span> access.log | sort -r |uniq -c | wc -l
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>2.统计PV&lt;/p>

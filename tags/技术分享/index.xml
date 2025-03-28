@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术分享 on 白菜</title><link>https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</link><description>Recent content in 技术分享 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>baicai.me</copyright><lastBuildDate>Mon, 24 Feb 2025 00:40:55 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml"/><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术分享 on 白菜</title><link>https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</link><description>Recent content in 技术分享 on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Mon, 24 Feb 2025 00:40:55 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml"/><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
 &lt;h3 id="发邮件">发邮件&lt;/h3>
 &lt;p>使用&lt;/p>
 &lt;pre tabindex="0">&lt;code>telnet smtp.qq.com 25
@@ -40,7 +40,7 @@ Escape character is &amp;#39;^]&amp;#39;.
 &lt;pre tabindex="0">&lt;code>Trying 142.251.8.108...
 Connected to imap.gmail.com.
 Escape character is &amp;#39;^]&amp;#39;.
-&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>这两个都要测试，超时则无法收到邮件。&lt;/p></description></item><item><title>Nginx 出现 Too many open files 错误与修复</title><link>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</link><pubDate>Sun, 23 Feb 2025 22:22:39 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/nginx_too_many_open_files/</guid><description>&lt;p>最近服务器遭遇间歇性流量攻击，服务器负载不高，却出现无法打开的情况，查看nginx错误日志，出现大量的“Too many open files”错误，大致意思就是说nginx无法打开更多的文件。&lt;/p>
 &lt;p>出现这个错误可能是由于系统的ulimit限制和nginx自身的配置有关系。&lt;/p>
 &lt;h3 id="什么是ulimit">什么是ulimit?&lt;/h3>
 &lt;p>ulimit命令用来限制系统用户对shell资源的访问。&lt;/p>
@@ -110,7 +110,7 @@ http {
 &lt;p>编辑 &lt;code>/etc/sysctl.conf&lt;/code> 文件，添加或修改
 &lt;code>fs.file-max = 70000&lt;/code>&lt;/p>
 &lt;p>查看是否生效
-&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
+&lt;code>sysctl -p&lt;/code>&lt;/p></description></item><item><title>查找子域名解析: 子域名探测方法大全</title><link>https://blog.baicai.me/article/2024/find_subdomain/</link><pubDate>Mon, 05 Feb 2024 18:58:56 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/find_subdomain/</guid><description>&lt;h2 id="子域名探测">子域名探测&lt;/h2>
 &lt;p>通过收集子域名信息来进行渗透是目前常见的一种手法。
 子域名信息收集可以通过手工，也可以通过工具，还可以通过普通及漏洞搜索引擎来进行分析。
 在挖SRC漏洞时，子域名信息的收集至关重要！&lt;/p>
@@ -377,7 +377,7 @@ Dig&lt;br>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/m8ucI1bDxILM8wLU6pLmoQ">1&lt;/a>
 &lt;a href="https://xz.aliyun.com/t/3478">2&lt;/a>
 &lt;a href="https://blog.csdn.net/qq_39293438/article/details/104829825">3&lt;/a>
-&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
+&lt;a href="https://info.menandmice.com/blog/bid/73645/Take-your-DNSSEC-with-a-grain-of-salt">4&lt;/a>&lt;/p></description></item><item><title>Kubernetes 停止和移除 pod</title><link>https://blog.baicai.me/article/2023/delete_pod/</link><pubDate>Mon, 20 Nov 2023 16:02:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/delete_pod/</guid><description>&lt;h2 id="停止和移除pod">停止和移除pod&lt;/h2>
 &lt;h3 id="按名称删除pod">按名称删除pod&lt;/h3>
 &lt;p>按名称删除kubia-gpu pod：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl delete po kubia-gpu
@@ -439,7 +439,7 @@ Dig&lt;br>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 附一个我这边删除deployment后pod自行删除的情况&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>root@node ~&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#75715e"># kubectl get pod -A|grep dashboard&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>通过 WireGuard 搭建 VPN 访问家里内网</title><link>https://blog.baicai.me/article/2023/using_wireguard/</link><pubDate>Sun, 08 Oct 2023 15:19:08 +0800</pubDate><guid>https://blog.baicai.me/article/2023/using_wireguard/</guid><description>&lt;p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>通过 WireGuard 搭建 VPN 访问家里内网</title><link>https://blog.baicai.me/article/2023/using_wireguard/</link><pubDate>Sun, 08 Oct 2023 15:19:08 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/using_wireguard/</guid><description>&lt;p>家里网络没有公网 IP，因此需要一台具有公网 IP 的服务器作为 WireGuard 网络的“server”。家中需要有一台设备作为 WireGuard 网络中的节点。我们将使用手机，在 4G 网络下检查 VPN 是否搭建成功。&lt;/p>
 &lt;h2 id="ip-段选择">IP 段选择&lt;/h2>
 &lt;p>WireGuard 组网需要使用一个不与你的任何设备的网络相冲突的 IP 地址段。像 192.0.2.0/24 、198.51.100.0/24 、203.0.113.0/24 这些分配为用于文档和示例中的“TEST-NET”，这些地址段通常不会被你需要连接的其他网络所使用。&lt;/p>
 &lt;p>在下面的配置中，我会分别将 192.0.2.1、192.0.2.2、192.0.2.3 分配给公网服务器、家中的 Mac 和 iPhone。&lt;/p>
@@ -671,7 +671,7 @@ net.ipv6.conf.all.forwarding=1
 &lt;p>每个对等节点（peer）共用同一个 &lt;code>/etc/wireguard/peers.conf&lt;/code> 文件，其中包含了所有的 peer。&lt;/p>
 &lt;p>Wg0.conf 文件中需要配置一个 PostUp 钩子，内容为&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">PostUp&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">wg addconf /etc/wireguard/peers.conf&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>K3s 快速入门指南:构建多云环境下的K3S集群</title><link>https://blog.baicai.me/article/2023/quick_start/</link><pubDate>Thu, 28 Sep 2023 20:29:29 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/quick_start/</guid><description>&lt;p>K3s 是轻量级的 Kubernetes。server最低只需要512M内存即可运行。&lt;/p>
 &lt;p>不同账号甚至不同云服务商， 内网是不通的。所以要想办法实现跨公网的容器网络通信，保障任意一台节点上的pod能访问任意节点上的pod和service，和正常的kubernetes集群体验一致。&lt;/p>
 &lt;p>参考入门指南和多云解决方案，重新整理&lt;/p>
 &lt;p>目标：实现混合云(腾讯云服务器+甲骨文服务器+微软Azure服务器)境下的K3S集群&lt;/p>
@@ -799,7 +799,7 @@ kubeconfig 文件将写入到 ```/etc/rancher/k3s/k3s.yaml```，由 K3s 安装�
 &lt;p>所有出站流量通常都是允许的。&lt;/p>
 &lt;h3 id="参考">参考：&lt;/h3>
 &lt;p>&lt;a href="https://docs.k3s.io/zh/quick-start">快速入门指南&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://docs.k3s.io/zh/installation/network-options#%E5%B5%8C%E5%85%A5%E5%BC%8F-k3s-%E5%A4%9A%E4%BA%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">嵌入式 k3s 多云解决方案&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
+&lt;p>&lt;a href="https://docs.k3s.io/zh/installation/network-options#%E5%B5%8C%E5%85%A5%E5%BC%8F-k3s-%E5%A4%9A%E4%BA%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">嵌入式 k3s 多云解决方案&lt;/a>&lt;/p></description></item><item><title>搭建反向代理服务：Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/reverse-proxy/</link><pubDate>Wed, 20 Sep 2023 12:06:18 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/reverse-proxy/</guid><description>&lt;p>上面一篇通过nginx和cloudflare workers 搭建的反向代理。&lt;/p>
 &lt;p>这一篇通过更简单的代码重下搭建个。&lt;/p>
 &lt;h2 id="通过-cloudflare-workers-搭建反向代理服务">通过 Cloudflare Workers 搭建反向代理服务&lt;/h2>
 &lt;p>创建 Cloudflare workers 的步骤都是一样的，代码不一样。&lt;/p>
@@ -861,7 +861,7 @@ proxy_buffering off;
 proxy_pass https://example.domain$request_uri;
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>Telegram Bot Api 反向代理搭建</title><link>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</link><pubDate>Tue, 19 Sep 2023 22:28:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/nginx_tgapi_proxy/</guid><description>&lt;p>由于一些原因，配置epusdt需要使用tg反向代理地址才能使用！&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-env" data-lang="env">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#telegram代理url(大陆地区服务器可使用一台国外服务器做反代tg的url)，如果运行的本来就是境外服务器，则无需填写&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tg_proxy&lt;span style="color:#f92672">=&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>两种实现方案，根据个人喜好选择使用或发挥&lt;/p>
@@ -1067,7 +1067,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;p>回到管理后台首页，点击左侧的&lt;code>网站&lt;/code>，在右侧点击&lt;code>你已托管在Cloudflare的域名&lt;/code>&lt;/p>
 &lt;p>选择该域名下的 &lt;code>Workers 路由&lt;/code>&lt;/p>
 &lt;p>选择&lt;code>添加路由&lt;/code>&lt;/p>
-&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
+&lt;p>&lt;code>路由&lt;/code> 填写你想要用的二级域名，比如：&lt;code>tgapi.domain/*&lt;/code> 注意后面必须是&lt;code>/*&lt;/code>结尾，&lt;code>Worker&lt;/code>选择刚才创建的服务，&lt;code>保存&lt;/code>就可以了。&lt;/p></description></item><item><title>检查网络延时测试 URL 汇总，可用于软件测试延时</title><link>https://blog.baicai.me/article/2023/urltest-urltest/</link><pubDate>Mon, 28 Aug 2023 23:04:59 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/urltest-urltest/</guid><description>&lt;table>
 &lt;thead>
 &lt;tr>
 &lt;th style="text-align:left">服务提供者&lt;/th>
@@ -1201,7 +1201,7 @@ proxy_pass https://api.telegram.org$request_uri;
 &lt;/table>
 &lt;p>以上大陆指中国大陆，境外指非中国大陆。&lt;/p>
 &lt;p>体验目前仅进行粗略测试延迟，大概率实际不符，仅作参考。&lt;/p>
-&lt;p>http/https一列表示使用指定协议进行请求，返回的状态码。部分场合对状态码要求较严格。&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
+&lt;p>http/https一列表示使用指定协议进行请求，返回的状态码。部分场合对状态码要求较严格。&lt;/p></description></item><item><title>Hugo + GitHub Action + Github Pages，搭建博客自动发布</title><link>https://blog.baicai.me/article/2023/hugo_github_action_blog/</link><pubDate>Sun, 13 Aug 2023 11:31:48 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/hugo_github_action_blog/</guid><description>&lt;p>我的方案由以下两个核心部分：&lt;/p>
 &lt;ul>
 &lt;li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。&lt;/li>
 &lt;li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。&lt;/li>
@@ -1355,7 +1355,7 @@ GIT_USERNAME 改为自己 GitHub Pages 仓库的用户名
 &lt;p>完成上述配置后，推送代码至仓库，即可触发 GitHub Action，自动生成博客页面并推送至 GitHub Pages 仓库。&lt;/p>
 &lt;p>GitHub Pages 仓库更新后，又会自动触发官方页面部署 CI，实现网站发布。&lt;/p>
 &lt;p>现在每当我们本地通过熟悉的 Markdown 语法完成博客内容编辑后，只需要推送代码，等待几分钟，即可通过我们的自定义域名访问更新后的网站。&lt;/p>
-&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>跨域方案Nginx配置</title><link>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</link><pubDate>Thu, 01 Jul 2021 18:58:23 +0800</pubDate><guid>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</guid><description>&lt;h3 id="什么是浏览器同源策略">什么是浏览器同源策略？&lt;/h3>
+&lt;p>以上就是我通过 Hugo 与 GitHub Action 实现的博客自动部署系统，我自己的实现仓库在 &lt;a href="https://github.com/baicaime/meBlog">baicaime/meBlog&lt;/a> 仓库中&lt;/p></description></item><item><title>跨域方案Nginx配置</title><link>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</link><pubDate>Thu, 01 Jul 2021 18:58:23 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/nginx_cors_server_conf/</guid><description>&lt;h3 id="什么是浏览器同源策略">什么是浏览器同源策略？&lt;/h3>
 &lt;p>同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。&lt;/p>
 &lt;p>同源是指&amp;quot;协议+域名+端口&amp;quot;三者相同，即便两个不同的域名指向同一个ip地址，也非同源。&lt;/p>
 &lt;h3 id="如何实现跨域">如何实现跨域？&lt;/h3>
@@ -1407,7 +1407,7 @@ root html;
 }
 }
 }
-&lt;/code>&lt;/pre></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
+&lt;/code>&lt;/pre></description></item><item><title>Rust 镜像源</title><link>https://blog.baicai.me/article/2021/rustproxy/</link><pubDate>Fri, 25 Jun 2021 22:53:14 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/rustproxy/</guid><description>&lt;p>通常cargo跑得挺顺畅，不怎么需要proxy。但有备无患。&lt;/p>
 &lt;h3 id="cratesio-和-rustup-的国内镜像源">crates.io 和 rustup 的国内镜像源&lt;/h3>
 &lt;p>字节跳动提供的：https://rsproxy.cn/&lt;/p>
 &lt;p>中国科技大学的：https://mirrors.ustc.edu.cn/help/crates.io-index.html&lt;/p>
@@ -1435,7 +1435,7 @@ registry = &amp;#34;git://crates.rustcc.cn/crates.io-index&amp;#34;
 # 字节跳动
 [source.rsproxy]
 registry = &amp;#34;https://rsproxy.cn/crates.io-index&amp;#34;
-&lt;/code>&lt;/pre></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
+&lt;/code>&lt;/pre></description></item><item><title>Goproxy</title><link>https://blog.baicai.me/article/2021/goproxy/</link><pubDate>Thu, 27 May 2021 11:22:40 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2021/goproxy/</guid><description>&lt;h3 id="go-module代理仓库服务">Go Module代理仓库服务&lt;/h3>
 &lt;p>七牛云提供的：https://goproxy.cn&lt;/p>
 &lt;p>goproxy.io：https://goproxy.io 或 &lt;a href="https://proxy.golang.com.cn">https://proxy.golang.com.cn&lt;/a>&lt;/p>
 &lt;p>百度云BOS提供的：https://goproxy.bj.bcebos.com/&lt;/p>

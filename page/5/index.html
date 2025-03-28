@@ -1,9 +1,16 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/create_use1/>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</a></h1><b><time>2022.07.22 14:26</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2022/nginx_autoindex_conf/>nginx 启用目录索引，显示文件列表</a></h1><b><time>2022.07.23 23:52</time></b>
+<a href=/tags/nginx>nginx</a><div>在nginx中，如果特定目录中没有index.html 文件，则默认会返回 404 Not Found 的错误。
+但是，Nginx 自动索引模块—— ngx_http_autoindex_module 模块，提供了一种自动生成列表的方法，添加自动索引非常容易，使用 autoindex on 即可。下面的配置，将在访问特定请求时返回目录结构。
+官方参考： http://nginx.org/en/docs/http/ngx_http_autoindex_module.html server { listen 80; ... ... location /index_dir { autoindex on; } } 除了简单地使用自动索引打开或关闭之外，还可以对其做其他的配置，包括：
+autoindex_exact_size; 显示输出的确切文件大小，还是最接近的KB，MB或GB。默认为on，显示出文件的确切大小，单位是bytes。改为off后，显示出文件的大概大小，单位是kB或者MB或者GB。 autoindex_format; 该指令指定Nginx索引列表应以什么格式输出。该指令有4个选项：html/xml/json/jsonp。 autoindex_localtime; 显示的文件时间为GMT时间。 注意:改为on后，显示的文件时间为文件的服务器时间。 使用这几个配置后配置内容类似于如下内容：
+location /index_dir/ { root /data/index_dir/; autoindex on; autoindex_exact_size off; autoindex_format html; autoindex_localtime on; } 如果有中文目录的话会出现乱码问题，所以还需要在下面添加这一句：
+charset utf-8; 或
+charset utf-8,gbk;</div></article><article><h1><a href=https://blog.baicai.me/article/2022/create_use1/>PostgresSQL 基本用法：新建数据库、用户、连接、备份/恢复数据库</a></h1><b><time>2022.07.22 14:26</time></b>
 <a href=/tags/postgres>postgres</a><div>系统环境： Debian 11
 切换到超级用户： sudo su postgres 进入psql： psql 创建一个用户： CREATE USER username WITH PASSWORD 'password'; 查看角色列表： \du 创建数据库并制定所有者和编码： CREATE DATABASE dbname WITH OWNER username ENCODING UTF8; 创建一个数据库： CREATE DATABASE dbname; 查看数据库列表： \l 更改刚创建的数据库所有权： ALTER DATABASE dbname OWNER TO username; 删除表字段 要删除一个字段，使用下面这样的命令：
 ALTER TABLE products DROP COLUMN description; 不管字段里有啥数据，都会消失，和这个字段相关的约束也会被删除。不过， 如果这个字段被另一个表的外键约束所引用，PostgreSQL 则不会隐含地删除该约束。你可以通过使用CASCADE指明删除任何依赖该字段的东西：
@@ -67,20 +74,7 @@ wget -O ~/weixin.deb "http://archive.ubuntukylin.com/software/pool/partner/weixi
 <a href=/tags/postgres>postgres</a><div>简单步骤 安装docker，可参考 安装docker及简单的使用 或 百度解决；
 拉取postgreSQL的docker镜像文件：
 docker pull postgres 创建 docker volume，名字为“dv_pgdata"（其实可以省略手动创建，直接跑下一步，docker也会自动创建的）： docker volume create dv_pgdata 启动容器，用-v来指定把postgres的数据目录映射到上面创建的dv_pgdata里面： docker run --name my_postgres -v dv_pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=xxxxxx -p 5432:5432 -d postgres 这时候查看已存在的docker volume: docker volume ls 查看volume信息： cn2d6@navxin-desktop:~$ docker inspect dv_pgdata 在宿主机，也可以直接查看volume里的内容： cn2d6@navxin-desktop:~$ cd /var/lib/docker/volumes/dv_pgdata/_data cn2d6@navxin-desktop:~$ ll 查看postgresql： cn2d6@navxin-desktop:~$docker exec -it 618 bash root@618f1a4128ee:/# psql -U postgres -d postgres -p 5432 -h 127.0.0.1 更多的时候，我们希望能用图形界面来管理和操作数据库，可以部署pgadmin工具（例如下面），然后在浏览器中访问宿主机的5080端口，便能打开pgadmin。 docker pull dpage/pgadmin4 docker run --name pgadmin -p 5080:80 \ -e 'PGADMIN_DEFAULT_EMAIL=hi@nav.
-<a href=https://blog.baicai.me/article/2021/docker_postgres/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Ubuntu使用systemd配置开机运行service</a></h1><b><time>2021.12.01 22:44</time></b>
-<a href=/tags/ubuntu>ubuntu</a><div>systemd Systemd 是 Linux 系统工具，用来启动守护进程，已成为大多数发行版的标准配置。
-由来 历史上，Linux 的启动一直采用init进程。
-下面的命令用来启动服务。
-$ sudo /etc/init.d/apache2 start # 或者 $ service apache2 start 这种方法有两个缺点。
-一是启动时间长。init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。
-二是启动脚本复杂。init进程只是执行启动脚本，不管其他事情。脚本需要自己处理各种情况，这往往使得脚本变得很长。
-Systemd 概述 Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为系统的启动和管理提供一套完整的解决方案。
-根据 Linux 惯例，字母d是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。
-使用了 Systemd，就不需要再用init了。Systemd 取代了initd，成为系统的第一个进程（PID 等于 1），其他进程都是它的子进程。
-$ systemctl --version 上面的命令查看 Systemd 的版本。
-使用 systemd 实现开机执行 Shell 脚本 通用操作步骤 创建希望开机马上执行的脚本，本文举例脚本存放位置为 /home/navxin/Example/startup.sh，脚本内容如下：
-#!/bin/bash # 开机时在脚本的同级目录下创建一个名为 StartupTouch.txt 的文件 touch /home/navxin/Example/startup.sh.txt 开机执行的脚本需增加可执行权限才能被 systemd 运行，使用如下命令 chmod u+x /home/navxin/Example/startup.sh chmod g+x /home/navxin/Example/startup.sh 进入 systemd 放置 service 的目录，在该目录下可看到大量服务配置文件，命令如下 # 进入 systemd 的 service 目录 cd /usr/lib/systemd/system # 查看文件列表 ls -al 在该目录创建一个新的 .
-<a href=https://blog.baicai.me/article/2021/ubuntu_systemd_service/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
+<a href=https://blog.baicai.me/article/2021/docker_postgres/>Read more...</a></div></article><div><a href=/page/4/>Previous Page</a>
 5 of 8
 <a href=/page/6/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

@@ -1,9 +1,12 @@
-<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1741354946"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.120.4"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
+<meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743156732"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/test_25/>测试服务器能否正常收发邮件</a></h1><b><time>2025.02.24 00:40</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/the_degree_confluence_project/>访问世界上每一个经纬度为整数的交叉点</a></h1><b><time>2025.03.28 17:12</time></b>
+<a href=/tags/%E6%8B%8D%E7%85%A7>拍照</a>
+<a href=/tags/%E7%BB%8F%E7%BA%AC%E5%BA%A6>经纬度</a><div>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。 目前中国的进度是 429/978，平原地区的交叉点基本上被记录完毕了，剩下的都是难啃的骨头。
+the Degree Confluence Project: https://confluence.org</div></article><article><h1><a href=https://blog.baicai.me/article/2025/test_25/>测试服务器能否正常收发邮件</a></h1><b><time>2025.02.24 00:40</time></b>
 <a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
 <a href=/tags/mail>mail</a>
 <a href=/tags/telnet>telnet</a><div>需要收发邮件的话，要注意商家是否开放25端口
@@ -45,7 +48,7 @@ ip addr show enp30
 <a href=/tags/linux>linux</a>
 <a href=/tags/curl>curl</a><div>使用curl命令来测试URL的访问速度。
 以下是使用curl测试URL访问速度的步骤：
-打开终端或命令行界面。 输入以下命令： curl -o /dev/null -s -w "time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n" &lt;URL> 请将替换为要测试的URL地址。
+打开终端或命令行界面。 输入以下命令： curl -o /dev/null -s -w "time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n" &lt;URL> 请将&lt;URL>替换为要测试的URL地址。
 执行命令后，curl将会发送请求并返回一些关于请求的统计信息，包括以下内容：
 time_namelookup：DNS解析耗时，即将URL解析为IP地址的时间。 time_connect：建立TCP连接的耗时。 time_pretransfer：从开始到传输开始之前的耗时。 time_starttransfer：从开始到第一个字节接收完成的耗时。 time_total：总耗时，即从开始到请求完成的时间。 这些时间单位都以秒为单位。
 通过这些统计信息，你可以了解到URL的访问速度和各个阶段的耗时情况。</div></article><article><h1><a href=https://blog.baicai.me/article/2025/giffgaff_wificall/>Giffgaff 打开 wificall 的操作步骤及分流规则</a></h1><b><time>2025.01.28 11:38</time></b>
@@ -83,9 +86,7 @@ docker save -o images.
 在一个对外提供服务的服务器上启用了 UFW，并且默认阻止所有未被允许的传入连接。 运行了一个 Docker 容器，并且使用 -p 选项来把该容器的某个端口发布到服务器的所有 IP 地址上。比如：docker run -d --name httpd -p 0.0.0.0:8080:80 httpd:alpine 将会运行一个 httpd 服务，并且将容器的 80 端口发布到服务器的 8080 端口上。 UFW 将不会阻止所有对 8080 端口访问的请求，用命令 ufw deny 8080 也无法阻止外部访问这个端口。 这个问题其实挺严重的，这意味着本来只是为了在内部提供服务的一个端口被暴露在公共网络上。
 解决 UFW 和 Docker 的问题 撤销原先的修改 如果已经按照目前网络上搜索到解决方案修改过了，请先修改回来，包括：
 启用 Docker 的 iptables 功能，删除所有类似 --iptables=false 的修改，包括 /etc/docker/daemon.json 配置文件。 UFW 的默认 FORWARD 规则改回默认的 DROP，而非 ACCEPT。 删除 UFW 配置文件 /etc/ufw/after.rules 中与 Docker 网络相关的规则。 如果修改了 Docker 相关的配置文件，重启 Docker。稍后还要修改 UFW 的配置，可以一并重启。 目前新的解决方案只需要修改一个 UFW 配置文件即可，Docker 的所有配置和选项都保持默认。
-<a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/docker_ports/>docker 映射某个范围内的端口列表</a></h1><b><time>2024.03.09 00:01</time></b>
-<a href=/tags/docker>Docker</a><div>在Dockerfile、命令行或docker-compose.yml中，都可以使用类似于8080-8090:8080-8090的格式，来映射多个端口
-docker-compose.yml version: '3.6' services: web: image: nginx:1.18 ports: # 将会映射8080到8090这个范围内的端口 - 8080-8090:8080-8090 volumes: - ./www:/www 命令行 docker run -p 8080-8090:8080-8090 nginx Dockerfile Dockerfile EXPOSE 8080-8090</div></article><div>1 of 8
+<a href=https://blog.baicai.me/article/2024/debian_ufw_docker/>Read more...</a></div></article><div>1 of 8
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
