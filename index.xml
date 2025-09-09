@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白菜</title><link>https://blog.baicai.me/</link><description>Recent content on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 28 Mar 2025 17:12:15 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/index.xml" rel="self" type="application/rss+xml"/><item><title>访问世界上每一个经纬度为整数的交叉点</title><link>https://blog.baicai.me/article/2025/the_degree_confluence_project/</link><pubDate>Fri, 28 Mar 2025 17:12:15 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/the_degree_confluence_project/</guid><description>&lt;p>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白菜</title><link>https://blog.baicai.me/</link><description>Recent content on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 09 Sep 2025 20:19:17 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/index.xml" rel="self" type="application/rss+xml"/><item><title>在命令行 ssh 时按 &lt;kbd>TAB&lt;/kbd> 自动补全主机名</title><link>https://blog.baicai.me/article/2025/zsh_tab/</link><pubDate>Tue, 09 Sep 2025 20:19:17 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/zsh_tab/</guid><description>&lt;p>Zsh + Oh My Zsh&lt;/p>
+&lt;p>必须是 zsh 或者 bash，并且补全脚本已经生效&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>echo $SHELL
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo $0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>输出 /bin/zsh 或 zsh → 正确&lt;/li>
+&lt;li>输出 bash → 需要用 bash 的补全方法（和 zsh 不同）&lt;/li>
+&lt;/ul>
+&lt;p>确认 oh-my-zsh 已安装。&lt;/p>
+&lt;h3 id="在-zshrc-里启用插件">在 &lt;code>~/.zshrc&lt;/code> 里启用插件：&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">plugins=(git ssh)
+&lt;/code>&lt;/pre>&lt;h3 id="确认-zsh-补全系统已经启用">确认 zsh 补全系统已经启用&lt;/h3>
+&lt;p>zsh 的补全系统必须加载：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>autoload -Uz compinit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>compinit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 ~/.zshrc 中通常 Oh My Zsh 已经自动加载，但如果手动配置过可能没生效。&lt;/p>
+&lt;h3 id="重新加载-zshrc-">重新加载 &lt;code>~/.zshrc&lt;/code> ：&lt;/h3>
+&lt;p>source ~/.zshrc&lt;/p>
+&lt;h3 id="然后输入测试">然后输入测试：&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ssh db&amp;lt;TAB&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>就会自动补全到 &lt;code>.ssh/config&lt;/code> 里的 db1、db2。&lt;/p></description></item><item><title>访问世界上每一个经纬度为整数的交叉点</title><link>https://blog.baicai.me/article/2025/the_degree_confluence_project/</link><pubDate>Fri, 28 Mar 2025 17:12:15 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/the_degree_confluence_project/</guid><description>&lt;p>该项目的目标是访问世界上每一个经纬度为整数的交叉点，并在每个地点拍照记录。
 目前&lt;a href="https://confluence.org/country.php?id=28">中国的进度&lt;/a>是 429/978，平原地区的交叉点基本上被记录完毕了，剩下的都是难啃的骨头。&lt;/p>
 &lt;p>the Degree Confluence Project: &lt;a href="https://confluence.org">https://confluence.org&lt;/a>&lt;/p></description></item><item><title>测试服务器能否正常收发邮件</title><link>https://blog.baicai.me/article/2025/test_25/</link><pubDate>Mon, 24 Feb 2025 00:40:55 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/test_25/</guid><description>&lt;p>需要收发邮件的话，要注意商家是否开放25端口&lt;/p>
 &lt;h3 id="发邮件">发邮件&lt;/h3>

@@ -1,9 +1,21 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1743157978"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1757420958"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Hugo + GitHub Action + Github Pages，搭建博客自动发布</a></h1><b><time>2023.08.13 11:31</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/hugo>hugo</a>
+<a href=/tags/github-action>github action</a>
+<a href=/tags/bash>bash</a>
+<a href=/tags/blog>blog</a><div><p>我的方案由以下两个核心部分：</p><ul><li>博客源仓库，对博客配置及所有文章 .md 源文件进行版本管理，配合 GitHub Action 进行自动化部署，自动生成静态站点推送到 GitHub Pages 博客发布仓库。</li><li>GitHub Pages 博客发布仓库，使用 GitHub Pages 实现网站部署，可以通过域名 CNAME 解析使用自定义域名。</li></ul><h2 id=使用-hugo-搭建博客>使用 Hugo 搭建博客</h2><p>Hugo 是用 Go 实现的博客工具，采用 Markdown 进行文章编辑，生成静态站点文件，支持丰富的主题配置，也可以通过 js 嵌入像是评论系统等插件，高度定制化。除了 Hugo 外， 还有 Gatsby、Jekyll、Hexo、Ghost 等选择，实现和使用都差不多，可以根据自己的偏好进行选择。</p><h3 id=安装-hugo>安装 Hugo</h3><p>我使用的是 macOS，所以使用官方推荐的 homebrew 方式进行 hugo 程序的安装，其他系统可参考官方文档。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>brew install hugo
+</span></span></code></pre></div><p>完成后，使用以下命令进行验证(查看版本号)：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo version
+</span></span></code></pre></div><h3 id=创建-hugo-网站>创建 Hugo 网站</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hugo new site blog-demo
+</span></span></code></pre></div><h3 id=配置主题>配置主题</h3><p>创建我们的站点后，需要进行主题配置，Hugo 社区有很丰富的主题，可以通过官网 Themes 菜单选择自己喜欢的风格，查看预览效果，选择后可以进入主题项目仓库，一般都会有很详细的安装及配置说明。下面我就以我目前在使用的 smol 这个主题为例，演示一下配置流程。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd blog-demo
+</span></span><span style=display:flex><span>git clone  git@github.com:colorchestra/smol.git themes/smol
+</span></span><span style=display:flex><span>cd themes/smol
+</span></span><span style=display:flex><span>rm -rf .git
+</span></span></code></pre></div><p>初始化主题基础配置后，我们可以在 config.toml 文件中进行站点细节配置，具体配置项参考主题说明文档。</p><a href=https://blog.baicai.me/article/2023/hugo_github_action_blog/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/upgrading-debian-from-bullseye-to-bookworm/>从 Debian 11 升级到 Debian 12</a></h1><b><time>2023.06.13 21:27</time></b>
 <a href=/tags/debian>debian</a><div><p>如果有必要，可以查阅(Debian 12 发行说明)[https://www.debian.org/releases/stable/releasenotes]，内附详细的升级和错误处理指南。</p><h2 id=准备工作>准备工作</h2><p>一定要备份重要数据！</p><p>以下操作需要在 root 用户下完成，请使用 sudo -i 或 su root 切换到 root 用户进行操作</p><p>Debian 软件源一般以发行代号如：bullseye、bookworm 引用，但是也可能使用状态名如：stable、unstable、testing 引用。在 Debian 12 稳定版正式发布后，stable 就会从 bullseye 指向 bookworm 了。</p><p>检查软件源，确保下面的输出为空，否则请手动更改软件源为 bullseye</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat /etc/apt/sources.list | grep stable
 </span></span></code></pre></div><p>更新 apt 源，替换 bullseye 为 bookworm：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sed -i <span style=color:#e6db74>&#39;s/bullseye/bookworm/g&#39;</span> /etc/apt/sources.list
 </span></span><span style=display:flex><span>sed -i <span style=color:#e6db74>&#39;s/bullseye/bookworm/g&#39;</span> /etc/apt/sources.list.d/*.list
@@ -707,31 +719,7 @@ deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main
 </span></span><span style=display:flex><span><span style=color:#75715e>#   Binary firmware for Realtek wired/wifi/BT adapters</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 根据上面查到的信息 安装驱动包 firmware-realtek</span>
 </span></span><span style=display:flex><span>sudo apt-get install firmware-realtek
-</span></span></code></pre></div></div></article><article><h1><a href=https://blog.baicai.me/article/2022/debian_install_docker/>安装docker</a></h1><b><time>2022.09.30 00:38</time></b>
-<a href=/tags/docker>Docker</a>
-<a href=/tags/debian>Debian</a><div><p>运行环境</p><pre tabindex=0><code>  Operating System: Debian GNU/Linux 11 (bullseye)
-            Kernel: Linux 5.10.0-18-amd64
-      Architecture: x86-64
-</code></pre><h3 id=通过debian官方软件仓库安装>通过Debian官方软件仓库安装</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 更新软件源 并 安装 docker及相关应用</span>
-</span></span><span style=display:flex><span>    sudo apt update <span style=color:#f92672>&amp;&amp;</span> sudo apt install -y docker docker.io docker-compose
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看docker运行状态</span>
-</span></span><span style=display:flex><span>    sudo systemctl status docker
-</span></span><span style=display:flex><span><span style=color:#75715e># 查看docker信息</span>
-</span></span><span style=display:flex><span>    sudo docker info
-</span></span><span style=display:flex><span><span style=color:#75715e># 验证是否安装成功    </span>
-</span></span><span style=display:flex><span>    sudo docker run hello-world
-</span></span></code></pre></div><h3 id=镜像加速器>镜像加速器</h3><p>访问 <a href=https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors>https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a> 获取自己的阿里云镜像加速器地址</p><p>修改 /etc/docker/daemon.json</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo mkdir -p /etc/docker
-</span></span><span style=display:flex><span>sudo tee /etc/docker/daemon.json <span style=color:#e6db74>&lt;&lt;-&#39;EOF&#39;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-concurrent-downloads&#34;: 3,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-concurrent-uploads&#34;: 3,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;max-download-attempts&#34;: 3,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;registry-mirrors&#34;: [&#34;https://修改为自己的.mirror.aliyuncs.com&#34;,&#34;https://hub-mirror.c.163.com&#34;,&#34;https://registry.aliyuncs.com&#34;]
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
-</span></span><span style=display:flex><span>sudo systemctl daemon-reload
-</span></span><span style=display:flex><span>sudo systemctl restart docker
-</span></span></code></pre></div><h3 id=清理docker对象>清理docker对象</h3><p>prune 命令用来删除不再使用的 docker 对象。</p><a href=https://blog.baicai.me/article/2022/debian_install_docker/>Read more...</a></div></article><div><a href=/page/3/>Previous Page</a>
+</span></span></code></pre></div></div></article><div><a href=/page/3/>Previous Page</a>
 4 of 8
 <a href=/page/5/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
