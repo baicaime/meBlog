@@ -1,4 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in Linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 23:31:24 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 白菜</title><link>https://blog.baicai.me/categories/linux/</link><description>Recent content in Linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 16 Sep 2025 13:56:17 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>从 Debian 12 升级到 Debian 13</title><link>https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/</link><pubDate>Tue, 16 Sep 2025 13:56:17 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/</guid><description>&lt;p>在进行重大版本升级之前，务必备份所有重要数据。尽管升级过程通常很稳定，但硬件故障或配置错误等意外情况可能会导致数据丢失。&lt;/p>
+&lt;p>以下是将Debian 12 (Bookworm) 升级到Debian 13 (Trixie) 的详细步骤。&lt;/p>
+&lt;h3 id="备份">备份&lt;/h3>
+&lt;p>在开始升级之前，请务必创建一个完整的系统备份，包括：&lt;/p>
+&lt;p>所有重要数据和个人文件 (/home 目录)。&lt;/p>
+&lt;p>系统配置文件 (/etc 目录)。&lt;/p>
+&lt;p>已安装软件包的列表。您可以使用以下命令生成一个列表：&lt;/p>
+&lt;pre tabindex="0">&lt;code>Bashsudo dpkg --get-selections &amp;#39;*&amp;#39; &amp;gt; ~/installed-packages.list
+&lt;/code>&lt;/pre>&lt;h3 id="第一步-升级现有系统">第一步 升级现有系统&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt upgrade
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt autoremove
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt clean
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="第二步-修改软件源列表">第二步 修改软件源列表&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#e6db74">&amp;#39;s/bookworm/trixie/g&amp;#39;&lt;/span> /etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="第三步-升级">第三步 升级&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#更新软件包索引&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#最小系统升级&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt upgrade --without-new-pkgs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#完整系统升级&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt full-upgrade
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#清理和重启&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt --purge autoremove
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#新的系统对于source.list的内容做了结构上的更新，使得格式更加易读了。可用如下的命令更新 source.list&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#此命令可以将原有的source.list做个备份--source.list.bak, 可以放心更新&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt modernize-sources
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="确认系统版本">确认系统版本&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>root@debian ~ &lt;span style="color:#75715e"># cat /etc/debian_version &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>13.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>root@debian ~ &lt;span style="color:#75715e"># lsb_release -a&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>No LSB modules are available.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Distributor ID: Debian
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Description: Debian GNU/Linux &lt;span style="color:#ae81ff">13&lt;/span> &lt;span style="color:#f92672">(&lt;/span>trixie&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Release: &lt;span style="color:#ae81ff">13&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Codename: trixie
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>root@debian ~ &lt;span style="color:#75715e"># uname -a&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Linux debian 6.12.35+deb13-amd64 &lt;span style="color:#75715e">#1 SMP PREEMPT_DYNAMIC Debian 6.12.35-1 (2025-07-03) x86_64 GNU/Linu&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果您在升级过程中遇到任何问题，可以查阅Debian官方的升级指南获取更详细的信息和故障排除帮助
+&lt;a href="https://www.debian.org/releases/stable/release-notes/upgrading.html#upgrading-the-system">官方文档&lt;/a>&lt;/p></description></item><item><title>Debian12 系统添加多个IP</title><link>https://blog.baicai.me/article/2025/ifconfig_interfaces/</link><pubDate>Fri, 21 Feb 2025 23:31:24 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/ifconfig_interfaces/</guid><description>&lt;p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 &lt;code>/etc/network/interfaces&lt;/code> 文件。&lt;/p>
 &lt;h3 id="编辑配置文件">编辑配置文件：&lt;/h3>
 &lt;p>&lt;code>sudo nano /etc/network/interfaces&lt;/code>&lt;/p>
 &lt;h3 id="添加多个ip地址">添加多个IP地址：&lt;/h3>

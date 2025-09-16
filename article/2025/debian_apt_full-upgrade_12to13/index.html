@@ -1,0 +1,38 @@
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/"><link rel=canonical href=https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/><style type=text/css>body{font-family:monospace}</style><title>从 Debian 12 升级到 Debian 13</title>
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1758003686"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<a href=/posts/><b>文章</b></a>.
+<a href=/categories/><b>分类</b></a>.
+<a href=/tags/><b>标签</b></a>.
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>从 Debian 12 升级到 Debian 13</h1><b><time>2025.09.16 13:56</time></b>
+<a href=/tags/debian>debian</a><div><p>在进行重大版本升级之前，务必备份所有重要数据。尽管升级过程通常很稳定，但硬件故障或配置错误等意外情况可能会导致数据丢失。</p><p>以下是将Debian 12 (Bookworm) 升级到Debian 13 (Trixie) 的详细步骤。</p><h3 id=备份>备份</h3><p>在开始升级之前，请务必创建一个完整的系统备份，包括：</p><p>所有重要数据和个人文件 (/home 目录)。</p><p>系统配置文件 (/etc 目录)。</p><p>已安装软件包的列表。您可以使用以下命令生成一个列表：</p><pre tabindex=0><code>Bashsudo dpkg --get-selections &#39;*&#39; &gt; ~/installed-packages.list
+</code></pre><h3 id=第一步-升级现有系统>第一步 升级现有系统</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>apt update 
+</span></span><span style=display:flex><span>apt upgrade
+</span></span><span style=display:flex><span>apt autoremove
+</span></span><span style=display:flex><span>apt clean
+</span></span></code></pre></div><h3 id=第二步-修改软件源列表>第二步 修改软件源列表</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sed -i <span style=color:#e6db74>&#39;s/bookworm/trixie/g&#39;</span> /etc/apt/sources.list
+</span></span></code></pre></div><h3 id=第三步-升级>第三步 升级</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#更新软件包索引</span>
+</span></span><span style=display:flex><span>apt update
+</span></span><span style=display:flex><span><span style=color:#75715e>#最小系统升级</span>
+</span></span><span style=display:flex><span>apt upgrade --without-new-pkgs
+</span></span><span style=display:flex><span><span style=color:#75715e>#完整系统升级</span>
+</span></span><span style=display:flex><span>apt full-upgrade
+</span></span><span style=display:flex><span><span style=color:#75715e>#清理和重启</span>
+</span></span><span style=display:flex><span>apt --purge autoremove
+</span></span><span style=display:flex><span>reboot
+</span></span><span style=display:flex><span><span style=color:#75715e>#新的系统对于source.list的内容做了结构上的更新，使得格式更加易读了。可用如下的命令更新 source.list</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#此命令可以将原有的source.list做个备份--source.list.bak, 可以放心更新</span>
+</span></span><span style=display:flex><span>sudo apt modernize-sources
+</span></span></code></pre></div><h3 id=确认系统版本>确认系统版本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>root@debian ~ <span style=color:#75715e># cat /etc/debian_version </span>
+</span></span><span style=display:flex><span>13.0
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>root@debian ~ <span style=color:#75715e># lsb_release -a</span>
+</span></span><span style=display:flex><span>No LSB modules are available.
+</span></span><span style=display:flex><span>Distributor ID: Debian
+</span></span><span style=display:flex><span>Description:    Debian GNU/Linux <span style=color:#ae81ff>13</span> <span style=color:#f92672>(</span>trixie<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>Release:        <span style=color:#ae81ff>13</span>
+</span></span><span style=display:flex><span>Codename:       trixie
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>root@debian ~ <span style=color:#75715e># uname -a</span>
+</span></span><span style=display:flex><span>Linux debian 6.12.35+deb13-amd64 <span style=color:#75715e>#1 SMP PREEMPT_DYNAMIC Debian 6.12.35-1 (2025-07-03) x86_64 GNU/Linu</span>
+</span></span></code></pre></div><p>如果您在升级过程中遇到任何问题，可以查阅Debian官方的升级指南获取更详细的信息和故障排除帮助
+<a href=https://www.debian.org/releases/stable/release-notes/upgrading.html#upgrading-the-system>官方文档</a></p></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2025/debian_apt_full-upgrade_12to13/>从 Debian 12 升级到 Debian 13</a></li><li><a href=/article/2025/zsh_tab/>在命令行 ssh 时按 &lt;kbd>TAB&lt;/kbd> 自动补全主机名</a></li><li><a href=/article/2025/the_degree_confluence_project/>访问世界上每一个经纬度为整数的交叉点</a></li><li><a href=/article/2025/test_25/>测试服务器能否正常收发邮件</a></li><li><a href=/article/2025/nginx_too_many_open_files/>Nginx 出现 Too many open files 错误与修复</a></li></ul></div></div></aside><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
+<a href=/links/><b>友情链接</b></a>.
+<a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
