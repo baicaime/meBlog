@@ -268,7 +268,17 @@ Create a Bootable USB Flash Drive&lt;/p>
 &lt;h3 id="弹出u盘">弹出U盘&lt;/h3>
 &lt;p>在快要完成的时候，系统会出现“磁盘无法识别”的提示，先不要做任何操作，等待终端dd命令执行完成后，执行下面命令弹出U盘。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eject /dev/disk2
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>弹出后再选择“忽略”系统提示。&lt;/p>
+&lt;h3 id="快速操作">快速操作&lt;/h3>
+&lt;pre tabindex="0">&lt;code># 列出所有设备
+diskutil list
+# 卸载设备
+diskutil unmountDisk force /dev/disk4
+# 写入镜像
+sudo dd if=debian-13.2.0-amd64-DVD-1.iso of=/dev/disk4 bs=4M status=progress
+### 弹出U盘
+diskutil eject /dev/disk4
+&lt;/code>&lt;/pre></description></item><item><title>Debian 安装 Transmission 并实现远程访问</title><link>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</link><pubDate>Tue, 18 Oct 2022 17:05:07 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2022/debian-install-transmission-daemon-debian-install-transmission-daemon/</guid><description>&lt;p>Debian 安装完成后的桌面环境带有 transmission-gtk
 这个gui版关闭界面后，无后台服务，导致不能方便使用远程访问。&lt;/p>
 &lt;p>那么安装Transmission后台守护程序&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ sudo apt install -y transmission-daemon
