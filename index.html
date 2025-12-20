@@ -1,9 +1,41 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1766218599"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1766218617"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/>从 Debian 12 升级到 Debian 13</a></h1><b><time>2025.09.16 13:56</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/analyze/>当 PostgreSQL 查询占用 CPU 很高时，找出是谁在吃 CPU</a></h1><b><time>2025.12.20 15:09</time></b>
+<a href=/tags/postgres>postgres</a><div><h3 id=找出是谁在吃-cpu>找出「是谁」在吃 CPU</h3><h4 id=查看当前正在跑的高-cpu-查询>查看当前正在跑的高 CPU 查询</h4><pre tabindex=0><code>SELECT
+pid,
+usename,
+datname,
+state,
+now() - query_start AS running_time,
+wait_event_type,
+wait_event,
+query
+FROM pg_stat_activity
+WHERE state = &#39;active&#39;
+ORDER BY running_time DESC;
+</code></pre><p>重点关注：
+running_time 很长的
+query 是否是复杂 SELECT
+是否反复出现同一条 SQL</p><h4 id=看耗-cpu-的-sql>看耗 CPU 的 SQL</h4><p>如果开启了 pg_stat_statements</p><p>查总 CPU 消耗最高：</p><pre tabindex=0><code>SELECT
+query,
+calls,
+total_exec_time,
+mean_exec_time,
+rows
+FROM pg_stat_statements
+ORDER BY total_exec_time DESC
+LIMIT 10;
+</code></pre><p>查单次最慢：</p><pre tabindex=0><code>SELECT
+query,
+max_exec_time,
+calls
+FROM pg_stat_statements
+ORDER BY max_exec_time DESC
+LIMIT 10;
+</code></pre><p>查调用次数最多</p><a href=https://blog.baicai.me/article/2025/analyze/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/debian_apt_full-upgrade_12to13/>从 Debian 12 升级到 Debian 13</a></h1><b><time>2025.09.16 13:56</time></b>
 <a href=/tags/debian>debian</a><div><p>在进行重大版本升级之前，务必备份所有重要数据。尽管升级过程通常很稳定，但硬件故障或配置错误等意外情况可能会导致数据丢失。</p><p>以下是将Debian 12 (Bookworm) 升级到Debian 13 (Trixie) 的详细步骤。</p><h3 id=备份>备份</h3><p>在开始升级之前，请务必创建一个完整的系统备份，包括：</p><p>所有重要数据和个人文件 (/home 目录)。</p><p>系统配置文件 (/etc 目录)。</p><p>已安装软件包的列表。您可以使用以下命令生成一个列表：</p><pre tabindex=0><code>Bashsudo dpkg --get-selections &#39;*&#39; &gt; ~/installed-packages.list
 </code></pre><h3 id=第一步-升级现有系统>第一步 升级现有系统</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>apt update 
 </span></span><span style=display:flex><span>apt upgrade
@@ -139,62 +171,7 @@ IP-CIDR,87.194.0.0/16
   # Giffgaff
   - &#39;IP-CIDR,87.194.0.0/16,WifiCall,no-resolve&#39;  
 </code></pre><p>节点需要支持UDP!!! wificall走的UDP的500和4500端口</p></div></article><article><h1><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Docker本地镜像的导出、导入 (export,import,save,load)</a></h1><b><time>2024.10.11 14:53</time></b>
-<a href=/tags/docker>Docker</a><div><p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。</p><h2 id=一使用-export-和-import>一、使用 export 和 import</h2><h3 id=1查看本机的容器>1，查看本机的容器</h3><p>使用 <code>docker ps -a</code> 命令查看本机所有的容器。</p><h3 id=2导出镜像>2，导出镜像</h3><p>（1）使用 <code>docker export</code> 命令根据容器 ID 将镜像导出成一个文件。</p><p><code>docker export 镜像ID > server.tar</code></p><p>（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。</p><h3 id=3导入镜像>3，导入镜像</h3><p>（1）使用 <code>docker import</code> 命令则可将这个镜像文件导入进来。</p><p><code>docker import - new_server &lt; server.tar</code></p><p>（2）执行 <code>docker images</code> 命令可以看到镜像确实已经导入进来了。</p><h2 id=二使用-save-和-load>二、使用 save 和 load</h2><h3 id=1查看本机的容器-1>1，查看本机的容器</h3><p>这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 <code>docker images</code> 命令查看本机所有的镜像。</p><h3 id=2保存镜像>2，保存镜像</h3><p>（1）下面使用 <code>docker save</code> 命令根据 ID 将镜像保存成一个文件。</p><p><code>docker save 镜像ID > server.tar</code></p><p>（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：</p><p><code>docker save -o images.tar postgres mongo</code></p><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2024/fmt_int/>Go语言进制以及进制转换</a></h1><b><time>2024.09.24 19:52</time></b>
-<a href=/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0>编程学习</a>
-<a href=/tags/golang>Golang</a><div><h3 id=二进制-0b或者0b-表示>二进制 0B或者0b 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>bin1</span> = <span style=color:#ae81ff>0b1101</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0b1100</span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%b的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=八进制-0o或者0o-表示>八进制 0O或者0o 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>oct</span> = <span style=color:#ae81ff>0</span><span style=color:#a6e22e>o1234567</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0</span><span style=color:#a6e22e>o10</span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%o的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=十六进制-0x或者0x-表示>十六进制 0X或者0x 表示</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>hex</span> = <span style=color:#ae81ff>0x1234</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>num01</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0xf</span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%x的十进制为%d&#34;</span>, <span style=color:#a6e22e>num01</span>,<span style=color:#a6e22e>num01</span>)
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=进制转换>进制转换</h3><pre tabindex=0><code>1. 二进制转八进制  %b -&gt; %o
-2. 二进制转十进制  %b -&gt;  %d
-3. 二进制转十六进制 %b -&gt; %x
-4. 八进制转二进制 %o -&gt; %b
-5. 八进制转十进制 %o -&gt; %d
-6. 八进制转十六进制 %o -&gt; %x
-7. 十进制转二进制 %d -&gt; %b
-8. 十进制转八进制 %d -&gt; %o
-9. 十进制转十六进制 %d -&gt; %x
-10. 十六进制转二进制 %x -&gt; %b
-11. 十六进制转八进制 %x -&gt; %o
-12. 十六进制转十进制 %x -&gt; %d
-
-// 例
-fmt.Printf(&#34;十进制%d转成八进制%o&#34;,num1,num2)
-</code></pre><pre tabindex=0><code>%b    表示为二进制
-%c    该值对应的unicode码值
-%d    表示为十进制
-%o    表示为八进制
-%q    该值对应的单引号括起来的go语法字符字面值，必要时会采用安全的转义表示
-%x    表示为十六进制，使用a-f
-%X    表示为十六进制，使用A-F
-%U    表示为Unicode格式：U+1234，等价于&#34;U+%04X&#34;
-%E    用科学计数法表示
-%f    用浮点数表示
-</code></pre><p>快速测试
-<a href=https://go.dev/play/>go.dev/play</a></p><a href=https://blog.baicai.me/article/2024/fmt_int/>Read more...</a></div></article><div>1 of 9
+<a href=/tags/docker>Docker</a><div><p>对于镜像的导出和导入，Docker 提供了两种方案，下面分别进行介绍。</p><h2 id=一使用-export-和-import>一、使用 export 和 import</h2><h3 id=1查看本机的容器>1，查看本机的容器</h3><p>使用 <code>docker ps -a</code> 命令查看本机所有的容器。</p><h3 id=2导出镜像>2，导出镜像</h3><p>（1）使用 <code>docker export</code> 命令根据容器 ID 将镜像导出成一个文件。</p><p><code>docker export 镜像ID > server.tar</code></p><p>（2）上面命令执行后，可以看到文件已经保存到当前的终端目录下。</p><h3 id=3导入镜像>3，导入镜像</h3><p>（1）使用 <code>docker import</code> 命令则可将这个镜像文件导入进来。</p><p><code>docker import - new_server &lt; server.tar</code></p><p>（2）执行 <code>docker images</code> 命令可以看到镜像确实已经导入进来了。</p><h2 id=二使用-save-和-load>二、使用 save 和 load</h2><h3 id=1查看本机的容器-1>1，查看本机的容器</h3><p>这两个命令是通过镜像来保存、加载镜像文件的。首先我们使用 <code>docker images</code> 命令查看本机所有的镜像。</p><h3 id=2保存镜像>2，保存镜像</h3><p>（1）下面使用 <code>docker save</code> 命令根据 ID 将镜像保存成一个文件。</p><p><code>docker save 镜像ID > server.tar</code></p><p>（2）我们还可以同时将多个 image 打包成一个文件，比如下面将镜像库中的 postgres 和 mongo 打包：</p><p><code>docker save -o images.tar postgres mongo</code></p><a href=https://blog.baicai.me/article/2024/docker_export_import_save_load/>Read more...</a></div></article><div>1 of 9
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2025 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
