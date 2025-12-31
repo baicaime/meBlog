@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Sat, 20 Dec 2025 15:09:26 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>当 PostgreSQL 查询占用 CPU 很高时，找出是谁在吃 CPU</title><link>https://blog.baicai.me/article/2025/analyze/</link><pubDate>Sat, 20 Dec 2025 15:09:26 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/analyze/</guid><description>&lt;h3 id="找出是谁在吃-cpu">找出「是谁」在吃 CPU&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Wed, 31 Dec 2025 14:57:20 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>卸载腾讯云的云监控组件 sgagent、barad_agent、YDService</title><link>https://blog.baicai.me/article/2025/qcloud_uninstall/</link><pubDate>Wed, 31 Dec 2025 14:57:20 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/qcloud_uninstall/</guid><description>&lt;p>相关云监控的进程分别是&lt;code>sgagent&lt;/code>,&lt;code>barad_agent&lt;/code>和&lt;code>YDService&lt;/code>&lt;/p>
+&lt;h3 id="删除云监控插件">删除云监控插件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/usr/local/qcloud/stargate/admin/uninstall.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/usr/local/qcloud/YunJing/uninst.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/usr/local/qcloud/monitor/barad/admin/uninstall.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="删除自动化助手">删除自动化助手&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo wget -qO - https://tat-1258344699.cos.accelerate.myqcloud.com/tat_agent/uninstall.sh | sudo sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl stop tat_agent
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl disable tat_agent
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -f /etc/systemd/system/tat_agent.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /usr/local/qcloud
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="检查-agent-进程是否还在">检查 agent 进程是否还在&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ps -A | grep agent
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果执行后没有任何显示，说明已经清理干净&lt;/p>
+&lt;h3 id="删除自启">删除自启&lt;/h3>
+&lt;p>进入服务器 &lt;code>/etc/rc.d/rc.local&lt;/code> 目录，删除所有&lt;code>/usr/local/qcloud/&lt;/code>路径的信息。&lt;/p>
+&lt;h3 id="官方文档">官方文档&lt;/h3>
+&lt;pre tabindex="0">&lt;code>云监控：https://cloud.tencent.com/document/product/248/53584
+YDService ：https://cloud.tencent.com/document/product/296/9928
+自主化助手：https://cloud.tencent.com/document/product/1340/50822
+&lt;/code>&lt;/pre></description></item><item><title>当 PostgreSQL 查询占用 CPU 很高时，找出是谁在吃 CPU</title><link>https://blog.baicai.me/article/2025/analyze/</link><pubDate>Sat, 20 Dec 2025 15:09:26 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/analyze/</guid><description>&lt;h3 id="找出是谁在吃-cpu">找出「是谁」在吃 CPU&lt;/h3>
 &lt;h4 id="查看当前正在跑的高-cpu-查询">查看当前正在跑的高 CPU 查询&lt;/h4>
 &lt;pre tabindex="0">&lt;code>SELECT
 pid,
