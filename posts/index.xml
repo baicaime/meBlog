@@ -1,4 +1,66 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Wed, 31 Dec 2025 14:57:20 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>卸载腾讯云的云监控组件 sgagent、barad_agent、YDService</title><link>https://blog.baicai.me/article/2025/qcloud_uninstall/</link><pubDate>Wed, 31 Dec 2025 14:57:20 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/qcloud_uninstall/</guid><description>&lt;p>相关云监控的进程分别是&lt;code>sgagent&lt;/code>,&lt;code>barad_agent&lt;/code>和&lt;code>YDService&lt;/code>&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 白菜</title><link>https://blog.baicai.me/posts/</link><description>Recent content in Posts on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Mon, 09 Mar 2026 17:43:52 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>为 Docker 容器加入 Ipv6 网络</title><link>https://blog.baicai.me/article/2026/docker_ipv6/</link><pubDate>Mon, 09 Mar 2026 17:43:52 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2026/docker_ipv6/</guid><description>&lt;p>环境: debian12&lt;/p>
+&lt;h3 id="启用-docker-daemon-ipv6-支持">启用 Docker daemon IPv6 支持&lt;/h3>
+&lt;p>编辑 &lt;code>/etc/docker/daemon.json&lt;/code>，添加 IPv6 配置：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;ipv6&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;fixed-cidr-v6&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2001:db8:2::/64&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后重启 Docker：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl restart docker
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>⚠️ &lt;code>fixed-cidr-v6&lt;/code> 必须指定一个 IPv6 子网，不然 Docker 不会给容器分配 IPv6。&lt;/p>&lt;/blockquote>
+&lt;hr>
+&lt;h3 id="创建支持-ipv6-的自定义网络">创建支持 IPv6 的自定义网络&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker network create &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --driver bridge &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --subnet 172.19.0.0/16 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --gateway 172.19.0.1 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --ipv6 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --subnet 2001:db8:2::/64 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --gateway 2001:db8:2::1 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> myip_v6
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>--ipv6&lt;/code> → 开启 IPv6&lt;/li>
+&lt;li>&lt;code>--subnet&lt;/code> / &lt;code>--gateway&lt;/code> → IPv4&lt;/li>
+&lt;li>&lt;code>--subnet-ipv6&lt;/code> / &lt;code>--gateway-ipv6&lt;/code> → IPv6 子网&lt;/li>
+&lt;/ul>
+&lt;p>如果你看到 &lt;code>unknown flag&lt;/code>，说明你的 Docker &lt;strong>版本不支持在命令行直接指定 IPv6 子网&lt;/strong>。&lt;/p>
+&lt;hr>
+&lt;h4 id="旧版本-docker-可以这样操作">旧版本 Docker 可以这样操作：&lt;/h4>
+&lt;ol>
+&lt;li>&lt;strong>先启用 daemon IPv6&lt;/strong>（上一步）&lt;/li>
+&lt;li>&lt;strong>创建网络时只用 &lt;code>--ipv6&lt;/code>&lt;/strong>，Docker 会自动分配 IPv6：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker network create --driver bridge --ipv6 myip_v6
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>查看 IPv6 分配：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker network inspect myip_v6
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Docker 会在网络里给每个容器分配 &lt;code>GlobalIPv6Address&lt;/code>&lt;/li>
+&lt;li>如果需要特定子网，必须升级 Docker&lt;/li>
+&lt;/ul>
+&lt;h3 id="临时生效-把当前运行的容器加入网络">临时生效: 把当前运行的容器加入网络&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker network connect myip_v6 mycontainer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="长期生效-在-docker-composeyml-中添加">长期生效: 在 docker-compose.yml 中添加&lt;/h3>
+&lt;p>如果你希望每次用 &lt;code>docker-compose up&lt;/code> 都自动连接 IPv6 网络，需要修改 &lt;code>docker-compose.yml&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;3.9&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">myservice&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">your_image&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">networks&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">myip&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">myip_v6 &lt;/span> &lt;span style="color:#75715e"># 添加 IPv6 网络&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">networks&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">myip&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">driver&lt;/span>: &lt;span style="color:#ae81ff">bridge&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">myip_v6&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">external&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span> &lt;span style="color:#75715e"># 使用你已经创建的 IPv6 网络&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>external: true&lt;/code> → 表示使用已经存在的 Docker 网络，不让 compose 创建新网络&lt;/li>
+&lt;li>这样启动容器时就自动连接 IPv6 网络，不用每次手动执行 &lt;code>docker network connect&lt;/code>&lt;/li>
+&lt;/ul></description></item><item><title>卸载腾讯云的云监控组件 sgagent、barad_agent、YDService</title><link>https://blog.baicai.me/article/2025/qcloud_uninstall/</link><pubDate>Wed, 31 Dec 2025 14:57:20 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/qcloud_uninstall/</guid><description>&lt;p>相关云监控的进程分别是&lt;code>sgagent&lt;/code>,&lt;code>barad_agent&lt;/code>和&lt;code>YDService&lt;/code>&lt;/p>
 &lt;h3 id="删除云监控插件">删除云监控插件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/usr/local/qcloud/stargate/admin/uninstall.sh
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/usr/local/qcloud/YunJing/uninst.sh
