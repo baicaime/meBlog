@@ -1,4 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 白菜</title><link>https://blog.baicai.me/tags/linux/</link><description>Recent content in Linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Fri, 21 Feb 2025 18:34:28 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 白菜</title><link>https://blog.baicai.me/tags/linux/</link><description>Recent content in Linux on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 21 Apr 2026 19:43:57 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>SSH 配置安全加固</title><link>https://blog.baicai.me/article/2026/linux_sshd_config/</link><pubDate>Tue, 21 Apr 2026 19:43:57 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2026/linux_sshd_config/</guid><description>&lt;p>环境： Debian 13
+配置文件 &lt;code>/etc/ssh/sshd_config&lt;/code>&lt;/p>
+&lt;h3 id="额外配置">额外配置&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">Include /etc/ssh/sshd_config.d/*.conf
+&lt;/code>&lt;/pre>&lt;p>会加载该目录下的所有 .conf 文件，优先级可能覆盖主配置（后加载的生效）&lt;/p>
+&lt;h3 id="修改配置项">修改配置项&lt;/h3>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf">#允许 root 登录，但禁止使用密码，只能用 SSH 密钥登录
+PermitRootLogin prohibit-password
+#每个连接最多尝试 3 次认证
+MaxAuthTries 3
+#启用 SSH key 登录
+PubkeyAuthentication yes
+#禁用密码登录
+PasswordAuthentication no
+#禁止空密码
+PermitEmptyPasswords no
+&lt;/code>&lt;/pre>&lt;h3 id="加载配置">加载配置&lt;/h3>
+&lt;p>&lt;strong>在让配置生效前，务必先开一个 SSH 窗口测试登录，确认能正常登录后，再关闭旧连接。&lt;/strong>&lt;/p>
+&lt;p>不会断开当前 SSH 连接&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl reload ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>或&lt;/p>
+&lt;p>直接重启ssh服务(可能断连)&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl restart ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在执行 &lt;code>reload/restart&lt;/code> 前先检查：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sshd -t
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果配置正确，不会有任何输出。&lt;/p></description></item><item><title>linux测试url的访问速度</title><link>https://blog.baicai.me/article/2025/linux_curl/</link><pubDate>Fri, 21 Feb 2025 18:34:28 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2025/linux_curl/</guid><description>&lt;p>使用curl命令来测试URL的访问速度。&lt;/p>
 &lt;p>以下是使用curl测试URL访问速度的步骤：&lt;/p>
 &lt;ul>
 &lt;li>打开终端或命令行界面。&lt;/li>
