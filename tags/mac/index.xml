@@ -1,31 +1,72 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mac on 白菜</title><link>https://blog.baicai.me/tags/mac/</link><description>Recent content in Mac on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 14:23:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/mac/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac终端查看sqlite3数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mac on 白菜</title><link>https://blog.baicai.me/tags/mac/</link><description>Recent content in Mac on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Tue, 24 Sep 2024 14:23:50 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/mac/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac 终端查看 sqlite3 数据库</title><link>https://blog.baicai.me/article/2024/cmd_sqlite/</link><pubDate>Tue, 24 Sep 2024 14:23:50 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2024/cmd_sqlite/</guid><description>&lt;h3 id="用sqlite命令打开数据库文件">用sqlite命令打开数据库文件&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 db.file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。&lt;/p>
 &lt;p>我们可以输入 .help 先查看下大概的命令：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.help
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="常用的几种简单命令">常用的几种简单命令：&lt;/h3>
-&lt;ol>
-&lt;li>退出sqlite&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.quit
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
-&lt;li>查看所有表&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.tables
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
-&lt;li>配置情况&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.show
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
-&lt;li>设置查询数据排列格式&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.mode list
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.mode line
+&lt;h4 id="1-退出sqlite">1. 退出sqlite&lt;/h4>
+&lt;pre>&lt;code>```bash
+.quit
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="2-查看所有表">2. 查看所有表&lt;/h4>
+&lt;pre>&lt;code>```bash
+.tables
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="3-配置情况">3. 配置情况&lt;/h4>
+&lt;pre>&lt;code>```bash
+.show
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="4-设置查询数据排列格式">4. 设置查询数据排列格式&lt;/h4>
+&lt;pre>&lt;code>```bash
+.mode list
+.mode line
+.mode column
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="5-是否显示头">5. 是否显示头&lt;/h4>
+&lt;pre>&lt;code>```bash
+.headers on
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="6-查看表结构">6. 查看表结构&lt;/h4>
+&lt;pre>&lt;code>```bash
+PRAGMA table_info(users);
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="7-查看当前数据库">7. 查看当前数据库&lt;/h4>
+&lt;pre>&lt;code>```bash
+.databases
+```
+&lt;/code>&lt;/pre>
+&lt;hr>
+&lt;h4 id="8-一行命令直接查看不进入交互模式">8. 一行命令直接查看（不进入交互模式）&lt;/h4>
+&lt;p>查看表：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 test.db &lt;span style="color:#e6db74">&amp;#34;.tables&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行查询：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 test.db &lt;span style="color:#e6db74">&amp;#34;SELECT * FROM users LIMIT 5;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h4 id="9-如果-mac-没安装-sqlite3">9. 如果 Mac 没安装 sqlite3&lt;/h4>
+&lt;p>macOS 通常自带，检查：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 --version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>没有的话（Homebrew）：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>brew install sqlite
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;p>一个常用调试流程：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sqlite3 app.db
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.tables
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.schema users
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.headers on
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.mode column
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
-&lt;li>是否显示头&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>.headers on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SELECT * FROM users LIMIT 20;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Mac 常用命令</title><link>https://blog.baicai.me/article/2023/mac_cmd/</link><pubDate>Fri, 31 Mar 2023 22:54:41 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2023/mac_cmd/</guid><description>&lt;h2 id="查看指定端口的进程">查看指定端口的进程&lt;/h2>
 &lt;p>sudo lsof -i :5353&lt;/p>
 &lt;p>COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME

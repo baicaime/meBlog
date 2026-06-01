@@ -1,20 +1,46 @@
-<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2024/cmd_sqlite/"><link rel=canonical href=https://blog.baicai.me/article/2024/cmd_sqlite/><style type=text/css>body{font-family:monospace}</style><title>Mac终端查看sqlite3数据库</title>
-<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1776772855"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<!doctype html><html lang=zh-CN><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/article/2024/cmd_sqlite/"><link rel=canonical href=https://blog.baicai.me/article/2024/cmd_sqlite/><style type=text/css>body{font-family:monospace}</style><title>Mac 终端查看 sqlite3 数据库</title>
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1780287531"></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Mac终端查看sqlite3数据库</h1><b><time>2024.09.24 14:23</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1>Mac 终端查看 sqlite3 数据库</h1><b><time>2024.09.24 14:23</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/mac>mac</a>
 <a href=/tags/sqlite>sqlite</a><div><h3 id=用sqlite命令打开数据库文件>用sqlite命令打开数据库文件</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 db.file
 </span></span></code></pre></div><p>这样我们就进入了数据库操作，下面的命令都只能是sqlite下的命令，如果输入其他命令，都是无效的。</p><p>我们可以输入 .help 先查看下大概的命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.help
-</span></span></code></pre></div><h3 id=常用的几种简单命令>常用的几种简单命令：</h3><ol><li>退出sqlite</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.quit
-</span></span></code></pre></div><ol start=2><li>查看所有表</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.tables
-</span></span></code></pre></div><ol start=3><li>配置情况</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.show
-</span></span></code></pre></div><ol start=4><li>设置查询数据排列格式</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.mode list
-</span></span><span style=display:flex><span>.mode line 
+</span></span></code></pre></div><h3 id=常用的几种简单命令>常用的几种简单命令：</h3><h4 id=1-退出sqlite>1. 退出sqlite</h4><pre><code>```bash
+.quit
+```
+</code></pre><hr><h4 id=2-查看所有表>2. 查看所有表</h4><pre><code>```bash
+.tables
+```
+</code></pre><hr><h4 id=3-配置情况>3. 配置情况</h4><pre><code>```bash
+.show
+```
+</code></pre><hr><h4 id=4-设置查询数据排列格式>4. 设置查询数据排列格式</h4><pre><code>```bash
+.mode list
+.mode line 
+.mode column
+```
+</code></pre><hr><h4 id=5-是否显示头>5. 是否显示头</h4><pre><code>```bash
+.headers on
+```
+</code></pre><hr><h4 id=6-查看表结构>6. 查看表结构</h4><pre><code>```bash
+PRAGMA table_info(users);
+```
+</code></pre><hr><h4 id=7-查看当前数据库>7. 查看当前数据库</h4><pre><code>```bash
+.databases
+```
+</code></pre><hr><h4 id=8-一行命令直接查看不进入交互模式>8. 一行命令直接查看（不进入交互模式）</h4><p>查看表：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 test.db <span style=color:#e6db74>&#34;.tables&#34;</span>
+</span></span></code></pre></div><p>执行查询：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 test.db <span style=color:#e6db74>&#34;SELECT * FROM users LIMIT 5;&#34;</span>
+</span></span></code></pre></div><hr><h4 id=9-如果-mac-没安装-sqlite3>9. 如果 Mac 没安装 sqlite3</h4><p>macOS 通常自带，检查：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 --version
+</span></span></code></pre></div><p>没有的话（Homebrew）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>brew install sqlite
+</span></span></code></pre></div><hr><p>一个常用调试流程：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sqlite3 app.db
+</span></span><span style=display:flex><span>.tables
+</span></span><span style=display:flex><span>.schema users
+</span></span><span style=display:flex><span>.headers on
 </span></span><span style=display:flex><span>.mode column
-</span></span></code></pre></div><ol start=5><li>是否显示头</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.headers on
+</span></span><span style=display:flex><span>SELECT * FROM users LIMIT 20;
 </span></span></code></pre></div></div></article></main><aside><div><div><h3>LATEST POSTS</h3></div><div><ul><li><a href=/article/2026/linux_sshd_config/>SSH 配置安全加固</a></li><li><a href=/article/2026/docker_ipv6/>为 Docker 容器加入 IPv6 网络</a></li><li><a href=/article/2025/qcloud_uninstall/>卸载腾讯云的云监控组件 sgagent、barad_agent、YDService</a></li><li><a href=/article/2025/analyze/>当 PostgreSQL 查询占用 CPU 很高时，找出是谁在吃 CPU</a></li><li><a href=/article/2025/debian_apt_full-upgrade_12to13/>从 Debian 12 升级到 Debian 13</a></li></ul></div></div></aside><footer><p>&copy; 2026 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>
