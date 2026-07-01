@@ -1,9 +1,22 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1780287531"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1782907270"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/linux_curl/>linux测试url的访问速度</a></h1><b><time>2025.02.21 18:34</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2025/ifconfig_interfaces/>Debian12 系统添加多个IP</a></h1><b><time>2025.02.21 23:31</time></b>
+<a href=/tags/ifconfig>ifconfig</a>
+<a href=/tags/networking>networking</a><div><p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 <code>/etc/network/interfaces</code> 文件。</p><h3 id=编辑配置文件>编辑配置文件：</h3><p><code>sudo nano /etc/network/interfaces</code></p><h3 id=添加多个ip地址>添加多个IP地址：</h3><p>在相应的网络接口下添加多个IP地址。例如：</p><pre tabindex=0><code>iface enp30 inet static
+    address 192.168.0.250
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+
+iface enp30 inet static
+    address 192.168.0.251
+    netmask 255.255.255.0
+</code></pre><h3 id=重启网络服务>重启网络服务：</h3><p>保存文件并退出后，重启网络服务：</p><p><code>sudo systemctl restart networking</code></p><h3 id=检查配置>检查配置</h3><p>通过以下命令验证多IP地址是否已成功添加：</p><p><code>ip addr show enp30</code></p><p>这将显示 enp30 接口的所有IP地址。你应该能看到你配置的多个IP地址。</p><h2 id=临时配置多个ip地址>临时配置多个IP地址</h2><p>为 enp30 接口添加一个新的IP 192.168.0.251
+执行以下命令：
+<code>ip addr add 192.168.0.251/24 dev enp30</code>
+这操作是临时的，重启后会丢失。</p></div></article><article><h1><a href=https://blog.baicai.me/article/2025/linux_curl/>linux测试url的访问速度</a></h1><b><time>2025.02.21 18:34</time></b>
 <a href=/tags/shell%E8%84%9A%E6%9C%AC>Shell脚本</a>
 <a href=/tags/linux>linux</a>
 <a href=/tags/curl>curl</a><div><p>使用curl命令来测试URL的访问速度。</p><p>以下是使用curl测试URL访问速度的步骤：</p><ul><li>打开终端或命令行界面。</li><li>输入以下命令：</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>	curl -o /dev/null -s -w <span style=color:#e6db74>&#34;time_namelookup: %{time_namelookup}\n time_connect: %{time_connect}\n time_pretransfer: %{time_pretransfer}\n time_starttransfer: %{time_starttransfer}\n time_total: %{time_total}\n&#34;</span> &lt;URL&gt;
@@ -168,9 +181,7 @@ https://www.t1h2ua.cn/tools/
 http://tool.chinaz.com/subdomain/
 </code></pre><h3 id=暴力枚举>暴力枚举</h3><p>Layer子域名爆破机 Layer是windows下的一款子域名探测工具，其工作原理是利用子域名字典进行爆破，使用简单容易上手。</p><p>Amass 工具描述：爆破, google, VirusTotal, alt names</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go install github.com/OWASP/Amass/...
 </span></span><span style=display:flex><span>amass -d target.com -o $outfile
-</span></span></code></pre></div><p>Knock 工具描述：AXFR, virustotal, 爆破</p><a href=https://blog.baicai.me/article/2024/find_subdomain/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2023/telegram_email_login/>开启 Telegram 的邮箱登录</a></h1><b><time>2023.12.26 15:00</time></b>
-<a href=/tags/telegram>telegram</a>
-<a href=/tags/email>Email</a><div><h2 id=telegram的邮箱登录是什么-有什么用>Telegram的邮箱登录是什么? 有什么用?</h2><p>邮箱登录就是通过电子邮件获取验证码来登录Telegram账户, 此功能可以在把验证码发送到Telegram客户端的情况下同时向邮箱发送一份验证码, 而不是通过短信发送验证码. 极大减少了Telegram官方的短信费用支出. 对于使用接码的用户来说, 再也不怕没客户端也没手机号的情况下收不到验证码了!</p><h2 id=如何开启telegram邮箱登录>如何开启Telegram邮箱登录?</h2><p><code>注意 账号绑定的手机号需要可以接收短信验证码, 否则无法设置邮箱登录</code></p><p>根据<a href=https://core.telegram.org/api/auth>官方文档</a>来看,</p><ul><li>auth.sentCodeTypeSetUpEmailRequired: if the user logins often enough, Telegram will ask the user to verify an email that will be used to send the login code.</li><li>当你的登录频率足够高时, Telegram服务器会要求客户端设置邮箱登录</li></ul><h3 id=具体方法>具体方法</h3><ul><li>使用Telegram官方移动客户端登录, 登录时选择 Tap to get a code via SMS</li><li>短信验证码和Telegram客户端验证码一致, 任选其一输入即可, 不需要输入2FA密码, 直接返回重新刷</li></ul><p>如果过程中出现 <code>Too many attemps, please try again later</code> 则需要休息一段时间再刷</p><p>直到出现让你选择登录邮箱的提示界面</p><p>根据提示输入完成邮箱验证码后会向你的账号绑定手机号码发送短信验证码, 输入完即可开启邮箱登录 (2FA可以不输入)</p><h2 id=如何判断有没有开启邮箱登录>如何判断有没有开启邮箱登录?</h2><p>在设置-隐私与安全界面，可看到已设置的“登录邮箱”</p><h2 id=参考>参考：</h2><p><a href=https://telegra.ph/Telegram%E7%9A%84%E9%82%AE%E7%AE%B1%E7%99%BB%E5%BD%95-12-26>Telegram的邮箱登录</a><br><a href=https://core.telegram.org/api/auth#email-verification>User Authorization</a></p><a href=https://blog.baicai.me/article/2023/telegram_email_login/>Read more...</a></div></article><div><a href=/>Previous Page</a>
+</span></span></code></pre></div><p>Knock 工具描述：AXFR, virustotal, 爆破</p><a href=https://blog.baicai.me/article/2024/find_subdomain/>Read more...</a></div></article><div><a href=/>Previous Page</a>
 2 of 9
 <a href=/page/3/>Next Page</a></div></main><footer><p>&copy; 2026 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.

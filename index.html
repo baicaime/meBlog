@@ -1,9 +1,29 @@
 <!doctype html><html lang=zh-CN><head><meta name=generator content="Hugo 0.145.0"><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=author content="白菜"><meta property="og:url" content="https://blog.baicai.me/"><link rel=canonical href=https://blog.baicai.me/><style type=text/css>body{font-family:monospace}</style><title>白菜</title>
-<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1780287531"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
+<meta name=description content="一个勤奋的代码搬运工!"><meta name=author content="白菜"><link rel=stylesheet href=/css/style.css><link rel=stylesheet href="/css/baicai_custom.css?rnd=1782907270"><link rel=alternate type=application/rss+xml href=/index.xml title=白菜></head><body><header>============<br>== <a href=https://blog.baicai.me/>白菜</a> ==<br>============<div style=float:right>一个勤奋的代码搬运工!</div><br><p><nav><a href=/><b>Start</b></a>.
 <a href=/posts/><b>文章</b></a>.
 <a href=/categories/><b>分类</b></a>.
 <a href=/tags/><b>标签</b></a>.
-<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2026/linux_sshd_config/>SSH 配置安全加固</a></h1><b><time>2026.04.21 19:43</time></b>
+<a href=/about/><b>关于</b></a>.</nav></p></header><main><article><h1><a href=https://blog.baicai.me/article/2026/linux_cmd_fdisk/>使用 fdisk 或 parted 把第二块硬盘分区并挂载</a></h1><b><time>2026.07.01 19:37</time></b>
+<a href=/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB>技术分享</a>
+<a href=/tags/linux>linux</a>
+<a href=/tags/fdisk>fdisk</a>
+<a href=/tags/parted>parted</a><div><p>系统环境： Debian13</p><h3 id=使用-fdisk-分区>使用 fdisk 分区</h3><p>先确认：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>fdisk -l
+</span></span></code></pre></div><p>如果能正常输出，就可以用 <code>fdisk</code>。</p><p>进入分区工具：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>fdisk /dev/vdb
+</span></span></code></pre></div><p>依次输入：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>g    # 创建新的 GPT 分区表
+</span></span><span style=display:flex><span>n    # 新建分区
+</span></span><span style=display:flex><span>&lt;回车&gt;  # 分区号，默认 1
+</span></span><span style=display:flex><span>&lt;回车&gt;  # 起始位置，默认
+</span></span><span style=display:flex><span>&lt;回车&gt;  # 结束位置，默认（使用整个磁盘）
+</span></span><span style=display:flex><span>w    # 保存退出
+</span></span></code></pre></div><p>完成后会生成：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>/dev/vdb1
+</span></span></code></pre></div><p>查看确认：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>lsblk
+</span></span></code></pre></div><p>应该能看到类似：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>vdb     500G
+</span></span><span style=display:flex><span>└─vdb1  500G
+</span></span></code></pre></div><hr><h3 id=使用-parted-分区>使用 parted 分区</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>parted /dev/vdb --script mklabel gpt
+</span></span><span style=display:flex><span>parted /dev/vdb --script mkpart primary ext4 0% 100%
+</span></span></code></pre></div><p>得到：</p><pre tabindex=0><code>/dev/vdb1
+</code></pre><hr><h3 id=然后格式化>然后格式化</h3><p>例如 ext4：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkfs.ext4 /dev/vdb1
+</span></span></code></pre></div><hr><h3 id=挂载>挂载</h3><p>例如：</p><a href=https://blog.baicai.me/article/2026/linux_cmd_fdisk/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2026/linux_sshd_config/>SSH 配置安全加固</a></h1><b><time>2026.04.21 19:43</time></b>
 <a href=/tags/linux>linux</a>
 <a href=/tags/sshd_config>sshd_config</a>
 <a href=/tags/ssh>ssh</a><div><p>环境： Debian 13
@@ -172,20 +192,7 @@ Escape character is &#39;^]&#39;.
     hard：代表硬件
     nproc：是代表最大进程数
     nofile：是代表最大文件打开数
-</code></pre><p>修改完毕后，再次执行命令：<code>ulimit -n</code>可以看到设置已经生效!</p><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Read more...</a></div></article><article><h1><a href=https://blog.baicai.me/article/2025/ifconfig_interfaces/>Debian12 系统添加多个IP</a></h1><b><time>2025.02.21 23:31</time></b>
-<a href=/tags/ifconfig>ifconfig</a>
-<a href=/tags/networking>networking</a><div><p>对于使用 传统的 ifconfig 配置的系统（例如老版本的Ubuntu、Debian等）,直接修改 <code>/etc/network/interfaces</code> 文件。</p><h3 id=编辑配置文件>编辑配置文件：</h3><p><code>sudo nano /etc/network/interfaces</code></p><h3 id=添加多个ip地址>添加多个IP地址：</h3><p>在相应的网络接口下添加多个IP地址。例如：</p><pre tabindex=0><code>iface enp30 inet static
-    address 192.168.0.250
-    netmask 255.255.255.0
-    gateway 192.168.0.1
-
-iface enp30 inet static
-    address 192.168.0.251
-    netmask 255.255.255.0
-</code></pre><h3 id=重启网络服务>重启网络服务：</h3><p>保存文件并退出后，重启网络服务：</p><p><code>sudo systemctl restart networking</code></p><h3 id=检查配置>检查配置</h3><p>通过以下命令验证多IP地址是否已成功添加：</p><p><code>ip addr show enp30</code></p><p>这将显示 enp30 接口的所有IP地址。你应该能看到你配置的多个IP地址。</p><h2 id=临时配置多个ip地址>临时配置多个IP地址</h2><p>为 enp30 接口添加一个新的IP 192.168.0.251
-执行以下命令：
-<code>ip addr add 192.168.0.251/24 dev enp30</code>
-这操作是临时的，重启后会丢失。</p></div></article><div>1 of 9
+</code></pre><p>修改完毕后，再次执行命令：<code>ulimit -n</code>可以看到设置已经生效!</p><a href=https://blog.baicai.me/article/2025/nginx_too_many_open_files/>Read more...</a></div></article><div>1 of 9
 <a href=/page/2/>Next Page</a></div></main><footer><p>&copy; 2026 <a href=https://blog.baicai.me/><b>baicai.me</b></a>.
 <a href=/links/><b>友情链接</b></a>.
 <a href=/index.xml><b>RSS</b></a>.</p></footer></body></html>

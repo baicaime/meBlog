@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Parted on 白菜</title><link>https://blog.baicai.me/tags/parted/</link><description>Recent content in Parted on 白菜</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>admin@baicai.me (白菜)</managingEditor><webMaster>admin@baicai.me (白菜)</webMaster><copyright>baicai.me</copyright><lastBuildDate>Wed, 01 Jul 2026 19:37:48 +0800</lastBuildDate><atom:link href="https://blog.baicai.me/tags/parted/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 fdisk 或 parted 把第二块硬盘分区并挂载</title><link>https://blog.baicai.me/article/2026/linux_cmd_fdisk/</link><pubDate>Wed, 01 Jul 2026 19:37:48 +0800</pubDate><author>admin@baicai.me (白菜)</author><guid>https://blog.baicai.me/article/2026/linux_cmd_fdisk/</guid><description>&lt;p>系统环境： Debian13&lt;/p>
+&lt;h3 id="使用-fdisk-分区">使用 fdisk 分区&lt;/h3>
+&lt;p>先确认：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>fdisk -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果能正常输出，就可以用 &lt;code>fdisk&lt;/code>。&lt;/p>
+&lt;p>进入分区工具：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>fdisk /dev/vdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>依次输入：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>g # 创建新的 GPT 分区表
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>n # 新建分区
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;回车&amp;gt; # 分区号，默认 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;回车&amp;gt; # 起始位置，默认
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;回车&amp;gt; # 结束位置，默认（使用整个磁盘）
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>w # 保存退出
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>完成后会生成：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/vdb1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看确认：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>lsblk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>应该能看到类似：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>vdb 500G
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─vdb1 500G
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h3 id="使用-parted-分区">使用 parted 分区&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>parted /dev/vdb --script mklabel gpt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>parted /dev/vdb --script mkpart primary ext4 0% 100%
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>得到：&lt;/p>
+&lt;pre tabindex="0">&lt;code>/dev/vdb1
+&lt;/code>&lt;/pre>&lt;hr>
+&lt;h3 id="然后格式化">然后格式化&lt;/h3>
+&lt;p>例如 ext4：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkfs.ext4 /dev/vdb1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h3 id="挂载">挂载&lt;/h3>
+&lt;p>例如：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkdir -p /data
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/vdb1 /data
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查看：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>df -h
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>应该能看到：&lt;/p>
+&lt;pre tabindex="0">&lt;code>/dev/vdb1 500G ... /data
+&lt;/code>&lt;/pre>&lt;hr>
+&lt;h3 id="设置开机自动挂载">设置开机自动挂载&lt;/h3>
+&lt;p>查看 UUID：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>blkid /dev/vdb1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>例如：&lt;/p>
+&lt;pre tabindex="0">&lt;code>UUID=&amp;#34;12345678-xxxx-xxxx&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>编辑：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>nano /etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>加入：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-fstab" data-lang="fstab">UUID=12345678-xxxx-xxxx /data ext4 defaults,nofail 0 2
+&lt;/code>&lt;/pre>&lt;p>然后测试：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mount -a
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>没有报错即可。&lt;/p>
+&lt;hr></description></item></channel></rss>
